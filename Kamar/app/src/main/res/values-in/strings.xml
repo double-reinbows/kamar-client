@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Kamar</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="language_english">English</string>
+    <string name="language_bahasa">Bahasa Indonesia</string>
+
+    <string name="language_set_to">Bahasa diatur ke Indonesia</string>
+    <string name="user_set_to">Pengguna diatur ke</string>
+
+    <string name="welcome">Selamat Datang</string>
+
+    <string name="guest">Tamu</string>
+    <string name="staff">Pegawai</string>
+</resources>
