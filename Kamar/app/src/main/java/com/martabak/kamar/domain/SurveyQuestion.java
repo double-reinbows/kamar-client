@@ -9,7 +9,10 @@ public class SurveyQuestion extends Model {
 
     public final String question;
 
-    public SurveyQuestion() {}
+    public SurveyQuestion() {
+        this.order = null;
+        this.question = null;
+    }
 
     public SurveyQuestion(Integer order, String question) {
         this.order = order;

@@ -11,7 +11,9 @@ public class SurveyAnswer extends Model {
 
     private String answer;
 
-    public SurveyAnswer() {}
+    public SurveyAnswer() {
+        this.questionId = null;
+    }
 
     public SurveyAnswer(String questionId, String answer) {
         this.questionId = questionId;

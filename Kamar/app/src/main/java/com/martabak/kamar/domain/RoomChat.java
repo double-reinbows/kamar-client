@@ -10,15 +10,17 @@ import java.util.List;
  */
 public class RoomChat {
 
-    public final List<ChatMessage> messages;
+    public final List<Message> messages;
 
-    public RoomChat() {}
+    public RoomChat() {
+        this.messages = null;
+    }
 
-    public RoomChat(List<ChatMessage> messages) {
+    public RoomChat(List<Message> messages) {
         this.messages = messages;
     }
 
-    public class ChatMessage extends Model {
+    public class Message extends Model {
 
         @SerializedName("guest_id") public final String guestId;
 
@@ -30,9 +32,15 @@ public class RoomChat {
 
         public final Date read;
 
-        public ChatMessage() {}
+        public Message() {
+            this.guestId = null;
+            this.from = null;
+            this.message = null;
+            this.sent = null;
+            this.read = null;
+        }
 
-        public ChatMessage(String guestId, String from, String message, Date sent, Date read) {
+        public Message(String guestId, String from, String message, Date sent, Date read) {
             super();
             this.guestId = guestId;
             this.from = from;
