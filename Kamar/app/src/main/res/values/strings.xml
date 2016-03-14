@@ -17,4 +17,5 @@
 
     <string name="guest">Guest</string>
     <string name="staff">Staff</string>
+    <string name="title_activity_guest_home">GuestHomeActivity</string>
 </resources>
