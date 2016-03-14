@@ -7,4 +7,8 @@ public abstract class Model {
 
     public final String id;
 
+    public Model() {
+        this.id = null;
+    }
+
 }

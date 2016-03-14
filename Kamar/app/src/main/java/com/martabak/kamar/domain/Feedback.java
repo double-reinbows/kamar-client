@@ -11,7 +11,9 @@ public class Feedback extends Model {
      */
     public final String text;
 
-    public Feedback() {}
+    public Feedback() {
+        this.text = null;
+    }
 
     public Feedback(String text) {
         this.text = text;

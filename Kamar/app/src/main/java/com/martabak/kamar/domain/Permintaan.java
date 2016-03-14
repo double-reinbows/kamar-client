@@ -60,7 +60,15 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
      */
     public final Date updated;
 
-    public Permintaan() {}
+    public Permintaan() {
+        this.owner = null;
+        this.type = null;
+        this.roomNumber = null;
+        this.content = null;
+        this.state = null;
+        this.created = null;
+        this.updated = null;
+    }
 
     public Permintaan(String owner, String roomNumber, T content) {
         this.owner = owner;
@@ -69,10 +77,16 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         this.content = content;
         this.state = "NEW";
         this.created = null;// TODO Date.nowOrSomething?();
+        this.updated = null;
     }
 
     public abstract class Content {
+
         public final String message;
+
+        public Content() {
+            this.message = null;
+        }
 
         public Content(String message) {
             this.message = message;
@@ -82,6 +96,11 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
     }
 
     public class Housekeeping extends Content {
+
+        public Housekeeping() {
+            super();
+        }
+
         public Housekeeping(String message) {
             super(message);
         }
@@ -92,6 +111,11 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
     }
 
     public class Maintenance extends Content {
+
+        public Maintenance() {
+            super();
+        }
+
         public Maintenance(String message) {
             super(message);
         }
@@ -102,6 +126,11 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
     }
 
     public class Bellboy extends Content {
+
+        public Bellboy() {
+            super();
+        }
+
         public Bellboy(String message) {
             super(message);
         }
@@ -112,6 +141,11 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
     }
 
     public class Checkout extends Content {
+
+        public Checkout() {
+            super();
+        }
+
         public Checkout(String message) {
             super(message);
         }
@@ -128,6 +162,13 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         @SerializedName("departure_time") public final Date departureTime;
 
         public final String destination;
+
+        public Transport() {
+            super();
+            this.passengers = null;
+            this.departureTime = null;
+            this.destination = null;
+        }
 
         public Transport(String message, int passengers, Date departureTime, String destination) {
             super(message);
@@ -146,6 +187,12 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         public final List<OrderItem> items;
 
         @SerializedName("total_price") public final Integer totalPrice;
+
+        public Consumable() {
+            super();
+            this.items = null;
+            this.totalPrice = null;
+        }
 
         public Consumable(String message, List<OrderItem> items, int totalPrice) {
             super(message);

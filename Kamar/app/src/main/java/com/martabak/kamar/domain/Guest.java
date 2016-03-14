@@ -44,7 +44,15 @@ public class Guest extends Model {
      */
     @SerializedName("room_number") public final String roomNumber;
 
-    public Guest() {}
+    public Guest() {
+        this.firstName = null;
+        this.lastName = null;
+        this.phone = null;
+        this.email = null;
+        this.checkIn = null;
+        this.checkOut = null;
+        this.roomNumber = null;
+    }
 
     public Guest(String firstName, String lastName, String phone, String email, Date checkIn, Date checkOut, String roomNumber) {
         this.firstName = firstName;
