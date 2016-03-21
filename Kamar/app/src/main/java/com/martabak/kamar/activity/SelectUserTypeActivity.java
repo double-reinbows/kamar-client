@@ -80,12 +80,28 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         toast.show();
     }
 
+
+
     /**
      * Switch activity.
      */
     private void switchActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Intent intent;
+        String userType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none");
+        switch (userType) {
+            case "staff":
+                intent = new Intent(this, StaffHomeActivity.class);
+                startActivity(intent);
+                break;
+            case "guest":
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+
+
     }
 
 }

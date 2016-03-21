@@ -18,4 +18,21 @@
     <string name="guest">Guest</string>
     <string name="staff">Staff</string>
     <string name="title_activity_guest_home">GuestHomeActivity</string>
+    <string name="title_activity_staff_home">StaffHomeActivity</string>
+
+    <string-array name="staffNavItems">
+        <item>HOME</item>
+        <item>CHAT</item>
+        <item>CHECK GUEST IN</item>
+        <item>CHECK GUEST OUT</item>
+        <item>SET WELCOME IMAGE</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_chat_fragment">Hello chat fragment</string>
+    <string name="guest_first_name">First Name</string>
+    <string name="guest_last_name">Last Name</string>
+    <string name="guest_email">Email</string>
+    <string name="guest_phone">Phone Number</string>
 </resources>

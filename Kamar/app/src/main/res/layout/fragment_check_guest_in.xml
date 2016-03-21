@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
+    tools:context="com.martabak.kamar.activity.CheckGuestInFragment">
+
+    <!-- TODO: Update fragment layout -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="@string/guest_first_name" />
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:inputType="text"
+            android:id="@+id/guest_first_name" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="@string/guest_last_name" />
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:inputType="text"
+            android:id="@+id/guest_last_name"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="@string/guest_email" />
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:inputType="textEmailAddress"
+            android:id="@+id/guest_email"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="@string/guest_phone" />
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:inputType="phone"
+            android:id="@+id/guest_phone"/>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
