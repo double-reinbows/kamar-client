@@ -17,8 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.martabak.kamar.R;
 
@@ -33,14 +31,6 @@ public class StaffHomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.staff_toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -106,8 +96,6 @@ public class StaffHomeActivity extends AppCompatActivity {
         };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-
 
 
     }

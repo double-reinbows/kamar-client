@@ -19,7 +19,7 @@
             android:text="@string/guest_first_name" />
 
         <EditText
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:inputType="text"
             android:id="@+id/guest_first_name" />
@@ -35,7 +35,7 @@
             android:layout_height="50dp"
             android:text="@string/guest_last_name" />
         <EditText
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:inputType="text"
             android:id="@+id/guest_last_name"/>
@@ -51,7 +51,7 @@
             android:layout_height="50dp"
             android:text="@string/guest_email" />
         <EditText
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:inputType="textEmailAddress"
             android:id="@+id/guest_email"/>
@@ -66,12 +66,19 @@
             android:layout_height="50dp"
             android:text="@string/guest_phone" />
         <EditText
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:inputType="phone"
             android:id="@+id/guest_phone"/>
     </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/check_guest_in_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_input_add" />
 
 
 

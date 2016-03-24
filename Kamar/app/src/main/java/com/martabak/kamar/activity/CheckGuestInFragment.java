@@ -4,11 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.service.GuestServer;
+
+import rx.Observable;
+import rx.Observer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +37,11 @@ public  class CheckGuestInFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String email;
 
     private OnFragmentInteractionListener mListener;
 
@@ -59,14 +74,73 @@ public  class CheckGuestInFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_check_guest_in, container, false);
+
+
+        View view =  inflater.inflate(R.layout.fragment_check_guest_in, container, false);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.check_guest_in_btn);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText editTextFirstName = (EditText) view.findViewById(R.id.guest_first_name);
+                firstName = editTextFirstName.getText().toString();
+
+                EditText editTextLastName = (EditText) view.findViewById(R.id.guest_last_name);
+                lastName = editTextLastName.getText().toString();
+
+                EditText editTextPhoneNumber = (EditText) view.findViewById(R.id.guest_phone);
+                phoneNumber = editTextPhoneNumber.getText().toString();
+
+                EditText editTextEmail = (EditText) view.findViewById(R.id.guest_email);
+                email = editTextEmail.getText().toString();
+
+                //sendGuestRequest();
+
+
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        return view;
     }
+
+    /*
+    private void sendGuestRequest() {
+        GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
+                firstName,
+                lastName,
+                phoneNumber,
+                email,
+                null,
+                null,
+                "1")
+        ).subscribe(new Observer<Guest>() {
+            @Override
+            public void onCompleted() {
+                Log.d("Completed", "On completed");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d("Error", "On error");
+
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Guest guest) {
+                Log.d("Next", "On next");
+            }
+        });
+    }
+    */
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
