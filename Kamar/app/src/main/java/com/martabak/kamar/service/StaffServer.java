@@ -2,12 +2,9 @@ package com.martabak.kamar.service;
 
 import android.content.Context;
 
-import com.martabak.kamar.domain.Guest;
-import com.martabak.kamar.domain.PostResponse;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -29,7 +26,7 @@ public class StaffServer extends Server {
      * Constructor.
      */
     private StaffServer(Context c) {
-        super(c, GuestService.BASE_URL);
+        super(c);
         service = createService(StaffService.class);
     }
 

@@ -15,11 +15,6 @@ import rx.Observable;
  */
 public interface PermintaanService {
 
-    /**
-     * The base server url.
-     */
-    String BASE_URL = "http://192.168.178.24:5984";
-
     @GET("permintaan/{id}")
     Observable<Permintaan> getPermintaan(@Path("id") int id);
 

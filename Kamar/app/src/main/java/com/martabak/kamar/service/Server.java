@@ -26,15 +26,14 @@ public abstract class Server {
 
     /**
      * Construct the Retrofit server.
-     * @param baseUrl The server's base URL.
      */
-    protected Server(Context c, String baseUrl) {
+    protected Server(Context c) {
         retrofit = new Retrofit.Builder()
                 .client(new OkHttpClient.Builder()
                         .addInterceptor(new AuthorizationInterceptor(c))
                         .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                         .build())
-                .baseUrl(baseUrl)
+                .baseUrl(getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
@@ -56,6 +55,13 @@ public abstract class Server {
      */
     protected final <T> T createService(Class<T> service) {
         return  retrofit.create(service);
+    }
+
+    /**
+     * @return The server's base URL.
+     */
+    protected String getBaseUrl() {
+        return "http://192.168.178.24:5984";
     }
 
 }

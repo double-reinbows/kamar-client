@@ -11,6 +11,7 @@ public class PermintaanServer extends Server {
      * The singleton instance.
      */
     private static PermintaanServer instance;
+
     /**
      * The service api conf.
      */
@@ -20,7 +21,7 @@ public class PermintaanServer extends Server {
      * Constructor.
      */
     private PermintaanServer(Context c) {
-        super(c, PermintaanService.BASE_URL);
+        super(c);
         service = createService(PermintaanService.class);
     }
 
