@@ -1,17 +1,16 @@
 package com.martabak.kamar.service;
 
-import com.squareup.okhttp.Response;
 
-import retrofit.http.Field;
-import retrofit.http.POST;
+import retrofit2.http.Field;
+import retrofit2.http.POST;
 import rx.Observable;
 
 /**
  * Provides staff related functionality.
  */
-public interface StaffService extends Service {
+public interface StaffService {
 
     @POST("staffLoginVIEW") // FIXME need to figure out how views will look
-    Observable<Response> login(@Field("password") String password);
+    Observable<Boolean> login(@Field("password") String password);
 
 }

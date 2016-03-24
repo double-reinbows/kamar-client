@@ -1,14 +1,19 @@
 package com.martabak.kamar.service;
 
 import com.martabak.kamar.domain.Permintaan;
-import com.squareup.okhttp.Response;
-import retrofit.http.*;
+
+import retrofit2.Response;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
  * Provides permintaan (request) related functionality.
  */
-public interface PermintaanService extends Service {
+public interface PermintaanService {
 
     @GET("permintaan/{id}")
     Observable<Permintaan> getPermintaan(@Path("id") int id);

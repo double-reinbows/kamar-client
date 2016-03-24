@@ -47,6 +47,12 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                 displayUserTypeToast();
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Guest");
 
+                SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("userType", "guest");
+                editor.putString("userPassword", "guest123");
+                editor.commit();
+
                 switchActivity();
             }
         });
@@ -77,7 +83,13 @@ public class SelectUserTypeActivity extends AppCompatActivity {
 
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Staff");
 
+                SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("userType", "staff");
+                editor.commit();
+
                 //switchActivity();
+
             }
         });
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -131,21 +143,16 @@ public class SelectUserTypeActivity extends AppCompatActivity {
 
 
     public class StaffTypeFragment extends Fragment {
-
-        public StaffTypeFragment() {
-
-        }
-
+        public StaffTypeFragment() {}
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             return inflater.inflate(R.layout.fragment_staff_login, container, false);
         }
-        public void sendPassword(View v) {doo ged
+        public void sendPassword(View v) {
             //staffTypeFragment.sendPassword(v);
             EditText passwordString   = (EditText) findViewById(R.id.EditTextPassword);
             Log.v("Password String", passwordString.getText().toString());
-
         }
     }
 
