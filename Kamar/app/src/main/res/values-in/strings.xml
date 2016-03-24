@@ -17,4 +17,8 @@
 
     <string name="guest">Tamu</string>
     <string name="staff">Pegawai</string>
+
+    <string name="password_prompt">Kata Sandi: </string>
+
+    <string name="submit">Kirim</string>
 </resources>

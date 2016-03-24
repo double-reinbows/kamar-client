@@ -17,4 +17,8 @@
 
     <string name="guest">Guest</string>
     <string name="staff">Staff</string>
+
+    <string name="password_prompt">Password: </string>
+
+    <string name="submit">Submit</string>
 </resources>
