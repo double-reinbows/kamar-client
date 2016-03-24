@@ -1,5 +1,7 @@
 package com.martabak.kamar.service;
 
+import android.content.Context;
+
 /**
  * Exposes {@link FeedbackService}.
  */
@@ -18,8 +20,8 @@ public class FeedbackServer extends Server {
     /**
      * Constructor.
      */
-    private FeedbackServer() {
-        super(FeedbackService.BASE_URL);
+    private FeedbackServer(Context c) {
+        super(c, FeedbackService.BASE_URL);
         service = createService(FeedbackService.class);
     }
 
@@ -27,9 +29,9 @@ public class FeedbackServer extends Server {
      * Obtains singleton instance.
      * @return The singleton instance.
      */
-    public static FeedbackServer getInstance() {
+    public static FeedbackServer getInstance(Context c) {
         if (instance == null)
-            instance = new FeedbackServer();
+            instance = new FeedbackServer(c);
         return instance;
     }
 

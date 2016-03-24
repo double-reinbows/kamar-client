@@ -30,6 +30,12 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                 displayUserTypeToast();
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Guest");
 
+                SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("userType", "guest");
+                editor.putString("userPassword", "guest123");
+                editor.commit();
+
                 switchActivity();
             }
         });
@@ -39,6 +45,11 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                 setUserType("staff");
                 displayUserTypeToast();
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Staff");
+
+                SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("userType", "staff");
+                editor.commit();
 
                 switchActivity();
             }

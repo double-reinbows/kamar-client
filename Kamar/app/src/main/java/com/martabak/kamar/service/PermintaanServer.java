@@ -1,5 +1,7 @@
 package com.martabak.kamar.service;
 
+import android.content.Context;
+
 /**
  * Exposes {@link PermintaanService}.
  */
@@ -17,8 +19,8 @@ public class PermintaanServer extends Server {
     /**
      * Constructor.
      */
-    private PermintaanServer() {
-        super(PermintaanService.BASE_URL);
+    private PermintaanServer(Context c) {
+        super(c, PermintaanService.BASE_URL);
         service = createService(PermintaanService.class);
     }
 
@@ -26,9 +28,9 @@ public class PermintaanServer extends Server {
      * Obtains singleton instance.
      * @return The singleton instance.
      */
-    public static PermintaanServer getInstance() {
+    public static PermintaanServer getInstance(Context c) {
         if (instance == null)
-            instance = new PermintaanServer();
+            instance = new PermintaanServer(c);
         return instance;
     }
 

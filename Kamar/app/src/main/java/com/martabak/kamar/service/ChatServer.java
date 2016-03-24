@@ -1,5 +1,7 @@
 package com.martabak.kamar.service;
 
+import android.content.Context;
+
 /**
  * Exposes {@link ChatService}.
  */
@@ -17,8 +19,8 @@ public class ChatServer extends Server {
     /**
      * Constructor.
      */
-    private ChatServer() {
-        super(ChatService.BASE_URL);
+    private ChatServer(Context c) {
+        super(c, ChatService.BASE_URL);
         service = createService(ChatService.class);
     }
 
@@ -26,9 +28,9 @@ public class ChatServer extends Server {
      * Obtains singleton instance.
      * @return The singleton instance.
      */
-    public static ChatServer getInstance() {
+    public static ChatServer getInstance(Context c) {
         if (instance == null)
-            instance = new ChatServer();
+            instance = new ChatServer(c);
         return instance;
     }
 
