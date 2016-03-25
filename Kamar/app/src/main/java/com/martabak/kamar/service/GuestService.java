@@ -20,6 +20,7 @@ public interface GuestService {
      */
     String BASE_URL = "http://192.168.43.42:5984";
 
+
     @GET("guest/{id}")
     Observable<Guest> getGuest(@Path("id") String id);
 
@@ -27,6 +28,6 @@ public interface GuestService {
     Observable<PostResponse> createGuest(@Body Guest guest);
 
     @GET("roomGuestVIEW") // FIXME need to figure out how views will look
-    Observable<Guest> getGuestInRoom(@Field("roomnumber") String roomnumber);
+    Observable<Guest> getGuestInRoom(@Field("roomnumber") String roomNumber);
 
 }

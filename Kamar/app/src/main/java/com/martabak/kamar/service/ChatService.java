@@ -11,12 +11,7 @@ import rx.Observable;
  */
 public interface ChatService {
 
-    /**
-     * The base server url.
-     */
-    String BASE_URL = "http://192.168.178.24:5984";
-
     @GET("roomChatVIEW") // FIXME need to figure out how views will look
-    Observable<RoomChat> getRoomChat(@Field("roomnumber") String roomnumber);
+    Observable<RoomChat> getRoomChat(@Field("roomnumber") String roomNumber);
 
 }

@@ -29,7 +29,7 @@ public class GuestServer extends Server {
      * Constructor.
      */
     private GuestServer(Context c) {
-        super(c, GuestService.BASE_URL);
+        super(c);
         service = createService(GuestService.class);
     }
 
@@ -55,6 +55,17 @@ public class GuestServer extends Server {
                         return service.getGuest(response.id);
                     }
                 })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * Get the guest currently in the given room, if there is one.
+     * @param roomNumber The room number.
+     * @return The guest in the room, if there is one.
+     */
+    public Observable<Guest> getGuestInRoom(String roomNumber) {
+        return service.getGuestInRoom(roomNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
