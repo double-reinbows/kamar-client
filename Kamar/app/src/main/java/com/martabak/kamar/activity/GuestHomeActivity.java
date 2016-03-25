@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,6 +21,8 @@ public class GuestHomeActivity extends AppCompatActivity {
         final GridView gridView = (GridView) findViewById(R.id.guestgridview);
         gridView.setAdapter(imgAdapter);
 
+
+
         //display feature text on each item click
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -31,6 +34,13 @@ public class GuestHomeActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void setUserType(String userType) {
+        SharedPreferences languagePref = getSharedPreferences("userSettings", MODE_PRIVATE);
+        SharedPreferences.Editor editor = languagePref.edit().
+                putString("userType", userType);
+        editor.commit();
     }
 
 }

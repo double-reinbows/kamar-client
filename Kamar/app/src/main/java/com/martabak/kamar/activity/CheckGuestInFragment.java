@@ -89,19 +89,19 @@ public  class CheckGuestInFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText editTextFirstName = (EditText) view.findViewById(R.id.guest_first_name);
+                EditText editTextFirstName = (EditText) getView().findViewById(R.id.guest_first_name);
                 firstName = editTextFirstName.getText().toString();
 
-                EditText editTextLastName = (EditText) view.findViewById(R.id.guest_last_name);
+                EditText editTextLastName = (EditText) getView().findViewById(R.id.guest_last_name);
                 lastName = editTextLastName.getText().toString();
 
-                EditText editTextPhoneNumber = (EditText) view.findViewById(R.id.guest_phone);
+                EditText editTextPhoneNumber = (EditText) getView().findViewById(R.id.guest_phone);
                 phoneNumber = editTextPhoneNumber.getText().toString();
 
-                EditText editTextEmail = (EditText) view.findViewById(R.id.guest_email);
+                EditText editTextEmail = (EditText) getView().findViewById(R.id.guest_email);
                 email = editTextEmail.getText().toString();
 
-                //sendGuestRequest();
+                sendGuestRequest();
 
 
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -111,7 +111,7 @@ public  class CheckGuestInFragment extends Fragment {
         return view;
     }
 
-    /*
+
     private void sendGuestRequest() {
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
                 firstName,
@@ -140,7 +140,7 @@ public  class CheckGuestInFragment extends Fragment {
             }
         });
     }
-    */
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

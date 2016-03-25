@@ -32,7 +32,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
 
                 SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putString("userType", "guest");
+                editor.putString("userType", "GUEST");
                 editor.putString("userPassword", "guest123");
                 editor.commit();
 
@@ -42,13 +42,13 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         staffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setUserType("staff");
+                setUserType("STAFF");
                 displayUserTypeToast();
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Staff");
 
                 SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putString("userType", "staff");
+                editor.putString("userType", "STAFF");
                 editor.commit();
 
                 switchActivity();
@@ -76,7 +76,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         String text = getResources().getString(R.string.user_set_to) + " ";
         String userType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none");
         switch (userType) {
-            case "staff":
+            case "STAFF":
                 text += getResources().getString(R.string.staff);
                 break;
             case "guest":
@@ -100,7 +100,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         Intent intent;
         String userType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none");
         switch (userType) {
-            case "staff":
+            case "STAFF":
                 intent = new Intent(this, StaffHomeActivity.class);
                 startActivity(intent);
                 break;
