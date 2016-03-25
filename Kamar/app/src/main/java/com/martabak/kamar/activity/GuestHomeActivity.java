@@ -27,7 +27,7 @@ public class GuestHomeActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        
                 Toast.makeText(GuestHomeActivity.this, "" + imgAdapter.getItem(position),
                         Toast.LENGTH_SHORT).show();
             }
@@ -36,12 +36,7 @@ public class GuestHomeActivity extends AppCompatActivity {
 
     }
 
-    private void setUserType(String userType) {
-        SharedPreferences languagePref = getSharedPreferences("userSettings", MODE_PRIVATE);
-        SharedPreferences.Editor editor = languagePref.edit().
-                putString("userType", userType);
-        editor.commit();
-    }
+
 
 }
 

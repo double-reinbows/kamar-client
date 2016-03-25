@@ -35,4 +35,5 @@
     <string name="guest_last_name">Last Name</string>
     <string name="guest_email">Email</string>
     <string name="guest_phone">Phone Number</string>
+    <string name="title_activity_transport">TransportActivity</string>
 </resources>

@@ -26,7 +26,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         guestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setUserType("guest");
+                setUserType("GUEST");
                 displayUserTypeToast();
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Guest");
 
@@ -79,7 +79,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
             case "STAFF":
                 text += getResources().getString(R.string.staff);
                 break;
-            case "guest":
+            case "GUEST":
                 text += getResources().getString(R.string.guest);
                 break;
             default:
@@ -104,7 +104,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                 intent = new Intent(this, StaffHomeActivity.class);
                 startActivity(intent);
                 break;
-            case "guest":
+            case "GUEST":
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
