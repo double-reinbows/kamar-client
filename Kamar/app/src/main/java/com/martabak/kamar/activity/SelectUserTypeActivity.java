@@ -29,7 +29,6 @@ public class SelectUserTypeActivity extends AppCompatActivity {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
     private StaffTypeFragment staffTypeFragment;
 
     @Override
@@ -43,13 +42,13 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         guestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setUserType("guest");
+                setUserType("GUEST");
                 displayUserTypeToast();
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Guest");
 
                 SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putString("userType", "guest");
+                editor.putString("userType", "GUEST");
                 editor.putString("userPassword", "guest123");
                 editor.commit();
 
@@ -59,8 +58,9 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         staffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setUserType("staff");
-                //displayUserTypeToast();
+                setUserType("STAFF");
+                displayUserTypeToast();
+
                 //Check that the current layout has "fragment_container" id in it
                 if (findViewById(R.id.fragment_container) != null) {
                     //Check that the fragment isn't being created via the Back button
@@ -78,67 +78,22 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                 getFragmentManager().beginTransaction().
                         replace(R.id.fragment_container, staffTypeFragment).commit();
 
-                //final Button submitButton = (Button) findViewById(R.id.submit);
-
 
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Staff");
 
                 SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putString("userType", "staff");
+                editor.putString("userType", "STAFF");
                 editor.commit();
 
                 //switchActivity();
 
             }
         });
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public void sendPassword(View v) {
         staffTypeFragment.sendPassword(v);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "SelectUserType Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.martabak.kamar.activity/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "SelectUserType Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.martabak.kamar.activity/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
     }
 
 
@@ -176,10 +131,10 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         String text = getResources().getString(R.string.user_set_to) + " ";
         String userType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none");
         switch (userType) {
-            case "staff":
+            case "STAFF":
                 text += getResources().getString(R.string.staff);
                 break;
-            case "guest":
+            case "GUEST":
                 text += getResources().getString(R.string.guest);
                 break;
             default:
@@ -191,12 +146,28 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         toast.show();
     }
 
+
+
     /**
      * Switch activity.
      */
     private void switchActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Intent intent;
+        String userType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none");
+        switch (userType) {
+            case "STAFF":
+                intent = new Intent(this, StaffHomeActivity.class);
+                startActivity(intent);
+                break;
+            case "GUEST":
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+
+
     }
 
 }
