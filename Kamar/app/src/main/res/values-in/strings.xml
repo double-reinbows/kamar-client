@@ -17,8 +17,8 @@
 
     <string name="guest">Tamu</string>
     <string name="staff">Pegawai</string>
-
     <string name="password_prompt">Kata Sandi: </string>
+    <string name="incorrect_password">Kata sandi yang anda masukki salah</string>
 
     <string name="submit">Kirim</string>
 </resources>

@@ -21,6 +21,15 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.service.StaffServer;
+
+
+import retrofit2.http.Field;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
+import rx.functions.Action1;
 
 
 public class SelectUserTypeActivity extends AppCompatActivity {
@@ -93,9 +102,8 @@ public class SelectUserTypeActivity extends AppCompatActivity {
     }
 
     public void sendPassword(View v) {
-        staffTypeFragment.sendPassword(v);
+        staffTypeFragment.sendPassword();
     }
-
 
     public class StaffTypeFragment extends Fragment {
         public StaffTypeFragment() {}
@@ -104,10 +112,41 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             return inflater.inflate(R.layout.fragment_staff_login, container, false);
         }
-        public void sendPassword(View v) {
-            //staffTypeFragment.sendPassword(v);
-            EditText passwordString   = (EditText) findViewById(R.id.EditTextPassword);
-            Log.v("Password String", passwordString.getText().toString());
+        public void sendPassword() {
+            //Cast view to EditText and then to a String
+            String passwordString   = ((EditText)findViewById(R.id.EditTextPassword)).getText().toString();
+            Log.v("Password String", passwordString);
+            StaffServer.getInstance(getBaseContext()).login(passwordString).subscribe(new Observer<Boolean>() {
+                @Override
+                public void onCompleted() {
+                    Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On completed");
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On error");
+                    //TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                    //textView.setText(e.getMessage());
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onNext(Boolean loginResponse) {
+                    Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On next");
+                    Log.v("loginResponse", loginResponse.toString());
+                    if (loginResponse) {
+                        //TODO
+                        //Switch to StaffMainActivity
+                    } else {
+                        Context context = getApplicationContext();
+                        String text = getResources().getString(R.string.incorrect_password) + " ";
+                        Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+            });
+
+
         }
     }
 
