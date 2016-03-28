@@ -3,6 +3,7 @@ package com.martabak.kamar.service;
 import com.martabak.kamar.domain.RoomChat;
 
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import rx.Observable;
 
@@ -11,7 +12,8 @@ import rx.Observable;
  */
 public interface ChatService {
 
-    @GET("roomChatVIEW") // FIXME need to figure out how views will look
+    @FormUrlEncoded
+    @GET("chat/_design/chat/_view/room")
     Observable<RoomChat> getRoomChat(@Field("roomnumber") String roomNumber);
 
 }

@@ -5,6 +5,7 @@ import com.martabak.kamar.domain.PostResponse;
 
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -27,7 +28,8 @@ public interface GuestService {
     @POST("guest")
     Observable<PostResponse> createGuest(@Body Guest guest);
 
-    @GET("roomGuestVIEW") // FIXME need to figure out how views will look
+    @FormUrlEncoded
+    @GET("guest/_design/guest/_view/room")
     Observable<Guest> getGuestInRoom(@Field("roomnumber") String roomNumber);
 
 }

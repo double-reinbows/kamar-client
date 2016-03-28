@@ -6,7 +6,9 @@ import com.martabak.kamar.domain.Feedback;
 import com.martabak.kamar.domain.PostResponse;
 import com.martabak.kamar.domain.SurveyAnswer;
 import com.martabak.kamar.domain.SurveyQuestion;
+import com.martabak.kamar.domain.ViewResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -80,10 +82,19 @@ public class FeedbackServer extends Server {
     }
 
     /**
-     * @return The current list of survey questions, in order.
+     * @return The current list of active survey questions, in the correct order.
      */
-    public Observable<List<SurveyQuestion>> getSurveyQuestion() {
+    public Observable<List<SurveyQuestion>> getSurveyQuestions() {
         return service.getSurveyQuestions()
+                .flatMap(new Func1<ViewResponse<SurveyQuestion>, Observable<List<SurveyQuestion>>>() {
+                    @Override public Observable<List<SurveyQuestion>> call(ViewResponse<SurveyQuestion> response) {
+                        List<SurveyQuestion> toReturn = new ArrayList<>(response.total_rows);
+                        for (ViewResponse<SurveyQuestion>.ViewResult<SurveyQuestion> i : response.rows) {
+                            toReturn.add(i.value);
+                        }
+                        return Observable.just(toReturn);
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

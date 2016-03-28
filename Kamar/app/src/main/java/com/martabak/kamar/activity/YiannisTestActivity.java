@@ -9,9 +9,13 @@ import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.SurveyQuestion;
+import com.martabak.kamar.service.FeedbackServer;
 import com.martabak.kamar.service.GuestServer;
+import com.martabak.kamar.service.StaffServer;
 
-import rx.Observable;
+import java.util.List;
+
 import rx.Observer;
 
 
@@ -27,13 +31,63 @@ public class YiannisTestActivity extends AppCompatActivity {
         doSomethingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doSomething();
+                doGetSurveyQuestions();
             }
         });
     }
 
-    private void doSomething() {
-        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done something");
+    private void doLogin() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done login");
+        StaffServer.getInstance(getBaseContext()).login("bleh123").subscribe(new Observer<Boolean>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Boolean result) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(result.toString());
+            }
+        });
+    }
+
+    private void doGetSurveyQuestions() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get survey questions");
+        FeedbackServer.getInstance(getBaseContext()).getSurveyQuestions().subscribe(new Observer<List<SurveyQuestion>>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(List<SurveyQuestion> result) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(result.toString());
+            }
+        });
+    }
+
+    private void doCreateGuest() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done create guest");
         GuestServer.getInstance(getBaseContext()).createGuest(new Guest(
                 "Adarsh",
                 "Jegadeesan",
@@ -63,6 +117,5 @@ public class YiannisTestActivity extends AppCompatActivity {
                 textView.setText(guest.firstName + " " + guest.lastName);
             }
         });
-
     }
 }

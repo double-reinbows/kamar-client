@@ -5,17 +5,21 @@ package com.martabak.kamar.domain;
  */
 public class SurveyQuestion extends Model {
 
-    public final Integer order;
+    public final int order;
+
+    public final boolean active;
 
     public final String question;
 
     public SurveyQuestion() {
-        this.order = null;
+        this.order = Integer.MAX_VALUE;
+        this.active = false;
         this.question = null;
     }
 
-    public SurveyQuestion(Integer order, String question) {
+    public SurveyQuestion(int order, boolean active, String question) {
         this.order = order;
+        this.active = active;
         this.question = question;
     }
 

@@ -2,6 +2,7 @@ package com.martabak.kamar.service;
 
 
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -10,7 +11,8 @@ import rx.Observable;
  */
 public interface StaffService {
 
-    @POST("staffLoginVIEW") // FIXME need to figure out how views will look
+    @FormUrlEncoded
+    @POST("staff/_design/staff/_view/login")
     Observable<Boolean> login(@Field("password") String password);
 
 }
