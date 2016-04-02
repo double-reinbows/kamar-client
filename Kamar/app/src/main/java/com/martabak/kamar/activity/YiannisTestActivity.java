@@ -31,7 +31,7 @@ public class YiannisTestActivity extends AppCompatActivity {
         doSomethingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doGetSurveyQuestions();
+                doLogin();
             }
         });
     }
