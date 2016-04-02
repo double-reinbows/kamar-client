@@ -3,9 +3,11 @@ package com.martabak.kamar.service;
 import android.content.Context;
 
 import com.martabak.kamar.domain.RoomChat;
+import com.martabak.kamar.domain.ViewResponse;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -48,6 +50,11 @@ public class ChatServer extends Server {
      */
     public Observable<RoomChat> getRoomChat(String roomNumber) {
         return service.getRoomChat(roomNumber)
+                .flatMap(new Func1<ViewResponse<RoomChat>, Observable<RoomChat>>() {
+                    @Override public Observable<RoomChat> call(ViewResponse<RoomChat> response) {
+                        return Observable.just(null);
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
