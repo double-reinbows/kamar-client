@@ -19,6 +19,10 @@
     <string name="staff">Pegawai</string>
     <string name="password_prompt">Kata Sandi: </string>
     <string name="incorrect_password">Kata sandi yang anda masukki salah</string>
+    <string name="new_permintaan">BARU</string>
+    <string name="processing_permintaan">SEDANG DIPROSES</string>
+    <string name="in_delivery_permintaan">SEDANG DIKIRIM</string>
+    <string name="complete_permintaan">BERES</string>
 
     <string name="submit">Kirim</string>
 </resources>

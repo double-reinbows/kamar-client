@@ -8,10 +8,9 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-
     <include
         layout="@layout/app_bar_staff_home"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
 
@@ -23,7 +22,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_staff_home"
         app:menu="@menu/activity_staff_home_drawer" />
-
 
 
 

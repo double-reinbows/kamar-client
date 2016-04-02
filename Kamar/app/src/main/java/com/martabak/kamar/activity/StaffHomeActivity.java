@@ -17,8 +17,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.Permintaan;
+import com.martabak.kamar.domain.permintaan.Housekeeping;
+import com.martabak.kamar.domain.permintaan.Transport;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class StaffHomeActivity extends AppCompatActivity {
 
@@ -32,14 +40,22 @@ public class StaffHomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+        FragmentManager fragmentManager = getFragmentManager();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        //Create sample permintaan fragment
+        StaffPermintaanFragment fragment = StaffPermintaanFragment.newInstance();
+
+        //Place the permintaan fragment inside the staff_container/content section of the layout
+        fragmentTransaction.replace(R.id.staff_container, fragment);
+        fragmentTransaction.commit();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 int id = item.getItemId();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                 if (id == R.id.nav_home) {
                     // Handle the home click
@@ -97,8 +113,20 @@ public class StaffHomeActivity extends AppCompatActivity {
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        //Beginning of permintaan section
+
+        //Create dummy permintaan, remove this when you can receive an permintaan from server
+        Permintaan permintaan = new Permintaan("Front Desk", "11", new Transport("need taxi", 4, null, "Tebet"));
+
+        ExpandableListAdapter listAdapter;
+        ExpandableListView expListView;
+        List<String> listDataHeader;
+        HashMap<String, List<String>> listDataChild;
+
+        //expListView = (ExpandableListView) findViewById(R.id.list_view);
 
     }
+
 
     @Override
     public void onBackPressed() {

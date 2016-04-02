@@ -1,6 +1,7 @@
 package com.martabak.kamar.domain;
 
 import com.google.gson.annotations.SerializedName;
+import com.martabak.kamar.domain.permintaan.Content;
 
 import java.util.Date;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * A guest's request for something.
  */
-public class Permintaan<T extends Permintaan.Content> extends Model {
+public class Permintaan<T extends Content> extends Model {
 
     /**
      * The owner of the request. One of:
@@ -80,141 +81,6 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         this.updated = null;
     }
 
-    public abstract class Content {
 
-        public final String message;
-
-        public Content() {
-            this.message = null;
-        }
-
-        public Content(String message) {
-            this.message = message;
-        }
-
-        public abstract String getType();
-    }
-
-    public class Housekeeping extends Content {
-
-        public Housekeeping() {
-            super();
-        }
-
-        public Housekeeping(String message) {
-            super(message);
-        }
-
-        public String getType() {
-            return "HOUSEKEEPING";
-        }
-    }
-
-    public class Maintenance extends Content {
-
-        public Maintenance() {
-            super();
-        }
-
-        public Maintenance(String message) {
-            super(message);
-        }
-
-        public String getType() {
-            return "HOUSEKEEPING";
-        }
-    }
-
-    public class Bellboy extends Content {
-
-        public Bellboy() {
-            super();
-        }
-
-        public Bellboy(String message) {
-            super(message);
-        }
-
-        public String getType() {
-            return "HOUSEKEEPING";
-        }
-    }
-
-    public class Checkout extends Content {
-
-        public Checkout() {
-            super();
-        }
-
-        public Checkout(String message) {
-            super(message);
-        }
-
-        public String getType() {
-            return "HOUSEKEEPING";
-        }
-    }
-
-    public class Transport extends Content {
-
-        public final Integer passengers;
-
-        @SerializedName("departure_time") public final Date departureTime;
-
-        public final String destination;
-
-        public Transport() {
-            super();
-            this.passengers = null;
-            this.departureTime = null;
-            this.destination = null;
-        }
-
-        public Transport(String message, int passengers, Date departureTime, String destination) {
-            super(message);
-            this.passengers = passengers;
-            this.departureTime = departureTime;
-            this.destination = destination;
-        }
-
-        public String getType() {
-            return "HOUSEKEEPING";
-        }
-    }
-
-    public class Consumable extends Content {
-
-        public final List<OrderItem> items;
-
-        @SerializedName("total_price") public final Integer totalPrice;
-
-        public Consumable() {
-            super();
-            this.items = null;
-            this.totalPrice = null;
-        }
-
-        public Consumable(String message, List<OrderItem> items, int totalPrice) {
-            super(message);
-            this.items = items;
-            this.totalPrice = totalPrice;
-        }
-
-        public String getType() {
-            return "CONSUMABLE";
-        }
-
-        public class OrderItem {
-
-            public final Integer quantity;
-
-            public final String name;
-
-            public OrderItem(int quantity, String name) {
-                this.quantity = quantity;
-                this.name = name;
-            }
-        }
-    }
 
 }

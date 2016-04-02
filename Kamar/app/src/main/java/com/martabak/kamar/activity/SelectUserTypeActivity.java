@@ -14,22 +14,11 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.TextView;
 import android.app.Fragment;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.martabak.kamar.R;
-import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.service.StaffServer;
 
-
-import retrofit2.http.Field;
-import rx.Observable;
 import rx.Observer;
-import rx.Subscription;
-import rx.functions.Action1;
 
 
 public class SelectUserTypeActivity extends AppCompatActivity {
@@ -88,15 +77,6 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                         replace(R.id.fragment_container, staffTypeFragment).commit();
 
 
-                Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Staff");
-
-                SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("userType", "STAFF");
-                editor.commit();
-
-                //switchActivity();
-
             }
         });
     }
@@ -105,8 +85,9 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         staffTypeFragment.sendPassword();
     }
 
-    public class StaffTypeFragment extends Fragment {
+    public static class StaffTypeFragment extends Fragment {
         public StaffTypeFragment() {}
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -114,9 +95,18 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         }
         public void sendPassword() {
             //Cast view to EditText and then to a String
-            String passwordString   = ((EditText)findViewById(R.id.EditTextPassword)).getText().toString();
+            String passwordString   = ((EditText)getView().findViewById(R.id.EditTextPassword)).getText().toString();
             Log.v("Password String", passwordString);
-            StaffServer.getInstance(getBaseContext()).login(passwordString).subscribe(new Observer<Boolean>() {
+
+            //Remove this block when StaffServer.login() is working
+            SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("userType", "STAFF");
+            editor.commit();
+            ((SelectUserTypeActivity)getActivity()).switchActivity();
+
+            /*
+            StaffServer.getInstance(getActivity()).login(passwordString).subscribe(new Observer<Boolean>() {
                 @Override
                 public void onCompleted() {
                     Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On completed");
@@ -135,17 +125,21 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                     Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On next");
                     Log.v("loginResponse", loginResponse.toString());
                     if (loginResponse) {
-                        //TODO
-                        //Switch to StaffMainActivity
+                        Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Staff");
+                        SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("userType", "STAFF");
+                        editor.commit();
+                        switchActivity();
                     } else {
-                        Context context = getApplicationContext();
+                        Context context = getActivity().getApplicationContext();
                         String text = getResources().getString(R.string.incorrect_password) + " ";
-                        Toast toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 }
             });
-
+            */
 
         }
     }

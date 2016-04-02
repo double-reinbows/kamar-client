@@ -19,6 +19,10 @@
     <string name="staff">Staff</string>
     <string name="password_prompt">Password: </string>
     <string name="incorrect_password">The password you entered is incorrect</string>
+    <string name="new_permintaan">NEW</string>
+    <string name="processing_permintaan">PROCESSING</string>
+    <string name="in_delivery_permintaan">IN DELIVERY</string>
+    <string name="complete_permintaan">COMPLETE</string>
 
     <string name="submit">Submit</string>
 </resources>
