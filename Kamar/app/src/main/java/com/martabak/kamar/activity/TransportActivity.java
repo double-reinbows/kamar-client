@@ -10,16 +10,11 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.domain.Permintaan;
-import com.martabak.kamar.domain.Permintaan.Transport;
-import com.martabak.kamar.service.PermintaanServer;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import rx.Observer;
 
 public class TransportActivity extends AppCompatActivity {
 
