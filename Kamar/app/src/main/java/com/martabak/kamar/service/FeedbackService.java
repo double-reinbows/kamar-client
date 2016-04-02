@@ -4,6 +4,7 @@ import com.martabak.kamar.domain.Feedback;
 import com.martabak.kamar.domain.PostResponse;
 import com.martabak.kamar.domain.SurveyAnswer;
 import com.martabak.kamar.domain.SurveyQuestion;
+import com.martabak.kamar.domain.ViewResponse;
 
 import java.util.List;
 
@@ -20,10 +21,10 @@ public interface FeedbackService {
     @POST("feedback")
     Observable<PostResponse> createFeedback(@Body Feedback feedback);
 
-    @GET("surveyQuestionsVIEW") // FIXME need to figure out how views will look
-    Observable<List<SurveyQuestion>> getSurveyQuestions();
+    @GET("feedback/_design/feedback/_view/survey_questions")
+    Observable<ViewResponse<SurveyQuestion>> getSurveyQuestions();
 
-    @POST("surveyAnswers")
+    @POST("survey_answers")
     Observable<PostResponse> createSurveyAnswers(@Body List<SurveyAnswer> surveyAnswers);
 
 }

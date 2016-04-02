@@ -3,8 +3,11 @@ package com.martabak.kamar.service;
 import android.content.Context;
 
 
+import com.martabak.kamar.domain.ViewResponse;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -46,7 +49,15 @@ public class StaffServer extends Server {
      * @return Whether or not the login was successful.
      */
     public Observable<Boolean> login(String password) {
-        return service.login(password)
+        return service.login('"' + password + '"')
+                .flatMap(new Func1<ViewResponse<Boolean>, Observable<Boolean>>() {
+                    @Override public Observable<Boolean> call(ViewResponse<Boolean> response) {
+                        for (ViewResponse<Boolean>.ViewResult<Boolean> i : response.rows) {
+                            return Observable.just(i.value);
+                        }
+                        return Observable.just(false);
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

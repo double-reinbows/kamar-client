@@ -26,10 +26,4 @@ public class PutResponse {
         this.reason = null;
     }
 
-    public PutResponse(boolean ok, String error, String reason) {
-        this.ok = ok;
-        this.error = error;
-        this.reason = reason;
-    }
-
 }

@@ -14,8 +14,4 @@ public class DeleteResponse {
         this.ok = false;
     }
 
-    public DeleteResponse(boolean ok) {
-        this.ok = ok;
-    }
-
 }

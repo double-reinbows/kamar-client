@@ -26,10 +26,4 @@ public class PostResponse {
         this.rev = null;
     }
 
-    public PostResponse(String id, boolean ok, String rev) {
-        this.id = id;
-        this.ok = ok;
-        this.rev = rev;
-    }
-
 }

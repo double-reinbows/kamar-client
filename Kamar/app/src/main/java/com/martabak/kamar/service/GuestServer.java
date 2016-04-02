@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.PostResponse;
+import com.martabak.kamar.domain.ViewResponse;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -66,6 +67,14 @@ public class GuestServer extends Server {
      */
     public Observable<Guest> getGuestInRoom(String roomNumber) {
         return service.getGuestInRoom(roomNumber)
+                .flatMap(new Func1<ViewResponse<Guest>, Observable<Guest>>() {
+                    @Override public Observable<Guest> call(ViewResponse<Guest> response) {
+                        for (ViewResponse<Guest>.ViewResult<Guest> i : response.rows) {
+                            return Observable.just(i.value);
+                        }
+                        return Observable.just(null);
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
