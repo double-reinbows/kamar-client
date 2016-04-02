@@ -20,13 +20,7 @@
     <string name="title_activity_guest_home">GuestHomeActivity</string>
     <string name="title_activity_staff_home">StaffHomeActivity</string>
 
-    <string-array name="staffNavItems">
-        <item>HOME</item>
-        <item>CHAT</item>
-        <item>CHECK GUEST IN</item>
-        <item>CHECK GUEST OUT</item>
-        <item>SET WELCOME IMAGE</item>
-    </string-array>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -36,4 +30,8 @@
     <string name="guest_email">Email</string>
     <string name="guest_phone">Phone Number</string>
     <string name="title_activity_transport">TransportActivity</string>
+    <string name="transport_passengers">Passengers</string>
+    <string name="transport_departuretime">Departure Time</string>
+    <string name="transport_destination">Destination</string>
+    <string name="transport_message">Message</string>
 </resources>

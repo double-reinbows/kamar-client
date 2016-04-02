@@ -18,7 +18,7 @@ public interface GuestService {
     /**
      * The base server url.
      */
-    String BASE_URL = "http://192.168.43.42:5984";
+    String BASE_URL = "http://192.168.0.8:5984";
 
 
     @GET("guest/{id}")

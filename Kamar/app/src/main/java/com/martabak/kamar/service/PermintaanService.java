@@ -1,8 +1,9 @@
 package com.martabak.kamar.service;
 
 import com.martabak.kamar.domain.Permintaan;
+import com.martabak.kamar.domain.PostResponse;
+import com.martabak.kamar.domain.PutResponse;
 
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -16,12 +17,12 @@ import rx.Observable;
 public interface PermintaanService {
 
     @GET("permintaan/{id}")
-    Observable<Permintaan> getPermintaan(@Path("id") int id);
+    Observable<Permintaan> getPermintaan(@Path("id") String id);
 
     @POST("permintaan")
-    Observable<Response> createPermintaan(@Body Permintaan permintaan);
+    Observable<PostResponse> createPermintaan(@Body Permintaan permintaan);
 
     @PUT("permintaan/{id}")
-    Observable<Response> updatePermintaan(@Path("id") int id, @Body Permintaan permintaan);
+    Observable<PutResponse> updatePermintaan(@Path("id") String id, @Body Permintaan permintaan);
 
 }

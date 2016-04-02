@@ -113,6 +113,7 @@ public  class CheckGuestInFragment extends Fragment {
 
 
     private void sendGuestRequest() {
+
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
                 firstName,
                 lastName,

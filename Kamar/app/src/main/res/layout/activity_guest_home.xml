@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/guestlayout"
     tools:context=".activity.GuestHomeActivity">
 
-    <GridView
-    android:id="@+id/guestgridview"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:columnWidth="300dp"
-    android:numColumns="auto_fit"
-    android:verticalSpacing="10dp"
-    android:horizontalSpacing="10dp"
-    android:stretchMode="columnWidth"
-    android:gravity="center"
-    />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/guestlinearlayout">
 
-</LinearLayout>
+        <GridView
+        android:id="@+id/guestgridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="300dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        />
+
+    </LinearLayout>
+</FrameLayout>
