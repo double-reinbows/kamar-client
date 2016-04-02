@@ -1,9 +1,11 @@
 package com.martabak.kamar.service;
 
 
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.POST;
+
+import com.martabak.kamar.domain.ViewResponse;
+
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -11,8 +13,7 @@ import rx.Observable;
  */
 public interface StaffService {
 
-    @FormUrlEncoded
-    @POST("staff/_design/staff/_view/login")
-    Observable<Boolean> login(@Field("password") String password);
+    @GET("password/_design/password/_view/password")
+    Observable<ViewResponse<Boolean>> login(@Query("key") String password);
 
 }
