@@ -37,7 +37,6 @@ public class GuestHomeActivity extends AppCompatActivity {
                 Toast.makeText(GuestHomeActivity.this, "" + imgAdapter.getItem(position),
                         Toast.LENGTH_SHORT).show();
 
-
                 createAction(imgAdapter.getItem(position).toString());
             }
         });

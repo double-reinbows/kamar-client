@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.Feedback;
 import com.martabak.kamar.domain.Permintaan;
+import com.martabak.kamar.service.FeedbackServer;
 import com.martabak.kamar.service.PermintaanServer;
 
 import rx.Observer;
@@ -34,7 +36,7 @@ public class TellusDialogFragment extends DialogFragment {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.dialog_tellus, null);
         builder.setView(view)
-                .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -57,19 +59,11 @@ public class TellusDialogFragment extends DialogFragment {
     }
 
     public void sendTellUs() {
-        /*
-        Permintaan<Permintaan> permintaan = new Permintaan<Permintaan.Bellboy>();
 
-        Permintaan.Bellboy bellboy = permintaan.new Bellboy(bellboyMessage);
 
-        String owner = "BELLBOY";
-        String roomNumber = "1";
-
-        PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
-                        owner,
-                        roomNumber,
-                        bellboy)
-        ).subscribe(new Observer<Permintaan>() {
+        FeedbackServer.getInstance(getActivity().getBaseContext()).createFeedback(new Feedback(
+                        tellusMessage)
+        ).subscribe(new Observer<Boolean>() {
             @Override
             public void onCompleted() {
                 Log.d("Completed", "On completed");
@@ -83,11 +77,10 @@ public class TellusDialogFragment extends DialogFragment {
             }
 
             @Override
-            public void onNext(Permintaan permintaan) {
+            public void onNext(Boolean b) {
                 Log.d("Next", "On next");
             }
         });
-        */
 
     }
 }
