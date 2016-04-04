@@ -21,7 +21,6 @@
     <string name="title_activity_staff_home">StaffHomeActivity</string>
 
 
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_chat_fragment">Hello chat fragment</string>
@@ -34,4 +33,16 @@
     <string name="transport_departuretime">Departure Time</string>
     <string name="transport_destination">Destination</string>
     <string name="transport_message">Message</string>
+    <string name="houskeeping_message">Are you sure you want a housekeeper?</string>
+    <string name="housekeeper_edittext">Input housekeeper Details</string>
+    <string name="bellboy_message">Are you sure you want a bellboy?</string>
+    <string name="bellboy_edittext">Input bellboy Details</string>
+    <string name="maintenance_message">Are you sure you want maintenance?</string>
+    <string name="maintenance_edittext">Input maintenance Details</string>
+    <string name="tellus_message">Tell Us what you think!</string>
+    <string name="tellus_edittext">Leave your feedback here!</string>
+    <string name="positive">YES</string>
+    <string name="negative">NO</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
 </resources>

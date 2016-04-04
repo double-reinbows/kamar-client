@@ -121,7 +121,7 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         }
 
         public String getType() {
-            return "HOUSEKEEPING";
+            return "MAINTENANCE";
         }
     }
 
@@ -136,7 +136,7 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         }
 
         public String getType() {
-            return "HOUSEKEEPING";
+            return "BELLBOY";
         }
     }
 
@@ -151,7 +151,7 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         }
 
         public String getType() {
-            return "HOUSEKEEPING";
+            return "CHECKOUT";
         }
     }
 
@@ -178,7 +178,7 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         }
 
         public String getType() {
-            return "HOUSEKEEPING";
+            return "TRANSPORT";
         }
     }
 

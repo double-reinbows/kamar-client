@@ -1,5 +1,7 @@
 package com.martabak.kamar.activity;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -36,20 +38,45 @@ public class GuestHomeActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
 
 
-                switchActivity(imgAdapter.getItem(position).toString());
+                createAction(imgAdapter.getItem(position).toString());
             }
         });
 
 
     }
 
-    public void switchActivity(String option)
+    public void createAction(String option)
     {
 
         if (option == "TRANSPORT")
         {
             Intent intent = new Intent(this, TransportActivity.class);
             startActivity(intent);
+        }
+
+        if (option == "HOUSEKEEPING")
+        {
+            DialogFragment fragment = new HousekeepingDialogFragment();
+            fragment.show(getFragmentManager(), "housekeeping");
+        }
+
+        if (option == "BELLBOY")
+        {
+            DialogFragment fragment = new BellboyDialogFragment();
+            fragment.show(getFragmentManager(), "bellboy");
+        }
+
+        if (option == "MAINTENANCE")
+        {
+            DialogFragment fragment = new MaintenanceDialogFragment();
+            fragment.show(getFragmentManager(), "maintenance");
+        }
+
+
+        if (option == "TELL US")
+        {
+            DialogFragment fragment = new TellusDialogFragment();
+            fragment.show(getFragmentManager(), "tellus");
         }
 
     }

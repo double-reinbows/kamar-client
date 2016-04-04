@@ -73,7 +73,7 @@ public class TransportActivity extends AppCompatActivity {
 
     private void sendTransportRequest()
     {
-        /*
+
 
         Permintaan<Transport> permintaan = new Permintaan<Transport>();
 
@@ -82,7 +82,8 @@ public class TransportActivity extends AppCompatActivity {
 
         String owner = "TRANSPORT";
         String roomNumber = "1";
-        PermintaanServer.getInstance(getBaseContext())(new Permintaan(
+
+        PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                         owner,
                         roomNumber,
                         transport)
@@ -100,11 +101,11 @@ public class TransportActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(Guest guest) {
+            public void onNext(Permintaan permintaan) {
                 Log.d("Next", "On next");
             }
         });
-        */
+
     }
 
 }
