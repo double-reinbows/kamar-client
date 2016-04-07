@@ -2,8 +2,11 @@ package com.martabak.kamar.service;
 
 import android.content.Context;
 
-import com.martabak.kamar.domain.RoomChat;
+import com.martabak.kamar.domain.GuestChat;
 import com.martabak.kamar.domain.ViewResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,15 +47,19 @@ public class ChatServer extends Server {
     }
 
     /**
-     * Get the recent room chat for a particular room number.
-     * @param roomNumber The room number.
-     * @return The room chat.
+     * Get the full chat log for a particular guest.
+     * @param guestId The guest's ID.
+     * @return The guest chat.
      */
-    public Observable<RoomChat> getRoomChat(String roomNumber) {
-        return service.getRoomChat(roomNumber)
-                .flatMap(new Func1<ViewResponse<RoomChat>, Observable<RoomChat>>() {
-                    @Override public Observable<RoomChat> call(ViewResponse<RoomChat> response) {
-                        return Observable.just(null);
+    public Observable<GuestChat> getGuestChat(String guestId) {
+        return service.getGuestChat('"' + guestId + '"')
+                .flatMap(new Func1<ViewResponse<GuestChat.Message>, Observable<GuestChat>>() {
+                    @Override public Observable<GuestChat> call(ViewResponse<GuestChat.Message> response) {
+                        List<GuestChat.Message> messages = new ArrayList<>(response.total_rows);
+                        for (ViewResponse<GuestChat.Message>.ViewResult<GuestChat.Message> i : response.rows) {
+                            messages.add(i.value);
+                        }
+                        return Observable.just(new GuestChat(messages));
                     }
                 })
                 .subscribeOn(Schedulers.io())

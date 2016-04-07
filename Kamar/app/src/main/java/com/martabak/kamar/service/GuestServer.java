@@ -66,7 +66,7 @@ public class GuestServer extends Server {
      * @return The guest in the room, if there is one.
      */
     public Observable<Guest> getGuestInRoom(String roomNumber) {
-        return service.getGuestInRoom(roomNumber)
+        return service.getGuestInRoom('"' + roomNumber + '"')
                 .flatMap(new Func1<ViewResponse<Guest>, Observable<Guest>>() {
                     @Override public Observable<Guest> call(ViewResponse<Guest> response) {
                         for (ViewResponse<Guest>.ViewResult<Guest> i : response.rows) {

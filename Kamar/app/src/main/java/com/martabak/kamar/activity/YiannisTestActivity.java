@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.GuestChat;
 import com.martabak.kamar.domain.SurveyQuestion;
+import com.martabak.kamar.service.ChatServer;
 import com.martabak.kamar.service.FeedbackServer;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.StaffServer;
@@ -32,6 +34,56 @@ public class YiannisTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 doLogin();
+            }
+        });
+    }
+
+    private void doGetGuestChat() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get guest in room");
+        ChatServer.getInstance(getBaseContext()).getGuestChat("yianni").subscribe(new Observer<GuestChat>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(GuestChat result) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(result.toString());
+            }
+        });
+    }
+
+    private void doGetGuestInRoom() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get guest in room");
+        GuestServer.getInstance(getBaseContext()).getGuestInRoom("4").subscribe(new Observer<Guest>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Guest result) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(result.toString());
             }
         });
     }
