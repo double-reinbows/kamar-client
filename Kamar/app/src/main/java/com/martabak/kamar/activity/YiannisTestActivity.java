@@ -33,7 +33,7 @@ public class YiannisTestActivity extends AppCompatActivity {
         doSomethingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doLogin();
+                doGetGuestInRoom();
             }
         });
     }
@@ -58,7 +58,7 @@ public class YiannisTestActivity extends AppCompatActivity {
             public void onNext(GuestChat result) {
                 Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
                 TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                textView.setText(result.toString());
+                textView.setText(result.toString() + " contains " + result.messages.size() + " messages");
             }
         });
     }
@@ -83,7 +83,7 @@ public class YiannisTestActivity extends AppCompatActivity {
             public void onNext(Guest result) {
                 Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
                 TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                textView.setText(result.toString());
+                textView.setText(result.toString() + "checked in at " + result.checkIn + "checked out at " + result.checkOut);
             }
         });
     }

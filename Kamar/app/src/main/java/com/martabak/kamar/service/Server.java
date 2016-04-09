@@ -4,6 +4,9 @@ package com.martabak.kamar.service;
 import android.content.Context;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -30,7 +33,9 @@ public abstract class Server {
                         .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                         .build())
                 .baseUrl(getBaseUrl())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
+                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'X'")
+                        .create()))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }
@@ -57,7 +62,7 @@ public abstract class Server {
      * @return The server's base URL.
      */
     protected String getBaseUrl() {
-        return "http://192.168.0.9:5984";
+        return "http://192.168.178.24:5984";
     }
 
 }
