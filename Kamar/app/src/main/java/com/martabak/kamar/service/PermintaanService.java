@@ -3,12 +3,14 @@ package com.martabak.kamar.service;
 import com.martabak.kamar.domain.Permintaan;
 import com.martabak.kamar.domain.PostResponse;
 import com.martabak.kamar.domain.PutResponse;
+import com.martabak.kamar.domain.ViewResponse;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -18,6 +20,9 @@ public interface PermintaanService {
 
     @GET("permintaan/{id}")
     Observable<Permintaan> getPermintaan(@Path("id") String id);
+
+    @GET("permintaan/_design/permintaan/_view/guest")
+    Observable<ViewResponse<Permintaan>> getPermintaansForGuest(@Query("key") String guestId);
 
     @POST("permintaan")
     Observable<PostResponse> createPermintaan(@Body Permintaan permintaan);

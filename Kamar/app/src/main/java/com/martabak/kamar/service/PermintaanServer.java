@@ -5,6 +5,10 @@ import android.content.Context;
 import com.martabak.kamar.domain.Permintaan;
 import com.martabak.kamar.domain.PostResponse;
 import com.martabak.kamar.domain.PutResponse;
+import com.martabak.kamar.domain.ViewResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,7 +48,6 @@ public class PermintaanServer extends Server {
         return instance;
     }
 
-
     /**
      * Get a permintaan, given its id.
      * @param id The permintaan's id.
@@ -52,6 +55,27 @@ public class PermintaanServer extends Server {
      */
     public Observable<Permintaan> getPermintaan(String id) {
         return service.getPermintaan(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * Get all the permintaans for a guest.
+     * @param guestId The guest's ID.
+     * @return Observable on the guest's permintaans.
+     */
+    public Observable<Permintaan> getPermintaansForGuest(String guestId) {
+        return service.getPermintaansForGuest('"' + guestId + '"')
+                .flatMap(new Func1<ViewResponse<Permintaan>, Observable<Permintaan>>() {
+                    @Override
+                    public Observable<Permintaan> call(ViewResponse<Permintaan> response) {
+                        List<Permintaan> perms = new ArrayList<>(response.total_rows);
+                        for (ViewResponse<Permintaan>.ViewResult<Permintaan> i : response.rows) {
+                            perms.add(i.value);
+                        }
+                        return Observable.from(perms);
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

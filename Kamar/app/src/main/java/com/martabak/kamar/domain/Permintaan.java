@@ -35,6 +35,11 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
     @SerializedName("room_number") public final String roomNumber;
 
     /**
+     * The guest's ID.
+     */
+    @SerializedName("guest_id") public final String guestId;
+
+    /**
      * The request sub-type.
      */
     public final T content;
@@ -64,16 +69,18 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         this.owner = null;
         this.type = null;
         this.roomNumber = null;
+        this.guestId = null;
         this.content = null;
         this.state = null;
         this.created = null;
         this.updated = null;
     }
 
-    public Permintaan(String owner, String roomNumber, T content) {
+    public Permintaan(String owner, String roomNumber, String guestId, T content) {
         this.owner = owner;
         this.type = content.getType();
         this.roomNumber = roomNumber;
+        this.guestId = guestId;
         this.content = content;
         this.state = "NEW";
         this.created = null;// TODO Date.nowOrSomething?();
@@ -121,7 +128,7 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         }
 
         public String getType() {
-            return "HOUSEKEEPING";
+            return "MAINTENANCE";
         }
     }
 
@@ -136,7 +143,7 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         }
 
         public String getType() {
-            return "HOUSEKEEPING";
+            return "BELLBOY";
         }
     }
 
@@ -151,7 +158,7 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         }
 
         public String getType() {
-            return "HOUSEKEEPING";
+            return "CHECKOUT";
         }
     }
 
@@ -178,7 +185,7 @@ public class Permintaan<T extends Permintaan.Content> extends Model {
         }
 
         public String getType() {
-            return "HOUSEKEEPING";
+            return "TRANSPORT";
         }
     }
 
