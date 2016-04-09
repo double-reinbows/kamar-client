@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.GuestChat;
-import com.martabak.kamar.domain.Permintaan;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.SurveyQuestion;
 import com.martabak.kamar.service.ChatServer;
 import com.martabak.kamar.service.FeedbackServer;

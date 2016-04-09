@@ -3,8 +3,8 @@ package com.martabak.kamar.service;
 import android.content.Context;
 
 import com.martabak.kamar.domain.Guest;
-import com.martabak.kamar.domain.PostResponse;
-import com.martabak.kamar.domain.ViewResponse;
+import com.martabak.kamar.service.response.PostResponse;
+import com.martabak.kamar.service.response.ViewResponse;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

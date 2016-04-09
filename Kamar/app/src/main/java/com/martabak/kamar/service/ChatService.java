@@ -1,7 +1,7 @@
 package com.martabak.kamar.service;
 
 import com.martabak.kamar.domain.GuestChat;
-import com.martabak.kamar.domain.ViewResponse;
+import com.martabak.kamar.service.response.ViewResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

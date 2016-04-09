@@ -1,9 +1,9 @@
 package com.martabak.kamar.service;
 
-import com.martabak.kamar.domain.Permintaan;
-import com.martabak.kamar.domain.PostResponse;
-import com.martabak.kamar.domain.PutResponse;
-import com.martabak.kamar.domain.ViewResponse;
+import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.response.PostResponse;
+import com.martabak.kamar.service.response.PutResponse;
+import com.martabak.kamar.service.response.ViewResponse;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;

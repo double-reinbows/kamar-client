@@ -3,7 +3,7 @@ package com.martabak.kamar.service;
 import android.content.Context;
 
 import com.martabak.kamar.domain.GuestChat;
-import com.martabak.kamar.domain.ViewResponse;
+import com.martabak.kamar.service.response.ViewResponse;
 
 import java.util.ArrayList;
 import java.util.List;

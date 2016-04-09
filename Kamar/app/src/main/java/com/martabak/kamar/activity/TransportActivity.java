@@ -5,21 +5,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.domain.Permintaan;
-import com.martabak.kamar.domain.Permintaan.Transport;
-import com.martabak.kamar.service.PermintaanServer;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import rx.Observer;
 
 public class TransportActivity extends AppCompatActivity {
 

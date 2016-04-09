@@ -2,10 +2,10 @@ package com.martabak.kamar.service;
 
 import android.content.Context;
 
-import com.martabak.kamar.domain.Permintaan;
-import com.martabak.kamar.domain.PostResponse;
-import com.martabak.kamar.domain.PutResponse;
-import com.martabak.kamar.domain.ViewResponse;
+import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.response.PostResponse;
+import com.martabak.kamar.service.response.PutResponse;
+import com.martabak.kamar.service.response.ViewResponse;
 
 import java.util.ArrayList;
 import java.util.List;
