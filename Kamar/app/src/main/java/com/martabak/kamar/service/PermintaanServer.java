@@ -1,6 +1,7 @@
 package com.martabak.kamar.service;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.response.PostResponse;
@@ -78,6 +79,32 @@ public class PermintaanServer extends Server {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * Get all the permintaans that match the states given.
+     * I.E. {@code getPermintaansOfState("NEW", "INPROGRESS")}
+     * @param states The states to match on.
+     * @return Observable on the permintaans.
+     */
+    public Observable<Permintaan> getPermintaansOfState(String... states) {
+        List<Observable<Permintaan>> results = new ArrayList<>(states.length);
+        for (String state : states) {
+            results.add(service.getPermintaansOfState('"' + state + '"')
+                    .flatMap(new Func1<ViewResponse<Permintaan>, Observable<Permintaan>>() {
+                        @Override
+                        public Observable<Permintaan> call(ViewResponse<Permintaan> response) {
+                            List<Permintaan> perms = new ArrayList<>(response.total_rows);
+                            for (ViewResponse<Permintaan>.ViewResult<Permintaan> i : response.rows) {
+                                perms.add(i.value);
+                            }
+                            return Observable.from(perms);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()));
+        }
+        return Observable.merge(results);
     }
 
     /**

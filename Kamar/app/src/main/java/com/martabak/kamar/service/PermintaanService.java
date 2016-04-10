@@ -24,6 +24,9 @@ public interface PermintaanService {
     @GET("permintaan/_design/permintaan/_view/guest")
     Observable<ViewResponse<Permintaan>> getPermintaansForGuest(@Query("key") String guestId);
 
+    @GET("permintaan/_design/permintaan/_view/state")
+    Observable<ViewResponse<Permintaan>> getPermintaansOfState(@Query("keys") String states);
+
     @POST("permintaan")
     Observable<PostResponse> createPermintaan(@Body Permintaan permintaan);
 

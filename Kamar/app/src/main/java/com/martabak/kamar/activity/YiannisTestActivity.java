@@ -35,7 +35,32 @@ public class YiannisTestActivity extends AppCompatActivity {
         doSomethingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doGetPermintaansForGuest();
+                doGetPermintaansOfState();
+            }
+        });
+    }
+
+    private void doGetPermintaansOfState() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get permintaans of state");
+        PermintaanServer.getInstance(getBaseContext()).getPermintaansOfState("NEW", "INPROGRESS").subscribe(new Observer<Permintaan>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Permintaan result) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(result.toString() + " for " + result.guestId + " of type " + result.content.getType());
             }
         });
     }
