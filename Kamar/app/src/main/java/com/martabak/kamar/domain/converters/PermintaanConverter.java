@@ -19,6 +19,8 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.Transport;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +29,12 @@ import java.util.List;
  * Serializes and deserializes {@link Permintaan}s.
  */
 public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDeserializer<Permintaan> {
+
+    private final SimpleDateFormat dateFormat;
+
+    public PermintaanConverter(String datePattern) {
+        this.dateFormat = new SimpleDateFormat(datePattern);
+    }
 
     @Override
     public JsonElement serialize(Permintaan src, Type srcType, JsonSerializationContext context) {
@@ -38,7 +46,9 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         j.addProperty("guest_id", src.guestId);
         j.addProperty("state", src.state);
         j.addProperty("created", src.created.toString());
-        j.addProperty("updated", src.updated.toString());
+        if (src.updated != null) {
+            j.addProperty("updated", src.updated.toString());
+        }
 
         JsonObject content = new JsonObject();
         content.addProperty("message", src.content.message);
@@ -83,10 +93,18 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         String roomNumber = j.getAsJsonPrimitive("room_number").getAsString();
         String guestId = j.getAsJsonPrimitive("guest_id").getAsString();
         String state = j.getAsJsonPrimitive("state").getAsString();
-        // TODO construct these using date formatter
-        Date created = new Date(j.getAsJsonPrimitive("created").getAsString());
-        Date updated = new Date(j.getAsJsonPrimitive("updated").getAsString());
-
+        Date created;
+        try {
+            created = dateFormat.parse(j.getAsJsonPrimitive("created").getAsString());
+        } catch (ParseException e) {
+            throw new JsonParseException(e);
+        }
+        Date updated = null; // Empty updated time is acceptable.
+        try {
+            updated = dateFormat.parse(j.getAsJsonPrimitive("updated").getAsString());
+        } catch (ParseException e) {
+        } catch (ClassCastException e) {
+        }
         JsonObject c = j.getAsJsonObject("content");
         String message = c.getAsJsonPrimitive("message").getAsString();
         Content content;
@@ -116,8 +134,12 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 break;
             case "TRANSPORT":
                 Integer passengers = c.getAsJsonPrimitive("passengers").getAsInt();
-                // TODO construct this using date formatter
-                Date departureTime = new Date(c.getAsJsonPrimitive("departure_time").getAsString());
+                Date departureTime;
+                try {
+                    departureTime = dateFormat.parse(c.getAsJsonPrimitive("departure_time").getAsString());
+                } catch (ParseException e) {
+                    throw new JsonParseException(e);
+                }
                 String destination = c.getAsJsonPrimitive("destination").getAsString();
                 content = new Transport(message, passengers, departureTime, destination);
                 break;

@@ -6,6 +6,8 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.martabak.kamar.domain.converters.PermintaanConverter;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -24,6 +26,11 @@ public abstract class Server {
     private Retrofit retrofit;
 
     /**
+     * The pattern used for representing dates in a String.
+     */
+    private static final String datePattern = "yyyy-MM-dd'T'HH:mm:ss'X'";
+
+    /**
      * Construct the Retrofit server.
      */
     protected Server(Context c) {
@@ -34,7 +41,8 @@ public abstract class Server {
                         .build())
                 .baseUrl(getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
-                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'X'")
+                        .registerTypeAdapter(Permintaan.class, new PermintaanConverter(datePattern))
+                        .setDateFormat(datePattern)
                         .create()))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
