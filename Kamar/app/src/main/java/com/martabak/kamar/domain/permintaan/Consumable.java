@@ -29,15 +29,4 @@ public class Consumable extends Content {
         return "CONSUMABLE";
     }
 
-    public class OrderItem {
-
-        public final Integer quantity;
-
-        public final String name;
-
-        public OrderItem(int quantity, String name) {
-            this.quantity = quantity;
-            this.name = name;
-        }
-    }
 }

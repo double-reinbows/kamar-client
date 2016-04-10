@@ -22,7 +22,7 @@ public class Transport extends Content {
         this.destination = null;
     }
 
-    public Transport(String message, int passengers, Date departureTime, String destination) {
+    public Transport(String message, Integer passengers, Date departureTime, String destination) {
         super(message);
         this.passengers = passengers;
         this.departureTime = departureTime;
