@@ -1,6 +1,5 @@
 package com.martabak.kamar.activity;
 
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -21,8 +20,6 @@ import android.view.MenuItem;
 import com.martabak.kamar.R;
 
 public class StaffHomeActivity extends AppCompatActivity {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +93,6 @@ public class StaffHomeActivity extends AppCompatActivity {
         };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
 
     }
 

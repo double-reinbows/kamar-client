@@ -114,6 +114,9 @@ public  class CheckGuestInFragment extends Fragment {
 
     private void sendGuestRequest() {
 
+        String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
+                .getString("roomNumber", "none");
+
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
                 firstName,
                 lastName,
@@ -121,7 +124,7 @@ public  class CheckGuestInFragment extends Fragment {
                 email,
                 null,
                 null,
-                "1")
+                roomNumber)
         ).subscribe(new Observer<Guest>() {
             @Override
             public void onCompleted() {

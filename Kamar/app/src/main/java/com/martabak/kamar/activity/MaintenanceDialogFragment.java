@@ -20,7 +20,7 @@ import com.martabak.kamar.service.PermintaanServer;
 import rx.Observer;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Maintenance Dialog Fragment
  */
 public class MaintenanceDialogFragment extends DialogFragment {
 
@@ -55,14 +55,18 @@ public class MaintenanceDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    /* Send Maintenance Request */
     public void sendMaintenanceRequest() {
 
-        Permintaan<Permintaan.Maintenance> permintaan = new Permintaan<Permintaan.Maintenance>();
+        Permintaan permintaan = new Permintaan();
 
         Permintaan.Maintenance maintenance = permintaan.new Maintenance(maintenanceMessage);
 
+        Log.v(maintenance.getType(), maintenance.getClass().toString());
+
         String owner = "MAINTENANCE";
-        String roomNumber = "1";
+        String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
+                .getString("roomNumber", "none");
 
         PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
                         owner,

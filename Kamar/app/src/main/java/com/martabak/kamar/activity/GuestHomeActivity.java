@@ -25,59 +25,67 @@ public class GuestHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guest_home);
         final ImageAdapter imgAdapter = new ImageAdapter(this);
         final GridView gridView = (GridView) findViewById(R.id.guestgridview);
+        View passwordIconView = findViewById(R.id.passwordChangeIcon);
         gridView.setAdapter(imgAdapter);
 
+        //check if a staff is logged in
+        String userType = getSharedPreferences("userSettings", MODE_PRIVATE).
+                getString("userType", "none");
 
+        /*if (userType == "GUEST") {
+            passwordIconView.setVisibility(View.GONE);
+
+        }*/
 
         //display feature text on each item click
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        
-                Toast.makeText(GuestHomeActivity.this, "" + imgAdapter.getItem(position),
-                        Toast.LENGTH_SHORT).show();
-
+                //perform action for each individual feature
                 createAction(imgAdapter.getItem(position).toString());
+            }
+        });
+
+        //open the change room number as a fragment
+        passwordIconView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
+                changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
+
             }
         });
 
 
     }
 
-    public void createAction(String option)
-    {
-
-        if (option == "TRANSPORT")
+    /*Actions for each individual feature on the grid */
+    public void createAction(String option) {
+        switch(option)
         {
-            Intent intent = new Intent(this, TransportActivity.class);
-            startActivity(intent);
+            case "TRANSPORT":
+                Intent intent = new Intent(this, TransportActivity.class);
+                startActivity(intent);
+                break;
+            case "HOUSEKEEPING":
+                DialogFragment housekeepingFragment = new HousekeepingDialogFragment();
+                housekeepingFragment.show(getFragmentManager(), "housekeeping");
+                break;
+            case "BELLBOY":
+                DialogFragment bellboyFragment = new BellboyDialogFragment();
+                bellboyFragment.show(getFragmentManager(), "bellboy");
+                break;
+            case "MAINTENANCE":
+                DialogFragment maintenanceFragment = new MaintenanceDialogFragment();
+                maintenanceFragment.show(getFragmentManager(), "maintenance");
+                break;
+            case "TELL US":
+                DialogFragment fragment = new TellusDialogFragment();
+                fragment.show(getFragmentManager(), "tellus");
+                break;
+            default:
+                break;
         }
-
-        if (option == "HOUSEKEEPING")
-        {
-            DialogFragment fragment = new HousekeepingDialogFragment();
-            fragment.show(getFragmentManager(), "housekeeping");
-        }
-
-        if (option == "BELLBOY")
-        {
-            DialogFragment fragment = new BellboyDialogFragment();
-            fragment.show(getFragmentManager(), "bellboy");
-        }
-
-        if (option == "MAINTENANCE")
-        {
-            DialogFragment fragment = new MaintenanceDialogFragment();
-            fragment.show(getFragmentManager(), "maintenance");
-        }
-
-
-        if (option == "TELL US")
-        {
-            DialogFragment fragment = new TellusDialogFragment();
-            fragment.show(getFragmentManager(), "tellus");
-        }
-
     }
 
 

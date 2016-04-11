@@ -22,12 +22,7 @@ import com.martabak.kamar.service.PermintaanServer;
 import rx.Observer;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HousekeepingDialogFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HousekeepingDialogFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Housekeeping Dialog Fragment
  */
 public class HousekeepingDialogFragment extends DialogFragment {
 
@@ -69,7 +64,8 @@ public class HousekeepingDialogFragment extends DialogFragment {
         Housekeeping housekeeping = permintaan.new Housekeeping(housekeepingMessage);
 
         String owner = "HOUSEKEEPING";
-        String roomNumber = "1";
+        String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
+                .getString("roomNumber", "none");
 
         PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
                         owner,

@@ -81,7 +81,8 @@ public class TransportActivity extends AppCompatActivity {
                 transportDepartureDate, transportMessage);
 
         String owner = "TRANSPORT";
-        String roomNumber = "1";
+        String roomNumber = getSharedPreferences("roomSettings", MODE_PRIVATE)
+                .getString("roomNumber", "none");
 
         PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                         owner,

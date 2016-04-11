@@ -41,6 +41,7 @@
     <string name="maintenance_edittext">Input maintenance Details</string>
     <string name="tellus_message">Tell Us what you think!</string>
     <string name="tellus_edittext">Leave your feedback here!</string>
+    <string name="room_number">Change Room Number</string>
     <string name="positive">YES</string>
     <string name="negative">NO</string>
     <string name="ok">OK</string>

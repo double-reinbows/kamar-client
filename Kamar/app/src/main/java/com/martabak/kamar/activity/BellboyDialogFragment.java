@@ -19,7 +19,7 @@ import com.martabak.kamar.service.PermintaanServer;
 import rx.Observer;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Bellboy Dialog Fragment
  */
 public class BellboyDialogFragment extends DialogFragment {
 
@@ -62,7 +62,8 @@ public class BellboyDialogFragment extends DialogFragment {
         Permintaan.Bellboy bellboy = permintaan.new Bellboy(bellboyMessage);
 
         String owner = "BELLBOY";
-        String roomNumber = "1";
+        String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
+                .getString("roomNumber", "none");;
 
         PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
                         owner,

@@ -58,8 +58,10 @@ public class TellusDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    /*
+    Send the tell us message to the server.
+    */
     public void sendTellUs() {
-
 
         FeedbackServer.getInstance(getActivity().getBaseContext()).createFeedback(new Feedback(
                         tellusMessage)
