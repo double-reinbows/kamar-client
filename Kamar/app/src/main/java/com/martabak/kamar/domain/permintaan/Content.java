@@ -1,5 +1,8 @@
 package com.martabak.kamar.domain.permintaan;
 
+/**
+ * Abstract content of a {@link Permintaan}.
+ */
 public abstract class Content {
 
     public final String message;

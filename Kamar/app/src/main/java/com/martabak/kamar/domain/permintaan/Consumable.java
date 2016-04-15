@@ -1,10 +1,16 @@
 package com.martabak.kamar.domain.permintaan;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Consumable content type of a {@link Permintaan}.
+ */
 public class Consumable extends Content {
 
     public final List<OrderItem> items;

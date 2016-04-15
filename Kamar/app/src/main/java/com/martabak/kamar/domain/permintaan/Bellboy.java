@@ -1,5 +1,8 @@
 package com.martabak.kamar.domain.permintaan;
 
+/**
+ * Bellboy content type of a {@link Permintaan}.
+ */
 public class Bellboy extends Content {
 
     public Bellboy() {
@@ -11,7 +14,7 @@ public class Bellboy extends Content {
     }
 
     public String getType() {
-        return "HOUSEKEEPING";
+
+        return "BELLBOY";
     }
 }
-

@@ -3,10 +3,10 @@ package com.martabak.kamar.service;
 import android.content.Context;
 
 import com.martabak.kamar.domain.Feedback;
-import com.martabak.kamar.domain.PostResponse;
+import com.martabak.kamar.service.response.PostResponse;
 import com.martabak.kamar.domain.SurveyAnswer;
 import com.martabak.kamar.domain.SurveyQuestion;
-import com.martabak.kamar.domain.ViewResponse;
+import com.martabak.kamar.service.response.ViewResponse;
 
 import java.util.ArrayList;
 import java.util.List;

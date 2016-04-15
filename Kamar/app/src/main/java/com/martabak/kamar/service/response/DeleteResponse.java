@@ -1,4 +1,4 @@
-package com.martabak.kamar.domain;
+package com.martabak.kamar.service.response;
 
 /**
  * A response from a DELETE request.

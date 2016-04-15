@@ -6,17 +6,17 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Contains an entire room chat log.
+ * Contains an entire guest chat log.
  */
-public class RoomChat {
+public class GuestChat {
 
     public final List<Message> messages;
 
-    public RoomChat() {
+    public GuestChat() {
         this.messages = null;
     }
 
-    public RoomChat(List<Message> messages) {
+    public GuestChat(List<Message> messages) {
         this.messages = messages;
     }
 

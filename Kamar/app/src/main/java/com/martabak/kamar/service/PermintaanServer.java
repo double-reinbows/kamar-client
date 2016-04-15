@@ -1,10 +1,15 @@
 package com.martabak.kamar.service;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.martabak.kamar.domain.Permintaan;
-import com.martabak.kamar.domain.PostResponse;
-import com.martabak.kamar.domain.PutResponse;
+import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.response.PostResponse;
+import com.martabak.kamar.service.response.PutResponse;
+import com.martabak.kamar.service.response.ViewResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,7 +49,6 @@ public class PermintaanServer extends Server {
         return instance;
     }
 
-
     /**
      * Get a permintaan, given its id.
      * @param id The permintaan's id.
@@ -54,6 +58,53 @@ public class PermintaanServer extends Server {
         return service.getPermintaan(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * Get all the permintaans for a guest.
+     * @param guestId The guest's ID.
+     * @return Observable on the guest's permintaans.
+     */
+    public Observable<Permintaan> getPermintaansForGuest(String guestId) {
+        return service.getPermintaansForGuest('"' + guestId + '"')
+                .flatMap(new Func1<ViewResponse<Permintaan>, Observable<Permintaan>>() {
+                    @Override
+                    public Observable<Permintaan> call(ViewResponse<Permintaan> response) {
+                        List<Permintaan> perms = new ArrayList<>(response.total_rows);
+                        for (ViewResponse<Permintaan>.ViewResult<Permintaan> i : response.rows) {
+                            perms.add(i.value);
+                        }
+                        return Observable.from(perms);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * Get all the permintaans that match the states given.
+     * I.E. {@code getPermintaansOfState("NEW", "INPROGRESS")}
+     * @param states The states to match on.
+     * @return Observable on the permintaans.
+     */
+    public Observable<Permintaan> getPermintaansOfState(String... states) {
+        List<Observable<Permintaan>> results = new ArrayList<>(states.length);
+        for (String state : states) {
+            results.add(service.getPermintaansOfState('"' + state + '"')
+                    .flatMap(new Func1<ViewResponse<Permintaan>, Observable<Permintaan>>() {
+                        @Override
+                        public Observable<Permintaan> call(ViewResponse<Permintaan> response) {
+                            List<Permintaan> perms = new ArrayList<>(response.total_rows);
+                            for (ViewResponse<Permintaan>.ViewResult<Permintaan> i : response.rows) {
+                                perms.add(i.value);
+                            }
+                            return Observable.from(perms);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()));
+        }
+        return Observable.merge(results);
     }
 
     /**

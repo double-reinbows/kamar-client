@@ -1,7 +1,7 @@
-package com.martabak.kamar.domain;
+package com.martabak.kamar.domain.permintaan;
 
 import com.google.gson.annotations.SerializedName;
-import com.martabak.kamar.domain.permintaan.Content;
+import com.martabak.kamar.domain.Model;
 
 import java.util.Date;
 import java.util.List;
@@ -21,12 +21,12 @@ public class Permintaan<T extends Content> extends Model {
 
     /**
      * The type of the request. One of:
-     * - HOUSEKEEPING
-     * - MAINTENANCE
      * - BELLBOY
      * - CHECKOUT
-     * - TRANSPORT
      * - CONSUMABLE
+     * - HOUSEKEEPING
+     * - MAINTENANCE
+     * - TRANSPORT
      */
     public final String type;
 
@@ -34,6 +34,11 @@ public class Permintaan<T extends Content> extends Model {
      * The guest's room number.
      */
     @SerializedName("room_number") public final String roomNumber;
+
+    /**
+     * The guest's ID.
+     */
+    @SerializedName("guest_id") public final String guestId;
 
     /**
      * The request sub-type.
@@ -65,22 +70,23 @@ public class Permintaan<T extends Content> extends Model {
         this.owner = null;
         this.type = null;
         this.roomNumber = null;
+        this.guestId = null;
         this.content = null;
         this.state = null;
         this.created = null;
         this.updated = null;
     }
 
-    public Permintaan(String owner, String roomNumber, T content) {
+    public Permintaan(String owner, String type, String roomNumber, String guestId, String state,
+                      Date created, Date updated, T content) {
         this.owner = owner;
-        this.type = content.getType();
+        this.type = type;
         this.roomNumber = roomNumber;
+        this.guestId = guestId;
+        this.state = state;
+        this.created = created;
+        this.updated = updated;
         this.content = content;
-        this.state = "NEW";
-        this.created = null;// TODO Date.nowOrSomething?();
-        this.updated = null;
     }
-
-
 
 }

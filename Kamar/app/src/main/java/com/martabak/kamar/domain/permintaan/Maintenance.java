@@ -1,5 +1,8 @@
 package com.martabak.kamar.domain.permintaan;
 
+/**
+ * Maintenance content type of a {@link Permintaan}.
+ */
 public class Maintenance extends Content {
 
     public Maintenance() {
@@ -11,6 +14,7 @@ public class Maintenance extends Content {
     }
 
     public String getType() {
-        return "HOUSEKEEPING";
+
+        return "MAINTENANCE";
     }
 }
