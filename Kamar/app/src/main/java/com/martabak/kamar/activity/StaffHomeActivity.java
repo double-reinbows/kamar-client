@@ -21,10 +21,11 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.domain.Permintaan;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.Transport;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -116,7 +117,8 @@ public class StaffHomeActivity extends AppCompatActivity {
         //Beginning of permintaan section
 
         //Create dummy permintaan, remove this when you can receive an permintaan from server
-        Permintaan permintaan = new Permintaan("Front Desk", "11", new Transport("need taxi", 4, null, "Tebet"));
+        Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "11", "PADOOL", "NEW",
+                new Date(), null, new Transport("need taxi", 4, null, "Tebet"));
 
         ExpandableListAdapter listAdapter;
         ExpandableListView expListView;

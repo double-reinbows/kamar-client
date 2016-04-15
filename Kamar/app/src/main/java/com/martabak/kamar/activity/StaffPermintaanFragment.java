@@ -7,15 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.domain.Permintaan;
-import com.martabak.kamar.domain.permintaan.Content;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.Transport;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import android.widget.ExpandableListView;
-import java.util.Date;
 
 /**
  * This fragment creates the requests/permintaan section of the staff homescreen.
@@ -50,8 +49,8 @@ public  class StaffPermintaanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_staff_permintaan, container, false);
 
         //add dummy permintaan to the list
-        Permintaan permintaan = new Permintaan("Front Desk", "705", new Transport(
-                "cabs are here", 4, null, "tebet"));
+        Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "705", "PADOOL", "NEW",
+                new Date(), null, new Transport("cabs are here", 4, null, "tebet"));
 
         //create the expandable list. Would like for it to not have to receive a
         //permintaan in future
