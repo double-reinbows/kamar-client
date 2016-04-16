@@ -45,6 +45,9 @@ public class HousekeepingDialogFragment extends DialogFragment {
 
                         sendHousekeepingRequest();
 
+                        GuestHomeActivity guestHomeActivity = (GuestHomeActivity) getActivity();
+                        guestHomeActivity.makeToast("Housekeeping is on its way!");
+
                     }
                 })
                 .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){

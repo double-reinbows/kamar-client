@@ -19,6 +19,8 @@ import com.martabak.kamar.R;
 
 public class GuestHomeActivity extends AppCompatActivity {
 
+    String option;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +34,6 @@ public class GuestHomeActivity extends AppCompatActivity {
         String userType = getSharedPreferences("userSettings", MODE_PRIVATE).
                 getString("userType", "none");
 
-        /*if (userType == "GUEST") {
-            passwordIconView.setVisibility(View.GONE);
-
-        }*/
 
         //display feature text on each item click
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,9 +81,18 @@ public class GuestHomeActivity extends AppCompatActivity {
                 DialogFragment fragment = new TellusDialogFragment();
                 fragment.show(getFragmentManager(), "tellus");
                 break;
+            case "CHECKOUT":
+                DialogFragment checkoutBellboyFragment = new BellboyDialogFragment();
+                checkoutBellboyFragment.show(getFragmentManager(), "bellboy");
+                break;
             default:
                 break;
         }
+    }
+
+    public void makeToast(String selectedValue)
+    {
+        Toast.makeText(getBaseContext(), ""+ selectedValue, Toast.LENGTH_LONG).show();
     }
 
 

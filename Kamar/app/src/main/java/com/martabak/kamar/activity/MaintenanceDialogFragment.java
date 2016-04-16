@@ -43,6 +43,9 @@ public class MaintenanceDialogFragment extends DialogFragment {
 
                         sendMaintenanceRequest();
 
+                        GuestHomeActivity guestHomeActivity = (GuestHomeActivity) getActivity();
+                        guestHomeActivity.makeToast("Maintenance is on its way!");
+
                     }
                 })
                 .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){
