@@ -2,6 +2,7 @@ package com.martabak.kamar.activity;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +10,23 @@ import android.view.ViewGroup;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.Transport;
+import com.martabak.kamar.service.PermintaanServer;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
+
+import rx.Observer;
 
 /**
  * This fragment creates the requests/permintaan section of the staff homescreen.
  */
 public  class StaffPermintaanFragment extends Fragment {
+
+    Permintaan permintaan = new Permintaan();
 
     public StaffPermintaanFragment() {
         // Required empty public constructor
@@ -49,11 +56,12 @@ public  class StaffPermintaanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_staff_permintaan, container, false);
 
         //add dummy permintaan to the list
-        Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "705", "PADOOL", "NEW",
-                new Date(), null, new Transport("cabs are here", 4, null, "tebet"));
+        //Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "705", "PADOOL", "NEW",
+        //        new Date(), null, new Transport("cabs are here", 4, null, "tebet"));
 
         //create the expandable list. Would like for it to not have to receive a
         //permintaan in future
+        doGetPermintaansOfState();
         createExpandableList(view, permintaan);
 
         return view;
@@ -110,4 +118,30 @@ public  class StaffPermintaanFragment extends Fragment {
         expListView.setAdapter(listAdapter);
     }
 
+    private void doGetPermintaansOfState() {
+        Log.d(StaffPermintaanFragment.class.getCanonicalName(), "Done get permintaans of state");
+        PermintaanServer.getInstance(getActivity()).getPermintaansOfState("NEW", "INPROGRESS").subscribe(new Observer<Permintaan>() {
+            @Override
+            public void onCompleted() {
+                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On completed");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On error");
+                //TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                //textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Permintaan result) {
+                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On next");
+                //TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                //textView.setText(result.toString() + " for " + result.guestId + " of type " + result.content.getType());
+                Log.v("Pulled ID from server:", result.guestId);
+                permintaan = result;
+            }
+        });
+    }
 }
