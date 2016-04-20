@@ -17,13 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.domain.permintaan.Housekeeping;
-import com.martabak.kamar.domain.permintaan.Permintaan;
-import com.martabak.kamar.domain.permintaan.Transport;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -113,19 +108,6 @@ public class StaffHomeActivity extends AppCompatActivity {
         };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-        //Beginning of permintaan section
-
-        //Create dummy permintaan, remove this when you can receive an permintaan from server
-        //Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "11", "PADOOL", "NEW",
-        //        new Date(), null, new Transport("need taxi", 4, null, "Tebet"));
-
-        ExpandableListAdapter listAdapter;
-        ExpandableListView expListView;
-        List<String> listDataHeader;
-        HashMap<String, List<String>> listDataChild;
-
-        //expListView = (ExpandableListView) findViewById(R.id.list_view);
 
     }
 

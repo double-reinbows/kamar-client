@@ -26,7 +26,7 @@ import rx.Observer;
  */
 public  class StaffPermintaanFragment extends Fragment {
 
-    Permintaan permintaan = new Permintaan();
+    public static Permintaan permintaan;// = new Permintaan();
 
     public StaffPermintaanFragment() {
         // Required empty public constructor
@@ -56,13 +56,16 @@ public  class StaffPermintaanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_staff_permintaan, container, false);
 
         //add dummy permintaan to the list
-        Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "705", "PADOOL", "NEW",
-                new Date(), null, new Transport("cabs are here", 4, null, "tebet"));
+        //Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "705", "PADOOL", "NEW",
+        //        new Date(), null, new Transport("cabs are here", 4, null, "tebet"));
 
         //create the expandable list. Would like for it to not have to receive a
         //permintaan in future
-        //doGetPermintaansOfState();
+        doGetPermintaansOfState();
+
+
         createExpandableList(view, permintaan);
+
 
         return view;
     }
@@ -93,6 +96,11 @@ public  class StaffPermintaanFragment extends Fragment {
         List<String> processing_permintaan = new ArrayList<String>();
         List<String> in_delivery_permintaan = new ArrayList<String>();
         List<String> complete_permintaan = new ArrayList<String>();
+
+        Log.v("Pulled permintaan:", "state: "+permintaan.state+
+                                    ", owner: "+permintaan.owner+
+                                    ", type: "+permintaan.type+
+                                    ", roomNumber: "+permintaan.roomNumber);
 
         // Set up child data
         if (permintaan.state == "NEW") {
@@ -138,8 +146,10 @@ public  class StaffPermintaanFragment extends Fragment {
                 Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On next");
                 //TextView textView = (TextView) findViewById(R.id.doSomethingText);
                 //textView.setText(result.toString() + " for " + result.guestId + " of type " + result.content.getType());
-                Log.v("Pulled ID from server:", result.guestId);
-                permintaan = result;
+                //Log.d("Pulled ID from server:", result.guestId); //WHy is this not working Yianni?
+                permintaan = new Permintaan(result.owner, result.type, result.roomNumber,
+                                            result.guestId, result.state, result.created,
+                                    result.updated, result.content);
             }
         });
     }
