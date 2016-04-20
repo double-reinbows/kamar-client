@@ -56,12 +56,12 @@ public  class StaffPermintaanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_staff_permintaan, container, false);
 
         //add dummy permintaan to the list
-        //Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "705", "PADOOL", "NEW",
-        //        new Date(), null, new Transport("cabs are here", 4, null, "tebet"));
+        Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "705", "PADOOL", "NEW",
+                new Date(), null, new Transport("cabs are here", 4, null, "tebet"));
 
         //create the expandable list. Would like for it to not have to receive a
         //permintaan in future
-        doGetPermintaansOfState();
+        //doGetPermintaansOfState();
         createExpandableList(view, permintaan);
 
         return view;
@@ -93,7 +93,6 @@ public  class StaffPermintaanFragment extends Fragment {
         List<String> processing_permintaan = new ArrayList<String>();
         List<String> in_delivery_permintaan = new ArrayList<String>();
         List<String> complete_permintaan = new ArrayList<String>();
-
 
         // Set up child data
         if (permintaan.state == "NEW") {
