@@ -5,10 +5,10 @@ package com.martabak.kamar.domain;
  */
 public abstract class Model {
 
-    public final String id;
+    public final String _id;
 
     public Model() {
-        this.id = null;
+        this._id = null;
     }
 
 }
