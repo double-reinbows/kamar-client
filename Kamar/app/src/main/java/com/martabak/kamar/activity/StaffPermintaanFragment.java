@@ -89,13 +89,13 @@ public  class StaffPermintaanFragment extends Fragment {
 
         // Set up child data
         if (permintaan.state == "NEW") {
-            new_permintaan.add(permintaan.type+" - ROOM NUMBER "+permintaan.roomNumber+" ("+permintaan.id+")");
+            new_permintaan.add(permintaan.type+" - ROOM NUMBER "+permintaan.roomNumber+" ("+permintaan._id+")");
         } else if (permintaan.state == "PROCESSING") {
-            processing_permintaan.add(permintaan.type+" - ROOM NUMBER "+permintaan.roomNumber+" ("+permintaan.id+")");
+            processing_permintaan.add(permintaan.type+" - ROOM NUMBER "+permintaan.roomNumber+" ("+permintaan._id+")");
         } else if (permintaan.state == "IN DELIVERY") {
-            in_delivery_permintaan.add(permintaan.type+" - ROOM NUMBER "+permintaan.roomNumber+" ("+permintaan.id+")");
+            in_delivery_permintaan.add(permintaan.type+" - ROOM NUMBER "+permintaan.roomNumber+" ("+permintaan._id+")");
         } else if (permintaan.state == "COMPLETE") {
-            complete_permintaan.add(permintaan.type+" - ROOM NUMBER "+permintaan.roomNumber+" ("+permintaan.id+")");
+            complete_permintaan.add(permintaan.type+" - ROOM NUMBER "+permintaan.roomNumber+" ("+permintaan._id+")");
         }
 
         listDataChild.put(listDataHeader.get(0), new_permintaan); // Header, Child data

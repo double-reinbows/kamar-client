@@ -3,8 +3,13 @@ package com.martabak.kamar.service;
 import android.content.Context;
 
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.Room;
+import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.PostResponse;
 import com.martabak.kamar.service.response.ViewResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -73,6 +78,24 @@ public class GuestServer extends Server {
                             return Observable.just(i.value);
                         }
                         return Observable.just(null);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * @return All room numbers of the hotel.
+     */
+    public Observable<List<Room>> getRoomNumbers() {
+        return service.getRooms()
+                .flatMap(new Func1<AllResponse<Room>, Observable<List<Room>>>() {
+                    @Override public Observable<List<Room>> call(AllResponse<Room> response) {
+                        List<Room> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<Room>.AllResult<Room> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+                        return Observable.just(toReturn);
                     }
                 })
                 .subscribeOn(Schedulers.io())

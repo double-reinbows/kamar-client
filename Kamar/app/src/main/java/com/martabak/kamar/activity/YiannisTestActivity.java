@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.GuestChat;
+import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.SurveyQuestion;
 import com.martabak.kamar.service.ChatServer;
@@ -18,6 +20,7 @@ import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.PermintaanServer;
 import com.martabak.kamar.service.StaffServer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observer;
@@ -35,7 +38,43 @@ public class YiannisTestActivity extends AppCompatActivity {
         doSomethingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doGetPermintaansOfState();
+                doStartStaffChatService();
+            }
+        });
+    }
+
+    private void doStartStaffChatService() {
+        Intent intent = new Intent(this, StaffChatService.class);
+        startService(intent);
+    }
+
+    private void doStartGuestChatService() {
+        Intent intent = new Intent(this, GuestChatService.class);
+        intent.putExtra("guestId", "yianni");
+        startService(intent);
+    }
+
+    private void doGetRoomNumbers() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get room numbers");
+        GuestServer.getInstance(getBaseContext()).getRoomNumbers().subscribe(new Observer<List<Room>>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(List<Room> result) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(result.toString());
             }
         });
     }
