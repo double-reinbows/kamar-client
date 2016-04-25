@@ -5,15 +5,22 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.domain.permintaan.Transport;
+import com.martabak.kamar.service.PermintaanServer;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+
+import rx.Observer;
 
 public class TransportActivity extends AppCompatActivity {
 
@@ -64,22 +71,33 @@ public class TransportActivity extends AppCompatActivity {
         });
     }
 
-
+    /* Send Transport Request */
     private void sendTransportRequest()
     {
-        /*
 
-        Permintaan<Transport> permintaan = new Permintaan<Transport>();
-
-        Transport transport = permintaan.new Transport(transportMessage, transportPassengers,
+        Transport transport = new Transport(transportMessage, transportPassengers,
                 transportDepartureDate, transportMessage);
 
-        String owner = "TRANSPORT";
-        String roomNumber = "1";
-        PermintaanServer.getInstance(getBaseContext())(new Permintaan(
-                        owner,
-                        roomNumber,
-                        transport)
+        String owner = "FRONT DESK";
+        String type = "TRANSPORT";
+        String roomNumber = getSharedPreferences("roomSettings", MODE_PRIVATE)
+                .getString("roomNumber", "none");
+        String guestId= getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("guestId", "none");
+        String state = "NEW";
+
+        Calendar c = Calendar.getInstance();
+        Date currentDate = c.getTime();
+
+        PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
+                    owner,
+                    type,
+                    roomNumber,
+                    guestId,
+                    state,
+                    currentDate,
+                    currentDate,
+                    transport)
         ).subscribe(new Observer<Permintaan>() {
             @Override
             public void onCompleted() {
@@ -94,11 +112,11 @@ public class TransportActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(Guest guest) {
+            public void onNext(Permintaan permintaan) {
                 Log.d("Next", "On next");
             }
         });
-        */
+
     }
 
 }

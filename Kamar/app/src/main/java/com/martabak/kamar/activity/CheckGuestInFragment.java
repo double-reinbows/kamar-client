@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -29,14 +30,6 @@ import rx.Observer;
  * create an instance of this fragment.
  */
 public  class CheckGuestInFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private String firstName;
     private String lastName;
@@ -53,28 +46,18 @@ public  class CheckGuestInFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     *
      * @return A new instance of fragment CheckGuestInFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CheckGuestInFragment newInstance(String param1, String param2) {
+    public static CheckGuestInFragment newInstance() {
         CheckGuestInFragment fragment = new CheckGuestInFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
 
     }
 
@@ -82,7 +65,6 @@ public  class CheckGuestInFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
 
         View view =  inflater.inflate(R.layout.fragment_check_guest_in, container, false);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.check_guest_in_btn);
@@ -111,8 +93,14 @@ public  class CheckGuestInFragment extends Fragment {
         return view;
     }
 
+    /*
+     * Send create new guest request to the server
+     */
 
     private void sendGuestRequest() {
+
+        final String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
+                .getString("roomNumber", "none");
 
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
                 firstName,
@@ -121,8 +109,61 @@ public  class CheckGuestInFragment extends Fragment {
                 email,
                 null,
                 null,
-                "1")
+                roomNumber)
         ).subscribe(new Observer<Guest>() {
+            @Override
+            public void onCompleted() {
+                Log.d("Completed", "On completed");
+                setGuestId(roomNumber);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d("Error", "On error");
+
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Guest guest) {
+                Log.d("Next", "On next");
+
+            }
+
+        });
+
+        /*
+        GuestServer.getInstance(getActivity().getBaseContext()).getGuestInRoom(roomNumber).subscribe(new Observer<Guest>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Guest result) {
+                result.id
+
+            }
+        });
+        */
+    }
+
+
+    /*
+    * Set guest id on shared preferences
+    */
+    public void setGuestId(String roomNumber)
+    {
+
+        GuestServer.getInstance(getActivity().getBaseContext()).getGuestInRoom(
+                "22").subscribe(new Observer<Guest>() {
             @Override
             public void onCompleted() {
                 Log.d("Completed", "On completed");
@@ -136,12 +177,23 @@ public  class CheckGuestInFragment extends Fragment {
             }
 
             @Override
-            public void onNext(Guest guest) {
+            public void onNext(Guest result) {
+                //stroe the guest id in shared preferences
+                /*SharedPreferences pref = getActivity().getSharedPreferences("userSettings",
+                        getActivity().MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("guestId", result.id);
+                editor.commit();*/
+                Log.v("GUESTID", result.toString());
                 Log.d("Next", "On next");
+
             }
         });
-    }
 
+
+
+
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
