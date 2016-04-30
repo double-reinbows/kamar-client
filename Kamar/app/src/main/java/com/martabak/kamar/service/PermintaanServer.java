@@ -129,7 +129,7 @@ public class PermintaanServer extends Server {
      * @return The permintaan model that was added.
      */
     public Observable<Boolean> updatePermintaan(Permintaan permintaan) {
-        return service.updatePermintaan(permintaan.id, permintaan)
+        return service.updatePermintaan(permintaan._id, permintaan)
                 .map(new Func1<PutResponse, Boolean>() {
                     @Override public Boolean call(PutResponse response) {
                         return response.ok;

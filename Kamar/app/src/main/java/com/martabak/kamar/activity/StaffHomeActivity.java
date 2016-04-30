@@ -1,6 +1,5 @@
 package com.martabak.kamar.activity;
 
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -25,8 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class StaffHomeActivity extends AppCompatActivity {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +63,10 @@ public class StaffHomeActivity extends AppCompatActivity {
                 } else if (id == R.id.nav_check_guest_in) {
                     //Handle the check guest in click
                     Log.v(StaffHomeActivity.class.toString(), "CheckGuestInFragment");
-                    CheckGuestInFragment fragment = CheckGuestInFragment.newInstance("test1", "test2");
+                    CheckGuestInFragment fragment = CheckGuestInFragment.newInstance();
                     fragmentTransaction.replace(R.id.staff_container, fragment);
                     fragmentTransaction.commit();
+
 
                 } else if (id == R.id.nav_check_guest_out) {
                     //Handle the check guest out click
