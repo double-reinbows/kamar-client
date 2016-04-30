@@ -98,14 +98,16 @@ public class SelectUserTypeActivity extends AppCompatActivity {
             String passwordString   = ((EditText)getView().findViewById(R.id.EditTextPassword)).getText().toString();
             Log.v("Password String", passwordString);
 
-            /*Remove this block when StaffServer.login() is working
+            //Remove this block when StaffServer.login() is working
             SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("userType", "STAFF");
             editor.commit();
-            ((SelectUserTypeActivity)getActivity()).switchActivity();
-*/
 
+            //uncomment this to skip staff login check
+            ((SelectUserTypeActivity)getActivity()).switchActivity();
+
+            /*
             StaffServer.getInstance(getActivity()).login(passwordString).subscribe(new Observer<Boolean>() {
                 @Override
                 public void onCompleted() {
@@ -139,7 +141,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                     }
                 }
             });
-
+            */
 
         }
     }
