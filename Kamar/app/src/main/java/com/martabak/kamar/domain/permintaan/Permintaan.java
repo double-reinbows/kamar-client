@@ -77,8 +77,9 @@ public class Permintaan<T extends Content> extends Model {
         this.updated = null;
     }
 
-    public Permintaan(String owner, String type, String roomNumber, String guestId, String state,
+    public Permintaan(String _id, String owner, String type, String roomNumber, String guestId, String state,
                       Date created, Date updated, T content) {
+        super(_id);
         this.owner = owner;
         this.type = type;
         this.roomNumber = roomNumber;
