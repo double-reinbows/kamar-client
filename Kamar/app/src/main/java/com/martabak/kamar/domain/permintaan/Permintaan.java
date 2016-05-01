@@ -85,7 +85,7 @@ public class Permintaan<T extends Content> extends Model {
 
     public Permintaan(String owner, String type, String roomNumber, String guestId, String state,
                       Date created, Date updated, T content) {
-        super(null);
+        super(null, null);
         this.owner = owner;
         this.type = type;
         this.roomNumber = roomNumber;
@@ -96,9 +96,9 @@ public class Permintaan<T extends Content> extends Model {
         this.content = content;
     }
 
-    public Permintaan(String _id, String owner, String type, String roomNumber, String guestId, String state,
+    public Permintaan(String _id, String _rev, String owner, String type, String roomNumber, String guestId, String state,
                       Date created, Date updated, T content) {
-        super(_id);
+        super(_id, _rev);
         this.owner = owner;
         this.type = type;
         this.roomNumber = roomNumber;

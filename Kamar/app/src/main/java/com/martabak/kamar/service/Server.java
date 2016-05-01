@@ -28,7 +28,7 @@ public abstract class Server {
     /**
      * The pattern used for representing dates in a String.
      */
-    private static final String datePattern = "yyyy-MM-dd'T'HH:mm:ss'X'";
+    private static final String datePattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     /**
      * Construct the Retrofit server.
@@ -70,7 +70,7 @@ public abstract class Server {
      * @return The server's base URL.
      */
     protected String getBaseUrl() {
-        return "http://192.168.1.5:5984";
+        return "http://192.168.0.9:5984";
     }
 
 }

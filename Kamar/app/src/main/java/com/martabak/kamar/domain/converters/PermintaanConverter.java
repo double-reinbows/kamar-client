@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Serializes and deserializes {@link Permintaan}s.
@@ -34,6 +35,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
 
     public PermintaanConverter(String datePattern) {
         this.dateFormat = new SimpleDateFormat(datePattern);
+        this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     @Override
@@ -41,6 +43,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         JsonObject j = new JsonObject();
 
         j.addProperty("_id", src._id);
+        j.addProperty("_rev", src._rev);
         j.addProperty("owner", src.owner);
         j.addProperty("type", src.type);
         j.addProperty("room_number", src.roomNumber);
@@ -90,6 +93,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         JsonObject j = (JsonObject)json;
 
         String _id = j.getAsJsonPrimitive("_id").getAsString();
+        String _rev = j.getAsJsonPrimitive("_rev").getAsString();
         String owner = j.getAsJsonPrimitive("owner").getAsString();
         String ptype = j.getAsJsonPrimitive("type").getAsString();
         String roomNumber = j.getAsJsonPrimitive("room_number").getAsString();
@@ -149,6 +153,6 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 throw new JsonParseException("Unknown Permintaan content type.");
         }
 
-        return new Permintaan(_id, owner, ptype, roomNumber, guestId, state, created, updated, content);
+        return new Permintaan(_id, _rev, owner, ptype, roomNumber, guestId, state, created, updated, content);
     }
 }
