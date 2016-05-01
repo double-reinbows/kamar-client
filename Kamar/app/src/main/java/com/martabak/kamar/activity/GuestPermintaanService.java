@@ -11,76 +11,78 @@ import android.util.Log;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.GuestChat;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.ChatServer;
+import com.martabak.kamar.service.PermintaanServer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
-import rx.Observer;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
 /**
- * A chat service that routinely checks for new incoming chat messages for a particular guest.
+ * A permintaan service that routinely checks for new updates on a guest's permintaans.
  * <p>
  *     Expects intent extra: "guestId" mapping to the guest's ID.
  * </p>
  */
-public class GuestChatService extends IntentService {
+public class GuestPermintaanService extends IntentService {
 
     private static final int POLL_EVERY_SECONDS_AMOUNT = 60;
 
-    private static final Class RESULT_ACTIVITY = YiannisTestActivity.class; // TODO link to chat
+    private static final Class RESULT_ACTIVITY = GuestHomeActivity.class;
 
     /**
-     * Construct a guest chat service.
+     * Construct a guest permintaan service.
      */
-    public GuestChatService() {
-        super("GuestChatService");
+    public GuestPermintaanService() {
+        super("GuestPermintaanService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         String guestId = intent.getExtras().getString("guestId");
+        final Map<String, Permintaan> permintaans = new HashMap<>();
 
         while (true) {
-            Log.d(GuestChatService.class.getCanonicalName(), "Checking for new chats to guest " + guestId);
-            // Get the guest's full chat.
-            ChatServer.getInstance(this).getGuestChat(guestId)
-                    // Convert it into a list of any unread messages.
-                    .flatMap(new Func1<GuestChat, Observable<GuestChat.Message>>() {
-                        @Override public Observable<GuestChat.Message> call(GuestChat guestChat) {
-                            List<GuestChat.Message> unreadMessages = new ArrayList();
-                            for (GuestChat.Message m : guestChat.messages) {
-                                if (!m.from.equals("GUEST") && m.read == null) {
-                                    // Return only if an unread message from RESTAURANT or FRONTDESK exists.
-                                    unreadMessages.add(m);
-                                }
-                            }
-                            return Observable.from(unreadMessages);
+            Log.d(GuestPermintaanService.class.getCanonicalName(), "Checking for guest permintaan status updates for " + guestId);
+            // Get the guest's permintaans.
+            PermintaanServer.getInstance(this).getPermintaansForGuest(guestId)
+                    // Filter for only permintaans that have had their status updated
+                    .filter(new Func1<Permintaan, Boolean>() {
+                        @Override public Boolean call(Permintaan curr) {
+                            Permintaan prev = permintaans.get(curr._id);
+                            permintaans.put(curr._id, curr);
+                            return prev != null && !prev.state.equals(curr.state);
                         }
-                    }).subscribe(new Action1<GuestChat.Message>() {
-                        @Override public void call(GuestChat.Message unreadMessage) {
-                            Log.d(GuestChatService.class.getCanonicalName(), "On call");
-                            createNotification(0, unreadMessage); // FIXME use proper int ID here
+                    }).subscribe(new Action1<Permintaan>() {
+                        @Override public void call(Permintaan permintaan) {
+                            Log.d(GuestPermintaanService.class.getCanonicalName(), "Guest permintaan has been updated with new status");
+                            List<String> permIds = new ArrayList<String>(permintaans.keySet());
+                            Collections.sort(permIds);
+                            createNotification(permIds.indexOf(permintaan._id), permintaan);
                         }
                     });
 
             try {
-                Log.d(GuestChatService.class.getCanonicalName(), "Going to sleep for " + POLL_EVERY_SECONDS_AMOUNT + " seconds");
+                Log.d(GuestPermintaanService.class.getCanonicalName(), "Going to sleep for " + POLL_EVERY_SECONDS_AMOUNT + " seconds");
                 Thread.sleep(POLL_EVERY_SECONDS_AMOUNT * 1000);
             } catch (InterruptedException e) {
             }
         }
     }
 
-    private void createNotification(int nId, GuestChat.Message message) {
+    private void createNotification(int nId, Permintaan permintaan) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_menu_share)
-                        .setContentTitle("New message from staff " + message.from)
-                        .setContentText(message.message);
+                        .setSmallIcon(R.drawable.ic_menu_manage)
+                        .setContentTitle(permintaan.type + " REQUEST")
+                        .setContentText("Status is now " + permintaan.state);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
 
@@ -102,6 +104,6 @@ public class GuestChatService extends IntentService {
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // nId allows you to update the notification later on.
-        mNotificationManager.notify("chat", nId, mBuilder.build());
+        mNotificationManager.notify("permintaan", nId, mBuilder.build());
     }
 }

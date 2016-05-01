@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name=".activity.GuestChatService" />
+        <service android:name=".activity.GuestPermintaanService" />
         <service android:name=".activity.StaffChatService" />
+        <service android:name=".activity.StaffPermintaanService" />
         <activity
             android:name=".activity.YiannisTestActivity"
             android:configChanges="orientation|keyboardHidden"
