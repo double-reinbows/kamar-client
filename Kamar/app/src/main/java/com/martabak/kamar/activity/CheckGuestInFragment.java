@@ -96,9 +96,7 @@ public  class CheckGuestInFragment extends Fragment {
     /*
      * Send create new guest request to the server
      */
-
     private void sendGuestRequest() {
-
         final String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", "none");
 
@@ -109,75 +107,39 @@ public  class CheckGuestInFragment extends Fragment {
                 email,
                 null,
                 null,
-                roomNumber)
+                roomNumber,
+                "Welcome to the hotel.") // TODO add welcome message field
         ).subscribe(new Observer<Guest>() {
-            @Override
-            public void onCompleted() {
-                Log.d("Completed", "On completed");
+            @Override public void onCompleted() {
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On completed");
                 setGuestId(roomNumber);
             }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d("Error", "On error");
-
+            @Override public void onError(Throwable e) {
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
             }
-
-            @Override
-            public void onNext(Guest guest) {
-                Log.d("Next", "On next");
-
-            }
-
-        });
-
-        /*
-        GuestServer.getInstance(getActivity().getBaseContext()).getGuestInRoom(roomNumber).subscribe(new Observer<Guest>() {
-            @Override
-            public void onCompleted() {
-                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
-
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onNext(Guest result) {
-                result.id
-
+            @Override public void onNext(Guest guest) {
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On next");
             }
         });
-        */
     }
 
 
     /*
-    * Set guest id on shared preferences
-    */
+     * Set guest id on shared preferences
+     */
     public void setGuestId(String roomNumber)
     {
-
         GuestServer.getInstance(getActivity().getBaseContext()).getGuestInRoom(
                 "22").subscribe(new Observer<Guest>() {
-            @Override
-            public void onCompleted() {
-                Log.d("Completed", "On completed");
+            @Override public void onCompleted() {
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On completed");
             }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d("Error", "On error");
-
+            @Override public void onError(Throwable e) {
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
             }
-
-            @Override
-            public void onNext(Guest result) {
+            @Override public void onNext(Guest result) {
                 //stroe the guest id in shared preferences
                 /*SharedPreferences pref = getActivity().getSharedPreferences("userSettings",
                         getActivity().MODE_PRIVATE);
@@ -189,10 +151,6 @@ public  class CheckGuestInFragment extends Fragment {
 
             }
         });
-
-
-
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
