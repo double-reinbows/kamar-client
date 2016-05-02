@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.chat;
 
 import android.content.Context;
 import android.net.Uri;

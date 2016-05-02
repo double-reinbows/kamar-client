@@ -10,9 +10,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".activity.GuestChatService" />
+        <service android:name=".activity.chat.GuestChatService" />
         <service android:name=".activity.GuestPermintaanService" />
-        <service android:name=".activity.StaffChatService" />
+        <service android:name=".activity.chat.StaffChatService" />
         <service android:name=".activity.StaffPermintaanService" />
         <activity
             android:name=".activity.YiannisTestActivity"
