@@ -14,19 +14,23 @@ public class Permintaan<T extends Content> extends Model {
 
     /**
      * The owner of the request. One of:
-     * - RESTAURANT
-     * - FRONT DESK
+     * <ul>
+     *     <li>RESTAURANT</li>
+     *     <li>FRONTDESK</li>
+     * </ul>
      */
     public final String owner;
 
     /**
      * The type of the request. One of:
-     * - BELLBOY
-     * - CHECKOUT
-     * - CONSUMABLE
-     * - HOUSEKEEPING
-     * - MAINTENANCE
-     * - TRANSPORT
+     * <ul>
+     *   <li>BELLBOY</li>
+     *   <li>CHECKOUT</li>
+     *   <li>CONSUMABLE</li>
+     *   <li>HOUSEKEEPING</li>
+     *   <li>MAINTENANCE</li>
+     *   <li>TRANSPORT</li>
+     * </ul>
      */
     public final String type;
 
@@ -47,12 +51,14 @@ public class Permintaan<T extends Content> extends Model {
 
     /**
      * State of this request. One of:
-     * - NEW
-     * - IN PROGRESS
-     * - IN DELIVERY
-     * - COMPLETE
-     * - DELETED
-     * - CANCELLED
+     * <ul>
+     *   <li>NEW</li>
+     *   <li>IN-PROGRESS</li>
+     *   <li>IN-DELIVERY</li>
+     *   <li>COMPLETE</li>
+     *   <li>DELETED</li>
+     *   <li>CANCELLED</li>
+     * </ul>
      */
     public final String state;
 
@@ -79,6 +85,20 @@ public class Permintaan<T extends Content> extends Model {
 
     public Permintaan(String owner, String type, String roomNumber, String guestId, String state,
                       Date created, Date updated, T content) {
+        super(null, null);
+        this.owner = owner;
+        this.type = type;
+        this.roomNumber = roomNumber;
+        this.guestId = guestId;
+        this.state = state;
+        this.created = created;
+        this.updated = updated;
+        this.content = content;
+    }
+
+    public Permintaan(String _id, String _rev, String owner, String type, String roomNumber, String guestId, String state,
+                      Date created, Date updated, T content) {
+        super(_id, _rev);
         this.owner = owner;
         this.type = type;
         this.roomNumber = roomNumber;

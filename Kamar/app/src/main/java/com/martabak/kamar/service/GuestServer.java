@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -66,6 +68,23 @@ public class GuestServer extends Server {
     }
 
     /**
+     * @return All the guests currently checked in.
+     */
+    public Observable<Guest> getGuestsCheckedIn() {
+        return service.getGuestsCheckedIn()
+                .flatMap(new Func1<ViewResponse<Guest>, Observable<Guest>>() {
+                    @Override public Observable<Guest> call(ViewResponse<Guest> response) {
+                        for (ViewResponse<Guest>.ViewResult<Guest> i : response.rows) {
+                            return Observable.just(i.value);
+                        }
+                        return Observable.just(null);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
      * Get the guest currently in the given room, if there is one.
      * @param roomNumber The room number.
      * @return The guest in the room, if there is one.
@@ -100,6 +119,64 @@ public class GuestServer extends Server {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * @return All room numbers of the hotel that have a guest currently checked in.
+     */
+    public List<Room> getRoomNumbersWithGuests() {
+        final List<Room> roomsWithGuests = new ArrayList<>();
+        service.getRooms()
+            .flatMap(new Func1<AllResponse<Room>, Observable<Room>>() {
+                @Override public Observable<Room> call(AllResponse<Room> response) {
+                    List<Room> toReturn = new ArrayList<>(response.total_rows);
+                    for (AllResponse<Room>.AllResult<Room> i : response.rows) {
+                        toReturn.add(i.doc);
+                    }
+                    return Observable.from(toReturn);
+                }
+            })
+            // Only return rooms with a guest.
+            .subscribe(new Action1<Room>() {
+                @Override public void call(final Room room) {
+                     getGuestInRoom(room.number)
+                        .subscribe(new Action1<Guest>() {
+                            @Override public void call(Guest guest) {
+                                if (guest != null) roomsWithGuests.add(room);
+                            }
+                        });
+                }
+            });
+        return roomsWithGuests;
+    }
+
+    /**
+     * @return All room numbers of the hotel that <i>do not</i> have a guest currently checked in.
+     */
+    public List<Room> getRoomNumbersWithoutGuests() {
+        final List<Room> roomsWithGuests = new ArrayList<>();
+        service.getRooms()
+                .flatMap(new Func1<AllResponse<Room>, Observable<Room>>() {
+                    @Override public Observable<Room> call(AllResponse<Room> response) {
+                        List<Room> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<Room>.AllResult<Room> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+                        return Observable.from(toReturn);
+                    }
+                })
+                // Only return rooms without a guest.
+                .subscribe(new Action1<Room>() {
+                    @Override public void call(final Room room) {
+                        getGuestInRoom(room.number)
+                                .subscribe(new Action1<Guest>() {
+                                    @Override public void call(Guest guest) {
+                                        if (guest == null) roomsWithGuests.add(room);
+                                    }
+                                });
+                    }
+                });
+        return roomsWithGuests;
     }
 
 }

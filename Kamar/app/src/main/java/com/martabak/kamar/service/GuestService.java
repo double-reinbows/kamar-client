@@ -27,6 +27,9 @@ public interface GuestService {
     Observable<PostResponse> createGuest(@Body Guest guest);
 
     @GET("guest/_design/guest/_view/room")
+    Observable<ViewResponse<Guest>> getGuestsCheckedIn();
+
+    @GET("guest/_design/guest/_view/room")
     Observable<ViewResponse<Guest>> getGuestInRoom(@Query("key") String roomNumber);
 
     @GET("room/_all_docs?include_docs=true")

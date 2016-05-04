@@ -49,4 +49,6 @@
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
     <string name="title_activity_survey">SurveyActivity</string>
+    <string name="title_chat_list">Chats</string>
+    <string name="title_chat_detail">Chat Detail</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.chat;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.YiannisTestActivity;
 import com.martabak.kamar.domain.GuestChat;
 import com.martabak.kamar.service.ChatServer;
 
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Observer;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
@@ -29,7 +29,7 @@ import rx.functions.Func1;
  */
 public class GuestChatService extends IntentService {
 
-    private static final int POLL_EVERY_SECONDS_AMOUNT = 10;
+    private static final int POLL_EVERY_SECONDS_AMOUNT = 60;
 
     private static final Class RESULT_ACTIVITY = YiannisTestActivity.class; // TODO link to chat
 
@@ -68,7 +68,7 @@ public class GuestChatService extends IntentService {
                     });
 
             try {
-                Log.d(GuestChatService.class.getCanonicalName(), "Going to sleep...");
+                Log.d(GuestChatService.class.getCanonicalName(), "Going to sleep for " + POLL_EVERY_SECONDS_AMOUNT + " seconds");
                 Thread.sleep(POLL_EVERY_SECONDS_AMOUNT * 1000);
             } catch (InterruptedException e) {
             }
