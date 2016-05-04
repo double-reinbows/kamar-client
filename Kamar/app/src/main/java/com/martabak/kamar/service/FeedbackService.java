@@ -21,10 +21,10 @@ public interface FeedbackService {
     @POST("feedback")
     Observable<PostResponse> createFeedback(@Body Feedback feedback);
 
-    @GET("feedback/_design/feedback/_view/survey_questions")
+    @GET("survey_question/_design/survey_question/_view/survey_questions")
     Observable<ViewResponse<SurveyQuestion>> getSurveyQuestions();
 
-    @POST("survey_answers")
+    @POST("survey_answer")
     Observable<PostResponse> createSurveyAnswers(@Body List<SurveyAnswer> surveyAnswers);
 
 }

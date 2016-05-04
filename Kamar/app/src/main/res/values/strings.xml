@@ -43,8 +43,10 @@
     <string name="tellus_edittext">Leave your feedback here!</string>
     <string name="room_number">Change Room Number</string>
     <string name="room_number_password"> Input Password</string>
+    <string name="upload"> Upload </string>
     <string name="positive">YES</string>
     <string name="negative">NO</string>
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
+    <string name="title_activity_survey">SurveyActivity</string>
 </resources>

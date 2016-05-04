@@ -38,8 +38,8 @@ public class StaffHomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        FragmentManager fragmentManager = getFragmentManager();
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        final FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         //Create sample permintaan fragment
         StaffPermintaanFragment fragment = StaffPermintaanFragment.newInstance();
@@ -54,14 +54,14 @@ public class StaffHomeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 int id = item.getItemId();
-
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 if (id == R.id.nav_home) {
                     // Handle the home click
 
                 } else if (id == R.id.nav_chat) {
                     //Handle the chat click
                     Log.v(StaffHomeActivity.class.toString(), "ChatFragment");
-                    ChatFragment fragment = ChatFragment.newInstance("test1", "test2");
+                    ChatFragment fragment = ChatFragment.newInstance();
                     fragmentTransaction.replace(R.id.staff_container, fragment);
                     fragmentTransaction.commit();
 

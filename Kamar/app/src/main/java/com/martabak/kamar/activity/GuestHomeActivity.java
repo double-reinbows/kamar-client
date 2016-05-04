@@ -38,6 +38,7 @@ public class GuestHomeActivity extends AppCompatActivity
         final ImageAdapter imgAdapter = new ImageAdapter(this);
         final GridView gridView = (GridView) findViewById(R.id.guestgridview);
         View passwordIconView = findViewById(R.id.passwordChangeIcon);
+
         gridView.setAdapter(imgAdapter);
 
         //display feature text on each item click
@@ -59,8 +60,6 @@ public class GuestHomeActivity extends AppCompatActivity
 
             }
         });
-
-
     }
 
     /*Actions for each individual feature on the grid */
@@ -109,13 +108,10 @@ public class GuestHomeActivity extends AppCompatActivity
     */
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-
         dialog.dismiss();
         if (option == "CHECKOUT") {
-            showCheckoutFragment();
+            startCheckout();
         }
-
-
     }
 
     /*
@@ -123,22 +119,18 @@ public class GuestHomeActivity extends AppCompatActivity
     */
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
-
         dialog.dismiss();
         if (option == "CHECKOUT") {
-            showCheckoutFragment();
+            startCheckout();
         }
     }
 
     /*
      * Show checkout fragment
-     *
      */
-    public void showCheckoutFragment() {
-
-        DialogFragment surveyFragment = new SurveyDialogFragment();
-        surveyFragment.show(getFragmentManager(), "checkout");
-
+    public void startCheckout() {
+        Intent intent = new Intent(this, SurveyActivity.class);
+        startActivity(intent);
     }
 
 }

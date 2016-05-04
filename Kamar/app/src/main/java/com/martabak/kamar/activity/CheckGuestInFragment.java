@@ -18,6 +18,9 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.service.GuestServer;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import rx.Observable;
 import rx.Observer;
 
@@ -102,19 +105,27 @@ public  class CheckGuestInFragment extends Fragment {
         final String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", "none");
 
+        Calendar c = Calendar.getInstance();
+        Date currentDate = c.getTime();
+
+        c.add(Calendar.DAY_OF_MONTH,5);
+        Date futureDate = c.getTime();
+
+        Log.v("FutureDate", futureDate.toString());
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
                 firstName,
                 lastName,
                 phoneNumber,
                 email,
-                null,
-                null,
+                currentDate,
+                futureDate,
                 roomNumber)
         ).subscribe(new Observer<Guest>() {
             @Override
             public void onCompleted() {
                 Log.d("Completed", "On completed");
-                setGuestId(roomNumber);
+
+
             }
 
             @Override
@@ -127,6 +138,8 @@ public  class CheckGuestInFragment extends Fragment {
             @Override
             public void onNext(Guest guest) {
                 Log.d("Next", "On next");
+                Log.v("GUEST", guest.toString());
+                setGuestId(roomNumber);
 
             }
 
@@ -163,7 +176,7 @@ public  class CheckGuestInFragment extends Fragment {
     {
 
         GuestServer.getInstance(getActivity().getBaseContext()).getGuestInRoom(
-                "22").subscribe(new Observer<Guest>() {
+                roomNumber).subscribe(new Observer<Guest>() {
             @Override
             public void onCompleted() {
                 Log.d("Completed", "On completed");
@@ -179,11 +192,11 @@ public  class CheckGuestInFragment extends Fragment {
             @Override
             public void onNext(Guest result) {
                 //stroe the guest id in shared preferences
-                /*SharedPreferences pref = getActivity().getSharedPreferences("userSettings",
+                SharedPreferences pref = getActivity().getSharedPreferences("userSettings",
                         getActivity().MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                editor.putString("guestId", result.id);
-                editor.commit();*/
+                editor.putString("guestId", result._id);
+                editor.commit();
                 Log.v("GUESTID", result.toString());
                 Log.d("Next", "On next");
 
