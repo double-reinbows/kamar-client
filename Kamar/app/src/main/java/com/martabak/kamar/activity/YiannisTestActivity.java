@@ -38,9 +38,21 @@ public class YiannisTestActivity extends AppCompatActivity {
         doSomethingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doStartStaffChatService();
+                doStartStaffPermintaanService();
             }
         });
+    }
+
+    private void doStartStaffPermintaanService() {
+        Intent intent = new Intent(this, StaffPermintaanService.class);
+        intent.putExtra("guestId", "yianni");
+        startService(intent);
+    }
+
+    private void doStartGuestPermintaanService() {
+        Intent intent = new Intent(this, GuestPermintaanService.class);
+        intent.putExtra("guestId", "yianni");
+        startService(intent);
     }
 
     private void doStartStaffChatService() {

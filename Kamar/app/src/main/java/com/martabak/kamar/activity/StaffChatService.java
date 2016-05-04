@@ -85,7 +85,7 @@ public class StaffChatService extends IntentService {
                             })
                             .subscribe(new Action1<GuestChat.Message>() {
                                 @Override public void call(GuestChat.Message unreadMessage) {
-                                    Log.d(GuestChatService.class.getCanonicalName(), "On call");
+                                    Log.d(GuestChatService.class.getCanonicalName(), "New chat message to staff from " + unreadMessage.guestId);
                                     createNotification(0, unreadMessage); // FIXME use proper int ID here
                                 }
                             });
@@ -93,7 +93,7 @@ public class StaffChatService extends IntentService {
             });
 
             try {
-                Log.d(StaffChatService.class.getCanonicalName(), "Going to sleep...");
+                Log.d(StaffChatService.class.getCanonicalName(), "Going to sleep for " + POLL_EVERY_SECONDS_AMOUNT + " seconds");
                 Thread.sleep(POLL_EVERY_SECONDS_AMOUNT * 1000);
             } catch (InterruptedException e) {
             }
