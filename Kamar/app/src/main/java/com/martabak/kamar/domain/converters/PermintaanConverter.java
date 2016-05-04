@@ -49,9 +49,9 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         j.addProperty("room_number", src.roomNumber);
         j.addProperty("guest_id", src.guestId);
         j.addProperty("state", src.state);
-        j.addProperty("created", src.created.toString());
+        j.addProperty("created", dateFormat.format(src.created));
         if (src.updated != null) {
-            j.addProperty("updated", src.updated.toString());
+            j.addProperty("updated", dateFormat.format(src.updated));
         }
 
         JsonObject content = new JsonObject();

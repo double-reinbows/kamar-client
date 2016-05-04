@@ -87,14 +87,18 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                         //Get the list of permintaans in the next state
                         List<String> nextPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition + 1));
                         //Create new Permintaan with updated state
-                        Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, currPermintaan.owner, currPermintaan.type,
+                        Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, currPermintaan._rev, currPermintaan.owner, currPermintaan.type,
                                 currPermintaan.roomNumber, currPermintaan.guestId, _listDataHeader.get(groupPosition + 1),
-                                currPermintaan.created, currPermintaan.updated, currPermintaan.content);
+                                currPermintaan.created, new Date(), currPermintaan.content);
+
+                        //TODO: The following block should be done in onCompleted()?
                         //Add child to the next state
                         nextPermintaans.add(currPermintaans.get(childPosition)); //print permintaans mapped to current string
                         //Remove the child from the current state
                         currPermintaans.remove(childPosition);
-                        //TODO: I'm not actually removing the child from _listDataChild hashmap? or am I?
+                        //TODO: I must update childPosition & groupPosition here.
+                        //childPosition += 1;
+                        //groupPosiion += 1;
 
 
                         //TODO: change "new Permintaan()" to a permintaan that the staff has changed
@@ -147,26 +151,24 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                     public void onClick(DialogInterface dialog, int which) {
                         List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
                         //Log.d("id", _listDataChildString.get(currPermintaans.get(childPosition)).id);
-                        Permintaan currPermintaan = _listDataChildString.get(_listDataChild.get(childPosition));
-                        Log.d("curr permintaan guestid", currPermintaan.guestId);
+                        Permintaan currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
+                        //Log.d("curr permintaan guestid", currPermintaan.guestId);
                         //Log.d("curr permintaan created", currPermintaan.created.toString());
-                        Log.d("curr permintaan _id", currPermintaan._id);
+                        //Log.d("curr permintaan _id", currPermintaan._id);
 
                         //Log.d("selected child state:", _listDataHeader.get(groupPosition));
 
                         //Get the list of permintaans in the next state
-                        List<String> nextPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition - 1));
+                        List<String> prevPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition - 1));
                         //Create new Permintaan with updated state
-                        Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, currPermintaan.owner, currPermintaan.type,
+                        Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, currPermintaan._rev, currPermintaan.owner, currPermintaan.type,
                                 currPermintaan.roomNumber, currPermintaan.guestId, _listDataHeader.get(groupPosition-1),
-                                currPermintaan.updated, currPermintaan.created, currPermintaan.content);
+                                currPermintaan.created, new Date(), currPermintaan.content);
+
                         //Add child to the next state
-                        nextPermintaans.add(currPermintaans.get(childPosition)); //print permintaans mapped to current string
+                        prevPermintaans.add(currPermintaans.get(childPosition)); //print permintaans mapped to current string
                         //Remove the child from the current state
                         currPermintaans.remove(childPosition);
-                        //TODO: I'm not actually removing the child from _listDataChild hashmap? or am I?
-
-
 
                         //TODO: change "new Permintaan()" to a permintaan that the staff has changed
                         PermintaanServer.getInstance(_context).updatePermintaan(updatedPermintaan)
