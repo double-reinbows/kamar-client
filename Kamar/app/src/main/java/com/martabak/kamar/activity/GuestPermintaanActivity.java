@@ -2,10 +2,12 @@ package com.martabak.kamar.activity;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -17,36 +19,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.TextView;
-
 import rx.Observer;
 
 /**
- * This fragment creates the requests/permintaan section of the staff homescreen.
+ * This fragment creates the permintaan activity from the guest homescreen.
  */
-public  class StaffPermintaanFragment extends Fragment {
-
-    //public static Permintaan permintaan;
-
-    public StaffPermintaanFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     */
-
-    public static StaffPermintaanFragment newInstance() {
-        StaffPermintaanFragment fragment = new StaffPermintaanFragment();
-        return fragment;
-    }
+public class GuestPermintaanActivity extends AppCompatActivity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        }
+        setContentView(R.layout.activity_guest_permintaan);
+        doGetPermintaansOfStateAndCreateExpList();
 
+    }
+/*
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,13 +41,14 @@ public  class StaffPermintaanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_staff_permintaan, container, false);
 
         //add dummy permintaan to the list and create list
-/*
-        Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "705", "PADOOL", "NEW",
-                new Date(), null, new Transport("cabs are here", 4, null, "tebet"));
-        createExpandableList(view, permintaan);
-*/
+        List<Permintaan> permintaans = new ArrayList<>();
+        Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "707", "ITA", "NEW",
+                new Date(), null, new Transport("gila m8", 4, null, "tebet"));
+        permintaans.add(permintaan);
+        createExpandableList(view, permintaans);
+
         //get the permintaans on the server and then create the expandable list
-        doGetPermintaansOfStateAndCreateExpList();
+        //doGetPermintaansOfStateAndCreateExpList();
 
 
 
@@ -68,16 +56,16 @@ public  class StaffPermintaanFragment extends Fragment {
 
         return view;
      }
-
-    protected void createExpandableList(View view, List<Permintaan> permintaans) {
-        ExpandableListAdapter listAdapter;
+*/
+    protected void createExpandableList(List<Permintaan> permintaans) {
+        GuestExpandableListAdapter listAdapter;
         ExpandableListView expListView;
         List<String> listDataHeader; //list of states
         HashMap<String, List<String>> listDataChild; //mapping of states to a list of permintaan strings
         HashMap<String, Permintaan> listDataChildString; //mapping of permintaan strings to their permintaans
 
         // get the listview
-        expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
+        expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
@@ -137,7 +125,7 @@ public  class StaffPermintaanFragment extends Fragment {
         listDataChild.put(listDataHeader.get(3), complete_permintaan);
 
         //create expandable list
-        listAdapter = new ExpandableListAdapter(this.getActivity(), listDataHeader, listDataChild, listDataChildString);
+        listAdapter = new GuestExpandableListAdapter(this, listDataHeader, listDataChild, listDataChildString);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
@@ -148,22 +136,22 @@ public  class StaffPermintaanFragment extends Fragment {
      * creates the expandable list.
      */
     private void doGetPermintaansOfStateAndCreateExpList() {
-        Log.d(StaffPermintaanFragment.class.getCanonicalName(), "Done get permintaans of state");
+        Log.d(GuestPermintaanActivity.class.getCanonicalName(), "Done get permintaans of state");
 
 
-        PermintaanServer.getInstance(getActivity()).getPermintaansOfState("NEW", "PROCESSING", "IN DELIVERY", "COMPLETE")
+        PermintaanServer.getInstance(this).getPermintaansOfState("NEW", "PROCESSING", "IN DELIVERY", "COMPLETE")
                                                                             .subscribe(new Observer<Permintaan>() {
             List<Permintaan> permintaans = new ArrayList<>();
 
             @Override
             public void onCompleted() {
-                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On completed");
-                createExpandableList(getView(), permintaans);
+                Log.d(GuestPermintaanActivity.class.getCanonicalName(), "On completed");
+                createExpandableList(permintaans);
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On error");
+                Log.d(GuestPermintaanActivity.class.getCanonicalName(), "On error");
                 //TextView textView = (TextView) findViewById(R.id.doSomethingText);
                 //textView.setText(e.getMessage());
                 e.printStackTrace();
@@ -171,7 +159,7 @@ public  class StaffPermintaanFragment extends Fragment {
 
             @Override
             public void onNext(Permintaan result) {
-                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On next");
+                Log.d(GuestPermintaanActivity.class.getCanonicalName(), "On next");
                 //TextView textView = (TextView) findViewById(R.id.doSomethingText);
                 //textView.setText(result.toString() + " for " + result.guestId + " of type " + result.content.getType());
                 //Log.d("GuestID from server", result.guestId);

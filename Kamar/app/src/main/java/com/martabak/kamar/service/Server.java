@@ -28,7 +28,7 @@ public abstract class Server {
     /**
      * The pattern used for representing dates in a String.
      */
-    private static final String datePattern = "yyyy-MM-dd'T'HH:mm:ss'X'";
+    private static final String datePattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     /**
      * Construct the Retrofit server.

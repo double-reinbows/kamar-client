@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import android.app.AlertDialog;
@@ -61,7 +62,8 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
-
+        //Log.d("context", this._context.class.toString());
+        //Log.d("context", this._context.getClass().toString());
         //TODO: Change button picture to a down arrow
         ImageView progressPermintaanButton = (ImageView) convertView.findViewById(R.id.progress_permintaan_button);
 
@@ -77,16 +79,17 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                         List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
                         //Log.d("id", _listDataChildString.get(currPermintaans.get(childPosition)).id);
                         Permintaan currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
-                        Log.d("curr permintaan id", currPermintaan.guestId);
-
+                        Log.d("curr permintaan guestid", currPermintaan.guestId);
+                        Log.d("curr permintaan _id", currPermintaan._id);
+                        Log.d("curr permintaan created", currPermintaan.created.toString());
                         //Log.d("selected child state:", _listDataHeader.get(groupPosition));
 
                         //Get the list of permintaans in the next state
                         List<String> nextPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition + 1));
                         //Create new Permintaan with updated state
-                        Permintaan updatedPermintaan = new Permintaan(currPermintaan.owner, currPermintaan.type,
-                                            currPermintaan.roomNumber, currPermintaan.guestId, _listDataHeader.get(groupPosition+1),
-                                            currPermintaan.updated, currPermintaan.created, currPermintaan.content);
+                        Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, currPermintaan.owner, currPermintaan.type,
+                                currPermintaan.roomNumber, currPermintaan.guestId, _listDataHeader.get(groupPosition + 1),
+                                currPermintaan.created, currPermintaan.updated, currPermintaan.content);
                         //Add child to the next state
                         nextPermintaans.add(currPermintaans.get(childPosition)); //print permintaans mapped to current string
                         //Remove the child from the current state
@@ -94,27 +97,26 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                         //TODO: I'm not actually removing the child from _listDataChild hashmap? or am I?
 
 
-
                         //TODO: change "new Permintaan()" to a permintaan that the staff has changed
                         PermintaanServer.getInstance(_context).updatePermintaan(updatedPermintaan)
-                                                                .subscribe(new Observer<Boolean>() {
-                            @Override
-                            public void onCompleted() {
-                                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On completed");
-                                notifyDataSetChanged();
-                            }
+                                .subscribe(new Observer<Boolean>() {
+                                    @Override
+                                    public void onCompleted() {
+                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "On completed");
+                                        notifyDataSetChanged();
+                                    }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On error");
-                                e.printStackTrace();
-                            }
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "On error");
+                                        e.printStackTrace();
+                                    }
 
-                            @Override
-                            public void onNext(Boolean result) {
-                                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "staff permintaan update " + result);
-                            }
-                        });
+                                    @Override
+                                    public void onNext(Boolean result) {
+                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "staff permintaan update " + result);
+                                    }
+                                });
                     }
                 });
 
@@ -131,6 +133,7 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
         });
 
 
+
         ImageView regressPermintaanButton = (ImageView) convertView.findViewById(R.id.regress_permintaan_button);
 
         regressPermintaanButton.setOnClickListener(new View.OnClickListener() {
@@ -145,14 +148,16 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                         List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
                         //Log.d("id", _listDataChildString.get(currPermintaans.get(childPosition)).id);
                         Permintaan currPermintaan = _listDataChildString.get(_listDataChild.get(childPosition));
-                        Log.d("curr permintaan id", currPermintaan.guestId);
+                        Log.d("curr permintaan guestid", currPermintaan.guestId);
+                        //Log.d("curr permintaan created", currPermintaan.created.toString());
+                        Log.d("curr permintaan _id", currPermintaan._id);
 
                         //Log.d("selected child state:", _listDataHeader.get(groupPosition));
 
                         //Get the list of permintaans in the next state
                         List<String> nextPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition - 1));
                         //Create new Permintaan with updated state
-                        Permintaan updatedPermintaan = new Permintaan(currPermintaan.owner, currPermintaan.type,
+                        Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, currPermintaan.owner, currPermintaan.type,
                                 currPermintaan.roomNumber, currPermintaan.guestId, _listDataHeader.get(groupPosition-1),
                                 currPermintaan.updated, currPermintaan.created, currPermintaan.content);
                         //Add child to the next state
@@ -168,19 +173,19 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                                 .subscribe(new Observer<Boolean>() {
                                     @Override
                                     public void onCompleted() {
-                                        Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On completed");
+                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "On completed");
                                         notifyDataSetChanged();
                                     }
 
                                     @Override
                                     public void onError(Throwable e) {
-                                        Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On error");
+                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "On error");
                                         e.printStackTrace();
                                     }
 
                                     @Override
                                     public void onNext(Boolean result) {
-                                        Log.d(StaffPermintaanFragment.class.getCanonicalName(), "staff permintaan update " + result);
+                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "staff permintaan update " + result);
                                     }
                                 });
                     }
