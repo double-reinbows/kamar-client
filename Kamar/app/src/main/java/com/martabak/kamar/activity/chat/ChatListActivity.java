@@ -1,15 +1,11 @@
 package com.martabak.kamar.activity.chat;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +13,13 @@ import android.widget.TextView;
 
 import com.martabak.kamar.R;
 
-import com.martabak.kamar.activity.chat.dummy.DummyContent;
+import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.service.GuestServer;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observer;
 
 /**
  * An activity representing a list of Chats. The activity presents the list of items and
@@ -36,21 +36,30 @@ public class ChatListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        View recyclerView = findViewById(R.id.chat_list);
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.chat_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        final List<Guest> guests = new ArrayList<Guest>();
+        GuestServer.getInstance(this).getGuestsCheckedIn().subscribe(new Observer<Guest>() {
+            @Override public void onCompleted() {
+                Log.d(ChatListActivity.class.getCanonicalName(), "onCompleted");
+            }
+            @Override public void onError(Throwable e) {
+                Log.d(ChatListActivity.class.getCanonicalName(), "onError");
+                e.printStackTrace();
+            }
+            @Override public void onNext(final Guest guest) {
+                guests.add(guest);
+            }
+        });
+        recyclerView.setAdapter(new ChatRecyclerViewAdapter(guests));
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
-    }
+    public class ChatRecyclerViewAdapter
+            extends RecyclerView.Adapter<ChatRecyclerViewAdapter.ViewHolder> {
 
-    public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+        private final List<Guest> mValues;
 
-        private final List<DummyContent.DummyItem> mValues;
-
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        public ChatRecyclerViewAdapter(List<Guest> items) {
             mValues = items;
         }
 
@@ -64,14 +73,14 @@ public class ChatListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mIdView.setText(mValues.get(position).roomNumber);
+            holder.mContentView.setText(mValues.get(position).firstName + " " + mValues.get(position).lastName);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(ChatDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                    arguments.putString(ChatDetailFragment.ARG_ITEM_ID, holder.mItem._id);
                     ChatDetailFragment fragment = new ChatDetailFragment();
                     fragment.setArguments(arguments);
                     getSupportFragmentManager().beginTransaction()
@@ -90,7 +99,7 @@ public class ChatListActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+            public Guest mItem;
 
             public ViewHolder(View view) {
                 super(view);
