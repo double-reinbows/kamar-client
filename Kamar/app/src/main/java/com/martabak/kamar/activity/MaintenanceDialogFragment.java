@@ -1,6 +1,5 @@
 package com.martabak.kamar.activity;
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;

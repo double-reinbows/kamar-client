@@ -1,7 +1,6 @@
 package com.martabak.kamar.service;
 
 
-
 import com.martabak.kamar.service.response.ViewResponse;
 
 import retrofit2.http.GET;

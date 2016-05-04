@@ -15,6 +15,7 @@
         <service android:name=".activity.chat.StaffChatService" />
         <service android:name=".activity.StaffPermintaanService" />
 
+
         <activity
             android:name=".activity.YiannisTestActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -61,8 +62,17 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.TransportActivity"
-            android:label="@string/title_activity_transport"
+            android:label="@string/app_name"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.SurveyActivity"
+            android:label="@string/app_name"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.chat.ChatListActivity"
             android:label="@string/title_chat_list"
