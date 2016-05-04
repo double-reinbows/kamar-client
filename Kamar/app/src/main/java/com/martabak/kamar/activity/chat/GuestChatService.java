@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.chat;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.YiannisTestActivity;
 import com.martabak.kamar.domain.GuestChat;
 import com.martabak.kamar.service.ChatServer;
 
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Observer;
 import rx.functions.Action1;
 import rx.functions.Func1;
 

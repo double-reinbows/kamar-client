@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.chat.GuestChatService;
+import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.GuestChat;
 import com.martabak.kamar.domain.Room;
@@ -20,7 +22,6 @@ import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.PermintaanServer;
 import com.martabak.kamar.service.StaffServer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observer;
@@ -250,7 +251,8 @@ public class YiannisTestActivity extends AppCompatActivity {
                 "adarshj@gmail.com",
                 null,
                 null,
-                "69")
+                "69",
+                "Welcome.")
         ).subscribe(new Observer<Guest>() {
             @Override
             public void onCompleted() {

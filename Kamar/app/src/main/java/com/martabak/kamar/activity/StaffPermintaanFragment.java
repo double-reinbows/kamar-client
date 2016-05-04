@@ -62,10 +62,6 @@ public  class StaffPermintaanFragment extends Fragment {
         //get the permintaans on the server and then create the expandable list
         doGetPermintaansOfStateAndCreateExpList();
 
-
-
-
-
         return view;
      }
 

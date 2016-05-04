@@ -23,10 +23,6 @@ import rx.Observer;
 
 public class SelectUserTypeActivity extends AppCompatActivity {
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private StaffTypeFragment staffTypeFragment;
 
     @Override
@@ -117,9 +113,12 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                 @Override
                 public void onError(Throwable e) {
                     Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On error");
-                    //TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                    //textView.setText(e.getMessage());
                     e.printStackTrace();
+                    Toast.makeText(
+                            getActivity().getApplicationContext(),
+                            "Something went wrong. Try again.",
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
 
                 @Override

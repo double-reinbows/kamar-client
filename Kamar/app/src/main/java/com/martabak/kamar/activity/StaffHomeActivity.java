@@ -1,11 +1,9 @@
 package com.martabak.kamar.activity;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,6 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.chat.ChatListActivity;
+import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.domain.permintaan.Transport;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -55,11 +56,8 @@ public class StaffHomeActivity extends AppCompatActivity {
 
                 } else if (id == R.id.nav_chat) {
                     //Handle the chat click
-                    Log.v(StaffHomeActivity.class.toString(), "ChatFragment");
-                    ChatFragment fragment = ChatFragment.newInstance("test1", "test2");
-                    fragmentTransaction.replace(R.id.staff_container, fragment);
-                    fragmentTransaction.commit();
-
+                    Log.v(StaffHomeActivity.class.toString(), "Going to chat activity for staff");
+                    startActivity(new Intent(StaffHomeActivity.this, ChatListActivity.class));
                 } else if (id == R.id.nav_check_guest_in) {
                     //Handle the check guest in click
                     Log.v(StaffHomeActivity.class.toString(), "CheckGuestInFragment");

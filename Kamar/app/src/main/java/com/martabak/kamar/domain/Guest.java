@@ -44,6 +44,11 @@ public class Guest extends Model {
      */
     @SerializedName("room_number") public final String roomNumber;
 
+    /**
+     * The guest's welcome message.
+     */
+    @SerializedName("welcome_message") public final String welcomeMessage;
+
     public Guest() {
         this.firstName = null;
         this.lastName = null;
@@ -52,9 +57,10 @@ public class Guest extends Model {
         this.checkIn = null;
         this.checkOut = null;
         this.roomNumber = null;
+        this.welcomeMessage = null;
     }
 
-    public Guest(String firstName, String lastName, String phone, String email, Date checkIn, Date checkOut, String roomNumber) {
+    public Guest(String firstName, String lastName, String phone, String email, Date checkIn, Date checkOut, String roomNumber, String welcomeMessage) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -62,6 +68,7 @@ public class Guest extends Model {
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.roomNumber = roomNumber;
+        this.welcomeMessage = welcomeMessage;
     }
 
 }

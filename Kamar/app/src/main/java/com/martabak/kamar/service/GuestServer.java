@@ -68,6 +68,23 @@ public class GuestServer extends Server {
     }
 
     /**
+     * @return All the guests currently checked in.
+     */
+    public Observable<Guest> getGuestsCheckedIn() {
+        return service.getGuestsCheckedIn()
+                .flatMap(new Func1<ViewResponse<Guest>, Observable<Guest>>() {
+                    @Override public Observable<Guest> call(ViewResponse<Guest> response) {
+                        for (ViewResponse<Guest>.ViewResult<Guest> i : response.rows) {
+                            return Observable.just(i.value);
+                        }
+                        return Observable.just(null);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
      * Get the guest currently in the given room, if there is one.
      * @param roomNumber The room number.
      * @return The guest in the room, if there is one.
