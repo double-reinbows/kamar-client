@@ -11,15 +11,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.service.GuestServer;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
@@ -32,7 +37,7 @@ import rx.Observer;
  * Use the {@link CheckGuestInFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public  class CheckGuestInFragment extends Fragment {
+public class CheckGuestInFragment extends Fragment {
 
     private String firstName;
     private String lastName;
@@ -70,6 +75,16 @@ public  class CheckGuestInFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view =  inflater.inflate(R.layout.fragment_check_guest_in, container, false);
+
+        Spinner spinner = (Spinner) view.findViewById(R.id.guest_spinner);
+
+        List<String> roomNumbers = getRoomNumbersWithoutGuests();
+
+        ArrayAdapter adapter = new ArrayAdapter(getActivity().getBaseContext(),
+                R.layout.support_simple_spinner_dropdown_item, roomNumbers);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.check_guest_in_btn);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +101,8 @@ public  class CheckGuestInFragment extends Fragment {
                 EditText editTextEmail = (EditText) getView().findViewById(R.id.guest_email);
                 email = editTextEmail.getText().toString();
 
+
+
                 sendGuestRequest();
 
 
@@ -94,6 +111,23 @@ public  class CheckGuestInFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    /*
+     * return a list of Room Numbers
+     */
+    private List<String> getRoomNumbersWithoutGuests() {
+
+        List<Room> rooms = GuestServer.getInstance(getActivity().getBaseContext()).
+                getRoomNumbersWithoutGuests();
+
+        List <String> roomStrings = new ArrayList<String>();
+
+        for (int i=0; i < rooms.size(); i++) {
+            roomStrings.add(rooms.get(i).number);
+        }
+        return roomStrings;
+
     }
 
     /*

@@ -72,6 +72,21 @@
             android:id="@+id/guest_phone"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="@string/guest_room_number"
+            android:id="@+id/guest_room_number"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/guest_spinner"/>
+    </LinearLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/check_guest_in_btn"
         android:layout_width="wrap_content"

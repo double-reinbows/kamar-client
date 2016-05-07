@@ -48,6 +48,7 @@
     <string name="negative">NO</string>
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
+    <string name="guest_room_number">Set Room Number</string>
     <string name="title_activity_survey">SurveyActivity</string>
     <string name="title_chat_list">Chats</string>
     <string name="title_chat_detail">Chat Detail</string>
