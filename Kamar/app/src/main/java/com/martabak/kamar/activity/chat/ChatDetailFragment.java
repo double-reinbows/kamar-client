@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.chat.ChatMessage;
@@ -18,6 +19,7 @@ import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.service.ChatServer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -89,6 +91,7 @@ public class ChatDetailFragment extends Fragment {
                 @Override public void onNext(GuestChat guestChat) {
                     Log.d(ChatDetailFragment.class.getCanonicalName(), "Guest chat received with " + guestChat.messages.size() + " messages");
                     messages.addAll(guestChat.messages);
+                    Collections.reverse(messages);
                 }
             });
 
@@ -183,7 +186,35 @@ public class ChatDetailFragment extends Fragment {
         }
 
         @Override public void onClick(View v) {
-            ChatServer.getInstance(getActivity()).sendChatMessage(buildMessage());
+            Log.d(ChatDetailFragment.class.getCanonicalName(), "Send button clicked");
+            ChatServer.getInstance(getActivity()).sendChatMessage(buildMessage())
+                    .subscribe(new Observer<Boolean>() {
+                        @Override public void onCompleted() {
+                        }
+                        @Override public void onError(Throwable e) {
+                            e.printStackTrace();
+                            Toast.makeText(
+                                    getActivity().getApplicationContext(),
+                                    R.string.something_went_wrong,
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                        @Override public void onNext(Boolean result) {
+                            if (result) {
+                                Toast.makeText(
+                                        getActivity().getApplicationContext(),
+                                        R.string.chat_message_sent,
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            } else {
+                                Toast.makeText(
+                                        getActivity().getApplicationContext(),
+                                        R.string.something_went_wrong,
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+                        }
+                    });
         }
     }
 }

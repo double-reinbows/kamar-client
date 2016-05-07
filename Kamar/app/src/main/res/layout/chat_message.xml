@@ -26,18 +26,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="2dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/chat_message_from" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="2dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/chat_message_sent_time" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="2dp"
             android:id="@+id/chat_message_icon" />
 
     </LinearLayout>
@@ -45,6 +48,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="2dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/chat_message_text" />
 

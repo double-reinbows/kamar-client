@@ -28,6 +28,8 @@
     <string name="title_chat_detail">Chat</string>
     <string name="chat_message_text">Type your message ...</string>
     <string name="chat_send_button">Send</string>
+    <string name="chat_message_sent">Message sent</string>
+    <string name="something_went_wrong">Oops, something went wrong</string>
 
     <string name="submit">Submit</string>
 </resources>
