@@ -20,9 +20,7 @@
             android:name=".activity.YiannisTestActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape">
-
-            <!--
-            intent-filter>
+            <!--intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -52,6 +50,12 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".activity.StaffHomeActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.GuestPermintaanActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="landscape"

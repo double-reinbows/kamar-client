@@ -64,10 +64,15 @@ public class GuestHomeActivity extends AppCompatActivity
 
     /*Actions for each individual feature on the grid */
     public void createAction() {
+        Intent intent;
         switch(option)
         {
+            case "MY REQUESTS":
+                intent = new Intent(this, GuestPermintaanActivity.class);
+                startActivity(intent);
+                break;
             case "TRANSPORT":
-                Intent intent = new Intent(this, TransportActivity.class);
+                intent = new Intent(this, TransportActivity.class);
                 startActivity(intent);
                 break;
             case "HOUSEKEEPING":

@@ -58,7 +58,6 @@ public abstract class Server {
 
     /**
      * Create a Retrofit service.
-     * @param service The Retrofit service
      * @param <T> The service type.
      * @return The service.
      */
@@ -71,6 +70,7 @@ public abstract class Server {
      */
     protected String getBaseUrl() {
         return "http://192.168.1.5:5984";
+
     }
 
 }
