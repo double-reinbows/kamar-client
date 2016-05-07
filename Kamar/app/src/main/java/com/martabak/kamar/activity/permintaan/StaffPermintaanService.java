@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.permintaan;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -10,67 +10,61 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.domain.GuestChat;
+import com.martabak.kamar.activity.StaffHomeActivity;
 import com.martabak.kamar.domain.permintaan.Permintaan;
-import com.martabak.kamar.service.ChatServer;
 import com.martabak.kamar.service.PermintaanServer;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
-import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
 /**
- * A permintaan service that routinely checks for new updates on a guest's permintaans.
- * <p>
- *     Expects intent extra: "guestId" mapping to the guest's ID.
- * </p>
+ * A service that routinely checks for new permintaans from guests.
  */
-public class GuestPermintaanService extends IntentService {
+public class StaffPermintaanService extends IntentService {
 
-    private static final int POLL_EVERY_SECONDS_AMOUNT = 60;
+    private static final int POLL_EVERY_SECONDS_AMOUNT = 10;
 
-    private static final Class RESULT_ACTIVITY = GuestHomeActivity.class;
+    private static final Class RESULT_ACTIVITY = StaffHomeActivity.class;
 
     /**
-     * Construct a guest permintaan service.
+     * Construct a staff permintaan service.
      */
-    public GuestPermintaanService() {
-        super("GuestPermintaanService");
+    public StaffPermintaanService() {
+        super("StaffPermintaanService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        String guestId = intent.getExtras().getString("guestId");
-        final Map<String, Permintaan> permintaans = new HashMap<>();
+        final Set<String> permintaanIds = new HashSet<>();
 
         while (true) {
-            Log.d(GuestPermintaanService.class.getCanonicalName(), "Checking for guest permintaan status updates for " + guestId);
-            // Get the guest's permintaans.
-            PermintaanServer.getInstance(this).getPermintaansForGuest(guestId)
-                    // Filter for only permintaans that have had their status updated
+            Log.d(StaffPermintaanService.class.getCanonicalName(), "Checking for new permintaans");
+            // Get all permintaans in the NEW state
+            PermintaanServer.getInstance(this).getPermintaansOfState("NEW")
+                    // Filter for only permintaans that have not been seen by this service and not been updated
                     .filter(new Func1<Permintaan, Boolean>() {
-                        @Override public Boolean call(Permintaan curr) {
-                            Permintaan prev = permintaans.get(curr._id);
-                            permintaans.put(curr._id, curr);
-                            return prev != null && !prev.state.equals(curr.state);
+                        @Override public Boolean call(Permintaan permintaan) {
+                            boolean seen = permintaanIds.contains(permintaan._id);
+                            permintaanIds.add(permintaan._id);
+                            return !seen && permintaan.updated == null;
                         }
                     }).subscribe(new Action1<Permintaan>() {
                         @Override public void call(Permintaan permintaan) {
-                            Log.d(GuestPermintaanService.class.getCanonicalName(), "Guest permintaan has been updated with new status");
-                            List<String> permIds = new ArrayList<String>(permintaans.keySet());
-                            Collections.sort(permIds);
-                            createNotification(permIds.indexOf(permintaan._id), permintaan);
+                            Log.d(StaffPermintaanService.class.getCanonicalName(), "New permintaan has been found");
+                            List<String> permintaanIdsList = new ArrayList<String>(permintaanIds);
+                            Collections.sort(permintaanIdsList);
+                            createNotification(permintaanIdsList.indexOf(permintaan._id), permintaan);
                         }
                     });
 
             try {
-                Log.d(GuestPermintaanService.class.getCanonicalName(), "Going to sleep for " + POLL_EVERY_SECONDS_AMOUNT + " seconds");
+                Log.d(StaffPermintaanService.class.getCanonicalName(), "Going to sleep for " + POLL_EVERY_SECONDS_AMOUNT + " seconds");
                 Thread.sleep(POLL_EVERY_SECONDS_AMOUNT * 1000);
             } catch (InterruptedException e) {
             }
@@ -82,7 +76,7 @@ public class GuestPermintaanService extends IntentService {
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_menu_manage)
                         .setContentTitle(permintaan.type + " REQUEST")
-                        .setContentText("Status is now " + permintaan.state);
+                        .setContentText("New " + permintaan.type + " REQUEST " + permintaan.roomNumber);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
 

@@ -25,6 +25,6 @@ public interface FeedbackService {
     Observable<ViewResponse<SurveyQuestion>> getSurveyQuestions();
 
     @POST("survey_answer")
-    Observable<PostResponse> createSurveyAnswers(@Body List<SurveyAnswer> surveyAnswers);
+    Observable<PostResponse> createSurveyAnswer(@Body SurveyAnswer surveyAnswer);
 
 }

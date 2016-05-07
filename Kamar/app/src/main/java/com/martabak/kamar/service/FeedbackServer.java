@@ -58,7 +58,7 @@ public class FeedbackServer extends Server {
         return service.createFeedback(feedback)
                 .map(new Func1<PostResponse, Boolean>() {
                     @Override public Boolean call(PostResponse response) {
-                        return  response.ok;
+                        return response.ok;
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -68,10 +68,15 @@ public class FeedbackServer extends Server {
     /**
      * Submit some survey answers.
      * @param surveyAnswers The survey answers model to be created.
-     * @return Whether or not the survey answers was successfully created.
+     * @return Whether or not each survey answer was successfully created.
      */
     public Observable<Boolean> createSurveyAnswers(List<SurveyAnswer> surveyAnswers) {
-        return service.createSurveyAnswers(surveyAnswers)
+        return Observable.from(surveyAnswers)
+                .flatMap(new Func1<SurveyAnswer, Observable<PostResponse>>() {
+                    @Override public Observable<PostResponse> call(SurveyAnswer surveyAnswer) {
+                        return service.createSurveyAnswer(surveyAnswer);
+                    }
+                })
                 .map(new Func1<PostResponse, Boolean>() {
                     @Override public Boolean call(PostResponse response) {
                         return response.ok;
