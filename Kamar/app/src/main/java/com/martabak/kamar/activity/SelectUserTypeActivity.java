@@ -100,7 +100,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
             editor.putString("userType", "STAFF");
             editor.commit();
 
-            //uncomment this to skip staff login check
+            // FIXME uncomment this to skip staff login check
             ((SelectUserTypeActivity)getActivity()).switchActivity();
 
             /*

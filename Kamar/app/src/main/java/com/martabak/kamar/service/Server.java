@@ -62,7 +62,7 @@ public abstract class Server {
      * @return The service.
      */
     protected final <T> T createService(Class<T> service) {
-        return  retrofit.create(service);
+        return retrofit.create(service);
     }
 
     /**
@@ -70,7 +70,7 @@ public abstract class Server {
      */
     protected String getBaseUrl() {
 
-        return "http://192.168.0.7:5984";
+        return "http://192.168.178.24:5984";
 
     }
 

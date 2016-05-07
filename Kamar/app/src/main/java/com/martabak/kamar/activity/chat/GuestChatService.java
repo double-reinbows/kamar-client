@@ -11,7 +11,8 @@ import android.util.Log;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.YiannisTestActivity;
-import com.martabak.kamar.domain.GuestChat;
+import com.martabak.kamar.domain.chat.ChatMessage;
+import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.service.ChatServer;
 
 import java.util.ArrayList;
@@ -49,10 +50,10 @@ public class GuestChatService extends IntentService {
             // Get the guest's full chat.
             ChatServer.getInstance(this).getGuestChat(guestId)
                     // Convert it into a list of any unread messages.
-                    .flatMap(new Func1<GuestChat, Observable<GuestChat.Message>>() {
-                        @Override public Observable<GuestChat.Message> call(GuestChat guestChat) {
-                            List<GuestChat.Message> unreadMessages = new ArrayList();
-                            for (GuestChat.Message m : guestChat.messages) {
+                    .flatMap(new Func1<GuestChat, Observable<ChatMessage>>() {
+                        @Override public Observable<ChatMessage> call(GuestChat guestChat) {
+                            List<ChatMessage> unreadMessages = new ArrayList();
+                            for (ChatMessage m : guestChat.messages) {
                                 if (!m.from.equals("GUEST") && m.read == null) {
                                     // Return only if an unread message from RESTAURANT or FRONTDESK exists.
                                     unreadMessages.add(m);
@@ -60,8 +61,8 @@ public class GuestChatService extends IntentService {
                             }
                             return Observable.from(unreadMessages);
                         }
-                    }).subscribe(new Action1<GuestChat.Message>() {
-                        @Override public void call(GuestChat.Message unreadMessage) {
+                    }).subscribe(new Action1<ChatMessage>() {
+                        @Override public void call(ChatMessage unreadMessage) {
                             Log.d(GuestChatService.class.getCanonicalName(), "On call");
                             createNotification(0, unreadMessage); // FIXME use proper int ID here
                         }
@@ -75,7 +76,7 @@ public class GuestChatService extends IntentService {
         }
     }
 
-    private void createNotification(int nId, GuestChat.Message message) {
+    private void createNotification(int nId, ChatMessage message) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_menu_share)
