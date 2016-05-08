@@ -6,6 +6,7 @@ import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.PostResponse;
+import com.martabak.kamar.service.response.PutResponse;
 import com.martabak.kamar.service.response.ViewResponse;
 
 import java.util.ArrayList;
@@ -185,6 +186,22 @@ public class GuestServer extends Server {
                     }
                 });
         return Observable.just(roomsWithoutGuests);
+    }
+
+    /**
+     * Update a guest.
+     * @param guest The guest model to be created.
+     * @return The guest model that was added.
+     */
+    public Observable<Boolean> updateGuest(Guest guest) {
+        return service.updateGuest(guest._id, guest)
+                .map(new Func1<PutResponse, Boolean>() {
+                    @Override public Boolean call(PutResponse response) {
+                        return response.ok;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

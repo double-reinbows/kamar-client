@@ -1,5 +1,7 @@
 package com.martabak.kamar.activity.chat;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -79,7 +81,8 @@ public class ChatListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(ChatDetailFragment.ARG_ITEM_ID, holder.mItem._id);
+                    arguments.putString(ChatDetailFragment.GUEST_ID, holder.mItem._id);
+                    arguments.putString(ChatDetailFragment.SENDER, getSender());
                     ChatDetailFragment fragment = new ChatDetailFragment();
                     fragment.setArguments(arguments);
                     getSupportFragmentManager().beginTransaction()
@@ -112,5 +115,10 @@ public class ChatListActivity extends AppCompatActivity {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
         }
+    }
+
+    private String getSender() {
+        SharedPreferences prefs = getSharedPreferences("userSettings", Context.MODE_PRIVATE);
+        return prefs.getString("userSubType", "FRONTDESK");
     }
 }

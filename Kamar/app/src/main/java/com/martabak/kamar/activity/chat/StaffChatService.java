@@ -32,7 +32,7 @@ public class StaffChatService extends IntentService {
 
     private static final int POLL_EVERY_SECONDS_AMOUNT = 60;
 
-    private static final Class RESULT_ACTIVITY = YiannisTestActivity.class; // TODO link to chat
+    private static final Class RESULT_ACTIVITY = ChatListActivity.class;
 
     /**
      * Construct a staff chat service.

@@ -32,10 +32,16 @@ import rx.Observer;
 public class ChatDetailFragment extends Fragment {
 
     /**
-     * The fragment argument representing the item ID that this fragment
+     * The fragment argument representing the guest's ID of the chat that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String GUEST_ID = "guest_id";
+
+    /**
+     * The fragment argument representing the sender that is loading this fragment.
+     * One of "FRONTDESK", "RESTAURANT" or "GUEST".
+     */
+    public static final String SENDER = "sender";
 
     /**
      * The guest's ID.
@@ -58,11 +64,10 @@ public class ChatDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            mGuestId = getArguments().getString(ARG_ITEM_ID);
-            mSender = "FRONTDESK"; // FIXME
+        if (getArguments().containsKey(GUEST_ID) && getArguments().containsKey(SENDER)) {
+            mGuestId = getArguments().getString(GUEST_ID);
+            mSender = getArguments().getString(SENDER);
         }
-
         // TODO else say "please select a guest from the sidebar"
     }
 
