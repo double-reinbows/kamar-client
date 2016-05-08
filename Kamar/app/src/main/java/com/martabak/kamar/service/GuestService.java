@@ -4,6 +4,7 @@ import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.PostResponse;
+import com.martabak.kamar.service.response.PutResponse;
 import com.martabak.kamar.service.response.ViewResponse;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -25,6 +27,9 @@ public interface GuestService {
 
     @POST("guest")
     Observable<PostResponse> createGuest(@Body Guest guest);
+
+    @PUT("guest/{id}")
+    Observable<PutResponse> updateGuest(@Path("id") String id, @Body Guest guest);
 
     @GET("guest/_design/guest/_view/room")
     Observable<ViewResponse<Guest>> getGuestsCheckedIn();
