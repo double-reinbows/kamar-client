@@ -11,9 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name=".activity.chat.GuestChatService" />
-        <service android:name=".activity.GuestPermintaanService" />
+        <service android:name=".activity.permintaan.GuestPermintaanService" />
         <service android:name=".activity.chat.StaffChatService" />
-        <service android:name=".activity.StaffPermintaanService" />
+        <service android:name=".activity.permintaan.StaffPermintaanService" />
 
 
         <activity
@@ -27,9 +27,6 @@
             </intent-filter
             -->
         </activity>
-        <activity
-            android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.SelectLanguageActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -76,16 +73,8 @@
         <activity
             android:name=".activity.chat.ChatListActivity"
             android:label="@string/title_chat_list"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.chat.ChatDetailActivity"
-            android:label="@string/title_chat_detail"
-            android:parentActivityName=".activity.chat.ChatListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.martabak.kamar.activity.chat.ChatListActivity" />
-        </activity>
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

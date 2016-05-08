@@ -28,6 +28,8 @@
     <string name="guest_last_name">Last Name</string>
     <string name="guest_email">Email</string>
     <string name="guest_phone">Phone Number</string>
+    <string name="guest_room_number">Set Room Number</string>
+    <string name="guest_checkout">Check Out Guest</string>
     <string name="title_activity_transport">TransportActivity</string>
     <string name="transport_passengers">Passengers</string>
     <string name="transport_departuretime">Departure Time</string>
@@ -48,8 +50,14 @@
     <string name="negative">NO</string>
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
-    <string name="guest_room_number">Set Room Number</string>
+
     <string name="title_activity_survey">SurveyActivity</string>
+
     <string name="title_chat_list">Chats</string>
-    <string name="title_chat_detail">Chat Detail</string>
+    <string name="title_chat_detail">Chat</string>
+    <string name="chat_message_text">Type your message ...</string>
+    <string name="chat_send_button">Send</string>
+    <string name="chat_message_sent">Message sent</string>
+    <string name="something_went_wrong">Oops, something went wrong</string>
+
 </resources>

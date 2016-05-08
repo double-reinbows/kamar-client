@@ -82,8 +82,8 @@
             android:text="@string/guest_room_number"
             android:id="@+id/guest_room_number"/>
         <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
             android:id="@+id/guest_spinner"/>
     </LinearLayout>
 
@@ -91,10 +91,7 @@
         android:id="@+id/check_guest_in_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="bottom|right"
         android:src="@android:drawable/ic_input_add" />
-
-
 
 </LinearLayout>

@@ -43,6 +43,7 @@ public class CheckGuestInFragment extends Fragment {
     private String lastName;
     private String phoneNumber;
     private String email;
+    private String roomNumber;
 
     private OnFragmentInteractionListener mListener;
 
@@ -76,14 +77,18 @@ public class CheckGuestInFragment extends Fragment {
 
         View view =  inflater.inflate(R.layout.fragment_check_guest_in, container, false);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.guest_spinner);
+        final Spinner spinner = (Spinner) view.findViewById(R.id.guest_spinner);
 
-        List<String> roomNumbers = getRoomNumbersWithoutGuests();
+        final List<String> roomNumbers = getRoomNumbersWithoutGuests();
 
         ArrayAdapter adapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
+        roomNumbers.add(0, "Please Select a room");
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        adapter.notifyDataSetChanged();
         spinner.setAdapter(adapter);
+        spinner.setSelection(0);
+
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.check_guest_in_btn);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +106,7 @@ public class CheckGuestInFragment extends Fragment {
                 EditText editTextEmail = (EditText) getView().findViewById(R.id.guest_email);
                 email = editTextEmail.getText().toString();
 
-
+                roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
 
                 sendGuestRequest();
 
@@ -114,18 +119,35 @@ public class CheckGuestInFragment extends Fragment {
     }
 
     /*
-     * return a list of Room Numbers
+     * return a list of Room Numbers with no guests checked in
      */
     private List<String> getRoomNumbersWithoutGuests() {
 
-        List<Room> rooms = GuestServer.getInstance(getActivity().getBaseContext()).
-                getRoomNumbersWithoutGuests();
+        final List <String> roomStrings = new ArrayList<String>();
+        GuestServer.getInstance(getActivity().getBaseContext()).
+                getRoomNumbers().subscribe(new Observer<List<Room>>() {
+            @Override
+            public void onCompleted() {
 
-        List <String> roomStrings = new ArrayList<String>();
+            }
 
-        for (int i=0; i < rooms.size(); i++) {
-            roomStrings.add(rooms.get(i).number);
-        }
+            @Override
+            public void onError(Throwable e) {
+                Log.v("OnError",  "Error");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(List<Room> rooms) {
+                for (int i=0; i < rooms.size(); i++) {
+                    roomStrings.add(rooms.get(i).number);
+                    Log.v("Room", roomStrings.get(i));
+                }
+                Log.v("onNext", "Next");
+
+            }
+        });
+
         return roomStrings;
 
     }
@@ -134,8 +156,6 @@ public class CheckGuestInFragment extends Fragment {
      * Send create new guest request to the server
      */
     private void sendGuestRequest() {
-        final String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
-                .getString("roomNumber", "none");
 
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
@@ -144,6 +164,9 @@ public class CheckGuestInFragment extends Fragment {
         Date futureDate = c.getTime();
 
         Log.v("FutureDate", futureDate.toString());
+
+        String welcomeMessage = "Hi " + firstName + "!";
+
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
                 firstName,
                 lastName,
@@ -152,7 +175,7 @@ public class CheckGuestInFragment extends Fragment {
                 currentDate,
                 futureDate,
                 roomNumber,
-                "welcome to hotel")
+                welcomeMessage)
         ).subscribe(new Observer<Guest>() {
             @Override
             public void onCompleted() {

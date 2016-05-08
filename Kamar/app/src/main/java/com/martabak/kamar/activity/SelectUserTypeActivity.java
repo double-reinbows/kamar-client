@@ -100,7 +100,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
             editor.putString("userType", "STAFF");
             editor.commit();
 
-            //uncomment this to skip staff login check
+            // FIXME uncomment this to skip staff login check
             ((SelectUserTypeActivity)getActivity()).switchActivity();
 
             /*
@@ -194,7 +194,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case "GUEST":
-                intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, GuestHomeActivity.class);
                 startActivity(intent);
                 break;
             default:

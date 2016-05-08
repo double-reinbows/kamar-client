@@ -32,26 +32,25 @@ public class ChatListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.chat_list);
-        assert recyclerView != null;
         final List<Guest> guests = new ArrayList<Guest>();
+        final ChatRecyclerViewAdapter recyclerViewAdapter = new ChatRecyclerViewAdapter(guests);
+        recyclerView.setAdapter(recyclerViewAdapter);
+
         GuestServer.getInstance(this).getGuestsCheckedIn().subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
                 Log.d(ChatListActivity.class.getCanonicalName(), "onCompleted");
+                recyclerViewAdapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
                 Log.d(ChatListActivity.class.getCanonicalName(), "onError");
                 e.printStackTrace();
             }
             @Override public void onNext(final Guest guest) {
+                Log.d(ChatListActivity.class.getCanonicalName(), "Guest found in room " + guest.roomNumber);
                 guests.add(guest);
             }
         });
-        recyclerView.setAdapter(new ChatRecyclerViewAdapter(guests));
     }
 
     public class ChatRecyclerViewAdapter

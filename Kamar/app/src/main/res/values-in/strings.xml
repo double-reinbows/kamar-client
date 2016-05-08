@@ -24,5 +24,12 @@
     <string name="in_delivery_permintaan">SEDANG DIKIRIM</string>
     <string name="complete_permintaan">BERES</string>
 
+    <string name="title_chat_list">Pesan</string>
+    <string name="title_chat_detail">Pesan</string>
+    <string name="chat_message_text">ketik pesan anda ...</string>
+    <string name="chat_send_button">Kirim</string>
+    <string name="chat_message_sent">Pesan terkirim</string>
+    <string name="something_went_wrong">Ups, ada yang tidak beres</string>
+
     <string name="submit">Kirim</string>
 </resources>

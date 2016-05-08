@@ -14,7 +14,7 @@ import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.permintaan.GuestPermintaanService;
 import com.martabak.kamar.activity.permintaan.StaffPermintaanService;
 import com.martabak.kamar.domain.Guest;
-import com.martabak.kamar.domain.GuestChat;
+import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.SurveyQuestion;
