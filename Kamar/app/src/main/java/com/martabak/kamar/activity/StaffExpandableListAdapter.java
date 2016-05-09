@@ -1,7 +1,5 @@
 package com.martabak.kamar.activity;
 
-import java.nio.IntBuffer;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +7,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +21,7 @@ import com.martabak.kamar.service.PermintaanServer;
 
 import rx.Observer;
 
-class ExpandableListAdapter extends BaseExpandableListAdapter {
+class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<String> _listDataHeader; // header titles
@@ -33,7 +29,7 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<String>> _listDataChild;
     private HashMap<String, Permintaan> _listDataChildString;
 
-    public ExpandableListAdapter(Context context, List<String> listDataHeader,
+    public StaffExpandableListAdapter(Context context, List<String> listDataHeader,
                                  HashMap<String, List<String>> listDataChild, HashMap<String,
                                     Permintaan> listDataChildString) {
         this._context = context;
@@ -81,21 +77,25 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Permintaan currPermintaan;
-                        List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
-                        currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
+                        //Check permintaan can be progressed
+                        if (groupPosition + 1 < 4) {
+                            Permintaan currPermintaan;
+                            List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
+                            currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
 
-                        doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, 1);
+                            doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, 1);
 
-                        //Get the list of permintaans in the next state
-                        List<String> nextPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition + 1));
+                            //Get the list of permintaans in the next state
+                            List<String> nextPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition + 1));
 
-                        //TODO: Should the following block should be done in onCompleted()?
-                        //Add child to the next state
-                        nextPermintaans.add(currPermintaans.get(childPosition));
-                        //Remove the child from the current state
-                        currPermintaans.remove(childPosition);
-
+                            //TODO: Should the following block be done in onCompleted()?
+                            //Add child to the next state
+                            nextPermintaans.add(currPermintaans.get(childPosition));
+                            //Remove the child from the current state
+                            currPermintaans.remove(childPosition);
+                        } else {
+                            //TODO: Tell the user they can't progress the permintaan
+                        }
                     }
                 });
 
@@ -123,20 +123,25 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Permintaan currPermintaan;
-                        List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
-                        currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
+                        //Check permintaan can be regressed
+                        if (groupPosition - 1 > -1) {
+                            Permintaan currPermintaan;
+                            List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
+                            currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
 
-                        doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, -1);
+                            doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, -1);
 
-                        //Get the list of permintaans in the previous state
-                        List<String> prevPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition - 1));
+                            //Get the list of permintaans in the previous state
+                            List<String> prevPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition - 1));
 
-                        //TODO: Should the following block should be done in onCompleted()?
-                        //Add child to the next state
-                        prevPermintaans.add(currPermintaans.get(childPosition));
-                        //Remove the child from the current state
-                        currPermintaans.remove(childPosition);
+                            //TODO: Should the following block should be done in onCompleted()?
+                            //Add child to the next state
+                            prevPermintaans.add(currPermintaans.get(childPosition));
+                            //Remove the child from the current state
+                            currPermintaans.remove(childPosition);
+                        } else {
+                            //TODO tell user they cannot regress
+                        }
                     }
                 });
 
@@ -157,7 +162,7 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     private void doGetAndUpdatePermintaan(final String _id, final int groupPosition, final int increment) {
-        Log.d(ExpandableListAdapter.class.getCanonicalName(), "Doing get permintaan of state");
+        Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "Doing get permintaan of state");
 
         String targetState = new String();
         if (groupPosition == 0) {
@@ -169,7 +174,7 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
         } else if (groupPosition == 3) {
             targetState = "COMPLETE";
         }
-        Log.d("targetState", targetState);
+
         PermintaanServer.getInstance(_context).getPermintaansOfState(targetState)
                                                 .subscribe(new Observer<Permintaan>() {
             Permintaan tempPermintaan = new Permintaan();
@@ -177,7 +182,6 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onCompleted() {
                 Log.d("doGetPermintaan", "On completed");
-                //Log.d("tempPermintaans", permintaans.get(0)._rev);
                 Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
                         tempPermintaan.roomNumber, tempPermintaan.guestId, _listDataHeader.get(groupPosition+increment),
                         tempPermintaan.created, new Date(), tempPermintaan.content);
@@ -205,8 +209,6 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                     @Override
                     public void onError(Throwable e) {
                         Log.d("doGetPermintaan", "On error");
-                        //TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                        //textView.setText(e.getMessage());
                         }
 
                     @Override
