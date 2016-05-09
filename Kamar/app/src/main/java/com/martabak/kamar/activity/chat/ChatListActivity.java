@@ -1,5 +1,7 @@
 package com.martabak.kamar.activity.chat;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -32,26 +34,25 @@ public class ChatListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.chat_list);
-        assert recyclerView != null;
         final List<Guest> guests = new ArrayList<Guest>();
+        final ChatRecyclerViewAdapter recyclerViewAdapter = new ChatRecyclerViewAdapter(guests);
+        recyclerView.setAdapter(recyclerViewAdapter);
+
         GuestServer.getInstance(this).getGuestsCheckedIn().subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
                 Log.d(ChatListActivity.class.getCanonicalName(), "onCompleted");
+                recyclerViewAdapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
                 Log.d(ChatListActivity.class.getCanonicalName(), "onError");
                 e.printStackTrace();
             }
             @Override public void onNext(final Guest guest) {
+                Log.d(ChatListActivity.class.getCanonicalName(), "Guest found in room " + guest.roomNumber);
                 guests.add(guest);
             }
         });
-        recyclerView.setAdapter(new ChatRecyclerViewAdapter(guests));
     }
 
     public class ChatRecyclerViewAdapter
@@ -80,7 +81,8 @@ public class ChatListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(ChatDetailFragment.ARG_ITEM_ID, holder.mItem._id);
+                    arguments.putString(ChatDetailFragment.GUEST_ID, holder.mItem._id);
+                    arguments.putString(ChatDetailFragment.SENDER, getSender());
                     ChatDetailFragment fragment = new ChatDetailFragment();
                     fragment.setArguments(arguments);
                     getSupportFragmentManager().beginTransaction()
@@ -113,5 +115,10 @@ public class ChatListActivity extends AppCompatActivity {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
         }
+    }
+
+    private String getSender() {
+        SharedPreferences prefs = getSharedPreferences("userSettings", Context.MODE_PRIVATE);
+        return prefs.getString("userSubType", "FRONTDESK");
     }
 }

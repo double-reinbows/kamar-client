@@ -6,6 +6,7 @@ import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.PostResponse;
+import com.martabak.kamar.service.response.PutResponse;
 import com.martabak.kamar.service.response.ViewResponse;
 
 import java.util.ArrayList;
@@ -124,7 +125,7 @@ public class GuestServer extends Server {
     /**
      * @return All room numbers of the hotel that have a guest currently checked in.
      */
-    public List<Room> getRoomNumbersWithGuests() {
+    public Observable<List<Room>> getRoomNumbersWithGuests() {
         final List<Room> roomsWithGuests = new ArrayList<>();
         service.getRooms()
             .flatMap(new Func1<AllResponse<Room>, Observable<Room>>() {
@@ -137,8 +138,9 @@ public class GuestServer extends Server {
                 }
             })
             // Only return rooms with a guest.
-            .subscribe(new Action1<Room>() {
-                @Override public void call(final Room room) {
+            .subscribe(new Observer<Room>() {
+                @Override public void onCompleted() {}
+                @Override public void onNext(final Room room) {
                      getGuestInRoom(room.number)
                         .subscribe(new Action1<Guest>() {
                             @Override public void call(Guest guest) {
@@ -146,15 +148,18 @@ public class GuestServer extends Server {
                             }
                         });
                 }
+                @Override public void onError(Throwable e) {
+                    e.printStackTrace();
+                }
             });
-        return roomsWithGuests;
+        return Observable.just(roomsWithGuests);
     }
 
     /**
      * @return All room numbers of the hotel that <i>do not</i> have a guest currently checked in.
      */
-    public List<Room> getRoomNumbersWithoutGuests() {
-        final List<Room> roomsWithGuests = new ArrayList<>();
+    public Observable<List<Room>> getRoomNumbersWithoutGuests() {
+        final List<Room> roomsWithoutGuests = new ArrayList<>();
         service.getRooms()
                 .flatMap(new Func1<AllResponse<Room>, Observable<Room>>() {
                     @Override public Observable<Room> call(AllResponse<Room> response) {
@@ -166,17 +171,37 @@ public class GuestServer extends Server {
                     }
                 })
                 // Only return rooms without a guest.
-                .subscribe(new Action1<Room>() {
-                    @Override public void call(final Room room) {
+                .subscribe(new Observer<Room>() {
+                    @Override public void onCompleted() {}
+                    @Override public void onNext(final Room room) {
                         getGuestInRoom(room.number)
                                 .subscribe(new Action1<Guest>() {
                                     @Override public void call(Guest guest) {
-                                        if (guest == null) roomsWithGuests.add(room);
+                                        if (guest == null) roomsWithoutGuests.add(room);
                                     }
                                 });
                     }
+                    @Override public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
                 });
-        return roomsWithGuests;
+        return Observable.just(roomsWithoutGuests);
+    }
+
+    /**
+     * Update a guest.
+     * @param guest The guest model to be created.
+     * @return The guest model that was added.
+     */
+    public Observable<Boolean> updateGuest(Guest guest) {
+        return service.updateGuest(guest._id, guest)
+                .map(new Func1<PutResponse, Boolean>() {
+                    @Override public Boolean call(PutResponse response) {
+                        return response.ok;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 }
