@@ -70,7 +70,7 @@ public abstract class Server {
      */
     protected String getBaseUrl() {
 
-        return "http://192.168.0.7:5984";
+        return "http://192.168.0.4:5984";
 
     }
 

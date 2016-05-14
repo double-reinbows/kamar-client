@@ -1,10 +1,10 @@
 package com.martabak.kamar.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-//import android.support.v7.app.AppCompatActivity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -92,22 +92,53 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         public void sendPassword() {
             //Cast view to EditText and then to a String
             String passwordString   = ((EditText)getView().findViewById(R.id.EditTextPassword)).getText().toString();
-            Log.v("Password String", passwordString);
+            //Log.v("Password String", passwordString);
 
+            /*
             //Remove this block when StaffServer.login() is working
             SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("userType", "STAFF");
             editor.commit();
+*/
 
-
-            ((SelectUserTypeActivity)getActivity()).switchActivity();
+            //((SelectUserTypeActivity)getActivity()).switchActivity();
             // FIXME uncomment this to skip staff login check
-            /*
+
             StaffServer.getInstance(getActivity()).login(passwordString).subscribe(new Observer<Boolean>() {
+                Boolean loginFlag = false;
                 @Override
                 public void onCompleted() {
-                    Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On completed");
+                    if (loginFlag) {
+                        Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On completed");
+                        SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
+                        final SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("userType", "STAFF");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Front Desk or Restaurant?");
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("Front Desk", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                editor.putString("subUserType", "FRONT DESK");
+                                editor.commit();
+                                Log.v("userType", getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none"));
+                                Log.v("subUserType", getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
+                                ((SelectUserTypeActivity)getActivity()).switchActivity();
+                            }
+                        });
+                        builder.setNegativeButton("Restaurant", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                editor.putString("subUserType", "RESTAURANT");
+                                editor.commit();
+                                ((SelectUserTypeActivity)getActivity()).switchActivity();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        //((SelectUserTypeActivity) getActivity()).switchActivity();
+                    }
                 }
 
                 @Override
@@ -124,14 +155,37 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                 @Override
                 public void onNext(Boolean loginResponse) {
                     Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On next");
-                    Log.v("loginResponse", loginResponse.toString());
+                    //Log.v("loginResponse", loginResponse.toString());
                     if (loginResponse) {
+                        loginFlag = true;
+                        /*
                         Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Staff");
-                        SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("userType", "STAFF");
-                        editor.commit();
-                        ((SelectUserTypeActivity)getActivity()).switchActivity();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Front Desk or Restaurant?");
+                        builder.setCancelable(false);
+                        builder.setPositiveButton("Front Desk", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putString("userType", "FRONTDESK");
+                                editor.commit();
+                                //((SelectUserTypeActivity)getActivity()).switchActivity();
+                            }
+                        });
+                        builder.setNegativeButton("Restaurant", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putString("userType", "RESTAURANT");
+                                editor.commit();
+                                //((SelectUserTypeActivity)getActivity()).switchActivity();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        */
                     } else {
                         Context context = getActivity().getApplicationContext();
                         String text = getResources().getString(R.string.incorrect_password) + " ";
@@ -140,7 +194,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                     }
                 }
             });
-            */
+
 
         }
     }

@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,6 +56,7 @@ public  class StaffPermintaanFragment extends Fragment {
                 new Date(), null, new Transport("cabs are here", 4, null, "tebet"));
         createExpandableList(view, permintaan);
 */
+        //Log.v("userType", getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE).getString("userType", "none"));
         //get the permintaans on the server and then create the expandable list
         doGetPermintaansOfStateAndCreateExpList();
 
@@ -87,36 +89,66 @@ public  class StaffPermintaanFragment extends Fragment {
         List<String> in_delivery_permintaan = new ArrayList<String>();
         List<String> complete_permintaan = new ArrayList<String>();
 
-
-
+        //Log.v("subUserType", getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE).getString("subUserType", "none"));
+        String subUserType = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("subUserType", "none");
+        Log.v("subUserType", subUserType);
 
         // Set up child data
         for (Permintaan permintaan : permintaans) {
-            if (permintaan.state.equals("NEW")) {
+            if (subUserType.equals("FRONT DESK")) {
+                if (permintaan.state.equals("NEW") && permintaan.owner.equals("FRONT DESK")) {
             /*    Log.v("Pulled permintaan", "state: "+permintaan.state+
                         ", owner: "+permintaan.owner+
                         ", type: "+permintaan.type+
                         ", roomNumber: "+permintaan.roomNumber);*/
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                new_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
-            } else if (permintaan.state.equals("PROCESSING")) {
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                processing_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
-            } else if (permintaan.state.equals("IN DELIVERY")) {
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                in_delivery_permintaan.add(permintaanString);
-                //in_delivery_permintaan.add(permintaan);
-                listDataChildString.put(permintaanString, permintaan);
-            } else if (permintaan.state.equals("COMPLETE")) {
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                complete_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
+                    String permintaanString = permintaan.type + " - Room No. " + permintaan.roomNumber + " - ID: " + permintaan.guestId
+                            + " - Owner: " + permintaan.owner;
+                    new_permintaan.add(permintaanString);
+                    listDataChildString.put(permintaanString, permintaan);
+                } else if (permintaan.state.equals("PROCESSING") && permintaan.owner.equals("FRONT DESK")) {
+                    String permintaanString = permintaan.type + " - Room No. " + permintaan.roomNumber + " - ID: " + permintaan.guestId
+                            + " - Owner: " + permintaan.owner;
+                    processing_permintaan.add(permintaanString);
+                    listDataChildString.put(permintaanString, permintaan);
+                } else if (permintaan.state.equals("IN DELIVERY") && permintaan.owner.equals("FRONT DESK")) {
+                    String permintaanString = permintaan.type + " - Room No. " + permintaan.roomNumber + " - ID: " + permintaan.guestId
+                            + " - Owner: " + permintaan.owner;
+                    in_delivery_permintaan.add(permintaanString);
+                    //in_delivery_permintaan.add(permintaan);
+                    listDataChildString.put(permintaanString, permintaan);
+                } else if (permintaan.state.equals("COMPLETE") && permintaan.owner.equals("FRONT DESK")) {
+                    String permintaanString = permintaan.type + " - Room No. " + permintaan.roomNumber + " - ID: " + permintaan.guestId
+                            + " - Owner: " + permintaan.owner;
+                    complete_permintaan.add(permintaanString);
+                    listDataChildString.put(permintaanString, permintaan);
+                }
+            } else { //if (subUserType.equals("RESTAURANT")
+                if (permintaan.state.equals("NEW") && permintaan.owner.equals("RESTAURANT")) {
+            /*    Log.v("Pulled permintaan", "state: "+permintaan.state+
+                        ", owner: "+permintaan.owner+
+                        ", type: "+permintaan.type+
+                        ", roomNumber: "+permintaan.roomNumber);*/
+                    String permintaanString = permintaan.type + " - Room No. " + permintaan.roomNumber + " - ID: " + permintaan.guestId
+                            + " - Owner: " + permintaan.owner;
+                    new_permintaan.add(permintaanString);
+                    listDataChildString.put(permintaanString, permintaan);
+                } else if (permintaan.state.equals("PROCESSING") && permintaan.owner.equals("RESTAURANT")) {
+                    String permintaanString = permintaan.type + " - Room No. " + permintaan.roomNumber + " - ID: " + permintaan.guestId
+                            + " - Owner: " + permintaan.owner;
+                    processing_permintaan.add(permintaanString);
+                    listDataChildString.put(permintaanString, permintaan);
+                } else if (permintaan.state.equals("IN DELIVERY") && permintaan.owner.equals("RESTAURANT")) {
+                    String permintaanString = permintaan.type + " - Room No. " + permintaan.roomNumber + " - ID: " + permintaan.guestId
+                            + " - Owner: " + permintaan.owner;
+                    in_delivery_permintaan.add(permintaanString);
+                    //in_delivery_permintaan.add(permintaan);
+                    listDataChildString.put(permintaanString, permintaan);
+                } else if (permintaan.state.equals("COMPLETE") && permintaan.owner.equals("RESTAURANT")) {
+                    String permintaanString = permintaan.type + " - Room No. " + permintaan.roomNumber + " - ID: " + permintaan.guestId
+                            + " - Owner: " + permintaan.owner;
+                    complete_permintaan.add(permintaanString);
+                    listDataChildString.put(permintaanString, permintaan);
+                }
             }
         }
 
@@ -159,6 +191,11 @@ public  class StaffPermintaanFragment extends Fragment {
             @Override
             public void onNext(Permintaan result) {
                 Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On next");
+                //String userType = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("userType", "none");
+                //Log.d("userType", userType +" "+ result.owner);
+                //if (userType.contentEquals(result.owner)) {
+                  //  permintaans.add(result);
+                //}
                 permintaans.add(result);
             }
         });
