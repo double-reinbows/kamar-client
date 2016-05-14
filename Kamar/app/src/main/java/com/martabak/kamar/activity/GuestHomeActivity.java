@@ -13,10 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.SurveyAnswer;
 import com.martabak.kamar.domain.SurveyQuestion;
 import com.martabak.kamar.service.FeedbackServer;
 import com.martabak.kamar.service.GuestServer;
@@ -35,9 +37,17 @@ public class GuestHomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_home);
+
         final ImageAdapter imgAdapter = new ImageAdapter(this);
         final GridView gridView = (GridView) findViewById(R.id.guestgridview);
         View passwordIconView = findViewById(R.id.passwordChangeIcon);
+        View logoutView = findViewById(R.id.logoutIcon);
+
+        TextView roomNumberTextView = (TextView)findViewById(R.id.room_number_display);
+        String roomNumber = getSharedPreferences("roomSettings", MODE_PRIVATE)
+                .getString("roomNumber", null);
+
+        setGuestId(roomNumber);
 
         gridView.setAdapter(imgAdapter);
 
@@ -51,12 +61,25 @@ public class GuestHomeActivity extends AppCompatActivity
             }
         });
 
+        //set room number text
+        roomNumberTextView.setText("RoomNumber:" + roomNumber);
+
         //open the change room number as a fragment
         passwordIconView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
                 changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
+
+            }
+        });
+
+        //logout guest
+        logoutView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment logoutDialogFragment = new LogoutDialogFragment();
+                logoutDialogFragment.show(getFragmentManager(), "logout");
 
             }
         });
@@ -115,7 +138,7 @@ public class GuestHomeActivity extends AppCompatActivity
     public void onDialogPositiveClick(DialogFragment dialog) {
         dialog.dismiss();
         if (option == "CHECKOUT") {
-            startCheckout();
+            startCheckout("Bellboy on the way!");
         }
     }
 
@@ -126,16 +149,54 @@ public class GuestHomeActivity extends AppCompatActivity
     public void onDialogNegativeClick(DialogFragment dialog) {
         dialog.dismiss();
         if (option == "CHECKOUT") {
-            startCheckout();
+            startCheckout("Report to the frontdesk!");
         }
     }
 
     /*
      * Show checkout fragment
      */
-    public void startCheckout() {
+    public void startCheckout(String bellboy) {
         Intent intent = new Intent(this, SurveyActivity.class);
+        intent.putExtra("Bellboy",bellboy);
         startActivity(intent);
+    }
+
+
+     /*
+     * Set guest id on shared preferences
+     */
+    public void setGuestId(String roomNumber)
+    {
+        GuestServer.getInstance(getBaseContext()).getGuestInRoom(
+                roomNumber).subscribe(new Observer<Guest>() {
+            @Override
+            public void onCompleted() {
+                Log.d("Completed", "On completed");
+
+            }
+            @Override public void onError(Throwable e) {
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
+                e.printStackTrace();
+            }
+            @Override public void onNext(Guest result) {
+                //stroe the guest id in shared preferences
+                SharedPreferences pref = getSharedPreferences("userSettings",
+                        MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                if (result == null) {
+                    editor.putString("guestId", null);
+                }
+                else {
+                    editor.putString("guestId", result._id);
+                }
+
+                editor.commit();
+                Log.v("GUESTID", result.toString());
+                Log.d("Next", "On next");
+
+            }
+        });
     }
 
 }

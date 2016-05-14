@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -85,7 +86,6 @@ public class GuestPermintaanActivity extends AppCompatActivity {
 
 
 
-
         // Set up child data
         for (Permintaan permintaan : permintaans) {
             if (permintaan.state.equals("NEW")) {
@@ -142,7 +142,8 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         PermintaanServer.getInstance(this).getPermintaansOfState("NEW", "PROCESSING", "IN DELIVERY", "COMPLETE")
                                                                             .subscribe(new Observer<Permintaan>() {
             List<Permintaan> permintaans = new ArrayList<>();
-
+            String roomNumber = getSharedPreferences("roomSettings", Context.MODE_PRIVATE).getString("roomNumber", "none");
+            //Log.d("roomNumber", roomNumber);
             @Override
             public void onCompleted() {
                 Log.d(GuestPermintaanActivity.class.getCanonicalName(), "On completed");
@@ -160,10 +161,12 @@ public class GuestPermintaanActivity extends AppCompatActivity {
             @Override
             public void onNext(Permintaan result) {
                 Log.d(GuestPermintaanActivity.class.getCanonicalName(), "On next");
-                //TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                //textView.setText(result.toString() + " for " + result.guestId + " of type " + result.content.getType());
-                //Log.d("GuestID from server", result.guestId);
-                permintaans.add(result);
+                if (result.roomNumber.equals(roomNumber)) {
+                    //TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                    //textView.setText(result.toString() + " for " + result.guestId + " of type " + result.content.getType());
+                    //Log.d("GuestID from server", result.guestId);
+                    permintaans.add(result);
+                }
                 //createExpandableList(getView(), result);
             }
         });

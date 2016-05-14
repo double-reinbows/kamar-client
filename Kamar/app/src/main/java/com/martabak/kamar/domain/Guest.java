@@ -61,6 +61,19 @@ public class Guest extends Model {
     }
 
     public Guest(String firstName, String lastName, String phone, String email, Date checkIn, Date checkOut, String roomNumber, String welcomeMessage) {
+        super(null, null);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.roomNumber = roomNumber;
+        this.welcomeMessage = welcomeMessage;
+    }
+
+    public Guest(String _id, String _rev, String firstName, String lastName, String phone, String email, Date checkIn, Date checkOut, String roomNumber, String welcomeMessage) {
+        super(_id, _rev);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;

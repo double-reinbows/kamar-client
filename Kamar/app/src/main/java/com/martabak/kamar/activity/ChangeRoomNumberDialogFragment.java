@@ -13,11 +13,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.Room;
+import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.StaffServer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observer;
 
@@ -28,6 +35,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
 
     String roomNumber;
     String passwordString;
+    ArrayAdapter adapter;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -37,9 +45,21 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
         roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
                     .getString("roomNumber", "none");
         final View view = layoutInflater.inflate(R.layout.dialog_change_room_number, null);
-        final EditText editText = (EditText)
-                view.findViewById(R.id.room_number_edit_text);
-        editText.setText(roomNumber);
+        final Spinner spinner = (Spinner) view.findViewById(R.id.change_room_number_spinner);
+
+        final List<String> roomNumbers = getRoomNumbersWithoutGuests();
+
+
+        adapter = new ArrayAdapter(getActivity().getBaseContext(),
+                R.layout.support_simple_spinner_dropdown_item, roomNumbers);
+        roomNumbers.add(0, "Please Select a room");
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        adapter.notifyDataSetChanged();
+        spinner.setAdapter(adapter);
+
+        //spinner.setSelection(Integer.valueOf(roomNumber));
+
+
 
         final EditText passwordEditText = (EditText)
                 view.findViewById(R.id.password_edit_text);
@@ -48,7 +68,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {;
-                        roomNumber = editText.getText().toString();
+                        roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
                         passwordString = passwordEditText.getText().toString();
                         changeRoomNumber();
 
@@ -107,6 +127,40 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
             }
         });
 
+
+    }
+
+    /*
+     * return a list of Room Numbers with no guests checked in
+     */
+    private List<String> getRoomNumbersWithoutGuests() {
+
+        final List <String> roomStrings = new ArrayList<String>();
+        GuestServer.getInstance(getActivity().getBaseContext()).
+                getRoomNumbers().subscribe(new Observer<List<Room>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.v("OnError",  "Error");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(List<Room> rooms) {
+                for (int i=0; i < rooms.size(); i++) {
+                    roomStrings.add(rooms.get(i).number);
+                    Log.v("Room", roomStrings.get(i));
+                }
+                Log.v("onNext", "Next");
+
+            }
+        });
+
+        return roomStrings;
 
     }
 
