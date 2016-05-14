@@ -6,8 +6,11 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.martabak.kamar.domain.converters.DateConverter;
 import com.martabak.kamar.domain.converters.PermintaanConverter;
 import com.martabak.kamar.domain.permintaan.Permintaan;
+
+import java.util.Date;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -42,6 +45,7 @@ public abstract class Server {
                 .baseUrl(getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
                         .registerTypeAdapter(Permintaan.class, new PermintaanConverter(datePattern))
+                        .registerTypeAdapter(Date.class, new DateConverter(datePattern))
                         .setDateFormat(datePattern)
                         .create()))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
