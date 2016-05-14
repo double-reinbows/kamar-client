@@ -81,6 +81,7 @@ public class CheckGuestInFragment extends Fragment {
 
         final List<String> roomNumbers = getRoomNumbersWithoutGuests();
 
+        
         ArrayAdapter adapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
         roomNumbers.add(0, "Please Select a room");
@@ -180,14 +181,11 @@ public class CheckGuestInFragment extends Fragment {
             @Override
             public void onCompleted() {
                 Log.d("Completed", "On completed");
-
-
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.d("Error", "On error");
-
                 e.printStackTrace();
             }
 
@@ -195,8 +193,6 @@ public class CheckGuestInFragment extends Fragment {
             public void onNext(Guest guest) {
                 Log.d("Next", "On next");
                 Log.v("GUEST", guest.toString());
-                setGuestId(roomNumber);
-
             }
 
         });
@@ -205,36 +201,7 @@ public class CheckGuestInFragment extends Fragment {
     }
 
 
-    /*
-     * Set guest id on shared preferences
-     */
-    public void setGuestId(String roomNumber)
-    {
-        GuestServer.getInstance(getActivity().getBaseContext()).getGuestInRoom(
 
-                roomNumber).subscribe(new Observer<Guest>() {
-            @Override
-            public void onCompleted() {
-                Log.d("Completed", "On completed");
-
-            }
-            @Override public void onError(Throwable e) {
-                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
-                e.printStackTrace();
-            }
-            @Override public void onNext(Guest result) {
-                //stroe the guest id in shared preferences
-                SharedPreferences pref = getActivity().getSharedPreferences("userSettings",
-                        getActivity().MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("guestId", result._id);
-                editor.commit();
-                Log.v("GUESTID", result.toString());
-                Log.d("Next", "On next");
-
-            }
-        });
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
