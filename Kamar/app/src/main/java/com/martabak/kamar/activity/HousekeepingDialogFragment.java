@@ -71,42 +71,45 @@ public class HousekeepingDialogFragment extends DialogFragment {
         String owner = "FRONT DESK";
         String type = "HOUSEKEEPING";
         String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
-                .getString("roomNumber", "none");
+                .getString("roomNumber", null);
         String guestId= getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                .getString("guestId", "none");
+                .getString("guestId", null);
         String state = "NEW";
 
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
 
-        PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
-                        owner,
-                        type,
-                        roomNumber,
-                        guestId,
-                        state,
-                        currentDate,
-                        currentDate,
-                        housekeeping
-                        )
-        ).subscribe(new Observer<Permintaan>() {
-            @Override
-            public void onCompleted() {
-                Log.d("Completed", "On completed");
-            }
+        if (guestId != null) {
+            PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
+                            owner,
+                            type,
+                            roomNumber,
+                            guestId,
+                            state,
+                            currentDate,
+                            currentDate,
+                            housekeeping
+                    )
+            ).subscribe(new Observer<Permintaan>() {
+                @Override
+                public void onCompleted() {
+                    Log.d("Completed", "On completed");
+                }
 
-            @Override
-            public void onError(Throwable e) {
-                Log.d("Error", "On error");
+                @Override
+                public void onError(Throwable e) {
+                    Log.d("Error", "On error");
 
-                e.printStackTrace();
-            }
+                    e.printStackTrace();
+                }
 
-            @Override
-            public void onNext(Permintaan permintaan) {
-                Log.d("Next", "On next");
-            }
-        });
+                @Override
+                public void onNext(Permintaan permintaan) {
+                    Log.d("Next", "On next");
+                }
+            });
+
+        }
 
 
     }

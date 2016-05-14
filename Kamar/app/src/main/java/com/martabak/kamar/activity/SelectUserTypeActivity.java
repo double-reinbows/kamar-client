@@ -248,7 +248,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case "GUEST":
-                intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, GuestHomeActivity.class);
                 startActivity(intent);
                 break;
             default:

@@ -11,15 +11,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.service.GuestServer;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
@@ -32,12 +37,13 @@ import rx.Observer;
  * Use the {@link CheckGuestInFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public  class CheckGuestInFragment extends Fragment {
+public class CheckGuestInFragment extends Fragment {
 
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String email;
+    private String roomNumber;
 
     private OnFragmentInteractionListener mListener;
 
@@ -70,6 +76,21 @@ public  class CheckGuestInFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view =  inflater.inflate(R.layout.fragment_check_guest_in, container, false);
+
+        final Spinner spinner = (Spinner) view.findViewById(R.id.guest_spinner);
+
+        final List<String> roomNumbers = getRoomNumbersWithoutGuests();
+
+        
+        ArrayAdapter adapter = new ArrayAdapter(getActivity().getBaseContext(),
+                R.layout.support_simple_spinner_dropdown_item, roomNumbers);
+        roomNumbers.add(0, "Please Select a room");
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        adapter.notifyDataSetChanged();
+        spinner.setAdapter(adapter);
+        spinner.setSelection(0);
+
+
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.check_guest_in_btn);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +107,8 @@ public  class CheckGuestInFragment extends Fragment {
                 EditText editTextEmail = (EditText) getView().findViewById(R.id.guest_email);
                 email = editTextEmail.getText().toString();
 
+                roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
+
                 sendGuestRequest();
 
 
@@ -97,11 +120,43 @@ public  class CheckGuestInFragment extends Fragment {
     }
 
     /*
+     * return a list of Room Numbers with no guests checked in
+     */
+    private List<String> getRoomNumbersWithoutGuests() {
+
+        final List <String> roomStrings = new ArrayList<String>();
+        GuestServer.getInstance(getActivity().getBaseContext()).
+                getRoomNumbers().subscribe(new Observer<List<Room>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.v("OnError",  "Error");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(List<Room> rooms) {
+                for (int i=0; i < rooms.size(); i++) {
+                    roomStrings.add(rooms.get(i).number);
+                    Log.v("Room", roomStrings.get(i));
+                }
+                Log.v("onNext", "Next");
+
+            }
+        });
+
+        return roomStrings;
+
+    }
+
+    /*
      * Send create new guest request to the server
      */
     private void sendGuestRequest() {
-        final String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
-                .getString("roomNumber", "none");
 
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
@@ -110,6 +165,9 @@ public  class CheckGuestInFragment extends Fragment {
         Date futureDate = c.getTime();
 
         Log.v("FutureDate", futureDate.toString());
+
+        String welcomeMessage = "Hi " + firstName + "!";
+
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
                 firstName,
                 lastName,
@@ -118,19 +176,16 @@ public  class CheckGuestInFragment extends Fragment {
                 currentDate,
                 futureDate,
                 roomNumber,
-                "welcome to hotel")
+                welcomeMessage)
         ).subscribe(new Observer<Guest>() {
             @Override
             public void onCompleted() {
                 Log.d("Completed", "On completed");
-
-
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.d("Error", "On error");
-
                 e.printStackTrace();
             }
 
@@ -138,8 +193,6 @@ public  class CheckGuestInFragment extends Fragment {
             public void onNext(Guest guest) {
                 Log.d("Next", "On next");
                 Log.v("GUEST", guest.toString());
-                setGuestId(roomNumber);
-
             }
 
         });
@@ -148,36 +201,7 @@ public  class CheckGuestInFragment extends Fragment {
     }
 
 
-    /*
-     * Set guest id on shared preferences
-     */
-    public void setGuestId(String roomNumber)
-    {
-        GuestServer.getInstance(getActivity().getBaseContext()).getGuestInRoom(
 
-                roomNumber).subscribe(new Observer<Guest>() {
-            @Override
-            public void onCompleted() {
-                Log.d("Completed", "On completed");
-
-            }
-            @Override public void onError(Throwable e) {
-                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
-                e.printStackTrace();
-            }
-            @Override public void onNext(Guest result) {
-                //stroe the guest id in shared preferences
-                SharedPreferences pref = getActivity().getSharedPreferences("userSettings",
-                        getActivity().MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("guestId", result._id);
-                editor.commit();
-                Log.v("GUESTID", result.toString());
-                Log.d("Next", "On next");
-
-            }
-        });
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

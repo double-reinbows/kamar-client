@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -23,11 +24,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import android.os.Bundle;
+import android.widget.Toast;
 
 import rx.Observer;
 
 public class SurveyActivity extends AppCompatActivity {
 
+    String toastMessage = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +39,28 @@ public class SurveyActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        {
+            toastMessage = extras.getString("Bellboy");
+        }
+
+
         LayoutInflater layoutInflater = getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.activity_survey, null);
         setContentView(view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final RecyclerView rv = (RecyclerView) view.findViewById(R.id.survey_recycleview);
+
+        final LinearLayoutManager llm = new LinearLayoutManager(getBaseContext());
+        rv.setLayoutManager(llm);
+
         final List<SurveyQuestion> surveyQuestions = new ArrayList<SurveyQuestion>();
         final List<String> viewSurveyQuestions = new ArrayList<String>();
+        final SurveyArrayAdapter surveyArrayAdapter = new SurveyArrayAdapter(viewSurveyQuestions);
+        rv.setAdapter(surveyArrayAdapter);
 
         /* Retrieve all questions */
         FeedbackServer.getInstance(this).getSurveyQuestions()
@@ -51,6 +69,7 @@ public class SurveyActivity extends AppCompatActivity {
                     public void onCompleted() {
                         Log.d("size", String.valueOf(surveyQuestions.size()));
                         Log.d("Completed", "On completed");
+                        surveyArrayAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -75,15 +94,6 @@ public class SurveyActivity extends AppCompatActivity {
 
 
 
-
-        final RecyclerView rv = (RecyclerView) view.findViewById(R.id.survey_recycleview);
-
-        final LinearLayoutManager llm = new LinearLayoutManager(getBaseContext());
-        rv.setLayoutManager(llm);
-
-        final SurveyArrayAdapter surveyArrayAdapter = new SurveyArrayAdapter(viewSurveyQuestions);
-        rv.setAdapter(surveyArrayAdapter);
-
         final List<SurveyAnswer> surveyAnswers = new ArrayList<SurveyAnswer>();
         FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.survey_answer_add);
 
@@ -105,6 +115,10 @@ public class SurveyActivity extends AppCompatActivity {
                         .subscribe(new Observer<Boolean>() {
                             @Override
                             public void onCompleted() {
+                                String text =  toastMessage + " ";
+                                Toast toast = Toast.makeText(getBaseContext(), text, Toast.LENGTH_SHORT);
+                                toast.show();
+                                finish();
                                 Log.d("Completed", "On completed");
                             }
 
@@ -121,11 +135,8 @@ public class SurveyActivity extends AppCompatActivity {
                             }
                         });
 
-
-
-
-            }
-        });
+                }
+            });
     }
 
 

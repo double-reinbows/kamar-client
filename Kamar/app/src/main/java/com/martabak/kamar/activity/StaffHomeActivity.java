@@ -69,6 +69,10 @@ public class StaffHomeActivity extends AppCompatActivity {
 
                 } else if (id == R.id.nav_check_guest_out) {
                     //Handle the check guest out click
+                    CheckGuestOutFragment fragment = CheckGuestOutFragment.newInstance();
+                    fragmentTransaction.replace(R.id.staff_container, fragment);
+                    fragmentTransaction.commit();
+
 
 
                 } else if (id == R.id.nav_set_welcome_image) {
