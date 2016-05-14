@@ -10,7 +10,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.martabak.kamar.domain.permintaan.Bellboy;
 import com.martabak.kamar.domain.permintaan.Checkout;
-import com.martabak.kamar.domain.permintaan.Consumable;
+import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.domain.permintaan.Content;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.Maintenance;
@@ -58,7 +58,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         content.addProperty("message", src.content.message);
         switch (src.type) {
             case "CONSUMABLE":
-                Consumable c = (Consumable)src.content;
+                RestaurantOrder c = (RestaurantOrder)src.content;
                 content.addProperty("total_price", c.totalPrice);
                 JsonArray items = new JsonArray();
                 for (OrderItem i : c.items) {
@@ -127,7 +127,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                     items.add(new OrderItem(quantity, name));
                 }
                 Integer totalPrice = c.getAsJsonPrimitive("total_price").getAsInt();
-                content = new Consumable(message, items, totalPrice);
+                content = new RestaurantOrder(message, items, totalPrice);
                 break;
             case "CHECKOUT":
                 content = new Checkout(message);
