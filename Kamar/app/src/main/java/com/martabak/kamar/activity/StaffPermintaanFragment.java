@@ -54,10 +54,10 @@ public  class StaffPermintaanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_staff_permintaan, container, false);
 
         //add dummy permintaan to the list and create list
-/*
+
         Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "705", "PADOOL", "NEW",
                 new Date(), null, new Transport("cabs are here", 4, null, "tebet"));
-        createExpandableList(view, permintaan);
+  /*      createExpandableList(view, permintaan);
 */
         //get the permintaans on the server and then create the expandable list
         doGetPermintaansOfStateAndCreateExpList();
@@ -144,7 +144,7 @@ public  class StaffPermintaanFragment extends Fragment {
      * creates the expandable list.
      */
     private void doGetPermintaansOfStateAndCreateExpList() {
-        Log.d(StaffPermintaanFragment.class.getCanonicalName(), "Done get permintaans of state");
+        Log.d(StaffPermintaanFragment.class.getCanonicalName(), "Doing get permintaans of state");
 
 
         PermintaanServer.getInstance(getActivity()).getPermintaansOfState("NEW", "PROCESSING", "IN DELIVERY", "COMPLETE")

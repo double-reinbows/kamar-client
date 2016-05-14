@@ -1,5 +1,7 @@
 package com.martabak.kamar.activity;
 
+import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +9,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +59,8 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         final String childText = (String) getChild(groupPosition, childPosition);
 
+
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -62,8 +68,7 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
-        //Log.d("context", this._context.class.toString());
-        //Log.d("context", this._context.getClass().toString());
+
         //TODO: Change button picture to a down arrow
         ImageView progressPermintaanButton = (ImageView) convertView.findViewById(R.id.progress_permintaan_button);
 
@@ -76,51 +81,21 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Permintaan currPermintaan;
                         List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
-                        //Log.d("id", _listDataChildString.get(currPermintaans.get(childPosition)).id);
-                        Permintaan currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
-                        Log.d("curr permintaan guestid", currPermintaan.guestId);
-                        Log.d("curr permintaan _id", currPermintaan._id);
-                        Log.d("curr permintaan created", currPermintaan.created.toString());
-                        //Log.d("selected child state:", _listDataHeader.get(groupPosition));
+                        currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
+
+                        doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, 1);
 
                         //Get the list of permintaans in the next state
                         List<String> nextPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition + 1));
-                        //Create new Permintaan with updated state
-                        Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, currPermintaan._rev, currPermintaan.owner, currPermintaan.type,
-                                currPermintaan.roomNumber, currPermintaan.guestId, _listDataHeader.get(groupPosition + 1),
-                                currPermintaan.created, new Date(), currPermintaan.content);
 
-                        //TODO: The following block should be done in onCompleted()?
+                        //TODO: Should the following block should be done in onCompleted()?
                         //Add child to the next state
-                        nextPermintaans.add(currPermintaans.get(childPosition)); //print permintaans mapped to current string
+                        nextPermintaans.add(currPermintaans.get(childPosition));
                         //Remove the child from the current state
                         currPermintaans.remove(childPosition);
-                        //TODO: I must update childPosition & groupPosition here.
-                        //childPosition += 1;
-                        //groupPosiion += 1;
 
-
-                        //TODO: change "new Permintaan()" to a permintaan that the staff has changed
-                        PermintaanServer.getInstance(_context).updatePermintaan(updatedPermintaan)
-                                .subscribe(new Observer<Boolean>() {
-                                    @Override
-                                    public void onCompleted() {
-                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "On completed");
-                                        notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "On error");
-                                        e.printStackTrace();
-                                    }
-
-                                    @Override
-                                    public void onNext(Boolean result) {
-                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "staff permintaan update " + result);
-                                    }
-                                });
                     }
                 });
 
@@ -137,7 +112,6 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
         });
 
 
-
         ImageView regressPermintaanButton = (ImageView) convertView.findViewById(R.id.regress_permintaan_button);
 
         regressPermintaanButton.setOnClickListener(new View.OnClickListener() {
@@ -149,47 +123,20 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Permintaan currPermintaan;
                         List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
-                        //Log.d("id", _listDataChildString.get(currPermintaans.get(childPosition)).id);
-                        Permintaan currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
-                        //Log.d("curr permintaan guestid", currPermintaan.guestId);
-                        //Log.d("curr permintaan created", currPermintaan.created.toString());
-                        //Log.d("curr permintaan _id", currPermintaan._id);
+                        currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
 
-                        //Log.d("selected child state:", _listDataHeader.get(groupPosition));
+                        doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, -1);
 
-                        //Get the list of permintaans in the next state
+                        //Get the list of permintaans in the previous state
                         List<String> prevPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition - 1));
-                        //Create new Permintaan with updated state
-                        Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, currPermintaan._rev, currPermintaan.owner, currPermintaan.type,
-                                currPermintaan.roomNumber, currPermintaan.guestId, _listDataHeader.get(groupPosition-1),
-                                currPermintaan.created, new Date(), currPermintaan.content);
 
+                        //TODO: Should the following block should be done in onCompleted()?
                         //Add child to the next state
-                        prevPermintaans.add(currPermintaans.get(childPosition)); //print permintaans mapped to current string
+                        prevPermintaans.add(currPermintaans.get(childPosition));
                         //Remove the child from the current state
                         currPermintaans.remove(childPosition);
-
-                        //TODO: change "new Permintaan()" to a permintaan that the staff has changed
-                        PermintaanServer.getInstance(_context).updatePermintaan(updatedPermintaan)
-                                .subscribe(new Observer<Boolean>() {
-                                    @Override
-                                    public void onCompleted() {
-                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "On completed");
-                                        notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "On error");
-                                        e.printStackTrace();
-                                    }
-
-                                    @Override
-                                    public void onNext(Boolean result) {
-                                        Log.d(ExpandableListAdapter.class.getCanonicalName(), "staff permintaan update " + result);
-                                    }
-                                });
                     }
                 });
 
@@ -207,6 +154,69 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         txtListChild.setText(childText);
         return convertView;
+    }
+
+    private void doGetAndUpdatePermintaan(final String _id, final int groupPosition, final int increment) {
+        Log.d(ExpandableListAdapter.class.getCanonicalName(), "Doing get permintaan of state");
+
+        String targetState = new String();
+        if (groupPosition == 0) {
+            targetState = "NEW";
+        } else if (groupPosition == 1) {
+            targetState = "PROCESSING";
+        } else if (groupPosition == 2) {
+            targetState = "IN DELIVERY";
+        } else if (groupPosition == 3) {
+            targetState = "COMPLETE";
+        }
+        Log.d("targetState", targetState);
+        PermintaanServer.getInstance(_context).getPermintaansOfState(targetState)
+                                                .subscribe(new Observer<Permintaan>() {
+            Permintaan tempPermintaan = new Permintaan();
+
+            @Override
+            public void onCompleted() {
+                Log.d("doGetPermintaan", "On completed");
+                //Log.d("tempPermintaans", permintaans.get(0)._rev);
+                Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
+                        tempPermintaan.roomNumber, tempPermintaan.guestId, _listDataHeader.get(groupPosition+increment),
+                        tempPermintaan.created, new Date(), tempPermintaan.content);
+                PermintaanServer.getInstance(_context).updatePermintaan(updatedPermintaan)
+                    .subscribe(new Observer<Boolean>() {
+                        @Override
+                        public void onCompleted() {
+                            Log.d("updatePermintaan", "On completed");
+                            notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d("updatePermintaan", "On error");
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onNext(Boolean result) {
+                            Log.d("updatePermintaan", "staff permintaan update " + result);
+                        }
+                    });
+        }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("doGetPermintaan", "On error");
+                        //TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                        //textView.setText(e.getMessage());
+                        }
+
+                    @Override
+                    public void onNext(Permintaan result) {
+                        Log.d("doGetPermintaan", "On next" + result._id +" "+ _id);
+                        if (result._id.equals(_id)) {
+                            tempPermintaan = result;
+                        }
+                    }
+                });
     }
 
     @Override
