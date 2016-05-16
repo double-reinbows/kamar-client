@@ -1,20 +1,16 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.guest;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -22,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.home.SelectUserTypeActivity;
 import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.StaffServer;

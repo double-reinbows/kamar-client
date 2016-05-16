@@ -1,7 +1,6 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.staff;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -26,7 +25,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import rx.Observable;
 import rx.Observer;
 
 /**

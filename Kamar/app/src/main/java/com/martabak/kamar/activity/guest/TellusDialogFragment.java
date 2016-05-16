@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.guest;
 
 
 import android.app.AlertDialog;

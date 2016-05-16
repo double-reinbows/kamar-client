@@ -59,5 +59,6 @@
     <string name="chat_send_button">Send</string>
     <string name="chat_message_sent">Message sent</string>
     <string name="something_went_wrong">Oops, something went wrong</string>
+    <string name="title_activity_restaurant">RestaurantActivity</string>
 
 </resources>

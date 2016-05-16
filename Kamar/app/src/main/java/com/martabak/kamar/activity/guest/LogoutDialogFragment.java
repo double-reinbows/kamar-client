@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.guest;
 
 
 import android.app.Activity;
@@ -14,11 +14,12 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.home.SelectLanguageActivity;
+import com.martabak.kamar.activity.home.SelectUserTypeActivity;
 import com.martabak.kamar.service.StaffServer;
 
 import rx.Observer;

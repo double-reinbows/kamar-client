@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.guest;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,41 +11,42 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.domain.permintaan.Maintenance;
+import com.martabak.kamar.activity.guest.GuestHomeActivity;
+import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Calendar;
 
 import rx.Observer;
 
 /**
- * Maintenance Dialog Fragment
+ * Housekeeping Dialog Fragment
  */
-public class MaintenanceDialogFragment extends DialogFragment {
+public class HousekeepingDialogFragment extends DialogFragment {
 
-    String maintenanceMessage;
+    String housekeepingMessage;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        final View view = layoutInflater.inflate(R.layout.dialog_maintenance, null);
+        final View view = layoutInflater.inflate(R.layout.dialog_housekeeping, null);
         builder.setView(view)
                 .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        EditText editMaintenanceMessage = (EditText)
-                                view.findViewById(R.id.maintenance_message_edit_text);
-                        maintenanceMessage = editMaintenanceMessage.getText().toString();
+                        EditText editTransportMessage = (EditText)
+                                view.findViewById(R.id.housekeeping_message_edit_text);
+                        housekeepingMessage = editTransportMessage.getText().toString();
 
-                        sendMaintenanceRequest();
+                        sendHousekeepingRequest();
 
                         GuestHomeActivity guestHomeActivity = (GuestHomeActivity) getActivity();
-                        guestHomeActivity.makeToast("Maintenance is on its way!");
+                        guestHomeActivity.makeToast("Housekeeping is on its way!");
 
                     }
                 })
@@ -59,16 +60,15 @@ public class MaintenanceDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    /* Send Maintenance Request */
-    public void sendMaintenanceRequest() {
+    /*
+     * Send the housekeeping request to the server
+     */
+    public void sendHousekeepingRequest() {
 
-
-        Maintenance maintenance = new Maintenance(maintenanceMessage);
-
-        Log.v(maintenance.getType(), maintenance.getClass().toString());
+        Housekeeping housekeeping = new Housekeeping(housekeepingMessage);
 
         String owner = "FRONT DESK";
-        String type = "MAINTENANCE";
+        String type = "HOUSEKEEPING";
         String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", null);
         String guestId= getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
@@ -80,14 +80,15 @@ public class MaintenanceDialogFragment extends DialogFragment {
 
         if (guestId != null) {
             PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
-                    owner,
-                    type,
-                    roomNumber,
-                    guestId,
-                    state,
-                    currentDate,
-                    currentDate,
-                    maintenance)
+                            owner,
+                            type,
+                            roomNumber,
+                            guestId,
+                            state,
+                            currentDate,
+                            currentDate,
+                            housekeeping
+                    )
             ).subscribe(new Observer<Permintaan>() {
                 @Override
                 public void onCompleted() {
@@ -106,10 +107,9 @@ public class MaintenanceDialogFragment extends DialogFragment {
                     Log.d("Next", "On next");
                 }
             });
+
         }
 
 
-
     }
-
 }

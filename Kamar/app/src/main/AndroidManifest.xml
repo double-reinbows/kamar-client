@@ -11,16 +11,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name=".activity.chat.GuestChatService" />
-        <service android:name=".activity.permintaan.GuestPermintaanService" />
+        <service android:name=".activity.guest.GuestPermintaanService" />
         <service android:name=".activity.chat.StaffChatService" />
-        <service android:name=".activity.permintaan.StaffPermintaanService" />
-
+        <service android:name=".activity.staff.StaffPermintaanService" />
 
         <activity
             android:name=".activity.YiannisTestActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape">
-            <!--intent-filter>
+
+            <!--
+            intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,7 +29,7 @@
             -->
         </activity>
         <activity
-            android:name=".activity.SelectLanguageActivity"
+            android:name=".activity.home.SelectLanguageActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape">
             <intent-filter>
@@ -38,43 +39,47 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.SelectUserTypeActivity"
+            android:name=".activity.home.SelectUserTypeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".activity.GuestHomeActivity"
+            android:name=".activity.guest.GuestHomeActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".activity.StaffHomeActivity"
+            android:name=".activity.staff.StaffHomeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.GuestPermintaanActivity"
+            android:name=".activity.guest.GuestPermintaanActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.TransportActivity"
-            android:label="@string/app_name"
+            android:name=".activity.guest.TransportActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.SurveyActivity"
-            android:label="@string/app_name"
+            android:name=".activity.guest.SurveyActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.chat.ChatListActivity"
-            android:label="@string/title_chat_list"
             android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_chat_list"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.restaurant.RestaurantActivity"
+            android:label="@string/title_activity_restaurant"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

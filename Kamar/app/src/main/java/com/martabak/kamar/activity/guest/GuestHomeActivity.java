@@ -1,10 +1,6 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.guest;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,14 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.staff.CheckGuestInFragment;
 import com.martabak.kamar.domain.Guest;
-import com.martabak.kamar.domain.SurveyAnswer;
-import com.martabak.kamar.domain.SurveyQuestion;
-import com.martabak.kamar.service.FeedbackServer;
 import com.martabak.kamar.service.GuestServer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observer;
 
