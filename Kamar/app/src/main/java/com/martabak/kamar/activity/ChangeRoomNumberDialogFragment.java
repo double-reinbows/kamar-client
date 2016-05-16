@@ -1,10 +1,12 @@
 package com.martabak.kamar.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
@@ -88,7 +91,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
 
     /*
      * Change room number
-     */
+    */
     public void changeRoomNumber() {
 
         SharedPreferences languagePref = getActivity().getSharedPreferences("roomSettings",
@@ -101,6 +104,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
             @Override
             public void onCompleted() {
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On completed");
+                updateRoomNumberText();
             }
 
             @Override
@@ -161,6 +165,21 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
         });
 
         return roomStrings;
+
+    }
+
+    /*
+     * Update roomtext
+     */
+    public void updateRoomNumberText() {
+        GuestHomeActivity activity = (GuestHomeActivity)getActivity();
+        //Log.v("ACTIVITY IS", activity.toString());
+        if (isAdded() && activity != null) {
+            TextView roomNumberTextView = (TextView)activity.findViewById(R.id.room_number_display);
+            roomNumberTextView.setText(roomNumber);
+            activity.setGuestId(roomNumber);
+        }
+
 
     }
 

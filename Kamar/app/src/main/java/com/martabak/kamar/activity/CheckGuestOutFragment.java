@@ -34,6 +34,8 @@ public class CheckGuestOutFragment extends Fragment {
 
     String roomNumber;
     Guest guest;
+    ArrayAdapter adapter;
+    TextView tv;
 
     public CheckGuestOutFragment() {
         // Required empty public constructor
@@ -55,27 +57,22 @@ public class CheckGuestOutFragment extends Fragment {
 
         final List<String> roomNumbers = getRoomNumbersWithoutGuests();
 
-        ArrayAdapter adapter = new ArrayAdapter(getActivity().getBaseContext(),
+        adapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
         roomNumbers.add(0, "Please Select a room");
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        adapter.notifyDataSetChanged();
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
+
+        tv = (TextView)parentView.findViewById(R.id.guest_info);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setGuest();
                 if (position > 0) {
                     roomNumber = roomNumbers.get(position);
                     Log.v("RoomNumber is", roomNumber);
-                    TextView tv = (TextView)parentView.findViewById(R.id.guest_info);
-                    if (guest != null) {
-                        String fullName = guest.firstName + " " + guest.lastName;
-                        tv.setText(fullName);
-                    }
-
+                    setGuest();
                 }
 
             }
@@ -111,7 +108,7 @@ public class CheckGuestOutFragment extends Fragment {
                 getRoomNumbers().subscribe(new Observer<List<Room>>() {
             @Override
             public void onCompleted() {
-
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -142,6 +139,10 @@ public class CheckGuestOutFragment extends Fragment {
                 roomNumber).subscribe(new Observer<Guest>() {
             @Override
             public void onCompleted() {
+                if (guest != null) {
+                    tv.setText(guest.firstName + " " + guest.lastName);
+                    Log.v("CompletedGuest", guest._id);
+                }
                 Log.d("Completed", "On completed");
 
             }
@@ -154,12 +155,6 @@ public class CheckGuestOutFragment extends Fragment {
             @Override
             public void onNext(Guest result) {
                 guest = result;
-                if (result != null) {
-                    Log.v("ndnsd","krkr");
-                }
-                else {
-                    Log.v("rejjr","ejek");
-                }
                 Log.d("Next", "On next");
             }
         });
@@ -185,6 +180,7 @@ public class CheckGuestOutFragment extends Fragment {
                     .subscribe(new Observer<Boolean>() {
                         @Override
                         public void onCompleted() {
+                            adapter.notifyDataSetChanged();
                             Log.d("Completed", "On completed");
                         }
 

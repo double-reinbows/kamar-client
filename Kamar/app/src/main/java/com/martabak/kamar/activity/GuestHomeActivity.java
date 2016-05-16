@@ -49,6 +49,9 @@ public class GuestHomeActivity extends AppCompatActivity
 
         setGuestId(roomNumber);
 
+        //set room number text
+        roomNumberTextView.setText("RoomNumber:" + roomNumber);
+
         gridView.setAdapter(imgAdapter);
 
         //display feature text on each item click
@@ -61,8 +64,6 @@ public class GuestHomeActivity extends AppCompatActivity
             }
         });
 
-        //set room number text
-        roomNumberTextView.setText("RoomNumber:" + roomNumber);
 
         //open the change room number as a fragment
         passwordIconView.setOnClickListener(new View.OnClickListener() {
@@ -163,9 +164,10 @@ public class GuestHomeActivity extends AppCompatActivity
     }
 
 
-     /*
-     * Set guest id on shared preferences
-     */
+
+    /*
+    * Set guest id on shared preferences
+    */
     public void setGuestId(String roomNumber)
     {
         GuestServer.getInstance(getBaseContext()).getGuestInRoom(
