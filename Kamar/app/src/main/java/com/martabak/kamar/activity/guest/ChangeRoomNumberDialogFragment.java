@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.guest;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,17 +8,17 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.home.SelectUserTypeActivity;
 import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.StaffServer;
@@ -88,7 +88,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
 
     /*
      * Change room number
-     */
+    */
     public void changeRoomNumber() {
 
         SharedPreferences languagePref = getActivity().getSharedPreferences("roomSettings",
@@ -101,6 +101,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
             @Override
             public void onCompleted() {
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On completed");
+                updateRoomNumberText();
             }
 
             @Override
@@ -161,6 +162,21 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
         });
 
         return roomStrings;
+
+    }
+
+    /*
+     * Update roomtext
+     */
+    public void updateRoomNumberText() {
+        GuestHomeActivity activity = (GuestHomeActivity)getActivity();
+        //Log.v("ACTIVITY IS", activity.toString());
+        if (isAdded() && activity != null) {
+            TextView roomNumberTextView = (TextView)activity.findViewById(R.id.room_number_display);
+            roomNumberTextView.setText(roomNumber);
+            activity.setGuestId(roomNumber);
+        }
+
 
     }
 

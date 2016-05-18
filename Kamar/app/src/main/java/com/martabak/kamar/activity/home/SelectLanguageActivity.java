@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.home;
 
 import android.content.Context;
 import android.content.Intent;

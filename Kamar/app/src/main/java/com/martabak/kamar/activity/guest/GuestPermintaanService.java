@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity.permintaan;
+package com.martabak.kamar.activity.guest;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -10,7 +10,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.activity.GuestHomeActivity;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 

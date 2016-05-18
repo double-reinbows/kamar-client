@@ -10,7 +10,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="vertical"
-    tools:context="com.martabak.kamar.activity.CheckGuestInFragment">
+    tools:context=".activity.staff.CheckGuestInFragment">
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.staff;
 
 import java.util.Date;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.home;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.app.Fragment;
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.GuestHomeActivity;
+import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.service.StaffServer;
 
 import rx.Observer;

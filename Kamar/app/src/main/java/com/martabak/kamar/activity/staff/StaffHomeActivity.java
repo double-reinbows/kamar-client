@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.staff;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -17,12 +17,6 @@ import android.view.MenuItem;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.ChatListActivity;
-import com.martabak.kamar.domain.permintaan.Permintaan;
-import com.martabak.kamar.domain.permintaan.Transport;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 public class StaffHomeActivity extends AppCompatActivity {
 

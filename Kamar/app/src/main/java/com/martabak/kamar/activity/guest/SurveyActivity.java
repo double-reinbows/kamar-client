@@ -1,8 +1,6 @@
-package com.martabak.kamar.activity;
+package com.martabak.kamar.activity.guest;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.SurveyAnswer;
@@ -20,11 +17,8 @@ import com.martabak.kamar.domain.SurveyQuestion;
 import com.martabak.kamar.service.FeedbackServer;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import android.os.Bundle;
+
 import android.widget.Toast;
 
 import rx.Observer;
