@@ -15,7 +15,12 @@ public class Consumable extends Model {
     /**
      * The description; e.g. Kluwek beef soup served with rice, sambal, lime and crackers.
      */
-    public final String description;
+    public final String description_en;
+
+    /**
+     * The description; e.g. Kluwek beef soup served with rice, sambal, lime and crackers.
+     */
+    public final String description_in;
 
     /**
      * The section; e.g. INDONESIAN.
@@ -37,36 +42,25 @@ public class Consumable extends Model {
      */
     public final Integer price;
 
-    /**
-     * A list of potential tags that this consumable may have. Can be one of:
-     * <li>
-     *     <ul>SIGNATURE</ul>
-     *     <ul>VEGETARIAN</ul>
-     *     <ul>CHILLI</ul>
-     *     <ul>RECOMMENDED</ul>
-     * </li>
-     */
-    public final List<String> tags;
-
     public Consumable() {
         this.name = null;
-        this.description = null;
+        this.description_en = null;
+        this.description_in = null;
         this.section = null;
         this.subsection = null;
         this.order = null;
         this.price = null;
-        this.tags = null;
     }
 
-    public Consumable(String name, String description, String section, String subsection,
-                      Integer order, Integer price, List<String> tags) {
+    public Consumable(String name, String description_en, String description_in, String section,
+                      String subsection, Integer order, Integer price, List<String> tags) {
         this.name = name;
-        this.description = description;
+        this.description_en = description_en;
+        this.description_in = description_in;
         this.section = section;
         this.subsection = subsection;
         this.order = order;
         this.price = price;
-        this.tags = tags;
     }
 
 }
