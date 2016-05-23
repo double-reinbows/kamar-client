@@ -13,7 +13,7 @@
         android:text="@string/guest_checkout" />
 
     <Spinner
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/guest_spinner_checkout"/>
 

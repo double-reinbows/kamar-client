@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.activity.staff.CheckGuestInFragment;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.service.GuestServer;
@@ -20,9 +21,11 @@ import com.martabak.kamar.service.GuestServer;
 import rx.Observer;
 
 public class GuestHomeActivity extends AppCompatActivity
-        implements BellboyDialogFragment.BellboyDialogListener{
+        implements BellboyDialogFragment.BellboyDialogListener,
+        ChangeRoomNumberDialogFragment.ChangeRoomDialogListener {
 
     String option;
+    TextView roomNumberTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class GuestHomeActivity extends AppCompatActivity
         View passwordIconView = findViewById(R.id.passwordChangeIcon);
         View logoutView = findViewById(R.id.logoutIcon);
 
-        TextView roomNumberTextView = (TextView)findViewById(R.id.room_number_display);
+        roomNumberTextView = (TextView)findViewById(R.id.room_number_display);
         String roomNumber = getSharedPreferences("roomSettings", MODE_PRIVATE)
                 .getString("roomNumber", null);
 
@@ -84,6 +87,10 @@ public class GuestHomeActivity extends AppCompatActivity
         {
             case "MY REQUESTS":
                 intent = new Intent(this, GuestPermintaanActivity.class);
+                startActivity(intent);
+                break;
+            case "RESTAURANT":
+                intent = new Intent(this, RestaurantActivity.class);
                 startActivity(intent);
                 break;
             case "TRANSPORT":
@@ -146,6 +153,25 @@ public class GuestHomeActivity extends AppCompatActivity
     }
 
     /*
+    * Positive click for change room number dialog
+    */
+    @Override
+    public void onChangeRoomDialogPositiveClick(DialogFragment dialog) {
+        dialog.dismiss();
+        roomNumberTextView.setText("RoomNumber:" + ((ChangeRoomNumberDialogFragment) dialog).getUpdatedRoomNumberText());
+        Toast.makeText(getBaseContext(), ""+ "Room number successfully changed!", Toast.LENGTH_LONG).show();
+    }
+
+    /*
+    * Negative click for change room number dialog
+    */
+    @Override
+    public void onChangeRoomDialogNegativeClick(DialogFragment dialog) {
+        dialog.dismiss();
+
+    }
+
+    /*
      * Show checkout fragment
      */
     public void startCheckout(String bellboy) {
@@ -185,7 +211,6 @@ public class GuestHomeActivity extends AppCompatActivity
                 }
 
                 editor.commit();
-                Log.v("GUESTID", result.toString());
                 Log.d("Next", "On next");
 
             }

@@ -4,6 +4,7 @@ package com.martabak.kamar.activity.staff;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,7 @@ import rx.Observer;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CheckGuestOutFragment extends Fragment {
+public class CheckGuestOutFragment extends Fragment  {
 
     String roomNumber;
     Guest guest;
@@ -82,13 +83,13 @@ public class CheckGuestOutFragment extends Fragment {
         });
 
         FloatingActionButton fab = (FloatingActionButton) parentView.findViewById(R.id.check_guest_out_btn);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
                 updateGuest();
+                Snackbar.make(view, "Guest successfully checked out!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
 
         });

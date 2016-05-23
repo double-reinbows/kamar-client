@@ -1,15 +1,16 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.guest.LogoutDialogFragment">
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
+        android:layout_gravity="center"
+        android:id="@+id/tableLayout">
+    <TableRow>
         <TextView
             android:id="@+id/password_text_view"
             android:layout_width="wrap_content"
@@ -19,10 +20,12 @@
         <EditText
             android:id="@+id/password_edit_text"
             android:inputType="textPassword"
-            android:layout_width="100dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp" />
-    </LinearLayout>
-</LinearLayout>
+    </TableRow>
+
+    </TableLayout>
+</RelativeLayout>

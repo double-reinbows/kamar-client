@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.guest;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -33,9 +34,10 @@ import rx.Observer;
  */
 public class ChangeRoomNumberDialogFragment extends DialogFragment {
 
-    String roomNumber;
+    private String roomNumber;
     String passwordString;
     ArrayAdapter adapter;
+    ChangeRoomDialogListener changeRoomDialogListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -59,8 +61,6 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
 
         //spinner.setSelection(Integer.valueOf(roomNumber));
 
-
-
         final EditText passwordEditText = (EditText)
                 view.findViewById(R.id.password_edit_text);
 
@@ -71,6 +71,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
                         roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
                         passwordString = passwordEditText.getText().toString();
                         changeRoomNumber();
+                        changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this);
 
                     }
                 })
@@ -78,12 +79,12 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        changeRoomDialogListener.onChangeRoomDialogNegativeClick(ChangeRoomNumberDialogFragment.this);
 
                     }
                 });
         return builder.create();
     }
-
 
 
     /*
@@ -101,7 +102,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
             @Override
             public void onCompleted() {
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On completed");
-                updateRoomNumberText();
+
             }
 
             @Override
@@ -166,32 +167,26 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
     }
 
     /*
-     * Update roomtext
+     * get roomtext
      */
-    public void updateRoomNumberText() {
-        GuestHomeActivity activity = (GuestHomeActivity)getActivity();
-        //Log.v("ACTIVITY IS", activity.toString());
-        if (isAdded() && activity != null) {
-            TextView roomNumberTextView = (TextView)activity.findViewById(R.id.room_number_display);
-            roomNumberTextView.setText(roomNumber);
-            activity.setGuestId(roomNumber);
+    public String getUpdatedRoomNumberText() {
+        return roomNumber;
+    }
+
+    public interface ChangeRoomDialogListener {
+        public void onChangeRoomDialogPositiveClick(DialogFragment dialog);
+        public void onChangeRoomDialogNegativeClick(DialogFragment dialog);
+    }
+
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            changeRoomDialogListener = (ChangeRoomDialogListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + "must implement ChangeRoomDalogListener");
         }
 
-
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }
