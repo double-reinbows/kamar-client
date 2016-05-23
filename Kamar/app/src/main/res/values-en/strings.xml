@@ -35,6 +35,7 @@
     <string name="guest_last_name">Last Name</string>
     <string name="guest_email">Email</string>
     <string name="guest_phone">Phone Number</string>
+    <string name="guest_date">Date</string>
     <string name="guest_room_number">Set Room Number</string>
 
     <string name="submit">Submit</string>

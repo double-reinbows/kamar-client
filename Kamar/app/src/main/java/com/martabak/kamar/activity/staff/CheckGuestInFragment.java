@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.staff;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -29,21 +31,19 @@ import rx.Observer;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CheckGuestInFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link CheckGuestInFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CheckGuestInFragment extends Fragment {
+public class CheckGuestInFragment extends Fragment implements View.OnClickListener {
 
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String email;
     private String roomNumber;
+    private DatePickerDialog datePickerDialog;
+    private Date checkOutDate;
 
-    private OnFragmentInteractionListener mListener;
 
     public CheckGuestInFragment() {
         // Required empty public constructor
@@ -56,7 +56,6 @@ public class CheckGuestInFragment extends Fragment {
      *
      * @return A new instance of fragment CheckGuestInFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static CheckGuestInFragment newInstance() {
         CheckGuestInFragment fragment = new CheckGuestInFragment();
         return fragment;
@@ -76,6 +75,20 @@ public class CheckGuestInFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_check_guest_in, container, false);
 
         final Spinner spinner = (Spinner) view.findViewById(R.id.guest_spinner);
+
+        final EditText editDateCheckOut = (EditText)view.findViewById(R.id.guest_date_check_out);
+        editDateCheckOut.setOnClickListener(this);
+        Calendar newCalendar = Calendar.getInstance();
+        datePickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                checkOutDate = newDate.getTime();
+                editDateCheckOut.setText(newDate.getTime().toString());
+
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         final List<String> roomNumbers = getRoomNumbersWithoutGuests();
 
@@ -110,7 +123,7 @@ public class CheckGuestInFragment extends Fragment {
                 sendGuestRequest();
 
 
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Guest successfully checked in!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -123,8 +136,8 @@ public class CheckGuestInFragment extends Fragment {
     private List<String> getRoomNumbersWithoutGuests() {
 
         final List <String> roomStrings = new ArrayList<String>();
-        GuestServer.getInstance(getActivity().getBaseContext()).
-                getRoomNumbers().subscribe(new Observer<List<Room>>() {
+        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbers()
+                .subscribe(new Observer<List<Room>>() {
             @Override
             public void onCompleted() {
 
@@ -162,7 +175,7 @@ public class CheckGuestInFragment extends Fragment {
         c.add(Calendar.DAY_OF_MONTH,5);
         Date futureDate = c.getTime();
 
-        Log.v("FutureDate", futureDate.toString());
+        Log.v("CheckOutDate", checkOutDate.toString());
 
         String welcomeMessage = "Hi " + firstName + "!";
 
@@ -172,7 +185,7 @@ public class CheckGuestInFragment extends Fragment {
                 phoneNumber,
                 email,
                 currentDate,
-                futureDate,
+                checkOutDate,
                 roomNumber,
                 welcomeMessage)
         ).subscribe(new Observer<Guest>() {
@@ -198,45 +211,8 @@ public class CheckGuestInFragment extends Fragment {
 
     }
 
-
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public void onClick(View view) {
+        datePickerDialog.show();
     }
 }

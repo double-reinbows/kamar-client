@@ -62,8 +62,8 @@ public class LogoutDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    /* Send logout request */
     private void sendLogoutRequest() {
-
 
         StaffServer.getInstance(getActivity()).login(passwordString).subscribe(new Observer<Boolean>() {
             @Override
@@ -74,8 +74,6 @@ public class LogoutDialogFragment extends DialogFragment {
             @Override
             public void onError(Throwable e) {
                 Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On error");
-                //TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                //textView.setText(e.getMessage());
                 e.printStackTrace();
             }
 
@@ -101,7 +99,6 @@ public class LogoutDialogFragment extends DialogFragment {
     private void logout() {
 
         Activity activity = getActivity();
-        //Log.v("ACTIVITY IS", activity.toString());
         if (isAdded() && activity != null) {
             SharedPreferences pref = getActivity().getSharedPreferences("userSettings",
                     getActivity().MODE_PRIVATE);

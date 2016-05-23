@@ -111,6 +111,7 @@ public class BellboyDialogFragment extends DialogFragment {
 
     }
 
+    /* Bellboy Dialog Listener*/
     public interface BellboyDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog);
         public void onDialogNegativeClick(DialogFragment dialog);
