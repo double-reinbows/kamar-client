@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import com.martabak.kamar.R;
@@ -34,185 +35,150 @@ import rx.Observer;
  * Use the {@link CheckGuestInFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CheckGuestInFragment extends Fragment implements View.OnClickListener {
+public class CheckGuestInFragment extends Fragment {
 
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private String email;
-    private String roomNumber;
-    private DatePickerDialog datePickerDialog;
     private Date checkOutDate;
 
-
     public CheckGuestInFragment() {
-        // Required empty public constructor
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     *
      * @return A new instance of fragment CheckGuestInFragment.
      */
     public static CheckGuestInFragment newInstance() {
-        CheckGuestInFragment fragment = new CheckGuestInFragment();
-        return fragment;
+        return new CheckGuestInFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_check_guest_in, container, false);
-
         final Spinner spinner = (Spinner) view.findViewById(R.id.guest_spinner);
+        final EditText editDateCheckOut = (EditText) view.findViewById(R.id.guest_date_check_out);
 
-        final EditText editDateCheckOut = (EditText)view.findViewById(R.id.guest_date_check_out);
-        editDateCheckOut.setOnClickListener(this);
-        Calendar newCalendar = Calendar.getInstance();
-        datePickerDialog = new DatePickerDialog(this.getActivity(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 checkOutDate = newDate.getTime();
                 editDateCheckOut.setText(newDate.getTime().toString());
-
             }
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        };
+        Calendar newCalendar = Calendar.getInstance();
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this.getActivity(),
+                dateListener,
+                newCalendar.get(Calendar.YEAR),
+                newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        editDateCheckOut.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                datePickerDialog.show();
+            }
+        });
 
         final List<String> roomNumbers = getRoomNumbersWithoutGuests();
 
-        
         ArrayAdapter adapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
-        roomNumbers.add(0, "Please Select a room");
+        roomNumbers.add(0, getString(R.string.room_select));
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         adapter.notifyDataSetChanged();
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
-
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.check_guest_in_btn);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText editTextFirstName = (EditText) getView().findViewById(R.id.guest_first_name);
-                firstName = editTextFirstName.getText().toString();
+                String firstName = editTextFirstName.getText().toString();
 
                 EditText editTextLastName = (EditText) getView().findViewById(R.id.guest_last_name);
-                lastName = editTextLastName.getText().toString();
+                String lastName = editTextLastName.getText().toString();
 
                 EditText editTextPhoneNumber = (EditText) getView().findViewById(R.id.guest_phone);
-                phoneNumber = editTextPhoneNumber.getText().toString();
+                String phoneNumber = editTextPhoneNumber.getText().toString();
 
                 EditText editTextEmail = (EditText) getView().findViewById(R.id.guest_email);
-                email = editTextEmail.getText().toString();
+                String email = editTextEmail.getText().toString();
 
-                roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
+                String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
 
-                sendGuestRequest();
+                // TODO this needs to be input by staff
+                String welcome = "Welcome to Indoluxe Hotel!";
 
-
-                Snackbar.make(view, "Guest successfully checked in!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                sendGuestRequest(firstName, lastName, phoneNumber, email, roomNumber, checkOutDate,
+                        welcome);
             }
         });
         return view;
     }
 
-    /*
-     * return a list of Room Numbers with no guests checked in
+    /**
+     * @return A list of room number strings without guests currently checked in.
      */
     private List<String> getRoomNumbersWithoutGuests() {
-
-        final List <String> roomStrings = new ArrayList<String>();
+        final List<String> roomStrings = new ArrayList<String>();
+        // TODO is this the correct call to getRoomNumbersWithoutGuests?
         GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbers()
                 .subscribe(new Observer<List<Room>>() {
-            @Override
-            public void onCompleted() {
-
+            @Override public void onCompleted() {
             }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.v("OnError",  "Error");
+            @Override public void onError(Throwable e) {
+                Log.v(CheckGuestInFragment.class.getCanonicalName(),  "getRoomNumbersWithoutGuests() onError");
                 e.printStackTrace();
             }
-
-            @Override
-            public void onNext(List<Room> rooms) {
+            @Override public void onNext(List<Room> rooms) {
                 for (int i=0; i < rooms.size(); i++) {
                     roomStrings.add(rooms.get(i).number);
-                    Log.v("Room", roomStrings.get(i));
+                    Log.v(CheckGuestInFragment.class.getCanonicalName(), roomStrings.get(i));
                 }
-                Log.v("onNext", "Next");
-
+                Log.v(CheckGuestInFragment.class.getCanonicalName(), "getRoomNumbersWithoutGuests() onNext");
             }
         });
-
         return roomStrings;
-
     }
 
-    /*
-     * Send create new guest request to the server
-     */
-    private void sendGuestRequest() {
-
+    private void sendGuestRequest(String firstName, String lastName, String phoneNumber,
+                                  String email, String roomNumber, Date checkOutDate, String welcome) {
         Calendar c = Calendar.getInstance();
-        Date currentDate = c.getTime();
-
-        c.add(Calendar.DAY_OF_MONTH,5);
-        Date futureDate = c.getTime();
-
-        Log.v("CheckOutDate", checkOutDate.toString());
-
-        String welcomeMessage = "Hi " + firstName + "!";
+        // TODO what is this for?
+        c.add(Calendar.DAY_OF_MONTH, 5);
 
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
                 firstName,
                 lastName,
                 phoneNumber,
                 email,
-                currentDate,
+                c.getTime(),
                 checkOutDate,
                 roomNumber,
-                welcomeMessage)
+                welcome)
         ).subscribe(new Observer<Guest>() {
-            @Override
-            public void onCompleted() {
-                Log.d("Completed", "On completed");
+            @Override public void onCompleted() {
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "createGuest() On completed");
             }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d("Error", "On error");
+            @Override public void onError(Throwable e) {
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
             }
-
-            @Override
-            public void onNext(Guest guest) {
-                Log.d("Next", "On next");
-                Log.v("GUEST", guest.toString());
+            @Override public void onNext(Guest guest) {
+                Log.v(CheckGuestInFragment.class.getCanonicalName(), "createGuest() " + guest.toString());
+                if (guest != null) {
+                    Toast.makeText(
+                            getActivity(),
+                            R.string.guest_checkin_message,
+                            Toast.LENGTH_LONG
+                    ).show();
+                } else {
+                    Toast.makeText(
+                            getActivity(),
+                            R.string.something_went_wrong,
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
             }
-
         });
-
-
-    }
-
-    @Override
-    public void onClick(View view) {
-        datePickerDialog.show();
     }
 }
