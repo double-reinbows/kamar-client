@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
@@ -38,23 +39,24 @@ public class HousekeepingDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         EditText editTransportMessage = (EditText)
                                 view.findViewById(R.id.housekeeping_message_edit_text);
                         housekeepingMessage = editTransportMessage.getText().toString();
 
                         sendHousekeepingRequest();
 
-                        GuestHomeActivity guestHomeActivity = (GuestHomeActivity) getActivity();
-                        guestHomeActivity.makeToast("Housekeeping is on its way!");
-
+                        // TODO don't show confirmation message until we know the request was sent
+                        Toast.makeText(
+                                getActivity(),
+                                getString(R.string.housekeeping_result),
+                                Toast.LENGTH_LONG
+                        ).show();
                     }
                 })
                 .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                     }
                 });
         return builder.create();

@@ -1,11 +1,8 @@
 package com.martabak.kamar.activity.staff;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,85 +24,21 @@ public class StaffHomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.staff_toolbar);
         setSupportActionBar(toolbar);
 
-
-        final FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        //Create sample permintaan fragment
-        StaffPermintaanFragment fragment = StaffPermintaanFragment.newInstance();
-
-        //Place the permintaan fragment inside the staff_container/content section of the layout
-        fragmentTransaction.replace(R.id.staff_container, fragment);
-        fragmentTransaction.commit();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                int id = item.getItemId();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                if (id == R.id.nav_home) {
-                    // Handle the home click
-
-                } else if (id == R.id.nav_chat) {
-                    //Handle the chat click
-
-                    Log.v(StaffHomeActivity.class.toString(), "Going to chat activity for staff");
-                    startActivity(new Intent(StaffHomeActivity.this, ChatListActivity.class));
-                } else if (id == R.id.nav_check_guest_in) {
-                    //Handle the check guest in click
-                    Log.v(StaffHomeActivity.class.toString(), "CheckGuestInFragment");
-                    CheckGuestInFragment fragment = CheckGuestInFragment.newInstance();
-                    fragmentTransaction.replace(R.id.staff_container, fragment);
-                    fragmentTransaction.commit();
-
-
-                } else if (id == R.id.nav_check_guest_out) {
-                    //Handle the check guest out click
-                    CheckGuestOutFragment fragment = CheckGuestOutFragment.newInstance();
-                    fragmentTransaction.replace(R.id.staff_container, fragment);
-                    fragmentTransaction.commit();
-
-
-
-                } else if (id == R.id.nav_set_welcome_image) {
-                    //Handle the set welcome image click
-
-                }
-
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
-                return true;
-            }
-
-        });
-
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close){
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView){
-                super.onDrawerOpened(drawerView);
-            }
-
-        };
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        getFragmentManager().beginTransaction()
+                .replace(R.id.staff_container, StaffPermintaanFragment.newInstance()).commit();
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
-
 
     @Override
     public void onBackPressed() {
@@ -139,5 +72,35 @@ public class StaffHomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
+        @Override
+        public boolean onNavigationItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    Log.v(StaffHomeActivity.class.toString(), "Loading staff requests fragment");
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.staff_container, StaffPermintaanFragment.newInstance()).commit();
+                    break;
+                case R.id.nav_chat:
+                    Log.v(StaffHomeActivity.class.toString(), "Going to chat activity for staff");
+                    startActivity(new Intent(StaffHomeActivity.this, ChatListActivity.class));
+                    break;
+                case R.id.nav_check_guest_in:
+                    Log.v(StaffHomeActivity.class.toString(), "Loading check-guest-in fragment");
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.staff_container, CheckGuestInFragment.newInstance()).commit();
+                    break;
+                case R.id.nav_check_guest_out:
+                    Log.v(StaffHomeActivity.class.toString(), "Loading check-guest-out fragment");
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.staff_container, CheckGuestOutFragment.newInstance()).commit();
+                    break;
+            }
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+    }
 
 }

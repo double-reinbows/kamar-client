@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
@@ -44,10 +45,13 @@ public class MaintenanceDialogFragment extends DialogFragment {
                         maintenanceMessage = editMaintenanceMessage.getText().toString();
 
                         sendMaintenanceRequest();
+                        // TODO don't show the confirmation message until we know the request was sent
 
-                        GuestHomeActivity guestHomeActivity = (GuestHomeActivity) getActivity();
-                        guestHomeActivity.makeToast("Maintenance is on its way!");
-
+                        Toast.makeText(
+                                getActivity(),
+                                getString(R.string.maintenance_result),
+                                Toast.LENGTH_LONG
+                        ).show();
                     }
                 })
                 .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){

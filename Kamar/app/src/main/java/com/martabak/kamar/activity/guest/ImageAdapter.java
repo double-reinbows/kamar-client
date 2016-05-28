@@ -76,7 +76,7 @@ public class ImageAdapter extends BaseAdapter {
     //Text descriptions
     private String[] mText = {
             "MY REQUESTS",
-            "RESTAURANTS",
+            "RESTAURANT",
             "HOUSEKEEPING",
             "BELLBOY",
             "MAINTENANCE",
