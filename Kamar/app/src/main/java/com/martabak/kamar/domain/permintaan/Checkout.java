@@ -13,6 +13,6 @@ public class Checkout extends Content {
     }
 
     public String getType() {
-        return "CHECKOUT";
+        return Permintaan.TYPE_CHECKOUT;
     }
 }

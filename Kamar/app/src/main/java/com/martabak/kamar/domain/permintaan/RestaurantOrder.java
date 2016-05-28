@@ -26,7 +26,7 @@ public class RestaurantOrder extends Content {
     }
 
     public String getType() {
-        return "CONSUMABLE";
+        return Permintaan.TYPE_RESTAURANT;
     }
 
 }

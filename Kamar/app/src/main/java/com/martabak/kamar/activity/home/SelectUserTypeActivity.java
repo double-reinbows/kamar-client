@@ -92,12 +92,22 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            Button submitButton = (Button) getActivity().findViewById(R.id.submit);
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    String password = ((EditText)getView().findViewById(R.id.EditTextPassword)).getText().toString();
+                    sendPassword(password);
+                }
+            });
             return inflater.inflate(R.layout.fragment_staff_login, container, false);
         }
 
-        public void sendPassword() {
-            String passwordString = ((EditText)getView().findViewById(R.id.EditTextPassword)).getText().toString();
-            StaffServer.getInstance(getActivity()).login(passwordString).subscribe(new Observer<Boolean>() {
+        /**
+         * Send a password to login.
+         * @param password The password.
+         */
+        public void sendPassword(String password) {
+            StaffServer.getInstance(getActivity()).login(password).subscribe(new Observer<Boolean>() {
                 boolean loginResult;
                 @Override public void onCompleted() {
                     if (loginResult) {

@@ -12,13 +12,11 @@ import com.martabak.kamar.R;
 import java.util.List;
 
 /**
- * Created by adarsh on 18/04/16.
+ * Adapter for the survey questions.
  */
 public class SurveyArrayAdapter extends RecyclerView.Adapter<SurveyArrayAdapter.SurveyViewHolder> {
 
-
     private List<String> mSurveyQuestions;
-
 
     public class SurveyViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
@@ -26,14 +24,12 @@ public class SurveyArrayAdapter extends RecyclerView.Adapter<SurveyArrayAdapter.
 
         public SurveyViewHolder(View surveyView) {
             super(surveyView);
-            //set textview and edit text of each list item
             textView = (TextView) surveyView.findViewById(R.id.survey_question);
             editText = (EditText) surveyView.findViewById(R.id.survey_answer);
         }
-
     }
 
-    public SurveyArrayAdapter( List<String> surveyQuestions) {
+    public SurveyArrayAdapter(List<String> surveyQuestions) {
         mSurveyQuestions = surveyQuestions;
     }
 
@@ -42,25 +38,22 @@ public class SurveyArrayAdapter extends RecyclerView.Adapter<SurveyArrayAdapter.
         return mSurveyQuestions.size();
     }
 
-
     @Override
     public SurveyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.survey_item, viewGroup, false);
         SurveyViewHolder svh = new SurveyViewHolder(v);
-        return  svh;
+        return svh;
     }
 
     @Override
     public void onBindViewHolder(SurveyViewHolder surveyViewHolder, int i) {
         surveyViewHolder.textView.setText(mSurveyQuestions.get(i));
-
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
-
 
 }

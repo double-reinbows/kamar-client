@@ -14,7 +14,6 @@ public class Bellboy extends Content {
     }
 
     public String getType() {
-
-        return "BELLBOY";
+        return Permintaan.TYPE_BELLBOY;
     }
 }

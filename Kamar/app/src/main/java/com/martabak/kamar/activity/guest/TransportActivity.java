@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -24,10 +25,10 @@ import rx.Observer;
 
 public class TransportActivity extends AppCompatActivity {
 
-    String transportDestination;
-    Integer transportPassengers;
-    String transportMessage;
-    Date transportDepartureDate;
+    private String transportDestination;
+    private Integer transportPassengers;
+    private String transportMessage;
+    private Date transportDepartureDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,57 +38,54 @@ public class TransportActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                EditText editTransportDestination = (EditText)
-                        findViewById(R.id.transport_destination_edit_text);
-                transportDestination = editTransportDestination.getText().toString();
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditText editTransportDestination = (EditText)
+                            findViewById(R.id.transport_destination_edit_text);
+                    transportDestination = editTransportDestination.getText().toString();
 
-                EditText editTransportPassengers = (EditText)
-                        findViewById(R.id.transport_passengers_edit_text);
-                transportPassengers = Integer.parseInt(editTransportPassengers.getText().toString());
+                    EditText editTransportPassengers = (EditText)
+                            findViewById(R.id.transport_passengers_edit_text);
+                    transportPassengers = Integer.parseInt(editTransportPassengers.getText().toString());
 
-                EditText editTransportDepartureDate = (EditText)
-                        findViewById(R.id.transport_depature_date_edit_text);
-                DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-                try {
-                    transportDepartureDate = (Date)formatter.parse(
-                            editTransportDepartureDate.getText().toString());
-                } catch (ParseException e) {
-                    transportDepartureDate = new Date("01/01/2019");
+                    EditText editTransportDepartureDate = (EditText)
+                            findViewById(R.id.transport_depature_date_edit_text);
+                    DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+
+                    try {
+                        transportDepartureDate = formatter.parse(
+                                editTransportDepartureDate.getText().toString());
+                    } catch (ParseException e) {
+                        transportDepartureDate = new Date("01/01/2019");
+                    }
+
+                    EditText editTransportMessage = (EditText)
+                            findViewById(R.id.transport_message_edit_text);
+                    transportMessage = editTransportMessage.getText().toString();
+
+                    sendTransportRequest();
                 }
-
-
-
-                EditText editTransportMessage = (EditText)
-                        findViewById(R.id.transport_message_edit_text);
-                transportMessage = editTransportMessage.getText().toString();
-
-                sendTransportRequest();
-            }
-        });
+            });
+        }
     }
 
-    /* Send Transport Request */
-    private void sendTransportRequest()
-    {
-
+    /**
+     * Send a transport request.
+     */
+    private void sendTransportRequest() {
         Transport transport = new Transport(transportMessage, transportPassengers,
-                transportDepartureDate, transportMessage);
+                transportDepartureDate, transportDestination);
 
-        String owner = "FRONT DESK";
-        String type = "TRANSPORT";
-        String roomNumber = getSharedPreferences("roomSettings", MODE_PRIVATE)
+        String owner = Permintaan.OWNER_FRONTDESK;
+        String type = Permintaan.TYPE_TRANSPORT;
+        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-        String guestId= getSharedPreferences("userSettings", MODE_PRIVATE)
+        String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("guestId", "none");
-        String state = "NEW";
-
-        Calendar c = Calendar.getInstance();
-        Date currentDate = c.getTime();
+        String state = Permintaan.STATE_NEW;
+        Date currentDate = Calendar.getInstance().getTime();
 
         PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                     owner,
@@ -99,24 +97,30 @@ public class TransportActivity extends AppCompatActivity {
                     currentDate,
                     transport)
         ).subscribe(new Observer<Permintaan>() {
-            @Override
-            public void onCompleted() {
-                Log.d("Completed", "On completed");
+            @Override public void onCompleted() {
+                Log.d(TransportActivity.class.getCanonicalName(), "createPermintaan() On completed");
             }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d("Error", "On error");
-
+            @Override public void onError(Throwable e) {
+                Log.d(TransportActivity.class.getCanonicalName(), "createPermintaan() On error");
                 e.printStackTrace();
             }
-
-            @Override
-            public void onNext(Permintaan permintaan) {
-                Log.d("Next", "On next");
+            @Override public void onNext(Permintaan permintaan) {
+                Log.d(TransportActivity.class.getCanonicalName(), "createPermintaan() On next" + permintaan);
+                if (permintaan != null) {
+                    Toast.makeText(
+                            TransportActivity.this,
+                            getString(R.string.transport_result),
+                            Toast.LENGTH_LONG
+                    ).show();
+                } else {
+                    Toast.makeText(
+                            TransportActivity.this,
+                            getString(R.string.something_went_wrong),
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
             }
         });
-
     }
 
 }
