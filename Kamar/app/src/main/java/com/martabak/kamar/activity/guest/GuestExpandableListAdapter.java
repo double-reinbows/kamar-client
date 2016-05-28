@@ -1,13 +1,19 @@
 package com.martabak.kamar.activity.guest;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Point;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +22,8 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +70,56 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
+
+        ImageView permintaanInfoButton = (ImageView) convertView.findViewById(R.id.permintaan_info_button);
+
+        permintaanInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //get the selected permintaan into currPermintaan
+                Permintaan currPermintaan;
+                List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
+                currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
+
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                WindowManager manager = (WindowManager) _context.getSystemService(Activity.WINDOW_SERVICE);
+                manager.getDefaultDisplay().getMetrics(displayMetrics);
+                int width, height;
+                //WindowManager.LayoutParams;
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
+                    Log.d("herp", "derp");
+                    //width = manager.getDefaultDisplay().getMetrics(displayMetrics);
+                    //height = manager.getDefaultDisplay().getHeight();
+                    width = displayMetrics.widthPixels;
+                    height = displayMetrics.heightPixels;
+                } else {
+                    Point point = new Point();
+                    manager.getDefaultDisplay().getSize(point);
+                    width = point.x;
+                    height = point.y;
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+                //build the AlertDialog's content
+                String simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
+                String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
+
+                long lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime())/1000;
+
+                builder
+                        .setTitle(currPermintaan.type + " ORDER DETAILS")
+                        .setMessage("Status: "+currPermintaan.state+"\n"+
+                                    "Message: "+currPermintaan.content.message+"\n"+
+                                    "Order lodged at: "+simpleCreated+"\n"+
+                                    "Last Status change at "+simpleUpdated+"\n"+
+                                    "Time since latest Status change: "+lastStateChange/60+" minutes ago")
+                        .setCancelable(true)
+                        ;
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                alertDialog.getWindow().setLayout(width, (height-100));
+            }
+        });
+
         txtListChild.setText(childText);
         return convertView;
     }

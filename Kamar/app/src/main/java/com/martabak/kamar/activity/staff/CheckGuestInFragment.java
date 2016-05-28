@@ -143,15 +143,15 @@ public class CheckGuestInFragment extends Fragment {
     private void sendGuestRequest(String firstName, String lastName, String phoneNumber,
                                   String email, String roomNumber, Date checkOutDate, String welcome) {
         Calendar c = Calendar.getInstance();
-        // TODO what is this for?
-        c.add(Calendar.DAY_OF_MONTH, 5);
+        Date currentDate = c.getTime();
+        String welcomeMessage = "Hi " + firstName + "!";
 
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
                 firstName,
                 lastName,
                 phoneNumber,
                 email,
-                c.getTime(),
+                currentDate,
                 checkOutDate,
                 roomNumber,
                 welcome)
