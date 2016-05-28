@@ -27,30 +27,19 @@ import rx.Observer;
  */
 public class HousekeepingDialogFragment extends DialogFragment {
 
-    String housekeepingMessage;
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.dialog_housekeeping, null);
-        builder.setView(view)
+        return new AlertDialog.Builder(getActivity())
+                .setView(view)
                 .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         EditText editTransportMessage = (EditText)
                                 view.findViewById(R.id.housekeeping_message_edit_text);
-                        housekeepingMessage = editTransportMessage.getText().toString();
-
-                        sendHousekeepingRequest();
-
-                        // TODO don't show confirmation message until we know the request was sent
-                        Toast.makeText(
-                                getActivity(),
-                                getString(R.string.housekeeping_result),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        String housekeepingMessage = editTransportMessage.getText().toString();
+                        sendHousekeepingRequest(housekeepingMessage);
                     }
                 })
                 .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){
@@ -58,27 +47,24 @@ public class HousekeepingDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                });
-        return builder.create();
+                })
+                .create();
     }
 
-    /*
-     * Send the housekeeping request to the server
+    /**
+     * Send a housekeeping request.
      */
-    public void sendHousekeepingRequest() {
-
+    private void sendHousekeepingRequest(String housekeepingMessage) {
         Housekeeping housekeeping = new Housekeeping(housekeepingMessage);
 
-        String owner = "FRONT DESK";
-        String type = "HOUSEKEEPING";
-        String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
+        String owner = Permintaan.OWNER_FRONTDESK;
+        String type = Permintaan.TYPE_HOUSEKEEPING;
+        String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", null);
         String guestId= getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("guestId", null);
-        String state = "NEW";
-
-        Calendar c = Calendar.getInstance();
-        Date currentDate = c.getTime();
+        String state = Permintaan.STATE_NEW;
+        Date currentDate = Calendar.getInstance().getTime();
 
         if (guestId != null) {
             PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
@@ -92,26 +78,35 @@ public class HousekeepingDialogFragment extends DialogFragment {
                             housekeeping
                     )
             ).subscribe(new Observer<Permintaan>() {
-                @Override
-                public void onCompleted() {
-                    Log.d("Completed", "On completed");
+                @Override public void onCompleted() {
+                    Log.d(HousekeepingDialogFragment.class.getCanonicalName(), "On completed");
                 }
-
-                @Override
-                public void onError(Throwable e) {
-                    Log.d("Error", "On error");
-
+                @Override public void onError(Throwable e) {
+                    Log.d(HousekeepingDialogFragment.class.getCanonicalName(), "On error");
                     e.printStackTrace();
+                    Toast.makeText(
+                            HousekeepingDialogFragment.this.getActivity(),
+                            getString(R.string.something_went_wrong),
+                            Toast.LENGTH_LONG
+                    ).show();
                 }
-
-                @Override
-                public void onNext(Permintaan permintaan) {
-                    Log.d("Next", "On next");
+                @Override public void onNext(Permintaan permintaan) {
+                    Log.d(HousekeepingDialogFragment.class.getCanonicalName(), "On next");
+                    if (permintaan != null) {
+                        Toast.makeText(
+                                HousekeepingDialogFragment.this.getActivity(),
+                                getString(R.string.housekeeping_result),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    } else {
+                        Toast.makeText(
+                                HousekeepingDialogFragment.this.getActivity(),
+                                getString(R.string.something_went_wrong),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
                 }
             });
-
         }
-
-
     }
 }

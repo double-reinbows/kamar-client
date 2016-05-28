@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.GuestServer;
 
 import rx.Observer;
@@ -23,8 +24,8 @@ public class GuestHomeActivity extends AppCompatActivity
         implements BellboyDialogFragment.BellboyDialogListener,
         ChangeRoomNumberDialogFragment.ChangeRoomDialogListener {
 
-    String option;
-    TextView roomNumberTextView;
+    private String option;
+    private TextView roomNumberTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,45 +38,45 @@ public class GuestHomeActivity extends AppCompatActivity
         View logoutView = findViewById(R.id.logoutIcon);
 
         roomNumberTextView = (TextView)findViewById(R.id.room_number_display);
-        String roomNumber = getSharedPreferences("roomSettings", MODE_PRIVATE)
+        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", null);
-
         setGuestId(roomNumber);
 
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
-
         gridView.setAdapter(imgAdapter);
 
         // display feature text on each item click
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //perform action for each individual feature
+                // perform action for each individual feature
                 option = imgAdapter.getItem(position).toString();
                 createAction();
             }
         });
 
         // open the change room number as a fragment
-        passwordIconView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
-                changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
-
-            }
-        });
+        if (passwordIconView != null) {
+            passwordIconView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
+                    changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
+                }
+            });
+        }
 
         // logout guest
-        logoutView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment logoutDialogFragment = new LogoutDialogFragment();
-                logoutDialogFragment.show(getFragmentManager(), "logout");
-
-            }
-        });
+        if (logoutView != null) {
+            logoutView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFragment logoutDialogFragment = new LogoutDialogFragment();
+                    logoutDialogFragment.show(getFragmentManager(), "logout");
+                }
+            });
+        }
     }
 
     /*
@@ -85,29 +86,26 @@ public class GuestHomeActivity extends AppCompatActivity
         switch(option) {
             case "MY REQUESTS":
                 startActivity(new Intent(this, GuestPermintaanActivity.class));
-                finish();
                 break;
-            case "RESTAURANT":
+            case Permintaan.TYPE_RESTAURANT:
                 startActivity(new Intent(this, RestaurantActivity.class));
-                finish();
                 break;
-            case "TRANSPORT":
+            case Permintaan.TYPE_TRANSPORT:
                 startActivity(new Intent(this, TransportActivity.class));
-                finish();
                 break;
-            case "HOUSEKEEPING":
+            case Permintaan.TYPE_HOUSEKEEPING:
                 new HousekeepingDialogFragment().show(getFragmentManager(), "housekeeping");
                 break;
-            case "BELLBOY":
+            case Permintaan.TYPE_BELLBOY:
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
                 break;
-            case "MAINTENANCE":
+            case Permintaan.TYPE_MAINTENANCE:
                 new MaintenanceDialogFragment().show(getFragmentManager(), "maintenance");
                 break;
             case "TELL US":
                 new TellUsDialogFragment().show(getFragmentManager(), "tellus");
                 break;
-            case "CHECKOUT":
+            case Permintaan.TYPE_CHECKOUT:
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
                 break;
             default:
@@ -142,9 +140,8 @@ public class GuestHomeActivity extends AppCompatActivity
      * @param dialog The dialog fragment.
      */
     @Override
-    public void onChangeRoomDialogPositiveClick(DialogFragment dialog) {
+    public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber) {
         dialog.dismiss();
-        String roomNumber = ((ChangeRoomNumberDialogFragment) dialog).getUpdatedRoomNumberText();
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
         Toast.makeText(
                 this,
@@ -163,14 +160,13 @@ public class GuestHomeActivity extends AppCompatActivity
     }
 
     /**
-     * Start the checkout process.
-     * @param bellboy
+     * Start the checkout process by prompting the user to enter a survey.
+     * @param completionMessage The message to show on completion of the survey.
      */
-    public void startCheckout(String bellboy) {
+    public void startCheckout(String completionMessage) {
         Intent intent = new Intent(this, SurveyActivity.class);
-        intent.putExtra("Bellboy", bellboy);
+        intent.putExtra("completionMessage", completionMessage);
         startActivity(intent);
-        finish();
     }
 
     /**

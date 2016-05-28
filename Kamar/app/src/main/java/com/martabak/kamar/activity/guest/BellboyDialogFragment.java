@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Bellboy;
@@ -27,25 +28,21 @@ import rx.Observer;
  */
 public class BellboyDialogFragment extends DialogFragment {
 
-
-    String bellboyMessage;
-    BellboyDialogListener bellboyDialogListener;
+    private BellboyDialogListener bellboyDialogListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.dialog_bellboy, null);
-        builder.setView(view)
+        return new AlertDialog.Builder(getActivity())
+                .setView(view)
                 .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         EditText editBellboyMessage = (EditText)
                                 view.findViewById(R.id.bellboy_message_edit_text);
-                        bellboyMessage = editBellboyMessage.getText().toString();
-                        sendBellboyRequest();
+                        String bellboyMessage = editBellboyMessage.getText().toString();
+                        sendBellboyRequest(bellboyMessage);
                         bellboyDialogListener.onDialogPositiveClick(BellboyDialogFragment.this);
                     }
                 })
@@ -54,29 +51,25 @@ public class BellboyDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         bellboyDialogListener.onDialogNegativeClick(BellboyDialogFragment.this);
-
                     }
-                });
-        return builder.create();
+                })
+                .create();
     }
 
-    /*
-     * Send bellboy request to the server
+    /**
+     * Send bellboy request to the server.
      */
-    public void sendBellboyRequest() {
-
+    public void sendBellboyRequest(String bellboyMessage) {
         Bellboy bellboy = new Bellboy(bellboyMessage);
 
-        String owner = "FRONT DESK";
-        String type = "BELLBOY";
-        String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
+        String owner = Permintaan.OWNER_FRONTDESK;
+        String type = Permintaan.TYPE_BELLBOY;
+        String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", null);
         String guestId= getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("guestId", null);
-        String state = "NEW";
-
-        Calendar c = Calendar.getInstance();
-        Date currentDate = c.getTime();
+        String state = Permintaan.STATE_NEW;
+        Date currentDate = Calendar.getInstance().getTime();
 
         if (guestId != "none") {
             PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
@@ -91,42 +84,47 @@ public class BellboyDialogFragment extends DialogFragment {
             ).subscribe(new Observer<Permintaan>() {
                 @Override
                 public void onCompleted() {
-                    Log.d("Completed", "On completed");
+                    Log.d(BellboyDialogFragment.class.getCanonicalName(), "On completed");
                 }
-
                 @Override
                 public void onError(Throwable e) {
-                    Log.d("Error", "On error");
-
+                    Log.d(BellboyDialogFragment.class.getCanonicalName(), "On error");
                     e.printStackTrace();
+                    Toast.makeText(
+                            getActivity(),
+                            getString(R.string.something_went_wrong),
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
-
                 @Override
                 public void onNext(Permintaan permintaan) {
-                    Log.d("Next", "On next");
+                    Log.d(BellboyDialogFragment.class.getCanonicalName(), "On next");
+                    if (permintaan != null) {
+                        Toast.makeText(
+                                BellboyDialogFragment.this.getActivity(),
+                                getString(R.string.bellboy_result),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    } else {
+                        Toast.makeText(
+                                BellboyDialogFragment.this.getActivity(),
+                                getString(R.string.something_went_wrong),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
                 }
             });
         }
-
-
     }
 
-    /* Bellboy Dialog Listener*/
     public interface BellboyDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-        public void onDialogNegativeClick(DialogFragment dialog);
+        void onDialogPositiveClick(DialogFragment dialog);
+        void onDialogNegativeClick(DialogFragment dialog);
     }
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            bellboyDialogListener = (BellboyDialogListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + "must implement BellboyDalogListener");
-        }
-
+        bellboyDialogListener = (BellboyDialogListener) activity;
     }
-
 
 }

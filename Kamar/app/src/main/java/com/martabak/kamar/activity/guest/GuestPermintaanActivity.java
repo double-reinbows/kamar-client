@@ -8,14 +8,17 @@ import android.widget.ExpandableListView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.GuestExpandableListAdapter;
+import com.martabak.kamar.activity.staff.StaffPermintaanFragment;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import rx.Observer;
+import rx.functions.Func1;
 
 /**
  * This fragment creates the permintaan activity from the guest homescreen.
@@ -27,70 +30,54 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_permintaan);
         doGetPermintaansOfStateAndCreateExpList();
-
     }
 
     protected void createExpandableList(List<Permintaan> permintaans) {
         GuestExpandableListAdapter listAdapter;
         ExpandableListView expListView;
-        List<String> listDataHeader; //list of states
-        HashMap<String, List<String>> listDataChild; //mapping of states to a list of permintaan strings
-        HashMap<String, Permintaan> listDataChildString; //mapping of permintaan strings to their permintaans
+        List<String> listDataHeader = Arrays.asList(
+                getString(R.string.new_permintaan),
+                getString(R.string.inprogress_permintaan),
+                getString(R.string.indelivery_permintaan),
+                getString(R.string.completed_permintaan)
+        );
+        HashMap<String, List<String>> listDataChild = new HashMap<>(); //mapping of states to a list of permintaan strings
+        HashMap<String, Permintaan> listDataChildString = new HashMap<>(); //mapping of permintaan strings to their permintaans
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
-        listDataChildString = new HashMap<String, Permintaan>();
-
-        // Set up header titles
-        listDataHeader.add(this.getString(R.string.new_permintaan));
-        listDataHeader.add(this.getString(R.string.inprogress_permintaan));
-        listDataHeader.add(this.getString(R.string.indelivery_permintaan));
-        listDataHeader.add(this.getString(R.string.completed_permintaan));
-
         // Set up headers (states)
-        List<String> new_permintaan = new ArrayList<String>();
-        List<String> processing_permintaan = new ArrayList<String>();
-        List<String> in_delivery_permintaan = new ArrayList<String>();
-        List<String> complete_permintaan = new ArrayList<String>();
-
-
+        List<String> new_permintaan = new ArrayList<>();
+        List<String> inprogress_permintaan = new ArrayList<>();
+        List<String> indelivery_permintaan = new ArrayList<>();
+        List<String> completed_permintaan = new ArrayList<>();
 
         // Set up child data
         for (Permintaan permintaan : permintaans) {
-            if (permintaan.state.equals("NEW")) {
-            /*    Log.v("Pulled permintaan", "state: "+permintaan.state+
-                        ", owner: "+permintaan.owner+
-                        ", type: "+permintaan.type+
-                        ", roomNumber: "+permintaan.roomNumber);*/
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                new_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
-            } else if (permintaan.state.equals("PROCESSING")) {
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                processing_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
-            } else if (permintaan.state.equals("IN DELIVERY")) {
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                in_delivery_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
-            } else if (permintaan.state.equals("COMPLETE")) {
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                complete_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
+            listDataChildString.put(permintaan.toString(), permintaan);
+            switch (permintaan.state) {
+                case Permintaan.STATE_NEW:
+                    new_permintaan.add(permintaan.toString());
+                    break;
+                case Permintaan.STATE_INPROGRESS:
+                    inprogress_permintaan.add(permintaan.toString());
+                    break;
+                case Permintaan.STATE_INDELIVERY:
+                    indelivery_permintaan.add(permintaan.toString());
+                    break;
+                case Permintaan.STATE_COMPLETED:
+                    completed_permintaan.add(permintaan.toString());
+                    break;
+                default:
+                    Log.e(GuestPermintaanActivity.class.getCanonicalName(), "Unknown state for " + permintaan);
             }
         }
 
         listDataChild.put(listDataHeader.get(0), new_permintaan); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), processing_permintaan);
-        listDataChild.put(listDataHeader.get(2), in_delivery_permintaan);
-        listDataChild.put(listDataHeader.get(3), complete_permintaan);
+        listDataChild.put(listDataHeader.get(1), inprogress_permintaan);
+        listDataChild.put(listDataHeader.get(2), indelivery_permintaan);
+        listDataChild.put(listDataHeader.get(3), completed_permintaan);
 
         //create expandable list
         listAdapter = new GuestExpandableListAdapter(this, listDataHeader, listDataChild, listDataChildString);
@@ -104,37 +91,34 @@ public class GuestPermintaanActivity extends AppCompatActivity {
      * creates the expandable list.
      */
     private void doGetPermintaansOfStateAndCreateExpList() {
-        Log.d(GuestPermintaanActivity.class.getCanonicalName(), "Done get permintaans of state");
+        Log.d(StaffPermintaanFragment.class.getCanonicalName(), "Doing get permintaans of state");
 
-
-        PermintaanServer.getInstance(this).getPermintaansOfState("NEW", "PROCESSING", "IN DELIVERY", "COMPLETE")
-                                                                            .subscribe(new Observer<Permintaan>() {
+        final String roomNumber = getSharedPreferences("roomSettings", Context.MODE_PRIVATE).getString("roomNumber", "none");
+        PermintaanServer.getInstance(this)
+                .getPermintaansOfState(
+                        Permintaan.STATE_NEW,
+                        Permintaan.STATE_INPROGRESS,
+                        Permintaan.STATE_INDELIVERY,
+                        Permintaan.STATE_COMPLETED)
+                .filter(new Func1<Permintaan, Boolean>() {
+                    @Override public Boolean call(Permintaan permintaan) {
+                        return permintaan.roomNumber.equals(roomNumber);
+                    }
+                })
+                .subscribe(new Observer<Permintaan>() {
             List<Permintaan> permintaans = new ArrayList<>();
-            String roomNumber = getSharedPreferences("roomSettings", Context.MODE_PRIVATE).getString("roomNumber", "none");
-            //Log.d("roomNumber", roomNumber);
-            @Override
-            public void onCompleted() {
-                Log.d(GuestPermintaanActivity.class.getCanonicalName(), "On completed");
+            @Override public void onCompleted() {
+                Log.d(GuestPermintaanActivity.class.getCanonicalName(), "getPermintaansOfState() On completed");
                 createExpandableList(permintaans);
             }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d(GuestPermintaanActivity.class.getCanonicalName(), "On error");
-                //TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                //textView.setText(e.getMessage());
+            @Override public void onError(Throwable e) {
+                Log.d(GuestPermintaanActivity.class.getCanonicalName(), "getPermintaansOfState() On error");
                 e.printStackTrace();
             }
-
-            @Override
-            public void onNext(Permintaan result) {
-                Log.d(GuestPermintaanActivity.class.getCanonicalName(), "On next");
-                //only store permintaans with the same room number
-                if (result.roomNumber.equals(roomNumber)) {
-                    permintaans.add(result);
-                }
+            @Override public void onNext(Permintaan result) {
+                Log.d(GuestPermintaanActivity.class.getCanonicalName(), "getPermintaansOfState() On next " + result);
+                permintaans.add(result);
             }
         });
-        Log.d("Test:", "test");
     }
 }

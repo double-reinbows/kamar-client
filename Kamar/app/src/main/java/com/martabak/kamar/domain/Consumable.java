@@ -8,6 +8,21 @@ import java.util.List;
 public class Consumable extends Model {
 
     /**
+     * The FOOD consumable section.
+     */
+    public static final String SECTION_FOOD = "FOOD";
+
+    /**
+     * The DESSERTS consumable section.
+     */
+    public static final String SECTION_DESSERTS = "DESSERTS";
+
+    /**
+     * The BEVERAGES consumable section.
+     */
+    public static final String SECTION_BEVERAGES = "BEVERAGES";
+
+    /**
      * The name; e.g. RAWON DAGING INDOLUXE.
      */
     public final String name;
@@ -53,7 +68,7 @@ public class Consumable extends Model {
     }
 
     public Consumable(String name, String description_en, String description_in, String section,
-                      String subsection, Integer order, Integer price, List<String> tags) {
+                      String subsection, Integer order, Integer price) {
         this.name = name;
         this.description_en = description_en;
         this.description_in = description_in;

@@ -27,61 +27,42 @@ import rx.Observer;
  */
 public class MaintenanceDialogFragment extends DialogFragment {
 
-    String maintenanceMessage;
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.dialog_maintenance, null);
-        builder.setView(view)
+        return new AlertDialog.Builder(getActivity())
+                .setView(view)
                 .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
+                    @Override public void onClick(DialogInterface dialog, int which) {
                         EditText editMaintenanceMessage = (EditText)
                                 view.findViewById(R.id.maintenance_message_edit_text);
-                        maintenanceMessage = editMaintenanceMessage.getText().toString();
-
-                        sendMaintenanceRequest();
-                        // TODO don't show the confirmation message until we know the request was sent
-
-                        Toast.makeText(
-                                getActivity(),
-                                getString(R.string.maintenance_result),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        String maintenanceMessage = editMaintenanceMessage.getText().toString();
+                        sendMaintenanceRequest(maintenanceMessage);
                     }
                 })
                 .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    @Override public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                     }
-                });
-        return builder.create();
+                })
+                .create();
     }
 
-    /* Send Maintenance Request */
-    public void sendMaintenanceRequest() {
-
-
+    /**
+     * Send a maintenance request.
+     */
+    private void sendMaintenanceRequest(String maintenanceMessage) {
         Maintenance maintenance = new Maintenance(maintenanceMessage);
 
-        Log.v(maintenance.getType(), maintenance.getClass().toString());
-
-        String owner = "FRONT DESK";
-        String type = "MAINTENANCE";
-        String roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
+        String owner = Permintaan.OWNER_FRONTDESK;
+        String type = Permintaan.TYPE_MAINTENANCE;
+        String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", null);
         String guestId= getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("guestId", null);
-        String state = "NEW";
-
-        Calendar c = Calendar.getInstance();
-        Date currentDate = c.getTime();
+        String state = Permintaan.STATE_NEW;
+        Date currentDate = Calendar.getInstance().getTime();
 
         if (guestId != null) {
             PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
@@ -96,25 +77,33 @@ public class MaintenanceDialogFragment extends DialogFragment {
             ).subscribe(new Observer<Permintaan>() {
                 @Override
                 public void onCompleted() {
-                    Log.d("Completed", "On completed");
+                    Log.d(MaintenanceDialogFragment.class.getCanonicalName(), "On completed");
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.d("Error", "On error");
-
+                    Log.d(MaintenanceDialogFragment.class.getCanonicalName(), "On error");
                     e.printStackTrace();
                 }
 
                 @Override
                 public void onNext(Permintaan permintaan) {
-                    Log.d("Next", "On next");
+                    Log.d(MaintenanceDialogFragment.class.getCanonicalName(), "createPermintaan() On next" + permintaan);
+                    if (permintaan != null) {
+                        Toast.makeText(
+                                MaintenanceDialogFragment.this.getActivity(),
+                                getString(R.string.maintenance_result),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    } else {
+                        Toast.makeText(
+                                MaintenanceDialogFragment.this.getActivity(),
+                                getString(R.string.something_went_wrong),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
                 }
             });
         }
-
-
-
     }
-
 }

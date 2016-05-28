@@ -34,17 +34,12 @@ import rx.Observer;
  */
 public class ChangeRoomNumberDialogFragment extends DialogFragment {
 
-    private String roomNumber;
-    private String passwordString;
     private ArrayAdapter adapter;
     private ChangeRoomDialogListener changeRoomDialogListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                .getString("roomNumber", "none");
         final View view = layoutInflater.inflate(R.layout.dialog_change_room_number, null);
         final Spinner spinner = (Spinner) view.findViewById(R.id.change_room_number_spinner);
         final List<String> roomNumbers = getRoomNumbersWithoutGuests();
@@ -56,18 +51,18 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
         adapter.notifyDataSetChanged();
         spinner.setAdapter(adapter);
 
-        //spinner.setSelection(Integer.valueOf(roomNumber));
         final EditText passwordEditText = (EditText)
                 view.findViewById(R.id.password_edit_text);
 
-        builder.setView(view)
+        return new AlertDialog.Builder(getActivity())
+                .setView(view)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {;
-                        roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
-                        passwordString = passwordEditText.getText().toString();
-                        changeRoomNumber();
-                        changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this);
+                        String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
+                        String password = passwordEditText.getText().toString();
+                        changeRoomNumber(roomNumber, password);
+                        changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -76,44 +71,57 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
                         dialog.dismiss();
                         changeRoomDialogListener.onChangeRoomDialogNegativeClick(ChangeRoomNumberDialogFragment.this);
                     }
-                });
-        return builder.create();
+                })
+                .create();
     }
 
-    /*
-     * Change room number
-    */
-    public void changeRoomNumber() {
-        SharedPreferences languagePref = getActivity().getSharedPreferences("roomSettings",
-                getActivity().MODE_PRIVATE);
-        final SharedPreferences.Editor editor = languagePref.edit().putString("roomNumber", roomNumber);
-
-        StaffServer.getInstance(getActivity()).login(passwordString).subscribe(new Observer<Boolean>() {
+    /**
+     * Change the room number if the password is correct.
+     * @param roomNumber The room number.
+     * @param password The password string.
+     */
+    public void changeRoomNumber(final String roomNumber, String password) {
+        StaffServer.getInstance(getActivity()).login(password).subscribe(new Observer<Boolean>() {
             @Override public void onCompleted() {
                 Log.d(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "On completed");
             }
             @Override public void onError(Throwable e) {
                 Log.d(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
+                Toast.makeText(
+                        getActivity(),
+                        getString(R.string.something_went_wrong),
+                        Toast.LENGTH_SHORT
+                ).show();
             }
             @Override public void onNext(Boolean loginResponse) {
-                Log.d(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "On next");
                 Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "Login response: " + loginResponse.toString());
                 if (loginResponse) {
-                    editor.commit();
+                    getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                            .edit().putString("roomNumber", roomNumber)
+                            .commit();
+                    Toast.makeText(
+                            getActivity(),
+                            getString(R.string.room_number_result),
+                            Toast.LENGTH_SHORT
+                    ).show();
                 } else {
-                    String text = getString(R.string.incorrect_password) + " ";
-                    Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(
+                            getActivity(),
+                            getString(R.string.incorrect_password),
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
             }
         });
     }
 
-    /*
-     * Return a list of room numbers with no guests checked in.
+    /**
+     * @return The list of room numbers with no guests checked in.
      */
     private List<String> getRoomNumbersWithoutGuests() {
-        final List <String> roomStrings = new ArrayList<String>();
+        final List <String> roomStrings = new ArrayList<>();
+        // TODO use proper method when it's fixed
         GuestServer.getInstance(getActivity().getBaseContext()).
                 getRoomNumbers().subscribe(new Observer<List<Room>>() {
             @Override public void onCompleted() {
@@ -129,21 +137,13 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
                     Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(),
                             "Room " + roomStrings.get(i));
                 }
-
             }
         });
         return roomStrings;
     }
 
-    /*
-     * Get room number text.
-     */
-    public String getUpdatedRoomNumberText() {
-        return roomNumber;
-    }
-
     public interface ChangeRoomDialogListener {
-        void onChangeRoomDialogPositiveClick(DialogFragment dialog);
+        void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber);
         void onChangeRoomDialogNegativeClick(DialogFragment dialog);
     }
 

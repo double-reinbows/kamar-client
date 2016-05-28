@@ -57,7 +57,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         JsonObject content = new JsonObject();
         content.addProperty("message", src.content.message);
         switch (src.type) {
-            case "CONSUMABLE":
+            case Permintaan.TYPE_CONSUMABLE:
                 RestaurantOrder c = (RestaurantOrder)src.content;
                 content.addProperty("total_price", c.totalPrice);
                 JsonArray items = new JsonArray();
@@ -70,16 +70,16 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content.add("items", items);
                 content.addProperty("total_price", c.totalPrice);
                 break;
-            case "TRANSPORT":
+            case Permintaan.TYPE_TRANSPORT:
                 Transport t = (Transport)src.content;
                 content.addProperty("passengers", t.passengers);
                 content.addProperty("departure_time", t.departureTime.toString());
                 content.addProperty("destination", t.destination);
                 break;
-            case "BELLBOY":
-            case "CHECKOUT":
-            case "HOUSEKEEPING":
-            case "MAINTENANCE":
+            case Permintaan.TYPE_BELLBOY:
+            case Permintaan.TYPE_CHECKOUT:
+            case Permintaan.TYPE_HOUSEKEEPING:
+            case Permintaan.TYPE_MAINTENANCE:
             default:
                 break;
         }
@@ -115,10 +115,10 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         String message = c.getAsJsonPrimitive("message").getAsString();
         Content content;
         switch (ptype) {
-            case "BELLBOY":
+            case Permintaan.TYPE_BELLBOY:
                 content = new Bellboy(message);
                 break;
-            case "CONSUMABLE":
+            case Permintaan.TYPE_CONSUMABLE:
                 List<OrderItem> items = new ArrayList<>();
                 for (int i = 0; i < c.getAsJsonArray("items").size(); i++) {
                     JsonObject item = (JsonObject)c.getAsJsonArray("items").get(i);
@@ -129,16 +129,16 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 Integer totalPrice = c.getAsJsonPrimitive("total_price").getAsInt();
                 content = new RestaurantOrder(message, items, totalPrice);
                 break;
-            case "CHECKOUT":
+            case Permintaan.TYPE_CHECKOUT:
                 content = new Checkout(message);
                 break;
-            case "MAINTENANCE":
+            case Permintaan.TYPE_MAINTENANCE:
                 content = new Maintenance(message);
                 break;
-            case "HOUSEKEEPING":
+            case Permintaan.TYPE_HOUSEKEEPING:
                 content = new Housekeeping(message);
                 break;
-            case "TRANSPORT":
+            case Permintaan.TYPE_TRANSPORT:
                 Integer passengers = c.getAsJsonPrimitive("passengers").getAsInt();
                 Date departureTime;
                 try {

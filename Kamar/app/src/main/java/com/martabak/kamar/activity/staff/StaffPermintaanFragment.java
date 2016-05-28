@@ -57,10 +57,10 @@ public  class StaffPermintaanFragment extends Fragment {
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
 
         // Set up headers (states)
-        List<String> new_permintaan = new ArrayList<String>();
-        List<String> inprogress_permintaan = new ArrayList<String>();
-        List<String> indelivery_permintaan = new ArrayList<String>();
-        List<String> completed_permintaan = new ArrayList<String>();
+        List<String> new_permintaan = new ArrayList<>();
+        List<String> inprogress_permintaan = new ArrayList<>();
+        List<String> indelivery_permintaan = new ArrayList<>();
+        List<String> completed_permintaan = new ArrayList<>();
 
         String subUserType = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("subUserType", "none");
         Log.v("subUserType", subUserType);
@@ -69,7 +69,6 @@ public  class StaffPermintaanFragment extends Fragment {
         for (Permintaan permintaan : permintaans) {
             if (subUserType.equals(permintaan.owner)) {
                 listDataChildString.put(permintaan.toString(), permintaan);
-
                 switch (permintaan.state) {
                     case Permintaan.STATE_NEW:
                         new_permintaan.add(permintaan.toString());
