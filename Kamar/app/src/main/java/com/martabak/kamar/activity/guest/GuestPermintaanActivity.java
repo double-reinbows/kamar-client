@@ -93,7 +93,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
     private void doGetPermintaansOfStateAndCreateExpList() {
         Log.d(StaffPermintaanFragment.class.getCanonicalName(), "Doing get permintaans of state");
 
-        final String roomNumber = getSharedPreferences("roomSettings", Context.MODE_PRIVATE).getString("roomNumber", "none")''
+        final String roomNumber = getSharedPreferences("roomSettings", Context.MODE_PRIVATE).getString("roomNumber", "none");
         PermintaanServer.getInstance(this)
                 .getPermintaansOfState(
                         Permintaan.STATE_NEW,

@@ -24,8 +24,8 @@ public class GuestHomeActivity extends AppCompatActivity
         implements BellboyDialogFragment.BellboyDialogListener,
         ChangeRoomNumberDialogFragment.ChangeRoomDialogListener {
 
-    String option;
-    TextView roomNumberTextView;
+    private String option;
+    private TextView roomNumberTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,41 +40,43 @@ public class GuestHomeActivity extends AppCompatActivity
         roomNumberTextView = (TextView)findViewById(R.id.room_number_display);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", null);
-
         setGuestId(roomNumber);
 
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
-
         gridView.setAdapter(imgAdapter);
 
         // display feature text on each item click
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //perform action for each individual feature
+                // perform action for each individual feature
                 option = imgAdapter.getItem(position).toString();
                 createAction();
             }
         });
 
         // open the change room number as a fragment
-        passwordIconView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
-                changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
-            }
-        });
+        if (passwordIconView != null) {
+            passwordIconView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
+                    changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
+                }
+            });
+        }
 
         // logout guest
-        logoutView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment logoutDialogFragment = new LogoutDialogFragment();
-                logoutDialogFragment.show(getFragmentManager(), "logout");
-            }
-        });
+        if (logoutView != null) {
+            logoutView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFragment logoutDialogFragment = new LogoutDialogFragment();
+                    logoutDialogFragment.show(getFragmentManager(), "logout");
+                }
+            });
+        }
     }
 
     /*
@@ -138,9 +140,8 @@ public class GuestHomeActivity extends AppCompatActivity
      * @param dialog The dialog fragment.
      */
     @Override
-    public void onChangeRoomDialogPositiveClick(DialogFragment dialog) {
+    public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber) {
         dialog.dismiss();
-        String roomNumber = ((ChangeRoomNumberDialogFragment) dialog).getUpdatedRoomNumberText();
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
         Toast.makeText(
                 this,

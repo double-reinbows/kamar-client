@@ -62,7 +62,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
                         String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
                         String password = passwordEditText.getText().toString();
                         changeRoomNumber(roomNumber, password);
-                        changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this);
+                        changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -143,7 +143,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
     }
 
     public interface ChangeRoomDialogListener {
-        void onChangeRoomDialogPositiveClick(DialogFragment dialog);
+        void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber);
         void onChangeRoomDialogNegativeClick(DialogFragment dialog);
     }
 
