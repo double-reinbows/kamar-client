@@ -85,12 +85,15 @@ public class GuestHomeActivity extends AppCompatActivity
         switch(option) {
             case "MY REQUESTS":
                 startActivity(new Intent(this, GuestPermintaanActivity.class));
+                finish();
                 break;
             case "RESTAURANT":
                 startActivity(new Intent(this, RestaurantActivity.class));
+                finish();
                 break;
             case "TRANSPORT":
                 startActivity(new Intent(this, TransportActivity.class));
+                finish();
                 break;
             case "HOUSEKEEPING":
                 new HousekeepingDialogFragment().show(getFragmentManager(), "housekeeping");
@@ -102,7 +105,7 @@ public class GuestHomeActivity extends AppCompatActivity
                 new MaintenanceDialogFragment().show(getFragmentManager(), "maintenance");
                 break;
             case "TELL US":
-                new TellusDialogFragment().show(getFragmentManager(), "tellus");
+                new TellUsDialogFragment().show(getFragmentManager(), "tellus");
                 break;
             case "CHECKOUT":
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
@@ -112,9 +115,9 @@ public class GuestHomeActivity extends AppCompatActivity
         }
     }
 
-    /*
-    * Positive click.
-    */
+    /**
+     * Positive click.
+     */
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         dialog.dismiss();
@@ -123,9 +126,9 @@ public class GuestHomeActivity extends AppCompatActivity
         }
     }
 
-    /*
-    * Negative click.
-    */
+    /**
+     * Negative click.
+     */
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         dialog.dismiss();
@@ -134,42 +137,50 @@ public class GuestHomeActivity extends AppCompatActivity
         }
     }
 
-    /*
-    * Positive click for change room number dialog
-    */
+    /**
+     * Positive click for change room number dialog
+     * @param dialog The dialog fragment.
+     */
     @Override
     public void onChangeRoomDialogPositiveClick(DialogFragment dialog) {
         dialog.dismiss();
         String roomNumber = ((ChangeRoomNumberDialogFragment) dialog).getUpdatedRoomNumberText();
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
-        Toast.makeText(getBaseContext(), getString(R.string.room_number_changed), Toast.LENGTH_LONG).show();
+        Toast.makeText(
+                this,
+                getString(R.string.room_number_changed),
+                Toast.LENGTH_LONG
+        ).show();
     }
 
-    /*
-    * Negative click for change room number dialog.
-    */
+    /**
+     * Negative click for change room number dialog.
+     * @param dialog The dialog fragment.
+     */
     @Override
     public void onChangeRoomDialogNegativeClick(DialogFragment dialog) {
         dialog.dismiss();
     }
 
-    /*
-     * Show the checkout fragment.
+    /**
+     * Start the checkout process.
+     * @param bellboy
      */
     public void startCheckout(String bellboy) {
         Intent intent = new Intent(this, SurveyActivity.class);
         intent.putExtra("Bellboy", bellboy);
         startActivity(intent);
+        finish();
     }
 
-    /*
-    * Set guest id on shared preferences.
-    */
+    /**
+     * Set guest id on shared preferences.
+     * @param roomNumber The room number.
+     */
     public void setGuestId(String roomNumber) {
         GuestServer.getInstance(getBaseContext()).getGuestInRoom(
                 roomNumber).subscribe(new Observer<Guest>() {
-            @Override
-            public void onCompleted() {
+            @Override public void onCompleted() {
                 Log.d(GuestHomeActivity.class.getCanonicalName(), "Completed setting guest ID");
             }
             @Override public void onError(Throwable e) {

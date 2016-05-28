@@ -26,19 +26,15 @@ import rx.Observer;
 public class SurveyActivity extends AppCompatActivity {
 
     String toastMessage = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_survey);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null)
-        {
+        if (extras != null) {
             toastMessage = extras.getString("Bellboy");
         }
-
 
         LayoutInflater layoutInflater = getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.activity_survey, null);
@@ -59,22 +55,16 @@ public class SurveyActivity extends AppCompatActivity {
         /* Retrieve all questions */
         FeedbackServer.getInstance(this).getSurveyQuestions()
                 .subscribe(new Observer<List<SurveyQuestion>>() {
-                    @Override
-                    public void onCompleted() {
+                    @Override public void onCompleted() {
                         Log.d("size", String.valueOf(surveyQuestions.size()));
                         Log.d("Completed", "On completed");
                         surveyArrayAdapter.notifyDataSetChanged();
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
+                    @Override public void onError(Throwable e) {
                         Log.d("Error", "On error");
                         e.printStackTrace();
                     }
-
-                    @Override
-                    public void onNext(List<SurveyQuestion> results) {
-
+                    @Override public void onNext(List<SurveyQuestion> results) {
                         for (int i=0; i < results.size(); i++)
                         {
                             surveyQuestions.add(results.get(i));
@@ -82,11 +72,8 @@ public class SurveyActivity extends AppCompatActivity {
                         }
 
                         Log.d("Next", "On next");
-
                     }
-                });
-
-
+        });
 
         final List<SurveyAnswer> surveyAnswers = new ArrayList<SurveyAnswer>();
         FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.survey_answer_add);
@@ -128,7 +115,6 @@ public class SurveyActivity extends AppCompatActivity {
                                 Log.d("Next", "On next");
                             }
                         });
-
                 }
             });
     }

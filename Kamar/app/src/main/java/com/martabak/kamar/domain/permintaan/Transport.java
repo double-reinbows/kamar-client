@@ -30,7 +30,6 @@ public class Transport extends Content {
     }
 
     public String getType() {
-
-        return "TRANSPORT";
+        return Permintaan.TYPE_TRANSPORT;
     }
 }

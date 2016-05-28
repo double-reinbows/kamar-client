@@ -14,7 +14,6 @@ public class Maintenance extends Content {
     }
 
     public String getType() {
-
-        return "MAINTENANCE";
+        return Permintaan.TYPE_MAINTENANCE;
     }
 }

@@ -42,6 +42,10 @@ public class Permintaan<T extends Content> extends Model {
      */
     public static final String TYPE_MAINTENANCE = "MAINTENANCE";
     /**
+     * The RESTAURANT type string.
+     */
+    public static final String TYPE_RESTAURANT = "RESTAURANT";
+    /**
      * The BELLBOY type string.
      */
     public static final String TYPE_TRANSPORT = "TRANSPORT";

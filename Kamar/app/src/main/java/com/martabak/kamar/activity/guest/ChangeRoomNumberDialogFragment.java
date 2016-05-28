@@ -43,7 +43,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        roomNumber = getActivity().getSharedPreferences("roomSettings", getActivity().MODE_PRIVATE)
+        roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", "none");
         final View view = layoutInflater.inflate(R.layout.dialog_change_room_number, null);
         final Spinner spinner = (Spinner) view.findViewById(R.id.change_room_number_spinner);

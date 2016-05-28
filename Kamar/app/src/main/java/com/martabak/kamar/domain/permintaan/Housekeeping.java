@@ -13,6 +13,6 @@ public class Housekeeping extends Content {
     }
 
     public String getType() {
-        return "HOUSEKEEPING";
+        return Permintaan.TYPE_HOUSEKEEPING;
     }
 }
