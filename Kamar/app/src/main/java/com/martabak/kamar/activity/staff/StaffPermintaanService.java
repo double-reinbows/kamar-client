@@ -52,6 +52,7 @@ public class StaffPermintaanService extends IntentService {
                             boolean seen = permintaanIds.contains(permintaan._id);
                             permintaanIds.add(permintaan._id);
                             return !seen && permintaan.updated == null;
+                            // TODO check userSubType as well?
                         }
                     }).subscribe(new Action1<Permintaan>() {
                         @Override public void call(Permintaan permintaan) {
@@ -88,14 +89,9 @@ public class StaffPermintaanService extends IntentService {
         stackBuilder.addParentStack(RESULT_ACTIVITY);
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // nId allows you to update the notification later on.
         mNotificationManager.notify("permintaan", nId, mBuilder.build());
     }

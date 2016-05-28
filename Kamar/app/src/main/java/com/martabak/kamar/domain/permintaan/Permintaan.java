@@ -13,10 +13,73 @@ import java.util.List;
 public class Permintaan<T extends Content> extends Model {
 
     /**
+     * The RESTAURANT owner string.
+     */
+    public static final String OWNER_RESTAURANT = "RESTAURANT";
+    /**
+     * The FRONTDESK owner string.
+     */
+    public static final String OWNER_FRONTDESK = "FRONTDESK";
+
+    /**
+     * The BELLBOY type string.
+     */
+    public static final String TYPE_BELLBOY = "BELLBOY";
+    /**
+     * The CHECKOUT type string.
+     */
+    public static final String TYPE_CHECKOUT = "CHECKOUT";
+    /**
+     * The CONSUMABLE type string.
+     */
+    public static final String TYPE_CONSUMABLE = "CONSUMABLE";
+    /**
+     * The BELLBOY type string.
+     */
+    public static final String TYPE_HOUSEKEEPING = "HOUSEKEEPING";
+    /**
+     * The MAINTENANCE type string.
+     */
+    public static final String TYPE_MAINTENANCE = "MAINTENANCE";
+    /**
+     * The RESTAURANT type string.
+     */
+    public static final String TYPE_RESTAURANT = "RESTAURANT";
+    /**
+     * The BELLBOY type string.
+     */
+    public static final String TYPE_TRANSPORT = "TRANSPORT";
+
+    /**
+     * The NEW state string.
+     */
+    public static final String STATE_NEW = "NEW";
+    /**
+     * The IN-PROGRESS state string.
+     */
+    public static final String STATE_INPROGRESS= "IN-PROGRESS";
+    /**
+     * The IN-DELIVERY state string.
+     */
+    public static final String STATE_INDELIVERY= "IN-DELIVERY";
+    /**
+     * The COMPLETE state string.
+     */
+    public static final String STATE_COMPLETED = "COMPLETED";
+    /**
+     * The DELETED state string.
+     */
+    public static final String STATE_DELETED = "DELETED";
+    /**
+     * The CANCELLED state string.
+     */
+    public static final String STATE_CANCELLED = "CANCELLED";
+
+    /**
      * The owner of the request. One of:
      * <ul>
-     *     <li>RESTAURANT</li>
-     *     <li>FRONTDESK</li>
+     * <li>RESTAURANT</li>
+     * <li>FRONTDESK</li>
      * </ul>
      */
     public final String owner;
@@ -24,12 +87,12 @@ public class Permintaan<T extends Content> extends Model {
     /**
      * The type of the request. One of:
      * <ul>
-     *   <li>BELLBOY</li>
-     *   <li>CHECKOUT</li>
-     *   <li>CONSUMABLE</li>
-     *   <li>HOUSEKEEPING</li>
-     *   <li>MAINTENANCE</li>
-     *   <li>TRANSPORT</li>
+     * <li>BELLBOY</li>
+     * <li>CHECKOUT</li>
+     * <li>CONSUMABLE</li>
+     * <li>HOUSEKEEPING</li>
+     * <li>MAINTENANCE</li>
+     * <li>TRANSPORT</li>
      * </ul>
      */
     public final String type;
@@ -37,12 +100,14 @@ public class Permintaan<T extends Content> extends Model {
     /**
      * The guest's room number.
      */
-    @SerializedName("room_number") public final String roomNumber;
+    @SerializedName("room_number")
+    public final String roomNumber;
 
     /**
      * The guest's ID.
      */
-    @SerializedName("guest_id") public final String guestId;
+    @SerializedName("guest_id")
+    public final String guestId;
 
     /**
      * The request sub-type.
@@ -52,12 +117,12 @@ public class Permintaan<T extends Content> extends Model {
     /**
      * State of this request. One of:
      * <ul>
-     *   <li>NEW</li>
-     *   <li>IN-PROGRESS</li>
-     *   <li>IN-DELIVERY</li>
-     *   <li>COMPLETE</li>
-     *   <li>DELETED</li>
-     *   <li>CANCELLED</li>
+     * <li>NEW</li>
+     * <li>IN-PROGRESS</li>
+     * <li>IN-DELIVERY</li>
+     * <li>COMPLETE</li>
+     * <li>DELETED</li>
+     * <li>CANCELLED</li>
      * </ul>
      */
     public final String state;
@@ -107,6 +172,11 @@ public class Permintaan<T extends Content> extends Model {
         this.created = created;
         this.updated = updated;
         this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return type + " - Room No. " + roomNumber + " - ID: " + guestId + " - Owner: " + owner;
     }
 
 }

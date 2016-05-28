@@ -52,10 +52,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-
         final String childText = (String) getChild(groupPosition, childPosition);
-
-
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -72,9 +69,9 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(_context);
-                builder.setMessage("Are you sure you want to progress this permintaan?");
+                builder.setMessage(_context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
                 builder.setCancelable(false);
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(_context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Check permintaan can be progressed
@@ -99,7 +96,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     }
                 });
 
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(_context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -111,16 +108,15 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
         });
 
-
         ImageView regressPermintaanButton = (ImageView) convertView.findViewById(R.id.regress_permintaan_button);
 
         regressPermintaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(_context);
-                builder.setMessage("Are you sure you want to regress this permintaan?");
+                builder.setMessage(_context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
                 builder.setCancelable(false);
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(_context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Check permintaan can be regressed
@@ -145,7 +141,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     }
                 });
 
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(_context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -166,13 +162,13 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
         String targetState = new String();
         if (groupPosition == 0) {
-            targetState = "NEW";
+            targetState.equals(Permintaan.STATE_NEW);
         } else if (groupPosition == 1) {
-            targetState = "PROCESSING";
+            targetState.equals(Permintaan.STATE_INPROGRESS);
         } else if (groupPosition == 2) {
-            targetState = "IN DELIVERY";
+            targetState.equals(Permintaan.STATE_INDELIVERY);
         } else if (groupPosition == 3) {
-            targetState = "COMPLETE";
+            targetState.equals(Permintaan.STATE_COMPLETED);
         }
 
         PermintaanServer.getInstance(_context).getPermintaansOfState(targetState)
@@ -181,7 +177,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onCompleted() {
-                Log.d("doGetPermintaan", "On completed");
+                Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "doGetAndUpdatePermintaan() On completed");
                 Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
                         tempPermintaan.roomNumber, tempPermintaan.guestId, _listDataHeader.get(groupPosition+increment),
                         tempPermintaan.created, new Date(), tempPermintaan.content);
@@ -189,36 +185,36 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     .subscribe(new Observer<Boolean>() {
                         @Override
                         public void onCompleted() {
-                            Log.d("updatePermintaan", "On completed");
+                            Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On completed");
                             notifyDataSetChanged();
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            Log.d("updatePermintaan", "On error");
+                            Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On error");
                             e.printStackTrace();
                         }
 
                         @Override
                         public void onNext(Boolean result) {
-                            Log.d("updatePermintaan", "staff permintaan update " + result);
+                            Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() staff permintaan update " + result);
                         }
                     });
-        }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("doGetPermintaan", "On error");
-                        }
+            @Override
+            public void onError(Throwable e) {
+                Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On error");
+                }
 
-                    @Override
-                    public void onNext(Permintaan result) {
-                        Log.d("doGetPermintaan", "On next" + result._id +" "+ _id);
-                        if (result._id.equals(_id)) {
-                            tempPermintaan = result;
-                        }
-                    }
-                });
+            @Override
+            public void onNext(Permintaan result) {
+                Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On next" + result._id +" "+ _id);
+                if (result._id.equals(_id)) {
+                    tempPermintaan = result;
+                }
+            }
+        });
     }
 
     @Override
