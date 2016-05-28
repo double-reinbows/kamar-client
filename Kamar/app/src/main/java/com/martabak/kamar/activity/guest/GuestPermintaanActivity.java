@@ -29,30 +29,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         doGetPermintaansOfStateAndCreateExpList();
 
     }
-/*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_staff_permintaan, container, false);
 
-        //add dummy permintaan to the list and create list
-        List<Permintaan> permintaans = new ArrayList<>();
-        Permintaan permintaan = new Permintaan("Front Desk", "TRANSPORT", "707", "ITA", "NEW",
-                new Date(), null, new Transport("gila m8", 4, null, "tebet"));
-        permintaans.add(permintaan);
-        createExpandableList(view, permintaans);
-
-        //get the permintaans on the server and then create the expandable list
-        //doGetPermintaansOfStateAndCreateExpList();
-
-
-
-
-
-        return view;
-     }
-*/
     protected void createExpandableList(List<Permintaan> permintaans) {
         GuestExpandableListAdapter listAdapter;
         ExpandableListView expListView;
@@ -91,25 +68,21 @@ public class GuestPermintaanActivity extends AppCompatActivity {
                 String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
                         +" - Owner: "+permintaan.owner;
                 new_permintaan.add(permintaanString);
-                //new_permintaan.add(permintaan);
                 listDataChildString.put(permintaanString, permintaan);
             } else if (permintaan.state.equals("PROCESSING")) {
                 String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
                         +" - Owner: "+permintaan.owner;
                 processing_permintaan.add(permintaanString);
-                //processing_permintaan.add(permintaan);
                 listDataChildString.put(permintaanString, permintaan);
             } else if (permintaan.state.equals("IN DELIVERY")) {
                 String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
                         +" - Owner: "+permintaan.owner;
                 in_delivery_permintaan.add(permintaanString);
-                //in_delivery_permintaan.add(permintaan);
                 listDataChildString.put(permintaanString, permintaan);
             } else if (permintaan.state.equals("COMPLETE")) {
                 String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
                         +" - Owner: "+permintaan.owner;
                 complete_permintaan.add(permintaanString);
-                //complete_permintaan.add(permintaan);
                 listDataChildString.put(permintaanString, permintaan);
             }
         }
@@ -156,13 +129,10 @@ public class GuestPermintaanActivity extends AppCompatActivity {
             @Override
             public void onNext(Permintaan result) {
                 Log.d(GuestPermintaanActivity.class.getCanonicalName(), "On next");
+                //only store permintaans with the same room number
                 if (result.roomNumber.equals(roomNumber)) {
-                    //TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                    //textView.setText(result.toString() + " for " + result.guestId + " of type " + result.content.getType());
-                    //Log.d("GuestID from server", result.guestId);
                     permintaans.add(result);
                 }
-                //createExpandableList(getView(), result);
             }
         });
         Log.d("Test:", "test");
