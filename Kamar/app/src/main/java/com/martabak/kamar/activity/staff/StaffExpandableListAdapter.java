@@ -79,6 +79,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                             Permintaan currPermintaan;
                             List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
                             currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
+                            Log.v("id", currPermintaan._id);
 
                             doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, 1);
 
@@ -157,21 +158,29 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    private String setState(int groupPosition) {
+
+        String state = new String();
+
+        if (groupPosition == 0) {
+            state = Permintaan.STATE_NEW;
+        } else if (groupPosition == 1) {
+            state = Permintaan.STATE_INPROGRESS;
+        } else if (groupPosition == 2) {
+            state = Permintaan.STATE_INDELIVERY;
+        } else if (groupPosition == 3) {
+            state = Permintaan.STATE_COMPLETED;
+        }
+
+        return state;
+    }
     private void doGetAndUpdatePermintaan(final String _id, final int groupPosition, final int increment) {
         Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "Doing get permintaan of state");
 
-        String targetState = new String();
-        if (groupPosition == 0) {
-            targetState.equals(Permintaan.STATE_NEW);
-        } else if (groupPosition == 1) {
-            targetState.equals(Permintaan.STATE_INPROGRESS);
-        } else if (groupPosition == 2) {
-            targetState.equals(Permintaan.STATE_INDELIVERY);
-        } else if (groupPosition == 3) {
-            targetState.equals(Permintaan.STATE_COMPLETED);
-        }
+        String currState = setState(groupPosition);
+        final String targetState = setState(groupPosition + increment);
 
-        PermintaanServer.getInstance(_context).getPermintaansOfState(targetState)
+        PermintaanServer.getInstance(_context).getPermintaansOfState(currState)
                                                 .subscribe(new Observer<Permintaan>() {
             Permintaan tempPermintaan = new Permintaan();
 
@@ -179,7 +188,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
             public void onCompleted() {
                 Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "doGetAndUpdatePermintaan() On completed");
                 Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
-                        tempPermintaan.roomNumber, tempPermintaan.guestId, _listDataHeader.get(groupPosition+increment),
+                        tempPermintaan.roomNumber, tempPermintaan.guestId, targetState,
                         tempPermintaan.created, new Date(), tempPermintaan.content);
                 PermintaanServer.getInstance(_context).updatePermintaan(updatedPermintaan)
                     .subscribe(new Observer<Boolean>() {
@@ -212,6 +221,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On next" + result._id +" "+ _id);
                 if (result._id.equals(_id)) {
                     tempPermintaan = result;
+                    Log.v("Id", tempPermintaan._id);
                 }
             }
         });
