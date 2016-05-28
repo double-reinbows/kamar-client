@@ -25,7 +25,6 @@
         android:id="@+id/submit"
         android:layout_height="wrap_content"
         android:text="@string/submit"
-        android:onClick="sendPassword"
         android:layout_width="fill_parent">
     </Button>
 
