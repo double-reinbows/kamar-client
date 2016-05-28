@@ -172,9 +172,6 @@ public class CheckGuestInFragment extends Fragment implements View.OnClickListen
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
 
-        c.add(Calendar.DAY_OF_MONTH,5);
-        Date futureDate = c.getTime();
-
         Log.v("CheckOutDate", checkOutDate.toString());
 
         String welcomeMessage = "Hi " + firstName + "!";

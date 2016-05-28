@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.guest;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.martabak.kamar.R;
@@ -22,12 +24,13 @@ import java.util.Date;
 
 import rx.Observer;
 
-public class TransportActivity extends AppCompatActivity {
+public class TransportActivity extends AppCompatActivity implements View.OnClickListener{
 
-    String transportDestination;
-    Integer transportPassengers;
-    String transportMessage;
-    Date transportDepartureDate;
+    private String transportDestination;
+    private Integer transportPassengers;
+    private String transportMessage;
+    private Date transportDepartureDate;
+    private DatePickerDialog datePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +53,21 @@ public class TransportActivity extends AppCompatActivity {
                         findViewById(R.id.transport_passengers_edit_text);
                 transportPassengers = Integer.parseInt(editTransportPassengers.getText().toString());
 
-                EditText editTransportDepartureDate = (EditText)
+                final EditText editTransportDepartureDate = (EditText)
                         findViewById(R.id.transport_depature_date_edit_text);
-                DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-                try {
-                    transportDepartureDate = (Date)formatter.parse(
-                            editTransportDepartureDate.getText().toString());
-                } catch (ParseException e) {
-                    transportDepartureDate = new Date("01/01/2019");
-                }
+                editTransportDepartureDate.setOnClickListener(this);
 
+                Calendar newCalendar = Calendar.getInstance();
+                datePickerDialog = new DatePickerDialog(getBaseContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        transportDepartureDate = newDate.getTime();
+                        editTransportDepartureDate.setText(newDate.getTime().toString());
+
+                    }
+                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
 
                 EditText editTransportMessage = (EditText)
@@ -117,6 +125,11 @@ public class TransportActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        datePickerDialog.show();
     }
 
 }
