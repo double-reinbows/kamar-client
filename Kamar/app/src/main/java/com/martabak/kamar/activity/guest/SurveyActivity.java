@@ -25,7 +25,7 @@ import rx.Observer;
 
 public class SurveyActivity extends AppCompatActivity {
 
-    String toastMessage = "";
+    private String completionMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class SurveyActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            toastMessage = extras.getString("Bellboy");
+            completionMessage = extras.getString("completionMessage");
         }
 
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -43,12 +43,11 @@ public class SurveyActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         final RecyclerView rv = (RecyclerView) view.findViewById(R.id.survey_recycleview);
-
         final LinearLayoutManager llm = new LinearLayoutManager(getBaseContext());
         rv.setLayoutManager(llm);
 
-        final List<SurveyQuestion> surveyQuestions = new ArrayList<SurveyQuestion>();
-        final List<String> viewSurveyQuestions = new ArrayList<String>();
+        final List<SurveyQuestion> surveyQuestions = new ArrayList<>();
+        final List<String> viewSurveyQuestions = new ArrayList<>();
         final SurveyArrayAdapter surveyArrayAdapter = new SurveyArrayAdapter(viewSurveyQuestions);
         rv.setAdapter(surveyArrayAdapter);
 
@@ -56,22 +55,20 @@ public class SurveyActivity extends AppCompatActivity {
         FeedbackServer.getInstance(this).getSurveyQuestions()
                 .subscribe(new Observer<List<SurveyQuestion>>() {
                     @Override public void onCompleted() {
-                        Log.d("size", String.valueOf(surveyQuestions.size()));
-                        Log.d("Completed", "On completed");
+                        Log.d(SurveyActivity.class.getCanonicalName(), String.valueOf(surveyQuestions.size()));
+                        Log.d(SurveyActivity.class.getCanonicalName(), "getSurveyQuestions() On completed");
                         surveyArrayAdapter.notifyDataSetChanged();
                     }
                     @Override public void onError(Throwable e) {
-                        Log.d("Error", "On error");
+                        Log.d(SurveyActivity.class.getCanonicalName(), "getSurveyQuestions() On error");
                         e.printStackTrace();
                     }
                     @Override public void onNext(List<SurveyQuestion> results) {
-                        for (int i=0; i < results.size(); i++)
-                        {
+                        for (int i=0; i < results.size(); i++) {
                             surveyQuestions.add(results.get(i));
                             viewSurveyQuestions.add(surveyQuestions.get(i).question);
                         }
-
-                        Log.d("Next", "On next");
+                        Log.d(SurveyActivity.class.getCanonicalName(), "getSurveyQuestions() On next");
                     }
         });
 
@@ -94,25 +91,21 @@ public class SurveyActivity extends AppCompatActivity {
 
                 FeedbackServer.getInstance(getBaseContext()).createSurveyAnswers(surveyAnswers)
                         .subscribe(new Observer<Boolean>() {
-                            @Override
-                            public void onCompleted() {
-                                String text =  toastMessage + " ";
-                                Toast toast = Toast.makeText(getBaseContext(), text, Toast.LENGTH_SHORT);
-                                toast.show();
+                            @Override public void onCompleted() {
+                                Toast.makeText(
+                                        getBaseContext(),
+                                        completionMessage,
+                                        Toast.LENGTH_LONG
+                                ).show();
                                 finish();
-                                Log.d("Completed", "On completed");
+                                Log.d(SurveyActivity.class.getCanonicalName(), "createSurveyAnswers() On completed");
                             }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.d("Error", "On error");
-
+                            @Override public void onError(Throwable e) {
+                                Log.d(SurveyActivity.class.getCanonicalName(), "createSurveyAnswers() On error");
                                 e.printStackTrace();
                             }
-
-                            @Override
-                            public void onNext(Boolean b) {
-                                Log.d("Next", "On next");
+                            @Override public void onNext(Boolean b) {
+                                Log.d(SurveyActivity.class.getCanonicalName(), "createSurveyAnswers() On next");
                             }
                         });
                 }

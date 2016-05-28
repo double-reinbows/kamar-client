@@ -29,88 +29,81 @@ import rx.Observer;
  */
 public class LogoutDialogFragment extends DialogFragment {
 
-    String passwordString;
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-
-        final View view = layoutInflater.inflate(R.layout.dialog_logout, null);
-
-
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_logout, null);
         final EditText passwordEditText = (EditText)
                 view.findViewById(R.id.password_edit_text);
 
-        builder.setView(view)
+        return new AlertDialog.Builder(getActivity())
+                .setView(view)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {;
-                        passwordString = passwordEditText.getText().toString();
-                        sendLogoutRequest();
-
+                        String password = passwordEditText.getText().toString();
+                        sendLogoutRequest(password);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                     }
-                });
-        return builder.create();
+                })
+                .create();
     }
 
-    /* Send logout request */
-    private void sendLogoutRequest() {
-
-        StaffServer.getInstance(getActivity()).login(passwordString).subscribe(new Observer<Boolean>() {
-            @Override
-            public void onCompleted() {
-                Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On completed");
+    /**
+     * Send the password to login as a staff, and logout as a guest.
+     * @param password The password string.
+     */
+    private void sendLogoutRequest(String password) {
+        StaffServer.getInstance(getActivity()).login(password).subscribe(new Observer<Boolean>() {
+            @Override public void onCompleted() {
+                Log.d(LogoutDialogFragment.class.getCanonicalName(), "On completed");
             }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On error");
+            @Override public void onError(Throwable e) {
+                Log.d(LogoutDialogFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
+                Toast.makeText(
+                        LogoutDialogFragment.this.getActivity(),
+                        getString(R.string.something_went_wrong),
+                        Toast.LENGTH_LONG
+                ).show();
             }
-
-            @Override
-            public void onNext(Boolean loginResponse) {
-                Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On next");
-                Log.v("loginResponse", loginResponse.toString());
+            @Override  public void onNext(Boolean loginResponse) {
+                Log.d(LogoutDialogFragment.class.getCanonicalName(), "On next " + loginResponse.toString());
                 if (loginResponse) {
                     logout();
-
-
                 } else {
-                    Context context = getActivity().getApplicationContext();
-                    String text = getResources().getString(R.string.incorrect_password) + " ";
-                    Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(
+                            getActivity(),
+                            getString(R.string.incorrect_password),
+                            Toast.LENGTH_LONG
+                    ).show();
                 }
             }
         });
     }
 
-    /* Logout */
+    /**
+     * Logout the guest.
+     */
     private void logout() {
-
         Activity activity = getActivity();
         if (isAdded() && activity != null) {
-            SharedPreferences pref = getActivity().getSharedPreferences("userSettings",
-                    getActivity().MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("guestId", null);
-            editor.commit();
-            Intent intent = new Intent(getActivity(), SelectLanguageActivity.class);
-            startActivity(intent);
+            getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                    .edit()
+                    .putString("guestId", null)
+                    .commit();
+            Toast.makeText(
+                    getActivity(),
+                    getString(R.string.logout_result),
+                    Toast.LENGTH_LONG
+            ).show();
+            startActivity(new Intent(getActivity(), SelectLanguageActivity.class));
+            getActivity().finish();
         }
-
-
     }
-
 
 }

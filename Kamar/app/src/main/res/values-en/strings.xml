@@ -92,5 +92,8 @@
     <string name="room_number_change">Change Room Number</string>
     <string name="room_number_changed">Room number changed</string>
     <string name="room_number_password">Input password</string>
+    <string name="room_number_result">Room number changed</string>
+
+    <string name="logout_result">Logged out of guest</string>
 
 </resources>

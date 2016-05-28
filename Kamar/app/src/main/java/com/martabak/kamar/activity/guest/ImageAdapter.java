@@ -10,10 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 
 
 /**
- * Created by adarsh on 5/03/16.
+ * Image adapter to show the permintaan image types.
  */
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
@@ -76,12 +77,12 @@ public class ImageAdapter extends BaseAdapter {
     //Text descriptions
     private String[] mText = {
             "MY REQUESTS",
-            "RESTAURANT",
-            "HOUSEKEEPING",
-            "BELLBOY",
-            "MAINTENANCE",
-            "TRANSPORT",
+            Permintaan.TYPE_RESTAURANT,
+            Permintaan.TYPE_HOUSEKEEPING,
+            Permintaan.TYPE_BELLBOY,
+            Permintaan.TYPE_MAINTENANCE,
+            Permintaan.TYPE_TRANSPORT,
             "TELL US",
-            "CHECKOUT"
+            Permintaan.TYPE_CHECKOUT
     };
 }

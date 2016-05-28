@@ -58,6 +58,11 @@ public class TellUsDialogFragment extends DialogFragment {
                 public void onError(Throwable e) {
                     Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On error");
                     e.printStackTrace();
+                    Toast.makeText(
+                            TellUsDialogFragment.this.getActivity(),
+                            getString(R.string.something_went_wrong),
+                            Toast.LENGTH_LONG
+                    ).show();
                 }
                 @Override public void onNext(Boolean b) {
                     Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On next " + b);
