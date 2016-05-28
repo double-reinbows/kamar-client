@@ -1,35 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kamar</string>
 
+    <!-- Misc -->
+    <string name="app_name">Kamar</string>
+    <string name="action_settings">Settings</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_guest_home">GuestHomeActivity</string>
+    <string name="title_activity_staff_home">StaffHomeActivity</string>
+    <string name="title_activity_transport">TransportActivity</string>
+    <string name="title_activity_survey">SurveyActivity</string>
+    <string name="title_activity_restaurant">RestaurantActivity</string>
+    <string name="welcome">Selamat Datang</string>
+    <string name="upload">Upload</string>
+    <string name="positive">Yes</string>
+    <string name="negative">No</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Kirim</string>
+    <string name="something_went_wrong">Ups, ada yang tidak beres</string>
 
-    <string name="action_settings">Settings</string>
-
+    <!-- Home -->
     <string name="language_english">English</string>
     <string name="language_bahasa">Bahasa Indonesia</string>
-
     <string name="language_set_to">Bahasa diatur ke Indonesia</string>
-    <string name="user_set_to">Pengguna diatur ke</string>
-
-    <string name="welcome">Selamat Datang</string>
-
     <string name="guest">Tamu</string>
     <string name="staff">Pegawai</string>
+    <string name="user_set_to_guest">Pengguna diatur ke Tamu</string>
+    <string name="user_set_to_staff">Pengguna diatur ke Pegawai</string>
     <string name="password_prompt">Kata Sandi: </string>
     <string name="incorrect_password">Kata sandi yang anda masukki salah</string>
-    <string name="new_permintaan">BARU</string>
-    <string name="processing_permintaan">SEDANG DIPROSES</string>
-    <string name="in_delivery_permintaan">SEDANG DIKIRIM</string>
-    <string name="complete_permintaan">BERES</string>
+    <string name="frontdesk">Front Desk</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
 
+    <!-- Permintaan -->
+    <string name="new_permintaan">BARU</string>
+    <string name="inprogress_permintaan">SEDANG DIPROSES</string>
+    <string name="indelivery_permintaan">SEDANG DIKIRIM</string>
+    <string name="completed_permintaan">BERES</string>
+    <string name="deleted_permintaan">DELETED</string>
+    <string name="cancelled_permintaan">CANCELLED</string>
+    <string name="permintaan_progress_confirmation">Are you sure you want to progress this permintaan?</string>
+
+    <!-- Chat -->
     <string name="title_chat_list">Pesan</string>
     <string name="title_chat_detail">Pesan</string>
     <string name="chat_message_text">ketik pesan anda ...</string>
     <string name="chat_send_button">Kirim</string>
     <string name="chat_message_sent">Pesan terkirim</string>
-    <string name="something_went_wrong">Ups, ada yang tidak beres</string>
 
-    <string name="submit">Kirim</string>
+    <!-- Staff -->
+    <string name="guest_first_name">First Name</string>
+    <string name="guest_last_name">Last Name</string>
+    <string name="guest_email">Email</string>
+    <string name="guest_phone">Phone Number</string>
+    <string name="guest_date">Date</string>
+    <string name="guest_date_check_out">Date Check Out</string>
+    <string name="guest_room_number">Set Room Number</string>
+    <string name="guest_checkout">Check Out Guest</string>
+    <string name="guest_checkout_message">Guest has been checked out</string>
+    <string name="guest_checkin_message">Guest has been checked in</string>
+
+    <!-- Guest -->
+    <string name="transport_passengers">Passengers</string>
+    <string name="transport_departuretime">Departure Time</string>
+    <string name="transport_destination">Destination</string>
+    <string name="transport_message">Message</string>
+
+    <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
+    <string name="housekeeping_edittext">Input housekeeper details</string>
+    <string name="housekeeping_result">Housekeeping request sent</string>
+
+    <string name="bellboy_message">Are you sure you want a bellboy?</string>
+    <string name="bellboy_edittext">Input bellboy details</string>
+    <string name="bellboy_result">Bellboy request sent</string>
+    <string name="report_to_frontdesk">Please report to front desk</string>
+
+    <string name="maintenance_message">Are you sure you want maintenance?</string>
+    <string name="maintenance_edittext">Input maintenance details</string>
+    <string name="maintenance_result">Maintenance request sent</string>
+
+    <string name="tellus_message">Tell us what you think</string>
+    <string name="tellus_edittext">Leave your feedback here!</string>
+
+    <string name="room_select">Please select a room</string>
+    <string name="room_number">Room Number</string>
+    <string name="room_number_change">Change Room Number</string>
+    <string name="room_number_changed">Room number changed</string>
+    <string name="room_number_password">Input password</string>
+
 </resources>

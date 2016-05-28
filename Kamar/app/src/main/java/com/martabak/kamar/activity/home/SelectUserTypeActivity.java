@@ -18,14 +18,13 @@ import android.app.Fragment;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.activity.staff.StaffHomeActivity;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.service.StaffServer;
 
 import rx.Observer;
 
 
 public class SelectUserTypeActivity extends AppCompatActivity {
-
-    private StaffTypeFragment staffTypeFragment;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -35,55 +34,59 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         final Button guestButton = (Button) findViewById(R.id.guest);
         final Button staffButton = (Button) findViewById(R.id.staff);
 
-        guestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setUserType("GUEST");
-                displayUserTypeToast();
-                Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Guest");
+        if (guestButton != null) {
+            guestButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("userType", User.TYPE_GUEST);
+                    editor.putString("userPassword", User.PASSWORD_GUEST);
+                    editor.commit();
 
-                SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("userType", "GUEST");
-                editor.putString("userPassword", "guest123");
-                editor.commit();
+                    Toast.makeText(
+                            SelectUserTypeActivity.this,
+                            R.string.user_set_to_guest,
+                            Toast.LENGTH_LONG
+                    ).show();
+                    Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to GUEST");
 
-                switchActivity();
-            }
-        });
-        staffButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setUserType("STAFF");
-                displayUserTypeToast();
-
-                //Check that the current layout has "fragment_container" id in it
-                if (findViewById(R.id.fragment_container) != null) {
-                    //Check that the fragment isn't being created via the Back button
-                    //because otherwise we could end up with double fragments
-                    if (savedInstanceState != null) {
-                        return;
-                    }
+                    startActivity(new Intent(SelectUserTypeActivity.this, GuestHomeActivity.class));
+                    finish();
                 }
+            });
+        }
+        if (staffButton != null) {
+            staffButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("userType", User.TYPE_STAFF);
+                    editor.commit();
 
-                //Create a new fragment
-                staffTypeFragment = new StaffTypeFragment();
+                    Toast.makeText(
+                            SelectUserTypeActivity.this,
+                            R.string.user_set_to_staff,
+                            Toast.LENGTH_LONG
+                    ).show();
+                    Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to STAFF");
 
-                //Start up a FragmentManager and then replace "fragment_container" inside the layout
-                //with your fresh StaffTypeFragment
-                getFragmentManager().beginTransaction().
-                        replace(R.id.fragment_container, staffTypeFragment).commit();
+                    if (findViewById(R.id.fragment_container) != null) {
+                        if (savedInstanceState != null) {
+                            return;
+                        }
+                    }
 
-
-            }
-        });
-    }
-
-    public void sendPassword(View v) {
-        staffTypeFragment.sendPassword();
+                    getFragmentManager().beginTransaction().
+                            replace(R.id.fragment_container, new StaffTypeFragment()).commit();
+                }
+            });
+        }
     }
 
     public static class StaffTypeFragment extends Fragment {
+
         public StaffTypeFragment() {}
 
         @Override
@@ -91,173 +94,69 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             return inflater.inflate(R.layout.fragment_staff_login, container, false);
         }
+
         public void sendPassword() {
-            //Cast view to EditText and then to a String
-            String passwordString   = ((EditText)getView().findViewById(R.id.EditTextPassword)).getText().toString();
-            //Log.v("Password String", passwordString);
-
-            /*
-            //Remove this block when StaffServer.login() is working
-            SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString("userType", "STAFF");
-            editor.commit();
-*/
-
-            //((SelectUserTypeActivity)getActivity()).switchActivity();
-            // FIXME uncomment this to skip staff login check
-
+            String passwordString = ((EditText)getView().findViewById(R.id.EditTextPassword)).getText().toString();
             StaffServer.getInstance(getActivity()).login(passwordString).subscribe(new Observer<Boolean>() {
-                Boolean loginFlag = false;
-                @Override
-                public void onCompleted() {
-                    if (loginFlag) {
+                boolean loginResult;
+                @Override public void onCompleted() {
+                    if (loginResult) {
                         Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On completed");
-                        SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
-                        final SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("userType", "STAFF");
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Front Desk or Restaurant?");
-                        builder.setCancelable(false);
-                        builder.setPositiveButton("Front Desk", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                editor.putString("subUserType", "FRONT DESK");
-                                editor.commit();
-                                Log.v("userType", getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none"));
-                                Log.v("subUserType", getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
-                                ((SelectUserTypeActivity)getActivity()).switchActivity();
-                            }
-                        });
-                        builder.setNegativeButton("Restaurant", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                editor.putString("subUserType", "RESTAURANT");
-                                editor.commit();
-                                ((SelectUserTypeActivity)getActivity()).switchActivity();
-                            }
-                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                        //((SelectUserTypeActivity) getActivity()).switchActivity();
+
+                        final SharedPreferences.Editor editor = getActivity()
+                                .getSharedPreferences("userSettings", MODE_PRIVATE)
+                                .edit();
+                        new AlertDialog.Builder(getActivity())
+                                .setMessage(getString(R.string.frontdesk_or_restaurant))
+                                .setCancelable(false)
+                                .setPositiveButton(getString(R.string.frontdesk), new DialogInterface.OnClickListener() {
+                                    @Override public void onClick(DialogInterface dialog, int which) {
+                                        editor.putString("subUserType", User.TYPE_STAFF_FRONTDESK)
+                                                .commit();
+
+                                        Log.v(SelectUserTypeActivity.class.getCanonicalName(), "userType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none"));
+                                        Log.v(SelectUserTypeActivity.class.getCanonicalName(), "subUserType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
+
+                                        startActivity(new Intent(getActivity(), StaffHomeActivity.class));
+                                        getActivity().finish();
+                                    }
+                                })
+                                .setNegativeButton(getString(R.string.restaurant), new DialogInterface.OnClickListener() {
+                                    @Override public void onClick(DialogInterface dialog, int which) {
+                                        editor.putString("subUserType", User.TYPE_STAFF_RESTAURANT)
+                                                .commit();
+
+                                        Log.v(SelectUserTypeActivity.class.getCanonicalName(), "userType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none"));
+                                        Log.v(SelectUserTypeActivity.class.getCanonicalName(), "subUserType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
+
+                                        startActivity(new Intent(getActivity(), StaffHomeActivity.class));
+                                        getActivity().finish();
+                                    }
+                                })
+                                .create().show();
+                    } else {
+                        Toast.makeText(
+                                getActivity(),
+                                getString(R.string.incorrect_password),
+                                Toast.LENGTH_LONG
+                        ).show();
                     }
                 }
-
-                @Override
-                public void onError(Throwable e) {
+                @Override public void onError(Throwable e) {
                     Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On error");
                     e.printStackTrace();
                     Toast.makeText(
                             getActivity().getApplicationContext(),
-                            "Something went wrong. Try again.",
+                            getString(R.string.something_went_wrong),
                             Toast.LENGTH_SHORT
                     ).show();
                 }
-
-                @Override
-                public void onNext(Boolean loginResponse) {
-                    Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On next");
-                    //Log.v("loginResponse", loginResponse.toString());
-                    if (loginResponse) {
-                        loginFlag = true;
-                        /*
-                        Log.d(SelectUserTypeActivity.class.getCanonicalName(), "Set user to Staff");
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Front Desk or Restaurant?");
-                        builder.setCancelable(false);
-                        builder.setPositiveButton("Front Desk", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = pref.edit();
-                                editor.putString("userType", "FRONTDESK");
-                                editor.commit();
-                                //((SelectUserTypeActivity)getActivity()).switchActivity();
-                            }
-                        });
-                        builder.setNegativeButton("Restaurant", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences pref = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = pref.edit();
-                                editor.putString("userType", "RESTAURANT");
-                                editor.commit();
-                                //((SelectUserTypeActivity)getActivity()).switchActivity();
-                            }
-                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                        */
-                    } else {
-                        Context context = getActivity().getApplicationContext();
-                        String text = getResources().getString(R.string.incorrect_password) + " ";
-                        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
+                @Override public void onNext(Boolean loginResponse) {
+                    Log.d(SelectUserTypeActivity.class.getCanonicalName(), "On next " + loginResponse);
+                    loginResult = loginResponse;
                 }
             });
-
-
         }
-    }
-
-    /**
-     * Set the user type.
-     *
-     * @param userType The user type, either "guest" or "staff".
-     */
-    private void setUserType(String userType) {
-        SharedPreferences languagePref = getSharedPreferences("userSettings", MODE_PRIVATE);
-        SharedPreferences.Editor editor = languagePref.edit().
-                putString("userType", userType);
-        editor.commit();
-    }
-
-    /**
-     * Display a toast after user type set.
-     */
-    private void displayUserTypeToast() {
-        Context context = getApplicationContext();
-        String text = getResources().getString(R.string.user_set_to) + " ";
-        String userType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none");
-        switch (userType) {
-            case "STAFF":
-                text += getResources().getString(R.string.staff);
-                break;
-            case "GUEST":
-                text += getResources().getString(R.string.guest);
-                break;
-            default:
-                text += "none";
-                break;
-        }
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
-
-
-
-    /**
-     * Switch activity.
-     */
-    private void switchActivity() {
-        Intent intent;
-        String userType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none");
-        switch (userType) {
-            case "STAFF":
-                intent = new Intent(this, StaffHomeActivity.class);
-                startActivity(intent);
-                break;
-            case "GUEST":
-                intent = new Intent(this, GuestHomeActivity.class);
-                startActivity(intent);
-                break;
-            default:
-                break;
-        }
-
-
     }
 
 }

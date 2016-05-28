@@ -46,9 +46,9 @@ public class GuestPermintaanActivity extends AppCompatActivity {
 
         // Set up header titles
         listDataHeader.add(this.getString(R.string.new_permintaan));
-        listDataHeader.add(this.getString(R.string.processing_permintaan));
-        listDataHeader.add(this.getString(R.string.in_delivery_permintaan));
-        listDataHeader.add(this.getString(R.string.complete_permintaan));
+        listDataHeader.add(this.getString(R.string.inprogress_permintaan));
+        listDataHeader.add(this.getString(R.string.indelivery_permintaan));
+        listDataHeader.add(this.getString(R.string.completed_permintaan));
 
         // Set up headers (states)
         List<String> new_permintaan = new ArrayList<String>();
