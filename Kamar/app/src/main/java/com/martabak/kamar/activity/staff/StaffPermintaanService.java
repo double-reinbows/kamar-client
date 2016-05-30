@@ -24,6 +24,11 @@ import rx.functions.Func1;
 
 /**
  * A service that routinely checks for new permintaans from guests.
+ *
+ * <p>
+ *     Expects intent extra: "subUserType" mapping to the staff member's sub-user type, either
+ *     {@code Permintaan.OWNER_RESTAURANT} or {@code Permintaan.OWNER_FRONTDESK}.
+ * </p>
  */
 public class StaffPermintaanService extends IntentService {
 
@@ -40,6 +45,7 @@ public class StaffPermintaanService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        final String owner = intent.getExtras().getString("subUserType");
         final Set<String> permintaanIds = new HashSet<>();
 
         while (true) {
@@ -51,8 +57,7 @@ public class StaffPermintaanService extends IntentService {
                         @Override public Boolean call(Permintaan permintaan) {
                             boolean seen = permintaanIds.contains(permintaan._id);
                             permintaanIds.add(permintaan._id);
-                            return !seen && permintaan.updated == null;
-                            // TODO check userSubType as well?
+                            return !seen && permintaan.updated == null && permintaan.owner.equals(owner);
                         }
                     }).subscribe(new Action1<Permintaan>() {
                         @Override public void call(Permintaan permintaan) {
@@ -72,11 +77,10 @@ public class StaffPermintaanService extends IntentService {
     }
 
     private void createNotification(int nId, Permintaan permintaan) {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_menu_manage)
-                        .setContentTitle(permintaan.type + " REQUEST")
-                        .setContentText("New " + permintaan.type + " REQUEST " + permintaan.roomNumber);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_menu_manage)
+                .setContentTitle(permintaan.type + " " + getString(R.string.permintaan))
+                .setContentText(getString(R.string.new_permintaan) + " " + permintaan.type + " " + getString(R.string.permintaan) + " " + permintaan.roomNumber);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
 
