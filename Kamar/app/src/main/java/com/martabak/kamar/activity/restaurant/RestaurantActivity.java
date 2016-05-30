@@ -23,6 +23,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import rx.Observer;
@@ -67,6 +68,7 @@ public class RestaurantActivity extends AppCompatActivity {
         List<String> listDataHeader; //list of states
         HashMap<String, List<String>> listDataChild; //mapping of states to a list of permintaan strings
         HashMap<String, Consumable> listDataChildString; //mapping of permintaan strings to their permintaans
+        HashMap<String, Integer> quantityDict;
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -74,73 +76,27 @@ public class RestaurantActivity extends AppCompatActivity {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
         listDataChildString = new HashMap<String, Consumable>();
+        quantityDict = new HashMap<String, Integer>();
 
-        /* Set up header titles
-        listDataHeader.add(this.getString(R.string.new_permintaan));
-        listDataHeader.add(this.getString(R.string.inprogress_permintaan));
-        listDataHeader.add(this.getString(R.string.indelivery_permintaan));
-        listDataHeader.add(this.getString(R.string.completed_permintaan));
-*/
         for (Consumable consumable : consumables) {
             if (!listDataHeader.contains(consumable.subsection)) {
                 listDataHeader.add(consumable.subsection);
-                listDataChild.put(consumable.subsection, null);
-            } else {
+                List<String> currList = new ArrayList<>();
+                currList.add(consumable.name);
+                listDataChild.put(consumable.subsection, currList);
+            } else { //subsection already exists
                 List<String> currList = listDataChild.get(consumable.subsection);
-                if (currList != null) {
-                    currList.add(consumable.name);
-                } else {
-                    currList = new ArrayList<String>();
-                    currList.add(consumable.name);
-                }
-
+                currList.add(consumable.name);
+                listDataChild.put(consumable.subsection, currList);
             }
-
             listDataChildString.put(consumable.name, consumable);
+            quantityDict.put(consumable.name, 0);
+
         }
 
-        /* Set up headers (states)
-        List<String> new_permintaan = new ArrayList<String>();
-        List<String> processing_permintaan = new ArrayList<String>();
-        List<String> in_delivery_permintaan = new ArrayList<String>();
-        List<String> complete_permintaan = new ArrayList<String>();
-
-        // Set up child data
-        for (Consumable consumable : consumables) {
-            if (consumable.state.equals("NEW")) {
-            /*    Log.v("Pulled permintaan", "state: "+permintaan.state+
-                        ", owner: "+permintaan.owner+
-                        ", type: "+permintaan.type+
-                        ", roomNumber: "+permintaan.roomNumber);
-                String permintaanString = consumable.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+consumable.owner;
-                new_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
-            } else if (consumable.state.equals("PROCESSING")) {
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                processing_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
-            } else if (permintaan.state.equals("IN DELIVERY")) {
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                in_delivery_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
-            } else if (permintaan.state.equals("COMPLETE")) {
-                String permintaanString = permintaan.type+" - Room No. "+permintaan.roomNumber+" - ID: "+permintaan.guestId
-                        +" - Owner: "+permintaan.owner;
-                complete_permintaan.add(permintaanString);
-                listDataChildString.put(permintaanString, permintaan);
-            }
-        }
-
-        listDataChild.put(listDataHeader.get(0), new_permintaan); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), processing_permintaan);
-        listDataChild.put(listDataHeader.get(2), in_delivery_permintaan);
-        listDataChild.put(listDataHeader.get(3), complete_permintaan);
-*/
         //create expandable list
-        listAdapter = new RestaurantExpandableListAdapter(this, listDataHeader, listDataChild, listDataChildString);
+        listAdapter = new RestaurantExpandableListAdapter(this, listDataHeader, listDataChild,
+                                                            listDataChildString, quantityDict);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
@@ -157,7 +113,8 @@ public class RestaurantActivity extends AppCompatActivity {
         MenuServer.getInstance(this).getMenuBySection(section)
                 .subscribe(new Observer<Consumable>() {
                     List<Consumable> consumables = new ArrayList<>();
-                    String roomNumber = getSharedPreferences("roomSettings", Context.MODE_PRIVATE).getString("roomNumber", "none");
+                    String roomNumber = getSharedPreferences("roomSettings", Context.MODE_PRIVATE)
+                                                                .getString("roomNumber", "none");
                     @Override
                     public void onCompleted() {
                         Log.d(RestaurantActivity.class.getCanonicalName(), "On completed");
@@ -178,7 +135,6 @@ public class RestaurantActivity extends AppCompatActivity {
                         consumables.add(result);
                     }
                 });
-        Log.d("Test:", "test");
     }
 
 }

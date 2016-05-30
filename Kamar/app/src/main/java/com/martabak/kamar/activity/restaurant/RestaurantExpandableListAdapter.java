@@ -30,13 +30,17 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
     private HashMap<String, Consumable> _listDataChildString;
+    private HashMap<String, Integer> quantityDict;
 
     public RestaurantExpandableListAdapter(Context context, List<String> listDataHeader,
-                                           HashMap<String, List<String>> listDataChild, HashMap<String, Consumable> listDataChildString) {
+                                            HashMap<String, List<String>> listDataChild,
+                                            HashMap<String, Consumable> listDataChildString,
+                                            HashMap<String, Integer> quantityDict) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listDataChild;
         this._listDataChildString = listDataChildString;
+        this.quantityDict = quantityDict;
     }
 
     @Override
@@ -62,6 +66,97 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.restaurant_list_item);
+        txtListChild.setText(childText);
+
+        //final Consumable currConsumable;
+        //final List<String> currConsumables = _listDataChild.get(_listDataHeader.get(groupPosition));
+        //currConsumable = _listDataChildString.get(currConsumables.get(childPosition));
+
+        TextView quantity = (TextView) convertView.findViewById(R.id.item_quantity);
+        quantity.setText("0");
+
+        //TODO: Change button picture to a +
+        ImageView progressPermintaanButton = (ImageView) convertView.findViewById(R.id.minus_button);
+
+        progressPermintaanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+                builder.setMessage(_context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
+                builder.setCancelable(false);
+                builder.setPositiveButton(_context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Check permintaan can be progressed
+                        Consumable currConsumable;
+                        List<String> currConsumables = _listDataChild.get(_listDataHeader.get(groupPosition));
+                        currConsumable = _listDataChildString.get(currConsumables.get(childPosition));
+                        quantityDict.put(currConsumable.name, quantityDict.get(currConsumable.name)+1);
+                        Log.v("id", currConsumable._id);
+
+                        //doGetAndUpdatePermintaan(currConsumable._id, groupPosition, 1);
+
+                        //TextView txtListChild = (TextView) convertView.findViewById(R.id.item_quantity);
+                        TextView quantity = (TextView) v.findViewById(R.id.item_quantity);
+                        Log.v("HERP", quantity.toString());
+                        //txtListChild.setText(quantityDict.get(currConsumable.name).toString());
+                        //txtListChild.setText("0");
+                    }
+                });
+
+                builder.setNegativeButton(_context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+
+        });
+
+        ImageView regressPermintaanButton = (ImageView) convertView.findViewById(R.id.plus_button);
+
+        regressPermintaanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+                builder.setMessage(_context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
+                builder.setCancelable(false);
+                builder.setPositiveButton(_context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Check permintaan can be regressed
+                        Consumable currConsumable;
+                        List<String> currConsumables = _listDataChild.get(_listDataHeader.get(groupPosition));
+                        currConsumable = _listDataChildString.get(currConsumables.get(childPosition));
+
+                        doGetAndUpdatePermintaan(currConsumable._id, groupPosition, -1);
+
+                        //Get the list of permintaans in the previous state
+                        //List<String> prevPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition - 1));
+
+                        //TODO: Should the following block should be done in onCompleted()?
+                        //Add child to the next state
+                        //prevPermintaans.add(currConsumables.get(childPosition));
+                        //Remove the child from the current state
+                        //currConsumables.remove(childPosition);
+                    }
+                });
+
+                builder.setNegativeButton(_context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+
+        });
+
         txtListChild.setText(childText);
         return convertView;
     }
@@ -137,7 +232,7 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return this._listDataChild.get(_listDataHeader.get(groupPosition))
                 .size();
     }
 
