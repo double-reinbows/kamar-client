@@ -10,24 +10,24 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.activity.restaurant.RestaurantExpandableListAdapter;
 import com.martabak.kamar.domain.Consumable;
-import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.MenuServer;
-import com.martabak.kamar.service.PermintaanServer;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import rx.Observer;
 
+/**
+ * This activity generates the menu which users can order food, beverages and desserts
+ * from. It pulls menu data from the server and then displays it in an interactive
+ * menu.
+ */
 public class RestaurantActivity extends AppCompatActivity {
 
     @Override
@@ -43,68 +43,71 @@ public class RestaurantActivity extends AppCompatActivity {
 
         doGetConsumablesOfSectionAndCreateExpList("FOOD");
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                //TextView textView = (TextView) findViewById(R.id.restaurant_text);
-                //textView.setText(tab.getText().toString());
                 Log.v("tab", tab.getText().toString());
                 doGetConsumablesOfSectionAndCreateExpList(tab.getText().toString().toUpperCase());
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                //doGetConsumablesOfSectionAndCreateExpList(tab.toString());
             }
-
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 doGetConsumablesOfSectionAndCreateExpList(tab.getText().toString().toUpperCase());
             }
         });
     }
+
+    /**
+     * Creates an exp list then sets the restaurant exp list onto it
+     */
     protected void createExpandableList(List<Consumable> consumables) {
         RestaurantExpandableListAdapter listAdapter;
         ExpandableListView expListView;
-        List<String> listDataHeader; //list of states
-        HashMap<String, List<String>> listDataChild; //mapping of states to a list of permintaan strings
-        HashMap<String, Consumable> listDataChildString; //mapping of permintaan strings to their permintaans
-        HashMap<String, Integer> quantityDict;
+        List<String> subsectionHeaders; //header text
+        //a list of each item's main text with header text as keys
+        HashMap<String, List<String>> itemTextDict;
+        //consumable dictionary with consumable.name keys
+        HashMap<String, Consumable> itemObjectDict;
+        //quantity dictionary with consumable.name keys
+        HashMap<String, Integer> itemQuantityDict;
 
-        // get the listview
-        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        //find where to inflate the exp list
+        expListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
 
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
-        listDataChildString = new HashMap<String, Consumable>();
-        quantityDict = new HashMap<String, Integer>();
+        subsectionHeaders = new ArrayList<String>();
+        itemTextDict = new HashMap<String, List<String>>();
+        itemObjectDict = new HashMap<String, Consumable>();
+        itemQuantityDict = new HashMap<String, Integer>();
 
+        //iterate over the consumables for the current tab/section
         for (Consumable consumable : consumables) {
-            if (!listDataHeader.contains(consumable.subsection)) {
-                listDataHeader.add(consumable.subsection);
+            if (!subsectionHeaders.contains(consumable.subsection)) {//subsection does not yet exist
+                subsectionHeaders.add(consumable.subsection); //add subsection
                 List<String> currList = new ArrayList<>();
+                currList.add(consumable.name); //add displayed text (food's name) to list
+                itemTextDict.put(consumable.subsection, currList); //add list to subsection
+            } else {//subsection already added
+                List<String> currList = itemTextDict.get(consumable.subsection);
                 currList.add(consumable.name);
-                listDataChild.put(consumable.subsection, currList);
-            } else { //subsection already exists
-                List<String> currList = listDataChild.get(consumable.subsection);
-                currList.add(consumable.name);
-                listDataChild.put(consumable.subsection, currList);
+                itemTextDict.put(consumable.subsection, currList); //overwrite list with new one
             }
-            listDataChildString.put(consumable.name, consumable);
-            quantityDict.put(consumable.name, 0);
-
+            itemObjectDict.put(consumable.name, consumable); //set consumable's object
+            itemQuantityDict.put(consumable.name, 0); //set quantity to 0
         }
 
-        //create expandable list
-        listAdapter = new RestaurantExpandableListAdapter(this, listDataHeader, listDataChild,
-                                                            listDataChildString, quantityDict);
+        //set up restaurant expandable list adapter
+        listAdapter = new RestaurantExpandableListAdapter(this, subsectionHeaders, itemTextDict,
+                                                            itemObjectDict, itemQuantityDict);
 
-        // setting list adapter
+        //set list adapter onto exp list
         expListView.setAdapter(listAdapter);
     }
 
     /**
-     * Pulls the permintaans on the server based on specified states and, if successful,
-     * creates the expandable list.
+     * Pulls the consumables on the server based on the selected section (tab) and, if successful,
+     * calls createExpandableList().
      */
     private void doGetConsumablesOfSectionAndCreateExpList(final String section) {
         Log.d(RestaurantActivity.class.getCanonicalName(), "Doing get consumables of section");
@@ -113,8 +116,7 @@ public class RestaurantActivity extends AppCompatActivity {
         MenuServer.getInstance(this).getMenuBySection(section)
                 .subscribe(new Observer<Consumable>() {
                     List<Consumable> consumables = new ArrayList<>();
-                    String roomNumber = getSharedPreferences("roomSettings", Context.MODE_PRIVATE)
-                                                                .getString("roomNumber", "none");
+
                     @Override
                     public void onCompleted() {
                         Log.d(RestaurantActivity.class.getCanonicalName(), "On completed");
@@ -124,8 +126,6 @@ public class RestaurantActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         Log.d(RestaurantActivity.class.getCanonicalName(), "On error");
-                        //TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                        //textView.setText(e.getMessage());
                         e.printStackTrace();
                     }
 

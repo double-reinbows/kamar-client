@@ -13,7 +13,7 @@
     tools:showIn="@layout/activity_restaurant">
 
     <ExpandableListView
-        android:id="@+id/lvExp"
+        android:id="@+id/restaurant_exp_list"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"></ExpandableListView>
 
