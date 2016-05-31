@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.restaurant;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import com.martabak.kamar.R;
@@ -19,7 +21,9 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observer;
 
@@ -69,9 +73,9 @@ public class RestaurantActivity extends AppCompatActivity {
         //a list of each item's main text with header text as keys
         HashMap<String, List<String>> itemTextDict;
         //consumable dictionary with consumable.name keys
-        HashMap<String, Consumable> itemObjectDict;
+        final HashMap<String, Consumable> itemObjectDict;
         //quantity dictionary with consumable.name keys
-        HashMap<String, Integer> itemQuantityDict;
+        final HashMap<String, Integer> itemQuantityDict;
 
         //find where to inflate the exp list
         expListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
@@ -103,6 +107,30 @@ public class RestaurantActivity extends AppCompatActivity {
 
         //set list adapter onto exp list
         expListView.setAdapter(listAdapter);
+
+        //set listener for the button
+        FloatingActionButton restarurantButton = (FloatingActionButton) findViewById(R.id.restaurant_add);
+        restarurantButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // only add the ones that are greater than 0
+                HashMap<String, Consumable> consumableHashMap = new HashMap<String, Consumable>();
+                HashMap<String, Integer> consumableQuantityHashMap = new HashMap<String, Integer>();
+                Iterator it = itemQuantityDict.entrySet().iterator();
+                while (it.hasNext()) {
+                    HashMap.Entry pair = (HashMap.Entry) it.next();
+                    if ((int)pair.getValue() > 0){
+                        consumableHashMap.put(pair.getKey().toString(),itemObjectDict.get(pair.getKey().toString()));
+                        consumableQuantityHashMap.put(pair.getKey().toString(), (Integer) pair.getValue());
+                    }
+                }
+
+                Intent intent = new Intent(getBaseContext(), RestaurantConfirmationActivity.class);
+                intent.putExtra("consumableMap", consumableHashMap);
+                intent.putExtra("consumableQuantityMap", consumableQuantityHashMap);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -136,5 +164,6 @@ public class RestaurantActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
 }

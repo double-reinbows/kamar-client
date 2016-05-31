@@ -1,11 +1,14 @@
 package com.martabak.kamar.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * A consumable item on a menu that a {@link Guest} can order from the restaurant.
  */
-public class Consumable extends Model {
+public class Consumable extends Model implements Parcelable {
 
     /**
      * The FOOD consumable section.
@@ -76,6 +79,35 @@ public class Consumable extends Model {
         this.subsection = subsection;
         this.order = order;
         this.price = price;
+    }
+
+    public static final Parcelable.Creator<Consumable> CREATOR = new Creator<Consumable>() {
+        @Override
+        public Consumable createFromParcel(Parcel source) {
+            Consumable mConsumable = new Consumable(
+                    source.readString(), source.readString(), source.readString(),
+                    source.readString(), source.readString(), source.readInt(), source.readInt()
+            );
+            return mConsumable;
+        }
+
+        @Override
+        public Consumable[] newArray(int size) {
+            return new Consumable[size];
+        }
+    };
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(this.name);
+        parcel.writeString(this.description_en);
+        parcel.writeString(this.description_in);
+        parcel.writeString(this.section);
+        parcel.writeString(this.subsection);
+        parcel.writeInt(this.order);
+        parcel.writeInt(this.price);
     }
 
 }
