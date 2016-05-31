@@ -12,13 +12,9 @@
     tools:context=".activity.restaurant.RestaurantActivity"
     tools:showIn="@layout/activity_restaurant">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/restaurant_text"/>
-    </LinearLayout>
+    <ExpandableListView
+        android:id="@+id/restaurant_exp_list"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"></ExpandableListView>
+
 </LinearLayout>
