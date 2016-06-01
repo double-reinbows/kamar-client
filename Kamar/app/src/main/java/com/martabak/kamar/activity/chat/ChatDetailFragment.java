@@ -1,12 +1,15 @@
 package com.martabak.kamar.activity.chat;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -54,6 +57,16 @@ public class ChatDetailFragment extends Fragment {
     private String mSender;
 
     /**
+     * The chat message list.
+     */
+    private List<ChatMessage> mChatMessages;
+
+    /**
+     * The chat message recycler view adapter.
+     */
+    private MessageRecyclerViewAdapter mRecyclerViewAdapter;
+
+    /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
@@ -80,25 +93,13 @@ public class ChatDetailFragment extends Fragment {
             Log.d(ChatDetailFragment.class.getCanonicalName(), "Creating view for " + mGuestId);
 
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.chat_message_list);
-            final List<ChatMessage> messages = new ArrayList<ChatMessage>();
-            final MessageRecyclerViewAdapter recyclerViewAdapter = new MessageRecyclerViewAdapter(messages);
-            recyclerView.setAdapter(recyclerViewAdapter);
-
-            ChatServer.getInstance(getActivity()).getGuestChat(mGuestId).subscribe(new Observer<GuestChat>() {
-                @Override public void onCompleted() {
-                    Log.d(ChatDetailFragment.class.getCanonicalName(), "onCompleted");
-                    recyclerViewAdapter.notifyDataSetChanged();
-                }
-                @Override public void onError(Throwable e) {
-                    Log.d(ChatDetailFragment.class.getCanonicalName(), "onError");
-                    e.printStackTrace();
-                }
-                @Override public void onNext(GuestChat guestChat) {
-                    Log.d(ChatDetailFragment.class.getCanonicalName(), "Guest chat received with " + guestChat.messages.size() + " messages");
-                    messages.addAll(guestChat.messages);
-                    Collections.reverse(messages);
-                }
-            });
+            mChatMessages = new ArrayList<>();
+            mRecyclerViewAdapter = new MessageRecyclerViewAdapter(mChatMessages);
+            recyclerView.setAdapter(mRecyclerViewAdapter);
+            refreshChatMessages();
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            layoutManager.setStackFromEnd(true);
+            recyclerView.setLayoutManager(layoutManager);
 
             EditText messageEditText = (EditText) rootView.findViewById(R.id.chat_message_edit_text);
             Button sendButton = (Button) rootView.findViewById(R.id.chat_send_button);
@@ -108,6 +109,27 @@ public class ChatDetailFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    /**
+     * Pull the latest chat messages and notify the recycler view that the data has changed.
+     */
+    private void refreshChatMessages() {
+        mChatMessages.clear();
+        ChatServer.getInstance(getActivity()).getGuestChat(mGuestId).subscribe(new Observer<GuestChat>() {
+            @Override public void onCompleted() {
+                Log.d(ChatDetailFragment.class.getCanonicalName(), "onCompleted");
+                mRecyclerViewAdapter.notifyDataSetChanged();
+            }
+            @Override public void onError(Throwable e) {
+                Log.d(ChatDetailFragment.class.getCanonicalName(), "onError");
+                e.printStackTrace();
+            }
+            @Override public void onNext(GuestChat guestChat) {
+                Log.d(ChatDetailFragment.class.getCanonicalName(), "Guest chat received with " + guestChat.messages.size() + " messages");
+                mChatMessages.addAll(guestChat.messages);
+            }
+        });
     }
 
     public class MessageRecyclerViewAdapter
@@ -190,13 +212,23 @@ public class ChatDetailFragment extends Fragment {
             );
         }
 
-        @Override public void onClick(View v) {
+        @Override public void onClick(final View v) {
+            InputMethodManager imm = (InputMethodManager)ChatDetailFragment.this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(messageEditText.getWindowToken(), 0);
+            messageEditText.setEnabled(false);
+            v.setEnabled(false);
+
             Log.d(ChatDetailFragment.class.getCanonicalName(), "Send button clicked");
             ChatServer.getInstance(getActivity()).sendChatMessage(buildMessage())
                     .subscribe(new Observer<Boolean>() {
                         @Override public void onCompleted() {
+                            messageEditText.setEnabled(true);
+                            v.setEnabled(true);
+                            refreshChatMessages();
                         }
                         @Override public void onError(Throwable e) {
+                            messageEditText.setEnabled(true);
+                            v.setEnabled(true);
                             e.printStackTrace();
                             Toast.makeText(
                                     getActivity().getApplicationContext(),
@@ -206,6 +238,7 @@ public class ChatDetailFragment extends Fragment {
                         }
                         @Override public void onNext(Boolean result) {
                             if (result) {
+                                messageEditText.getText().clear();
                                 Toast.makeText(
                                         getActivity().getApplicationContext(),
                                         R.string.chat_message_sent,

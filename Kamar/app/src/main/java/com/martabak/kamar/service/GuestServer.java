@@ -1,6 +1,7 @@
 package com.martabak.kamar.service;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Room;
@@ -75,10 +76,11 @@ public class GuestServer extends Server {
         return service.getGuestsCheckedIn()
                 .flatMap(new Func1<ViewResponse<Guest>, Observable<Guest>>() {
                     @Override public Observable<Guest> call(ViewResponse<Guest> response) {
+                        List<Guest> guestsCheckedIn = new ArrayList<>();
                         for (ViewResponse<Guest>.ViewResult<Guest> i : response.rows) {
-                            return Observable.just(i.value);
+                            guestsCheckedIn.add(i.value);
                         }
-                        return Observable.just(null);
+                        return Observable.from(guestsCheckedIn);
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -95,6 +97,7 @@ public class GuestServer extends Server {
                 .flatMap(new Func1<ViewResponse<Guest>, Observable<Guest>>() {
                     @Override public Observable<Guest> call(ViewResponse<Guest> response) {
                         for (ViewResponse<Guest>.ViewResult<Guest> i : response.rows) {
+                            Log.d("getGuestInRoom", "found a guest in room" + i.value.firstName + " in " + i.value.roomNumber);
                             return Observable.just(i.value);
                         }
                         return Observable.just(null);

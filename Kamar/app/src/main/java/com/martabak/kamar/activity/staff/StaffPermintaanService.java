@@ -32,7 +32,7 @@ import rx.functions.Func1;
  */
 public class StaffPermintaanService extends IntentService {
 
-    private static final int POLL_EVERY_SECONDS_AMOUNT = 10;
+    private static final int POLL_EVERY_SECONDS_AMOUNT = 60;
 
     private static final Class RESULT_ACTIVITY = StaffHomeActivity.class;
 
