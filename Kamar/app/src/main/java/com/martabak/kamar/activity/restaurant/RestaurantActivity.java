@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.restaurant;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,7 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Consumable;
@@ -19,7 +22,9 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observer;
 
@@ -32,6 +37,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
     //quantity dictionary with consumable.name keys
     private HashMap<String, Integer> itemQuantityDict;
+    private HashMap<String, Consumable> itemObjectDict;
     //lists of sections
     private List<Consumable> food;
     private List<Consumable> beverages;
@@ -50,6 +56,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         //initialize constant variables
         itemQuantityDict = new HashMap<String, Integer>();
+        itemObjectDict = new HashMap<String, Consumable>();
         food = new ArrayList<>();
         beverages = new ArrayList<>();
         desserts = new ArrayList<>();
@@ -88,14 +95,14 @@ public class RestaurantActivity extends AppCompatActivity {
         //a list of each item's main text with header text as keys
         HashMap<String, List<String>> itemTextDict;
         //consumable dictionary with consumable.name keys
-        HashMap<String, Consumable> itemObjectDict;
+        //final HashMap<String, Consumable> itemObjectDict;
 
         //find where to inflate the exp list
         expListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
 
         subsectionHeaders = new ArrayList<String>();
         itemTextDict = new HashMap<String, List<String>>();
-        itemObjectDict = new HashMap<String, Consumable>();
+        //itemObjectDict = new HashMap<String, Consumable>();
 
         //iterate over the consumables for the current tab/section
         for (Consumable consumable : consumables) {
@@ -121,6 +128,37 @@ public class RestaurantActivity extends AppCompatActivity {
 
         //set list adapter onto exp list
         expListView.setAdapter(listAdapter);
+
+        //set listener for the button
+        FloatingActionButton restarurantButton = (FloatingActionButton) findViewById(R.id.restaurant_add);
+        restarurantButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // only add the ones that are greater than 0
+                HashMap<String, Consumable> consumableHashMap = new HashMap<String, Consumable>();
+                HashMap<String, Integer> consumableQuantityHashMap = new HashMap<String, Integer>();
+                Iterator it = itemQuantityDict.entrySet().iterator();
+                while (it.hasNext()) {
+                    HashMap.Entry pair = (HashMap.Entry) it.next();
+                    if ((int)pair.getValue() > 0){
+                        consumableHashMap.put(pair.getKey().toString(),itemObjectDict.get(pair.getKey().toString()));
+                        consumableQuantityHashMap.put(pair.getKey().toString(), (Integer) pair.getValue());
+                    }
+                }
+                if (!consumableHashMap.isEmpty()) { //if user added food
+                    Intent intent = new Intent(getBaseContext(), RestaurantConfirmationActivity.class);
+                    intent.putExtra("consumableMap", consumableHashMap);
+                    intent.putExtra("consumableQuantityMap", consumableQuantityHashMap);
+                    startActivity(intent);
+                } else { //all quantities are 0
+                    Toast.makeText(
+                            RestaurantActivity.this,
+                            "You didn't add any food!",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+            }
+        });
     }
 
     /**
@@ -134,7 +172,6 @@ public class RestaurantActivity extends AppCompatActivity {
         if (consumables.isEmpty()) { //if we haven't pulled the section's consumables yet...
             MenuServer.getInstance(this).getMenuBySection(section)
                     .subscribe(new Observer<Consumable>() {
-                        //List<Consumable> consumables = new ArrayList<>();
 
                         @Override
                         public void onCompleted() {
@@ -158,5 +195,6 @@ public class RestaurantActivity extends AppCompatActivity {
             createExpandableList(consumables);
         }
     }
+
 
 }
