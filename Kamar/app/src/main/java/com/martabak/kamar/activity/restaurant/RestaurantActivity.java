@@ -30,6 +30,11 @@ import rx.Observer;
  */
 public class RestaurantActivity extends AppCompatActivity {
 
+    private HashMap<String, Integer> itemQuantityDict;
+    private List<Consumable> food;
+    private List<Consumable> beverages;
+    private List<Consumable> desserts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,20 +46,34 @@ public class RestaurantActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Beverages"));
         tabLayout.addTab(tabLayout.newTab().setText("Desserts"));
 
-        doGetConsumablesOfSectionAndCreateExpList("FOOD");
+
+        itemQuantityDict = new HashMap<String, Integer>();
+        food = new ArrayList<>();
+        beverages = new ArrayList<>();
+        desserts = new ArrayList<>();
+
+        doGetConsumablesOfSectionAndCreateExpList("FOOD", food);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.v("tab", tab.getText().toString());
-                doGetConsumablesOfSectionAndCreateExpList(tab.getText().toString().toUpperCase());
+                String selectedTab = tab.getText().toString();
+                if (selectedTab.equals("Food")) {
+                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), food);
+                } else if (selectedTab.equals("Beverages")) {
+                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), beverages);
+                } else if (selectedTab.equals("Desserts")) {
+                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), desserts);
+                }
+                //doGetConsumablesOfSectionAndCreateExpList(tab.getText().toString().toUpperCase());
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                doGetConsumablesOfSectionAndCreateExpList(tab.getText().toString().toUpperCase());
+                //doGetConsumablesOfSectionAndCreateExpList(tab.getText().toString().toUpperCase());
             }
         });
     }
@@ -71,7 +90,7 @@ public class RestaurantActivity extends AppCompatActivity {
         //consumable dictionary with consumable.name keys
         HashMap<String, Consumable> itemObjectDict;
         //quantity dictionary with consumable.name keys
-        HashMap<String, Integer> itemQuantityDict;
+        //HashMap<String, Integer> itemQuantityDict;
 
         //find where to inflate the exp list
         expListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
@@ -79,7 +98,7 @@ public class RestaurantActivity extends AppCompatActivity {
         subsectionHeaders = new ArrayList<String>();
         itemTextDict = new HashMap<String, List<String>>();
         itemObjectDict = new HashMap<String, Consumable>();
-        itemQuantityDict = new HashMap<String, Integer>();
+        //itemQuantityDict = new HashMap<String, Integer>();
 
         //iterate over the consumables for the current tab/section
         for (Consumable consumable : consumables) {
@@ -94,7 +113,9 @@ public class RestaurantActivity extends AppCompatActivity {
                 itemTextDict.put(consumable.subsection, currList); //overwrite list with new one
             }
             itemObjectDict.put(consumable.name, consumable); //set consumable's object
-            itemQuantityDict.put(consumable.name, 0); //set quantity to 0
+            if (!itemQuantityDict.containsKey(consumable.name)) {
+                itemQuantityDict.put(consumable.name, 0); //set quantity to 0
+            }
         }
 
         //set up restaurant expandable list adapter
@@ -109,32 +130,35 @@ public class RestaurantActivity extends AppCompatActivity {
      * Pulls the consumables on the server based on the selected section (tab) and, if successful,
      * calls createExpandableList().
      */
-    private void doGetConsumablesOfSectionAndCreateExpList(final String section) {
+    private void doGetConsumablesOfSectionAndCreateExpList(final String section, final List<Consumable> consumables) {
         Log.d(RestaurantActivity.class.getCanonicalName(), "Doing get consumables of section");
 
+        if (consumables.isEmpty()) {
+            MenuServer.getInstance(this).getMenuBySection(section)
+                    .subscribe(new Observer<Consumable>() {
+                        //List<Consumable> consumables = new ArrayList<>();
 
-        MenuServer.getInstance(this).getMenuBySection(section)
-                .subscribe(new Observer<Consumable>() {
-                    List<Consumable> consumables = new ArrayList<>();
+                        @Override
+                        public void onCompleted() {
+                            Log.d(RestaurantActivity.class.getCanonicalName(), "On completed");
+                            createExpandableList(consumables);
+                        }
 
-                    @Override
-                    public void onCompleted() {
-                        Log.d(RestaurantActivity.class.getCanonicalName(), "On completed");
-                        createExpandableList(consumables);
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d(RestaurantActivity.class.getCanonicalName(), "On error");
+                            e.printStackTrace();
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(RestaurantActivity.class.getCanonicalName(), "On error");
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(Consumable result) {
-                        Log.d(RestaurantActivity.class.getCanonicalName(), "On next");
-                        consumables.add(result);
-                    }
-                });
+                        @Override
+                        public void onNext(Consumable result) {
+                            Log.d(RestaurantActivity.class.getCanonicalName(), "On next");
+                            consumables.add(result);
+                        }
+                    });
+        } else {
+            createExpandableList(consumables);
+        }
     }
 
 }
