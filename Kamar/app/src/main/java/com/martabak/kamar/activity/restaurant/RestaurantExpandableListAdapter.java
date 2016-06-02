@@ -53,9 +53,9 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
+            LayoutInflater inflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.restaurant_menu_item, null);
+            convertView = inflater.inflate(R.layout.restaurant_menu_item, null);
         }
 
         //Set up main text

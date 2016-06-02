@@ -30,7 +30,9 @@ import rx.Observer;
  */
 public class RestaurantActivity extends AppCompatActivity {
 
+    //quantity dictionary with consumable.name keys
     private HashMap<String, Integer> itemQuantityDict;
+    //lists of sections
     private List<Consumable> food;
     private List<Consumable> beverages;
     private List<Consumable> desserts;
@@ -46,13 +48,13 @@ public class RestaurantActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Beverages"));
         tabLayout.addTab(tabLayout.newTab().setText("Desserts"));
 
-
+        //initialize constant variables
         itemQuantityDict = new HashMap<String, Integer>();
         food = new ArrayList<>();
         beverages = new ArrayList<>();
         desserts = new ArrayList<>();
 
-        doGetConsumablesOfSectionAndCreateExpList("FOOD", food);
+        doGetConsumablesOfSectionAndCreateExpList("FOOD", food); //since 1st tab is always food
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
@@ -66,14 +68,12 @@ public class RestaurantActivity extends AppCompatActivity {
                 } else if (selectedTab.equals("Desserts")) {
                     doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), desserts);
                 }
-                //doGetConsumablesOfSectionAndCreateExpList(tab.getText().toString().toUpperCase());
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                //doGetConsumablesOfSectionAndCreateExpList(tab.getText().toString().toUpperCase());
             }
         });
     }
@@ -89,8 +89,6 @@ public class RestaurantActivity extends AppCompatActivity {
         HashMap<String, List<String>> itemTextDict;
         //consumable dictionary with consumable.name keys
         HashMap<String, Consumable> itemObjectDict;
-        //quantity dictionary with consumable.name keys
-        //HashMap<String, Integer> itemQuantityDict;
 
         //find where to inflate the exp list
         expListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
@@ -98,11 +96,10 @@ public class RestaurantActivity extends AppCompatActivity {
         subsectionHeaders = new ArrayList<String>();
         itemTextDict = new HashMap<String, List<String>>();
         itemObjectDict = new HashMap<String, Consumable>();
-        //itemQuantityDict = new HashMap<String, Integer>();
 
         //iterate over the consumables for the current tab/section
         for (Consumable consumable : consumables) {
-            if (!subsectionHeaders.contains(consumable.subsection)) {//subsection does not yet exist
+            if (!subsectionHeaders.contains(consumable.subsection)) {//subsection doesn't exist yet
                 subsectionHeaders.add(consumable.subsection); //add subsection
                 List<String> currList = new ArrayList<>();
                 currList.add(consumable.name); //add displayed text (food's name) to list
@@ -130,10 +127,11 @@ public class RestaurantActivity extends AppCompatActivity {
      * Pulls the consumables on the server based on the selected section (tab) and, if successful,
      * calls createExpandableList().
      */
-    private void doGetConsumablesOfSectionAndCreateExpList(final String section, final List<Consumable> consumables) {
+    private void doGetConsumablesOfSectionAndCreateExpList(final String section,
+                                                            final List<Consumable> consumables) {
         Log.d(RestaurantActivity.class.getCanonicalName(), "Doing get consumables of section");
 
-        if (consumables.isEmpty()) {
+        if (consumables.isEmpty()) { //if we haven't pulled the section's consumables yet...
             MenuServer.getInstance(this).getMenuBySection(section)
                     .subscribe(new Observer<Consumable>() {
                         //List<Consumable> consumables = new ArrayList<>();
@@ -156,7 +154,7 @@ public class RestaurantActivity extends AppCompatActivity {
                             consumables.add(result);
                         }
                     });
-        } else {
+        } else { //skip pulling consumables from server
             createExpandableList(consumables);
         }
     }
