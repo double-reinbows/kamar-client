@@ -43,6 +43,10 @@ public class RestaurantActivity extends AppCompatActivity {
     private List<Consumable> beverages;
     private List<Consumable> desserts;
 
+    private ExpandableListView foodExpListView;
+    private ExpandableListView bevExpListView;
+    private ExpandableListView dessExpListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,9 @@ public class RestaurantActivity extends AppCompatActivity {
         food = new ArrayList<>();
         beverages = new ArrayList<>();
         desserts = new ArrayList<>();
+        foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+        bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+        dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
 
         doGetConsumablesOfSectionAndCreateExpList("FOOD", food); //since 1st tab is always food
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -90,7 +97,7 @@ public class RestaurantActivity extends AppCompatActivity {
      */
     protected void createExpandableList(List<Consumable> consumables) {
         RestaurantExpandableListAdapter listAdapter;
-        ExpandableListView expListView;
+        //ExpandableListView expListView;
         List<String> subsectionHeaders; //header text
         //a list of each item's main text with header text as keys
         HashMap<String, List<String>> itemTextDict;
@@ -98,7 +105,7 @@ public class RestaurantActivity extends AppCompatActivity {
         //final HashMap<String, Consumable> itemObjectDict;
 
         //find where to inflate the exp list
-        expListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+        //expListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
 
         subsectionHeaders = new ArrayList<String>();
         itemTextDict = new HashMap<String, List<String>>();
@@ -127,11 +134,11 @@ public class RestaurantActivity extends AppCompatActivity {
                                                             itemObjectDict, itemQuantityDict);
 
         //set list adapter onto exp list
-        expListView.setAdapter(listAdapter);
+        foodExpListView.setAdapter(listAdapter);
 
         //set listener for the button
-        FloatingActionButton restarurantButton = (FloatingActionButton) findViewById(R.id.restaurant_add);
-        restarurantButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton restaurantButton = (FloatingActionButton) findViewById(R.id.restaurant_add);
+        restaurantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // only add the ones that are greater than 0
