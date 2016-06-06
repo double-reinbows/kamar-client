@@ -5,9 +5,11 @@ import android.content.Context;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.service.response.PostResponse;
+import com.martabak.kamar.service.response.PutResponse;
 import com.martabak.kamar.service.response.ViewResponse;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import rx.Observable;
@@ -78,6 +80,30 @@ public class ChatServer extends Server {
                             messages.add(i.value);
                         }
                         return Observable.just(new GuestChat(messages));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * Update a chat message.
+     * @param message The chat message to be sent.
+     * @return Whether or not the chat message was successfully sent.
+     */
+    public Observable<Boolean> setChatMessageToRead(ChatMessage message) {
+        return service.updateChatMessage(message._id, new ChatMessage(
+                        message._id,
+                        message._rev,
+                        message.guestId,
+                        message.from,
+                        message.message,
+                        message.sent,
+                        new Date())
+                )
+                .map(new Func1<PutResponse, Boolean>() {
+                    @Override public Boolean call(PutResponse response) {
+                        return response.ok;
                     }
                 })
                 .subscribeOn(Schedulers.io())

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.domain.chat.GuestChat;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.ChatServer;
 
 import java.util.ArrayList;
@@ -116,20 +117,50 @@ public class ChatDetailFragment extends Fragment {
      */
     private void refreshChatMessages() {
         mChatMessages.clear();
+
+        // Get the latest messages.
         ChatServer.getInstance(getActivity()).getGuestChat(mGuestId).subscribe(new Observer<GuestChat>() {
             @Override public void onCompleted() {
-                Log.d(ChatDetailFragment.class.getCanonicalName(), "onCompleted");
+                Log.d(ChatDetailFragment.class.getCanonicalName(), "getGuestChat#onCompleted");
                 mRecyclerViewAdapter.notifyDataSetChanged();
+                readChatMessages();
             }
             @Override public void onError(Throwable e) {
-                Log.d(ChatDetailFragment.class.getCanonicalName(), "onError");
+                Log.d(ChatDetailFragment.class.getCanonicalName(), "getGuestChat#onError", e);
                 e.printStackTrace();
             }
             @Override public void onNext(GuestChat guestChat) {
-                Log.d(ChatDetailFragment.class.getCanonicalName(), "Guest chat received with " + guestChat.messages.size() + " messages");
+                Log.d(ChatDetailFragment.class.getCanonicalName(), "getGuestChat#onNext Guest chat received with " + guestChat.messages.size() + " messages");
                 mChatMessages.addAll(guestChat.messages);
             }
         });
+
+    }
+
+    /**
+     * Set any unread messages from the "other side" to be read.
+     */
+    private void readChatMessages() {
+        for (ChatMessage message : mChatMessages) {
+            if (message.read == null) { // If it's unread...and
+                if (message.fromGuest() && !mSender.equals(ChatMessage.SENDER_GUEST) // From guest and restaurant or front-desk are reading it...or
+                        || !message.fromGuest() && mSender.equals(ChatMessage.SENDER_GUEST)) { // From restaurant or front-desk and guest is reading it
+                    // Then set the message to read
+                    Log.d(ChatDetailFragment.class.getCanonicalName(), "Setting chat message " + message._id + " to read");
+                    ChatServer.getInstance(getActivity()).setChatMessageToRead(message)
+                            .subscribe(new Observer<Boolean>() {
+                                @Override public void onCompleted() {}
+                                @Override public void onError(Throwable e) {
+                                    Log.d(ChatDetailFragment.class.getCanonicalName(), "setChatMessageToRead#onError",  e);
+                                    e.printStackTrace();
+                                }
+                                @Override public void onNext(Boolean result) {
+                                    Log.d(ChatDetailFragment.class.getCanonicalName(), "setChatMessageToRead#onNext Chat read result: " + result);
+                                }
+                            });
+                }
+            }
+        }
     }
 
     public class MessageRecyclerViewAdapter
