@@ -87,6 +87,9 @@
     <string name="tellus_edittext">Leave your feedback here</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
 
+    <string name="restaurant_success"> Successfully placed your order!</string>
+    <string name="restaurant_error"> Error in placing your order!</string>
+
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>
     <string name="room_number_change">Change Room Number</string>

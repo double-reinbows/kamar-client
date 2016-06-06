@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
@@ -38,10 +39,18 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transport);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
+        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("roomNumber", null);
+
+
+        // set room number text
+        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
 
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -95,9 +104,9 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_TRANSPORT;
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", "none");
+                .getString("roomNumber", null);
         String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("guestId", "none");
+                .getString("guestId", null);
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
 

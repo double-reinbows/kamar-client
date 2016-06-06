@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,13 +32,15 @@ public class GuestHomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_home);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        setSupportActionBar(toolbar);
 
         final ImageAdapter imgAdapter = new ImageAdapter(this);
         final GridView gridView = (GridView) findViewById(R.id.guestgridview);
         View passwordIconView = findViewById(R.id.passwordChangeIcon);
         View logoutView = findViewById(R.id.logoutIcon);
 
-        roomNumberTextView = (TextView)findViewById(R.id.room_number_display);
+        roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", null);
         setGuestId(roomNumber);

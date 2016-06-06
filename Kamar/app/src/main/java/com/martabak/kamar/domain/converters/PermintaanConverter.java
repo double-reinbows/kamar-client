@@ -76,6 +76,19 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content.addProperty("departure_time", t.departureTime.toString());
                 content.addProperty("destination", t.destination);
                 break;
+            case Permintaan.TYPE_RESTAURANT:
+                RestaurantOrder restaurantOrder = (RestaurantOrder)src.content;
+                content.addProperty("total_price", restaurantOrder.totalPrice);
+                JsonArray restaurantItems = new JsonArray();
+                for (OrderItem i : restaurantOrder.items) {
+                    JsonObject orderItem = new JsonObject();
+                    orderItem.addProperty("quantity", i.quantity);
+                    orderItem.addProperty("name", i.name);
+                    restaurantItems.add(orderItem);
+                }
+                content.add("items", restaurantItems);
+                content.addProperty("total_price", restaurantOrder.totalPrice);
+                break;
             case Permintaan.TYPE_BELLBOY:
             case Permintaan.TYPE_CHECKOUT:
             case Permintaan.TYPE_HOUSEKEEPING:
@@ -148,6 +161,17 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 }
                 String destination = c.getAsJsonPrimitive("destination").getAsString();
                 content = new Transport(message, passengers, departureTime, destination);
+                break;
+            case Permintaan.TYPE_RESTAURANT:
+                List<OrderItem> restuarantItems = new ArrayList<>();
+                for (int i = 0; i < c.getAsJsonArray("items").size(); i++) {
+                    JsonObject item = (JsonObject)c.getAsJsonArray("items").get(i);
+                    Integer quantity = item.getAsJsonPrimitive("quantity").getAsInt();
+                    String name = item.getAsJsonPrimitive("name").getAsString();
+                    restuarantItems.add(new OrderItem(quantity, name));
+                }
+                Integer totalRestaurantPrice = c.getAsJsonPrimitive("total_price").getAsInt();
+                content = new RestaurantOrder(message, restuarantItems, totalRestaurantPrice);
                 break;
             default:
                 throw new JsonParseException("Unknown Permintaan content type.");

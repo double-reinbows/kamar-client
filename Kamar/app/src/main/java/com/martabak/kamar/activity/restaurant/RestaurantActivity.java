@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
@@ -47,8 +48,16 @@ public class RestaurantActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        setSupportActionBar(toolbar);
+
+        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
+        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("roomNumber", null);
+        // set room number text
+        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText("Food"));
         tabLayout.addTab(tabLayout.newTab().setText("Beverages"));
