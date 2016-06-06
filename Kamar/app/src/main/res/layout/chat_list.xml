@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:listSelector="#00000000"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.martabak.kamar.activity.chat.ChatListActivity"
         tools:listitem="@layout/chat_list_content" />

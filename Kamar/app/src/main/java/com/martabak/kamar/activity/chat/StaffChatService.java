@@ -102,11 +102,10 @@ public class StaffChatService extends IntentService {
     }
 
     private void createNotification(int nId, ChatMessage message) {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_menu_share)
-                        .setContentTitle("New message from guest " + message.guestId)
-                        .setContentText(message.message);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_menu_share)
+                .setContentTitle(getString(R.string.chat_message_from_guest) + " " + message.guestId)
+                .setContentText(message.message);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
 

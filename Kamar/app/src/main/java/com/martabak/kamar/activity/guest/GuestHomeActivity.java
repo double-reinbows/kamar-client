@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.chat.GuestChatService;
+import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -44,6 +46,9 @@ public class GuestHomeActivity extends AppCompatActivity
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", null);
         setGuestId(roomNumber);
+
+        // Start any guest services.
+        startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
 
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
@@ -82,10 +87,16 @@ public class GuestHomeActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onStop() {
+        stopGuestServices();
+        super.onStop();
+    }
+
     /*
      * Actions for each individual feature on the grid.
      */
-    public void createAction() {
+    private void createAction() {
         switch(option) {
             case "MY REQUESTS":
                 startActivity(new Intent(this, GuestPermintaanActivity.class));
@@ -166,7 +177,7 @@ public class GuestHomeActivity extends AppCompatActivity
      * Start the checkout process by prompting the user to enter a survey.
      * @param completionMessage The message to show on completion of the survey.
      */
-    public void startCheckout(String completionMessage) {
+    private void startCheckout(String completionMessage) {
         Intent intent = new Intent(this, SurveyActivity.class);
         intent.putExtra("completionMessage", completionMessage);
         startActivity(intent);
@@ -176,7 +187,7 @@ public class GuestHomeActivity extends AppCompatActivity
      * Set guest id on shared preferences.
      * @param roomNumber The room number.
      */
-    public void setGuestId(String roomNumber) {
+    private void setGuestId(String roomNumber) {
         GuestServer.getInstance(getBaseContext()).getGuestInRoom(
                 roomNumber).subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
@@ -200,6 +211,31 @@ public class GuestHomeActivity extends AppCompatActivity
                 Log.d(GuestHomeActivity.class.getCanonicalName(), "Setting guest ID to " + result._id);
             }
         });
+    }
+
+    /**
+     * Start any relevant guest services.
+     * @param guestId The guest's ID.
+     */
+    private void startGuestServices(String guestId) {
+        if (!guestId.equals("none")) {
+            Log.v(GuestHomeActivity.class.getCanonicalName(), "Starting " + GuestPermintaanService.class.getCanonicalName() + " as " + guestId);
+            startService(new Intent(this, GuestPermintaanService.class)
+                    .putExtra("guestId", guestId));
+            Log.v(GuestHomeActivity.class.getCanonicalName(), "Starting " + GuestChatService.class.getCanonicalName() + " as " + guestId);
+            startService(new Intent(this, GuestChatService.class)
+                    .putExtra("guestId", guestId));
+        }
+    }
+
+    /**
+     * Stop any relevant guest services.
+     */
+    private void stopGuestServices() {
+        Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + GuestPermintaanService.class.getCanonicalName());
+        stopService(new Intent(this, GuestPermintaanService.class));
+        Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + GuestChatService.class.getCanonicalName());
+        stopService(new Intent(this, GuestChatService.class));
     }
 
 }
