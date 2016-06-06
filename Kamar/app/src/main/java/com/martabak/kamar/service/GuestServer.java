@@ -54,6 +54,17 @@ public class GuestServer extends Server {
     }
 
     /**
+     * Gets a guest.
+     * @param guestId The guest's ID.
+     * @return The guest.
+     */
+    public Observable<Guest> getGuest(String guestId) {
+        return service.getGuest(guestId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
      * Create a new guest.
      * @param guest The guest model to be created.
      * @return The guest model that was added.

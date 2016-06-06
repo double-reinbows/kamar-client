@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.martabak.kamar.R;
 
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.service.GuestServer;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class ChatListActivity extends AppCompatActivity {
                 recyclerViewAdapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
-                Log.d(ChatListActivity.class.getCanonicalName(), "onError");
+                Log.d(ChatListActivity.class.getCanonicalName(), "onError", e);
                 e.printStackTrace();
             }
             @Override public void onNext(final Guest guest) {
@@ -125,6 +126,6 @@ public class ChatListActivity extends AppCompatActivity {
 
     private String getSender() {
         SharedPreferences prefs = getSharedPreferences("userSettings", Context.MODE_PRIVATE);
-        return prefs.getString("userSubType", "FRONTDESK");
+        return prefs.getString("userSubType", ChatMessage.SENDER_FRONTDESK);
     }
 }

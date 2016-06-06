@@ -52,7 +52,7 @@
     <string name="chat_message_text">Type your message ...</string>
     <string name="chat_send_button">Send</string>
     <string name="chat_message_sent">Message sent</string>
-    <string name="chat_message_from_guest">Message from guest</string>
+    <string name="chat_message_from_guest">Message from guest room</string>
     <string name="chat_message_from_staff">Message from staff</string>
 
     <!-- Check in/out -->

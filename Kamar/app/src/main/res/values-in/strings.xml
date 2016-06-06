@@ -51,7 +51,7 @@
     <string name="chat_message_text">ketik pesan anda ...</string>
     <string name="chat_send_button">Kirim</string>
     <string name="chat_message_sent">Pesan terkirim</string>
-    <string name="chat_message_from_guest">Message from guest</string>
+    <string name="chat_message_from_guest">Message from guest room</string>
     <string name="chat_message_from_staff">Message from staff</string>
 
     <!-- Staff -->
