@@ -18,4 +18,5 @@
         android:id="@+id/restaurant_recycleview">
     </android.support.v7.widget.RecyclerView>
 
+
 </LinearLayout>
