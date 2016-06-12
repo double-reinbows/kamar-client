@@ -24,7 +24,8 @@ import com.martabak.kamar.service.GuestServer;
 import rx.Observer;
 
 public class GuestHomeActivity extends AppCompatActivity
-        implements BellboyDialogFragment.BellboyDialogListener,
+        implements
+        PermintaanDialogListener,
         ChangeRoomNumberDialogFragment.ChangeRoomDialogListener {
 
     private String option;
@@ -131,11 +132,54 @@ public class GuestHomeActivity extends AppCompatActivity
      * Positive click.
      */
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onDialogPositiveClick(DialogFragment dialog, Boolean success) {
         dialog.dismiss();
-        if (option == "CHECKOUT") {
-            startCheckout(getString(R.string.bellboy_result));
+        if (success) {
+            switch(option) {
+                case Permintaan.TYPE_HOUSEKEEPING:
+                    Toast.makeText(
+                            this,
+                            getString(R.string.housekeeping_result),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    break;
+                case Permintaan.TYPE_BELLBOY:
+                    Toast.makeText(
+                            this,
+                            getString(R.string.bellboy_result),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    break;
+                case Permintaan.TYPE_MAINTENANCE:
+                    Toast.makeText(
+                            this,
+                            getString(R.string.maintenance_result),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    break;
+                case "TELL US":
+                    Toast.makeText(
+                            this,
+                            getString(R.string.tellus_result),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    break;
+                case Permintaan.TYPE_CHECKOUT:
+                    startCheckout(getString(R.string.bellboy_result));
+                    break;
+                default:
+                    break;
+            }
         }
+        else {
+            Toast.makeText(
+                    this,
+                    getString(R.string.something_went_wrong),
+                    Toast.LENGTH_LONG
+            ).show();
+        }
+
+
     }
 
     /**
@@ -154,14 +198,29 @@ public class GuestHomeActivity extends AppCompatActivity
      * @param dialog The dialog fragment.
      */
     @Override
-    public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber) {
+    public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, Boolean success) {
         dialog.dismiss();
-        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
-        Toast.makeText(
-                this,
-                getString(R.string.room_number_changed),
-                Toast.LENGTH_LONG
-        ).show();
+        if (success)
+        {
+            getSharedPreferences("userSettings", MODE_PRIVATE)
+                    .edit().putString("roomNumber", roomNumber)
+                    .commit();
+            Toast.makeText(
+                    this,
+                    getString(R.string.room_number_changed),
+                    Toast.LENGTH_LONG
+            ).show();
+            roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
+        }
+        else
+        {
+            Toast.makeText(
+                    this,
+                    getString(R.string.incorrect_password),
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
+
     }
 
     /**

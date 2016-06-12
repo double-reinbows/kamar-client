@@ -46,7 +46,7 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", null);
+                .getString("roomNumber", "none");
 
 
         // set room number text
@@ -104,13 +104,14 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_TRANSPORT;
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", null);
+                .getString("roomNumber", "none");
         String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("guestId", null);
+                .getString("guestId", "none");
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
 
-        PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
+        if (guestId != "none") {
+            PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                     owner,
                     type,
                     roomNumber,
@@ -119,31 +120,33 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
                     currentDate,
                     currentDate,
                     transport)
-        ).subscribe(new Observer<Permintaan>() {
-            @Override public void onCompleted() {
-                Log.d(TransportActivity.class.getCanonicalName(), "createPermintaan() On completed");
-            }
-            @Override public void onError(Throwable e) {
-                Log.d(TransportActivity.class.getCanonicalName(), "createPermintaan() On error");
-                e.printStackTrace();
-            }
-            @Override public void onNext(Permintaan permintaan) {
-                Log.d(TransportActivity.class.getCanonicalName(), "createPermintaan() On next" + permintaan);
-                if (permintaan != null) {
-                    Toast.makeText(
-                            TransportActivity.this,
-                            getString(R.string.transport_result),
-                            Toast.LENGTH_LONG
-                    ).show();
-                } else {
-                    Toast.makeText(
-                            TransportActivity.this,
-                            getString(R.string.something_went_wrong),
-                            Toast.LENGTH_LONG
-                    ).show();
+            ).subscribe(new Observer<Permintaan>() {
+                @Override public void onCompleted() {
+                    Log.d(TransportActivity.class.getCanonicalName(), "createPermintaan() On completed");
                 }
-            }
-        });
+                @Override public void onError(Throwable e) {
+                    Log.d(TransportActivity.class.getCanonicalName(), "createPermintaan() On error");
+                    e.printStackTrace();
+                }
+                @Override public void onNext(Permintaan permintaan) {
+                    Log.d(TransportActivity.class.getCanonicalName(), "createPermintaan() On next" + permintaan);
+                    if (permintaan != null) {
+                        Toast.makeText(
+                                TransportActivity.this,
+                                getString(R.string.transport_result),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    } else {
+                        Toast.makeText(
+                                TransportActivity.this,
+                                getString(R.string.something_went_wrong),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                }
+            });
+        }
+
     }
 
     @Override

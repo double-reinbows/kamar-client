@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.guest;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -27,6 +28,9 @@ import rx.Observer;
  */
 public class MaintenanceDialogFragment extends DialogFragment {
 
+    private PermintaanDialogListener permintaanDialogListener;
+    private Boolean success = false;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
@@ -44,6 +48,7 @@ public class MaintenanceDialogFragment extends DialogFragment {
                 .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){
                     @Override public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        permintaanDialogListener.onDialogNegativeClick(MaintenanceDialogFragment.this);
                     }
                 })
                 .create();
@@ -58,13 +63,13 @@ public class MaintenanceDialogFragment extends DialogFragment {
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_MAINTENANCE;
         String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                .getString("roomNumber", null);
+                .getString("roomNumber", "none");
         String guestId= getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                .getString("guestId", null);
+                .getString("guestId", "none");
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
 
-        if (guestId != null) {
+        if (guestId != "none") {
             PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
                     owner,
                     type,
@@ -78,32 +83,32 @@ public class MaintenanceDialogFragment extends DialogFragment {
                 @Override
                 public void onCompleted() {
                     Log.d(MaintenanceDialogFragment.class.getCanonicalName(), "On completed");
+                    permintaanDialogListener.onDialogPositiveClick(MaintenanceDialogFragment.this, success);
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     Log.d(MaintenanceDialogFragment.class.getCanonicalName(), "On error");
                     e.printStackTrace();
+                    success = false;
+                    permintaanDialogListener.onDialogPositiveClick(MaintenanceDialogFragment.this, success);
                 }
 
                 @Override
                 public void onNext(Permintaan permintaan) {
                     Log.d(MaintenanceDialogFragment.class.getCanonicalName(), "createPermintaan() On next" + permintaan);
                     if (permintaan != null) {
-                        Toast.makeText(
-                                MaintenanceDialogFragment.this.getActivity(),
-                                getString(R.string.maintenance_result),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        success = true;
                     } else {
-                        Toast.makeText(
-                                MaintenanceDialogFragment.this.getActivity(),
-                                getString(R.string.something_went_wrong),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        success = false;
                     }
                 }
             });
         }
+    }
+
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        permintaanDialogListener = (PermintaanDialogListener) activity;
     }
 }

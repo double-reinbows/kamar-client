@@ -36,6 +36,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
 
     private ArrayAdapter adapter;
     private ChangeRoomDialogListener changeRoomDialogListener;
+    private Boolean success = false;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -62,7 +63,8 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
                         String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
                         String password = passwordEditText.getText().toString();
                         changeRoomNumber(roomNumber, password);
-                        changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber);
+
+
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -81,8 +83,11 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
      * @param password The password string.
      */
     public void changeRoomNumber(final String roomNumber, String password) {
+
         StaffServer.getInstance(getActivity()).login(password).subscribe(new Observer<Boolean>() {
             @Override public void onCompleted() {
+                Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "Success: " + success.toString());
+                changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, success);
                 Log.d(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "On completed");
             }
             @Override public void onError(Throwable e) {
@@ -93,25 +98,11 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
                         getString(R.string.something_went_wrong),
                         Toast.LENGTH_SHORT
                 ).show();
+                changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, success);
             }
             @Override public void onNext(Boolean loginResponse) {
                 Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "Login response: " + loginResponse.toString());
-                if (loginResponse) {
-                    getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                            .edit().putString("roomNumber", roomNumber)
-                            .commit();
-                    Toast.makeText(
-                            getActivity(),
-                            getString(R.string.room_number_result),
-                            Toast.LENGTH_SHORT
-                    ).show();
-                } else {
-                    Toast.makeText(
-                            getActivity(),
-                            getString(R.string.incorrect_password),
-                            Toast.LENGTH_SHORT
-                    ).show();
-                }
+                success = loginResponse;
             }
         });
     }
@@ -143,7 +134,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
     }
 
     public interface ChangeRoomDialogListener {
-        void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber);
+        void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, Boolean success);
         void onChangeRoomDialogNegativeClick(DialogFragment dialog);
     }
 
