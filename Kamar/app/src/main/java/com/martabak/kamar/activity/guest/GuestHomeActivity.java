@@ -45,7 +45,7 @@ public class GuestHomeActivity extends AppCompatActivity
 
         roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", null);
+                .getString("roomNumber", "none");
         setGuestId(roomNumber);
 
         // Start any guest services.
@@ -261,7 +261,7 @@ public class GuestHomeActivity extends AppCompatActivity
                 SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 if (result == null) {
-                    editor.putString("guestId", null);
+                    editor.putString("guestId", "none");
                 }
                 else {
                     editor.putString("guestId", result._id);

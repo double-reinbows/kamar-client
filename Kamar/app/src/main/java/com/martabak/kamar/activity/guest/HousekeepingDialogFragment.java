@@ -103,6 +103,9 @@ public class HousekeepingDialogFragment extends DialogFragment {
                 }
             });
         }
+        else {
+            permintaanDialogListener.onDialogPositiveClick(HousekeepingDialogFragment.this, success);
+        }
     }
 
 

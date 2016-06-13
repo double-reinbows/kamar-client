@@ -96,8 +96,7 @@ public class CheckGuestOutFragment extends Fragment  {
     private List<String> getRoomNumbersWithoutGuests() {
         final List <String> roomStrings = new ArrayList<String>();
         // TODO double check that this is the correct method to call
-        GuestServer.getInstance(getActivity().getBaseContext()).
-                getRoomNumbers().subscribe(new Observer<List<Room>>() {
+        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithGuests().subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
                 rooms.notifyDataSetChanged();
             }
@@ -105,11 +104,14 @@ public class CheckGuestOutFragment extends Fragment  {
                 Log.v(CheckGuestOutFragment.class.getCanonicalName(), "getRoomNumbersWithoutGuests() Error");
                 e.printStackTrace();
             }
-            @Override public void onNext(List<Room> rooms) {
-                for (int i=0; i < rooms.size(); i++) {
-                    roomStrings.add(rooms.get(i).number);
-                    Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found room: " + roomStrings.get(i));
+            @Override public void onNext(Room room) {
+                if (room != null) {
+                    roomStrings.add(room.number);
+                    Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found room: " + room.number);
                 }
+
+
+
             }
         });
         return roomStrings;

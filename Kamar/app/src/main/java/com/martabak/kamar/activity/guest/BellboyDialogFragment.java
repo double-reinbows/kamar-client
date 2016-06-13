@@ -105,6 +105,9 @@ public class BellboyDialogFragment extends DialogFragment {
                 }
             });
         }
+        else {
+            permintaanDialogListener.onDialogPositiveClick(BellboyDialogFragment.this, success);
+        }
     }
 
 

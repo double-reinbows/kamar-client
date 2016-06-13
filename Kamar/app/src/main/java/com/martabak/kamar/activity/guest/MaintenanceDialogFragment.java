@@ -105,6 +105,9 @@ public class MaintenanceDialogFragment extends DialogFragment {
                 }
             });
         }
+        else {
+            permintaanDialogListener.onDialogPositiveClick(MaintenanceDialogFragment.this, success);
+        }
     }
 
     public void onAttach(Activity activity) {
