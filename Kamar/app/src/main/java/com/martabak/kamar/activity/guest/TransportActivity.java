@@ -155,6 +155,7 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
             });
         }
         else {
+            Log.d(TransportActivity.class.getCanonicalName(), "Guest ID is none");
             Toast.makeText(
                     TransportActivity.this,
                     getString(R.string.something_went_wrong),
