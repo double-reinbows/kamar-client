@@ -117,13 +117,13 @@ public class StaffHomeActivity extends AppCompatActivity {
      * Start any relevant staff services.
      */
     private void startStaffServices(String userSubType) {
-        if (!userSubType.equals("none")) {
+        /*if (!userSubType.equals("none")) {
             Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffPermintaanService.class.getCanonicalName() + " as " + userSubType);
             startService(new Intent(this, StaffPermintaanService.class)
                     .putExtra("subUserType", userSubType));
         }
         Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffChatService.class.getCanonicalName());
-        startService(new Intent(this, StaffChatService.class));
+        startService(new Intent(this, StaffChatService.class));*/
     }
 
     /**

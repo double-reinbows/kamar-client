@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.GuestChatService;
 import com.martabak.kamar.activity.chat.StaffChatService;
+import com.martabak.kamar.activity.home.SelectLanguageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -26,7 +27,8 @@ import rx.Observer;
 public class GuestHomeActivity extends AppCompatActivity
         implements
         PermintaanDialogListener,
-        ChangeRoomNumberDialogFragment.ChangeRoomDialogListener {
+        ChangeRoomNumberDialogFragment.ChangeRoomDialogListener,
+        LogoutDialogFragment.LogoutDialogListener{
 
     private String option;
     private TextView roomNumberTextView;
@@ -198,7 +200,8 @@ public class GuestHomeActivity extends AppCompatActivity
      * @param dialog The dialog fragment.
      */
     @Override
-    public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, Boolean success) {
+    public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, Boolean success,
+                                                String reason) {
         dialog.dismiss();
         if (success)
         {
@@ -216,7 +219,7 @@ public class GuestHomeActivity extends AppCompatActivity
         {
             Toast.makeText(
                     this,
-                    getString(R.string.incorrect_password),
+                    reason,
                     Toast.LENGTH_SHORT
             ).show();
         }
@@ -229,6 +232,48 @@ public class GuestHomeActivity extends AppCompatActivity
      */
     @Override
     public void onChangeRoomDialogNegativeClick(DialogFragment dialog) {
+        dialog.dismiss();
+    }
+
+    /**
+     * Positive click for logout dialog
+     * @param dialog The dialog fragment.
+     * @param success The outcome of the server request.
+     */
+    @Override
+    public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String reason) {
+        dialog.dismiss();
+        if (success)
+        {
+            this.getSharedPreferences("userSettings", this.MODE_PRIVATE)
+                    .edit()
+                    .putString("guestId", null)
+                    .commit();
+            Toast.makeText(
+                    this,
+                    getString(R.string.logout_result),
+                    Toast.LENGTH_LONG
+            ).show();
+            Intent intent = new Intent(this, SelectLanguageActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(
+                    this,
+                    reason,
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
+
+    }
+
+    /**
+     * Negative click for logout dialog.
+     * @param dialog The dialog fragment.
+     */
+    @Override
+    public void onLogoutDialogNegativeClick(DialogFragment dialog) {
         dialog.dismiss();
     }
 

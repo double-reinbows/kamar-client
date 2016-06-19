@@ -37,6 +37,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
     private ArrayAdapter adapter;
     private ChangeRoomDialogListener changeRoomDialogListener;
     private Boolean success = false;
+    private String reason;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -51,6 +52,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         adapter.notifyDataSetChanged();
         spinner.setAdapter(adapter);
+        spinner.setSelection(0);
 
         final EditText passwordEditText = (EditText)
                 view.findViewById(R.id.password_edit_text);
@@ -87,22 +89,22 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
         StaffServer.getInstance(getActivity()).login(password).subscribe(new Observer<Boolean>() {
             @Override public void onCompleted() {
                 Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "Success: " + success.toString());
-                changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, success);
+                changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, success, reason);
                 Log.d(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "On completed");
             }
             @Override public void onError(Throwable e) {
                 Log.d(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
-                Toast.makeText(
-                        getActivity(),
-                        getString(R.string.something_went_wrong),
-                        Toast.LENGTH_SHORT
-                ).show();
-                changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, success);
+                reason = "Something went wrong";
+                changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, success, reason);
             }
             @Override public void onNext(Boolean loginResponse) {
                 Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "Login response: " + loginResponse.toString());
                 success = loginResponse;
+                if (!loginResponse) {
+                    reason = "Incorrect Password";
+                }
+
             }
         });
     }
@@ -111,30 +113,25 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
      * @return The list of room numbers with no guests checked in.
      */
     private List<String> getRoomNumbersWithoutGuests() {
-        final List <String> roomStrings = new ArrayList<>();
-        // TODO use proper method when it's fixed
-        GuestServer.getInstance(getActivity().getBaseContext()).
-                getRoomNumbers().subscribe(new Observer<List<Room>>() {
-            @Override public void onCompleted() {
-            }
-            @Override public void onError(Throwable e) {
-                Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(),  "Error");
-                e.printStackTrace();
-            }
-            @Override public void onNext(List<Room> rooms) {
-                Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "Next");
-                for (int i=0; i < rooms.size(); i++) {
-                    roomStrings.add(rooms.get(i).number);
-                    Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(),
-                            "Room " + roomStrings.get(i));
-                }
-            }
-        });
+        final List<String> roomStrings = new ArrayList<String>();
+        // TODO is this the correct call to getRoomNumbersWithoutGuests?
+        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithoutGuests()
+                .subscribe(new Observer<Room>() {
+                    @Override public void onCompleted() {
+                    }
+                    @Override public void onError(Throwable e) {
+
+                        e.printStackTrace();
+                    }
+                    @Override public void onNext(Room room) {
+                        roomStrings.add(room.number);
+                    }
+                });
         return roomStrings;
     }
 
     public interface ChangeRoomDialogListener {
-        void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, Boolean success);
+        void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, Boolean success, String reason);
         void onChangeRoomDialogNegativeClick(DialogFragment dialog);
     }
 
