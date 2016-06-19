@@ -14,9 +14,8 @@ import android.view.MenuItem;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.ChatListActivity;
-import com.martabak.kamar.activity.chat.GuestChatService;
 import com.martabak.kamar.activity.chat.StaffChatService;
-import com.martabak.kamar.activity.guest.GuestPermintaanService;
+import com.martabak.kamar.activity.home.SelectLanguageActivity;
 
 public class StaffHomeActivity extends AppCompatActivity {
 
@@ -40,7 +39,9 @@ public class StaffHomeActivity extends AppCompatActivity {
         toggle.syncState();
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.staff_container, StaffPermintaanFragment.newInstance()).commit();
+                .add(R.id.staff_container, StaffPermintaanFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
         navigationView.getMenu().getItem(0).setChecked(true);
     }
 
@@ -98,12 +99,21 @@ public class StaffHomeActivity extends AppCompatActivity {
                 case R.id.nav_check_guest_in:
                     Log.v(StaffHomeActivity.class.toString(), "Loading check-guest-in fragment");
                     getFragmentManager().beginTransaction()
-                            .replace(R.id.staff_container, CheckGuestInFragment.newInstance()).commit();
+                            .replace(R.id.staff_container, CheckGuestInFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit();
                     break;
                 case R.id.nav_check_guest_out:
                     Log.v(StaffHomeActivity.class.toString(), "Loading check-guest-out fragment");
                     getFragmentManager().beginTransaction()
-                            .replace(R.id.staff_container, CheckGuestOutFragment.newInstance()).commit();
+                            .replace(R.id.staff_container, CheckGuestOutFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit();
+                    break;
+                case R.id.nav_logout:
+                    Log.v(StaffHomeActivity.class.toString(), "Loading select language activity");
+                    startActivity(new Intent(StaffHomeActivity.this, SelectLanguageActivity.class));
+                    finish();
                     break;
             }
 
@@ -117,13 +127,13 @@ public class StaffHomeActivity extends AppCompatActivity {
      * Start any relevant staff services.
      */
     private void startStaffServices(String userSubType) {
-        /*if (!userSubType.equals("none")) {
+        if (!userSubType.equals("none")) {
             Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffPermintaanService.class.getCanonicalName() + " as " + userSubType);
             startService(new Intent(this, StaffPermintaanService.class)
                     .putExtra("subUserType", userSubType));
         }
         Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffChatService.class.getCanonicalName());
-        startService(new Intent(this, StaffChatService.class));*/
+        startService(new Intent(this, StaffChatService.class));
     }
 
     /**

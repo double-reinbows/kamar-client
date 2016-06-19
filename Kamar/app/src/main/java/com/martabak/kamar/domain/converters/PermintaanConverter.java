@@ -110,6 +110,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
             updated = dateFormat.parse(j.getAsJsonPrimitive("updated").getAsString());
         } catch (ParseException e) {
         } catch (ClassCastException e) {
+        } catch (NullPointerException e) {
         }
         JsonObject c = j.getAsJsonObject("content");
         String message = c.getAsJsonPrimitive("message").getAsString();
