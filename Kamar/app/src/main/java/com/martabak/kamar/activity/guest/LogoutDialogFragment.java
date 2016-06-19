@@ -29,6 +29,10 @@ import rx.Observer;
  */
 public class LogoutDialogFragment extends DialogFragment {
 
+    private LogoutDialogListener logoutDialogListener;
+    private boolean success = false;
+    private String reason;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_logout, null);
@@ -47,7 +51,7 @@ public class LogoutDialogFragment extends DialogFragment {
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        logoutDialogListener.onLogoutDialogNegativeClick(LogoutDialogFragment.this);
                     }
                 })
                 .create();
@@ -61,49 +65,33 @@ public class LogoutDialogFragment extends DialogFragment {
         StaffServer.getInstance(getActivity()).login(password).subscribe(new Observer<Boolean>() {
             @Override public void onCompleted() {
                 Log.d(LogoutDialogFragment.class.getCanonicalName(), "On completed");
+                logoutDialogListener.onLogoutDialogPositiveClick(LogoutDialogFragment.this, success, reason);
             }
             @Override public void onError(Throwable e) {
                 Log.d(LogoutDialogFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
-                Toast.makeText(
-                        LogoutDialogFragment.this.getActivity(),
-                        getString(R.string.something_went_wrong),
-                        Toast.LENGTH_LONG
-                ).show();
+                reason = "Something went wrong";
+                logoutDialogListener.onLogoutDialogPositiveClick(LogoutDialogFragment.this, success, reason);
             }
             @Override  public void onNext(Boolean loginResponse) {
                 Log.d(LogoutDialogFragment.class.getCanonicalName(), "On next " + loginResponse.toString());
-                if (loginResponse) {
-                    logout();
-                } else {
-                    Toast.makeText(
-                            getActivity(),
-                            getString(R.string.incorrect_password),
-                            Toast.LENGTH_LONG
-                    ).show();
+                success = loginResponse;
+                if (!loginResponse) {
+                    reason = "Incorrect Password";
                 }
+
             }
         });
     }
 
-    /**
-     * Logout the guest.
-     */
-    private void logout() {
-        Activity activity = getActivity();
-        if (isAdded() && activity != null) {
-            getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                    .edit()
-                    .putString("guestId", null)
-                    .commit();
-            Toast.makeText(
-                    getActivity(),
-                    getString(R.string.logout_result),
-                    Toast.LENGTH_LONG
-            ).show();
-            startActivity(new Intent(getActivity(), SelectLanguageActivity.class));
-            getActivity().finish();
-        }
+    public interface LogoutDialogListener {
+        void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String reason);
+        void onLogoutDialogNegativeClick(DialogFragment dialog);
+    }
+
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        logoutDialogListener = (LogoutDialogListener) activity;
     }
 
 }
