@@ -121,19 +121,16 @@ public class CheckGuestInFragment extends Fragment {
     private List<String> getRoomNumbersWithoutGuests() {
         final List<String> roomStrings = new ArrayList<String>();
         // TODO is this the correct call to getRoomNumbersWithoutGuests?
-        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbers()
-                .subscribe(new Observer<List<Room>>() {
+        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithoutGuests()
+                .subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
             }
             @Override public void onError(Throwable e) {
                 Log.v(CheckGuestInFragment.class.getCanonicalName(),  "getRoomNumbersWithoutGuests() onError");
                 e.printStackTrace();
             }
-            @Override public void onNext(List<Room> rooms) {
-                for (int i=0; i < rooms.size(); i++) {
-                    roomStrings.add(rooms.get(i).number);
-                    Log.v(CheckGuestInFragment.class.getCanonicalName(), roomStrings.get(i));
-                }
+            @Override public void onNext(Room room) {
+                roomStrings.add(room.number);
                 Log.v(CheckGuestInFragment.class.getCanonicalName(), "getRoomNumbersWithoutGuests() onNext");
             }
         });

@@ -45,7 +45,7 @@ public class SurveyActivity extends AppCompatActivity {
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", null);
+                .getString("roomNumber", "none");
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
 

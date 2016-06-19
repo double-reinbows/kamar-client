@@ -54,6 +54,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
 
         final RecyclerView rv = (RecyclerView) view.findViewById(R.id.restaurant_recycleview);
+        rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         final LinearLayoutManager llm = new LinearLayoutManager(getBaseContext());
         rv.setLayoutManager(llm);
 

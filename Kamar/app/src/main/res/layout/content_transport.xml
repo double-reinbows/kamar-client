@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
+            android:focusableInTouchMode="false"
             android:id="@+id/transport_depature_date_edit_text"
             android:layout_gravity="center_vertical"
             android:layout_weight="1" />

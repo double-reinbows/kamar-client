@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.guest;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -23,6 +24,9 @@ import rx.Observer;
  */
 public class TellUsDialogFragment extends DialogFragment {
 
+    private PermintaanDialogListener permintaanDialogListener;
+    private Boolean success = false;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
@@ -39,6 +43,7 @@ public class TellUsDialogFragment extends DialogFragment {
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
+                        permintaanDialogListener.onDialogNegativeClick(TellUsDialogFragment.this);
                         dialog.dismiss();
                     }
                 })
@@ -53,33 +58,28 @@ public class TellUsDialogFragment extends DialogFragment {
         FeedbackServer.getInstance(getActivity()).createFeedback(new Feedback(message)).subscribe(new Observer<Boolean>() {
                 @Override public void onCompleted() {
                     Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On completed");
+                    permintaanDialogListener.onDialogPositiveClick(TellUsDialogFragment.this, success);
                 }
                 @Override
                 public void onError(Throwable e) {
                     Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On error");
                     e.printStackTrace();
-                    Toast.makeText(
-                            TellUsDialogFragment.this.getActivity(),
-                            getString(R.string.something_went_wrong),
-                            Toast.LENGTH_LONG
-                    ).show();
+                    permintaanDialogListener.onDialogPositiveClick(TellUsDialogFragment.this, success);
                 }
                 @Override public void onNext(Boolean b) {
                     Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On next " + b);
                     if (b) {
-                        Toast.makeText(
-                                TellUsDialogFragment.this.getActivity(),
-                                getString(R.string.tellus_result),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        success = true;
                     } else {
-                        Toast.makeText(
-                                TellUsDialogFragment.this.getActivity(),
-                                getString(R.string.something_went_wrong),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        success = false;
                     }
                 }
         });
     }
+
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        permintaanDialogListener = (PermintaanDialogListener) activity;
+    }
+
 }
