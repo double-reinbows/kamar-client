@@ -24,6 +24,7 @@ import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.PermintaanServer;
 import com.martabak.kamar.service.StaffServer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observer;
@@ -36,12 +37,80 @@ public class YiannisTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yiannis_test);
 
-        final Button doSomethingButton = (Button) findViewById(R.id.doSomething);
+        final Button doSomething1Button = (Button) findViewById(R.id.doSomething1);
+        final Button doSomething2Button = (Button) findViewById(R.id.doSomething2);
+        final Button doSomething3Button = (Button) findViewById(R.id.doSomething3);
 
-        doSomethingButton.setOnClickListener(new View.OnClickListener() {
+        doSomething1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doStartStaffPermintaanService();
+                doGetRoomNumbers();
+            }
+        });
+        doSomething2Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doGetRoomNumbersWithGuests();
+            }
+        });
+        doSomething3Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doGetRoomNumbersWithoutGuests();
+            }
+        });
+    }
+
+    private void doGetRoomNumbersWithoutGuests() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get room numbers");
+        GuestServer.getInstance(getBaseContext()).getRoomNumbersWithoutGuests().subscribe(new Observer<Room>() {
+            List<Room> rooms = new ArrayList<>();
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(rooms.toString());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Room result) {
+                Log.i(YiannisTestActivity.class.getCanonicalName(), "On next another room " + result.number);
+                rooms.add(result);
+            }
+        });
+    }
+
+    private void doGetRoomNumbersWithGuests() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get room numbers");
+        GuestServer.getInstance(getBaseContext()).getRoomNumbersWithGuests().subscribe(new Observer<Room>() {
+            List<Room> rooms = new ArrayList<>();
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(rooms.toString());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Room result) {
+                Log.i(YiannisTestActivity.class.getCanonicalName(), "On next another room " + result.number);
+                rooms.add(result);
             }
         });
     }

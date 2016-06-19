@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.chat.GuestChatService;
+import com.martabak.kamar.activity.chat.StaffChatService;
+import com.martabak.kamar.activity.home.SelectLanguageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -21,8 +25,10 @@ import com.martabak.kamar.service.GuestServer;
 import rx.Observer;
 
 public class GuestHomeActivity extends AppCompatActivity
-        implements BellboyDialogFragment.BellboyDialogListener,
-        ChangeRoomNumberDialogFragment.ChangeRoomDialogListener {
+        implements
+        PermintaanDialogListener,
+        ChangeRoomNumberDialogFragment.ChangeRoomDialogListener,
+        LogoutDialogFragment.LogoutDialogListener{
 
     private String option;
     private TextView roomNumberTextView;
@@ -31,16 +37,21 @@ public class GuestHomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_home);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        setSupportActionBar(toolbar);
 
         final ImageAdapter imgAdapter = new ImageAdapter(this);
         final GridView gridView = (GridView) findViewById(R.id.guestgridview);
         View passwordIconView = findViewById(R.id.passwordChangeIcon);
         View logoutView = findViewById(R.id.logoutIcon);
 
-        roomNumberTextView = (TextView)findViewById(R.id.room_number_display);
+        roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", null);
+                .getString("roomNumber", "none");
         setGuestId(roomNumber);
+
+        // Start any guest services.
+        startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
 
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
@@ -79,10 +90,16 @@ public class GuestHomeActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onStop() {
+        stopGuestServices();
+        super.onStop();
+    }
+
     /*
      * Actions for each individual feature on the grid.
      */
-    public void createAction() {
+    private void createAction() {
         switch(option) {
             case "MY REQUESTS":
                 startActivity(new Intent(this, GuestPermintaanActivity.class));
@@ -117,11 +134,54 @@ public class GuestHomeActivity extends AppCompatActivity
      * Positive click.
      */
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onDialogPositiveClick(DialogFragment dialog, Boolean success) {
         dialog.dismiss();
-        if (option == "CHECKOUT") {
-            startCheckout(getString(R.string.bellboy_result));
+        if (success) {
+            switch(option) {
+                case Permintaan.TYPE_HOUSEKEEPING:
+                    Toast.makeText(
+                            this,
+                            getString(R.string.housekeeping_result),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    break;
+                case Permintaan.TYPE_BELLBOY:
+                    Toast.makeText(
+                            this,
+                            getString(R.string.bellboy_result),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    break;
+                case Permintaan.TYPE_MAINTENANCE:
+                    Toast.makeText(
+                            this,
+                            getString(R.string.maintenance_result),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    break;
+                case "TELL US":
+                    Toast.makeText(
+                            this,
+                            getString(R.string.tellus_result),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    break;
+                case Permintaan.TYPE_CHECKOUT:
+                    startCheckout(getString(R.string.bellboy_result));
+                    break;
+                default:
+                    break;
+            }
         }
+        else {
+            Toast.makeText(
+                    this,
+                    getString(R.string.something_went_wrong),
+                    Toast.LENGTH_LONG
+            ).show();
+        }
+
+
     }
 
     /**
@@ -140,14 +200,30 @@ public class GuestHomeActivity extends AppCompatActivity
      * @param dialog The dialog fragment.
      */
     @Override
-    public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber) {
+    public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, Boolean success,
+                                                String reason) {
         dialog.dismiss();
-        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
-        Toast.makeText(
-                this,
-                getString(R.string.room_number_changed),
-                Toast.LENGTH_LONG
-        ).show();
+        if (success)
+        {
+            getSharedPreferences("userSettings", MODE_PRIVATE)
+                    .edit().putString("roomNumber", roomNumber)
+                    .commit();
+            Toast.makeText(
+                    this,
+                    getString(R.string.room_number_changed),
+                    Toast.LENGTH_LONG
+            ).show();
+            roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
+        }
+        else
+        {
+            Toast.makeText(
+                    this,
+                    reason,
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
+
     }
 
     /**
@@ -160,10 +236,52 @@ public class GuestHomeActivity extends AppCompatActivity
     }
 
     /**
+     * Positive click for logout dialog
+     * @param dialog The dialog fragment.
+     * @param success The outcome of the server request.
+     */
+    @Override
+    public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String reason) {
+        dialog.dismiss();
+        if (success)
+        {
+            this.getSharedPreferences("userSettings", this.MODE_PRIVATE)
+                    .edit()
+                    .putString("guestId", null)
+                    .commit();
+            Toast.makeText(
+                    this,
+                    getString(R.string.logout_result),
+                    Toast.LENGTH_LONG
+            ).show();
+            Intent intent = new Intent(this, SelectLanguageActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(
+                    this,
+                    reason,
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
+
+    }
+
+    /**
+     * Negative click for logout dialog.
+     * @param dialog The dialog fragment.
+     */
+    @Override
+    public void onLogoutDialogNegativeClick(DialogFragment dialog) {
+        dialog.dismiss();
+    }
+
+    /**
      * Start the checkout process by prompting the user to enter a survey.
      * @param completionMessage The message to show on completion of the survey.
      */
-    public void startCheckout(String completionMessage) {
+    private void startCheckout(String completionMessage) {
         Intent intent = new Intent(this, SurveyActivity.class);
         intent.putExtra("completionMessage", completionMessage);
         startActivity(intent);
@@ -173,7 +291,7 @@ public class GuestHomeActivity extends AppCompatActivity
      * Set guest id on shared preferences.
      * @param roomNumber The room number.
      */
-    public void setGuestId(String roomNumber) {
+    private void setGuestId(String roomNumber) {
         GuestServer.getInstance(getBaseContext()).getGuestInRoom(
                 roomNumber).subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
@@ -188,7 +306,7 @@ public class GuestHomeActivity extends AppCompatActivity
                 SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 if (result == null) {
-                    editor.putString("guestId", null);
+                    editor.putString("guestId", "none");
                 }
                 else {
                     editor.putString("guestId", result._id);
@@ -197,6 +315,31 @@ public class GuestHomeActivity extends AppCompatActivity
                 Log.d(GuestHomeActivity.class.getCanonicalName(), "Setting guest ID to " + result._id);
             }
         });
+    }
+
+    /**
+     * Start any relevant guest services.
+     * @param guestId The guest's ID.
+     */
+    private void startGuestServices(String guestId) {
+        if (!guestId.equals("none")) {
+            Log.v(GuestHomeActivity.class.getCanonicalName(), "Starting " + GuestPermintaanService.class.getCanonicalName() + " as " + guestId);
+            startService(new Intent(this, GuestPermintaanService.class)
+                    .putExtra("guestId", guestId));
+            Log.v(GuestHomeActivity.class.getCanonicalName(), "Starting " + GuestChatService.class.getCanonicalName() + " as " + guestId);
+            startService(new Intent(this, GuestChatService.class)
+                    .putExtra("guestId", guestId));
+        }
+    }
+
+    /**
+     * Stop any relevant guest services.
+     */
+    private void stopGuestServices() {
+        Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + GuestPermintaanService.class.getCanonicalName());
+        stopService(new Intent(this, GuestPermintaanService.class));
+        Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + GuestChatService.class.getCanonicalName());
+        stopService(new Intent(this, GuestChatService.class));
     }
 
 }

@@ -28,7 +28,8 @@ import rx.Observer;
  */
 public class BellboyDialogFragment extends DialogFragment {
 
-    private BellboyDialogListener bellboyDialogListener;
+    private PermintaanDialogListener permintaanDialogListener;
+    private Boolean success = false;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -43,14 +44,13 @@ public class BellboyDialogFragment extends DialogFragment {
                                 view.findViewById(R.id.bellboy_message_edit_text);
                         String bellboyMessage = editBellboyMessage.getText().toString();
                         sendBellboyRequest(bellboyMessage);
-                        bellboyDialogListener.onDialogPositiveClick(BellboyDialogFragment.this);
                     }
                 })
                 .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        bellboyDialogListener.onDialogNegativeClick(BellboyDialogFragment.this);
+                        permintaanDialogListener.onDialogNegativeClick(BellboyDialogFragment.this);
                     }
                 })
                 .create();
@@ -65,9 +65,9 @@ public class BellboyDialogFragment extends DialogFragment {
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_BELLBOY;
         String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                .getString("roomNumber", null);
+                .getString("roomNumber", "none");
         String guestId= getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                .getString("guestId", null);
+                .getString("guestId", "none");
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
 
@@ -85,46 +85,36 @@ public class BellboyDialogFragment extends DialogFragment {
                 @Override
                 public void onCompleted() {
                     Log.d(BellboyDialogFragment.class.getCanonicalName(), "On completed");
+                    permintaanDialogListener.onDialogPositiveClick(BellboyDialogFragment.this, success);
                 }
                 @Override
                 public void onError(Throwable e) {
                     Log.d(BellboyDialogFragment.class.getCanonicalName(), "On error");
                     e.printStackTrace();
-                    Toast.makeText(
-                            getActivity(),
-                            getString(R.string.something_went_wrong),
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    success = false;
+                    permintaanDialogListener.onDialogPositiveClick(BellboyDialogFragment.this, success);
                 }
                 @Override
                 public void onNext(Permintaan permintaan) {
                     Log.d(BellboyDialogFragment.class.getCanonicalName(), "On next");
                     if (permintaan != null) {
-                        Toast.makeText(
-                                BellboyDialogFragment.this.getActivity(),
-                                getString(R.string.bellboy_result),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        success = true;
                     } else {
-                        Toast.makeText(
-                                BellboyDialogFragment.this.getActivity(),
-                                getString(R.string.something_went_wrong),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        success = false;
                     }
                 }
             });
         }
+        else {
+            permintaanDialogListener.onDialogPositiveClick(BellboyDialogFragment.this, success);
+        }
     }
 
-    public interface BellboyDialogListener {
-        void onDialogPositiveClick(DialogFragment dialog);
-        void onDialogNegativeClick(DialogFragment dialog);
-    }
+
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        bellboyDialogListener = (BellboyDialogListener) activity;
+        permintaanDialogListener = (PermintaanDialogListener) activity;
     }
 
 }

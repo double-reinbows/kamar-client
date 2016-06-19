@@ -20,6 +20,7 @@ import com.martabak.kamar.service.GuestServer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 
 import rx.Observable;
 import rx.functions.Action1;
@@ -101,12 +102,27 @@ public class StaffChatService extends IntentService {
         }
     }
 
-    private void createNotification(int nId, ChatMessage message) {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_menu_share)
-                        .setContentTitle("New message from guest " + message.guestId)
-                        .setContentText(message.message);
+    private void createNotification(final int nId, final ChatMessage message) {
+        GuestServer.getInstance(this).getGuest(message.guestId)
+                .subscribe(new rx.Observer<Guest>() {
+                    String roomNumber = "";
+                    @Override public void onCompleted() {
+                        createNotification(nId, message, roomNumber);
+                    }
+                    @Override public void onError(Throwable e) {
+                        createNotification(nId, message, roomNumber);
+                    }
+                    @Override public void onNext(Guest guest) {
+                        roomNumber = guest.roomNumber;
+                    }
+                });
+    }
+
+    private void createNotification(int nId, ChatMessage message, String roomNumber) {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_menu_share)
+                .setContentTitle(getString(R.string.chat_message_from_guest) + " " + roomNumber)
+                .setContentText(message.message);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
 

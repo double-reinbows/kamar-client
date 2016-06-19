@@ -73,7 +73,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
             case Permintaan.TYPE_TRANSPORT:
                 Transport t = (Transport)src.content;
                 content.addProperty("passengers", t.passengers);
-                content.addProperty("departure_time", t.departureTime.toString());
+                content.addProperty("departure_time", dateFormat.format(t.departureTime));
                 content.addProperty("destination", t.destination);
                 break;
             case Permintaan.TYPE_BELLBOY:
@@ -148,6 +148,17 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 }
                 String destination = c.getAsJsonPrimitive("destination").getAsString();
                 content = new Transport(message, passengers, departureTime, destination);
+                break;
+            case Permintaan.TYPE_RESTAURANT:
+                List<OrderItem> restuarantItems = new ArrayList<>();
+                for (int i = 0; i < c.getAsJsonArray("items").size(); i++) {
+                    JsonObject item = (JsonObject)c.getAsJsonArray("items").get(i);
+                    Integer quantity = item.getAsJsonPrimitive("quantity").getAsInt();
+                    String name = item.getAsJsonPrimitive("name").getAsString();
+                    restuarantItems.add(new OrderItem(quantity, name));
+                }
+                Integer totalRestaurantPrice = c.getAsJsonPrimitive("total_price").getAsInt();
+                content = new RestaurantOrder(message, restuarantItems, totalRestaurantPrice);
                 break;
             default:
                 throw new JsonParseException("Unknown Permintaan content type.");

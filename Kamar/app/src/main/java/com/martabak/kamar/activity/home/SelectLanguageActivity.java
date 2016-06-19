@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
@@ -20,8 +21,8 @@ public class SelectLanguageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_language);
-        final Button englishButton = (Button) findViewById(R.id.language_english);
-        final Button indonesianButton = (Button) findViewById(R.id.language_bahasa);
+        final ImageButton englishButton = (ImageButton) findViewById(R.id.language_english);
+        final ImageButton indonesianButton = (ImageButton) findViewById(R.id.language_bahasa);
 
         if (englishButton != null) {
             englishButton.setOnClickListener(new View.OnClickListener() {

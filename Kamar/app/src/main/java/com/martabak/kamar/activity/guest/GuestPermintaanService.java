@@ -75,11 +75,10 @@ public class GuestPermintaanService extends IntentService {
     }
 
     private void createNotification(int nId, Permintaan permintaan) {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_menu_manage)
-                        .setContentTitle(permintaan.type + " REQUEST")
-                        .setContentText("Status is now " + permintaan.state);
+        NotificationCompat.Builder mBuilder =new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_menu_manage)
+                .setContentTitle(permintaan.type + " " + getString(R.string.permintaan))
+                .setContentText(getString(R.string.permintaan_status_is_now) + " " + permintaan.state);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
 

@@ -36,13 +36,15 @@
     <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
 
     <!-- Permintaan -->
+    <string name="permintaan">request</string>
     <string name="new_permintaan">NEW</string>
     <string name="inprogress_permintaan">IN PROGRESS</string>
     <string name="indelivery_permintaan">IN DELIVERY</string>
     <string name="completed_permintaan">COMPLETED</string>
     <string name="deleted_permintaan">DELETED</string>
     <string name="cancelled_permintaan">CANCELLED</string>
-    <string name="permintaan_progress_confirmation">Are you sure you want to progress this permintaan?</string>
+    <string name="permintaan_progress_confirmation">Are you sure you want to progress this request?</string>
+    <string name="permintaan_status_is_now">Status is now</string>
 
     <!-- Chat -->
     <string name="title_chat_list">Chats</string>
@@ -50,6 +52,8 @@
     <string name="chat_message_text">Type your message ...</string>
     <string name="chat_send_button">Send</string>
     <string name="chat_message_sent">Message sent</string>
+    <string name="chat_message_from_guest">Message from guest room</string>
+    <string name="chat_message_from_staff">Message from staff</string>
 
     <!-- Check in/out -->
     <string name="guest_first_name">First Name</string>
@@ -86,6 +90,9 @@
     <string name="tellus_message">Tell us what you think</string>
     <string name="tellus_edittext">Leave your feedback here</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
+
+    <string name="restaurant_success"> Successfully placed your order!</string>
+    <string name="restaurant_error"> Error in placing your order!</string>
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>

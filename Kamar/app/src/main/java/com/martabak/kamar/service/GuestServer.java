@@ -1,6 +1,7 @@
 package com.martabak.kamar.service;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Room;
@@ -53,6 +54,17 @@ public class GuestServer extends Server {
     }
 
     /**
+     * Gets a guest.
+     * @param guestId The guest's ID.
+     * @return The guest.
+     */
+    public Observable<Guest> getGuest(String guestId) {
+        return service.getGuest(guestId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
      * Create a new guest.
      * @param guest The guest model to be created.
      * @return The guest model that was added.
@@ -75,10 +87,11 @@ public class GuestServer extends Server {
         return service.getGuestsCheckedIn()
                 .flatMap(new Func1<ViewResponse<Guest>, Observable<Guest>>() {
                     @Override public Observable<Guest> call(ViewResponse<Guest> response) {
+                        List<Guest> guestsCheckedIn = new ArrayList<>();
                         for (ViewResponse<Guest>.ViewResult<Guest> i : response.rows) {
-                            return Observable.just(i.value);
+                            guestsCheckedIn.add(i.value);
                         }
-                        return Observable.just(null);
+                        return Observable.from(guestsCheckedIn);
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -125,42 +138,33 @@ public class GuestServer extends Server {
     /**
      * @return All room numbers of the hotel that have a guest currently checked in.
      */
-    public Observable<List<Room>> getRoomNumbersWithGuests() {
-        final List<Room> roomsWithGuests = new ArrayList<>();
-        service.getRooms()
-            .flatMap(new Func1<AllResponse<Room>, Observable<Room>>() {
-                @Override public Observable<Room> call(AllResponse<Room> response) {
-                    List<Room> toReturn = new ArrayList<>(response.total_rows);
-                    for (AllResponse<Room>.AllResult<Room> i : response.rows) {
-                        toReturn.add(i.doc);
+    public Observable<Room> getRoomNumbersWithGuests() {
+        return service.getRooms()
+                .flatMap(new Func1<AllResponse<Room>, Observable<Room>>() {
+                    @Override public Observable<Room> call(AllResponse<Room> response) {
+                        List<Room> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<Room>.AllResult<Room> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+                        return Observable.from(toReturn);
                     }
-                    return Observable.from(toReturn);
-                }
-            })
-            // Only return rooms with a guest.
-            .subscribe(new Observer<Room>() {
-                @Override public void onCompleted() {}
-                @Override public void onNext(final Room room) {
-                     getGuestInRoom(room.number)
-                        .subscribe(new Action1<Guest>() {
-                            @Override public void call(Guest guest) {
-                                if (guest != null) roomsWithGuests.add(room);
-                            }
-                        });
-                }
-                @Override public void onError(Throwable e) {
-                    e.printStackTrace();
-                }
-            });
-        return Observable.just(roomsWithGuests);
+                })
+                // Only return rooms with a guest.
+                .filter(new Func1<Room, Boolean>() {
+                    @Override public Boolean call(Room room) {
+                        Guest guest = getGuestInRoom(room.number).toBlocking().first();
+                        return guest != null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     /**
      * @return All room numbers of the hotel that <i>do not</i> have a guest currently checked in.
      */
-    public Observable<List<Room>> getRoomNumbersWithoutGuests() {
-        final List<Room> roomsWithoutGuests = new ArrayList<>();
-        service.getRooms()
+    public Observable<Room> getRoomNumbersWithoutGuests() {
+        return service.getRooms()
                 .flatMap(new Func1<AllResponse<Room>, Observable<Room>>() {
                     @Override public Observable<Room> call(AllResponse<Room> response) {
                         List<Room> toReturn = new ArrayList<>(response.total_rows);
@@ -171,21 +175,14 @@ public class GuestServer extends Server {
                     }
                 })
                 // Only return rooms without a guest.
-                .subscribe(new Observer<Room>() {
-                    @Override public void onCompleted() {}
-                    @Override public void onNext(final Room room) {
-                        getGuestInRoom(room.number)
-                                .subscribe(new Action1<Guest>() {
-                                    @Override public void call(Guest guest) {
-                                        if (guest == null) roomsWithoutGuests.add(room);
-                                    }
-                                });
+                .filter(new Func1<Room, Boolean>() {
+                    @Override public Boolean call(Room room) {
+                        Guest guest = getGuestInRoom(room.number).toBlocking().first();
+                        return guest == null;
                     }
-                    @Override public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
-        return Observable.just(roomsWithoutGuests);
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     /**

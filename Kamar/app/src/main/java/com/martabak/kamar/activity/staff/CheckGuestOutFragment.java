@@ -78,11 +78,7 @@ public class CheckGuestOutFragment extends Fragment  {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
                 if (guest != null) {
-                    if (checkGuestOut(guest)) {
-                        Toast.makeText(getActivity(), getString(R.string.guest_checkout_message), Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
-                    }
+                    checkGuestOut(guest);
                 }
             }
         });
@@ -96,8 +92,7 @@ public class CheckGuestOutFragment extends Fragment  {
     private List<String> getRoomNumbersWithoutGuests() {
         final List <String> roomStrings = new ArrayList<String>();
         // TODO double check that this is the correct method to call
-        GuestServer.getInstance(getActivity().getBaseContext()).
-                getRoomNumbers().subscribe(new Observer<List<Room>>() {
+        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithGuests().subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
                 rooms.notifyDataSetChanged();
             }
@@ -105,11 +100,14 @@ public class CheckGuestOutFragment extends Fragment  {
                 Log.v(CheckGuestOutFragment.class.getCanonicalName(), "getRoomNumbersWithoutGuests() Error");
                 e.printStackTrace();
             }
-            @Override public void onNext(List<Room> rooms) {
-                for (int i=0; i < rooms.size(); i++) {
-                    roomStrings.add(rooms.get(i).number);
-                    Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found room: " + roomStrings.get(i));
+            @Override public void onNext(Room room) {
+                if (room != null) {
+                    roomStrings.add(room.number);
+                    Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found room: " + room.number);
                 }
+
+
+
             }
         });
         return roomStrings;
@@ -143,12 +141,11 @@ public class CheckGuestOutFragment extends Fragment  {
     /**
      * Check the guest out.
      */
-    private boolean checkGuestOut(Guest guest) {
+    private void checkGuestOut(Guest guest) {
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
         Guest updateGuest;
 
-        final List<Boolean> toReturn = new ArrayList<>(1);
         updateGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
                 guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
                 guest.welcomeMessage);
@@ -164,10 +161,13 @@ public class CheckGuestOutFragment extends Fragment  {
                     }
                     @Override public void onNext(Boolean result) {
                         Log.v(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On next " + result);
-                        toReturn.add(result);
+                        if (result) {
+                            Toast.makeText(getActivity(), getString(R.string.guest_checkout_message), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
-        return toReturn.get(0);
     }
 
 }

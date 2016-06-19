@@ -14,12 +14,16 @@ import android.view.MenuItem;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.ChatListActivity;
+import com.martabak.kamar.activity.chat.GuestChatService;
+import com.martabak.kamar.activity.chat.StaffChatService;
+import com.martabak.kamar.activity.guest.GuestPermintaanService;
 
 public class StaffHomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startStaffServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
         setContentView(R.layout.activity_staff_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.staff_toolbar);
         setSupportActionBar(toolbar);
@@ -38,6 +42,12 @@ public class StaffHomeActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.staff_container, StaffPermintaanFragment.newInstance()).commit();
         navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    @Override
+    public void onStop() {
+        stopStaffServices();
+        super.onStop();
     }
 
     @Override
@@ -101,6 +111,29 @@ public class StaffHomeActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
             return true;
         }
+    }
+
+    /**
+     * Start any relevant staff services.
+     */
+    private void startStaffServices(String userSubType) {
+        /*if (!userSubType.equals("none")) {
+            Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffPermintaanService.class.getCanonicalName() + " as " + userSubType);
+            startService(new Intent(this, StaffPermintaanService.class)
+                    .putExtra("subUserType", userSubType));
+        }
+        Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffChatService.class.getCanonicalName());
+        startService(new Intent(this, StaffChatService.class));*/
+    }
+
+    /**
+     * Stop any relevant staff services.
+     */
+    private void stopStaffServices() {
+        Log.v(StaffHomeActivity.class.getCanonicalName(), "Stopping " + StaffPermintaanService.class.getCanonicalName());
+        stopService(new Intent(this, StaffPermintaanService.class));
+        Log.v(StaffHomeActivity.class.getCanonicalName(), "Stopping " + StaffChatService.class.getCanonicalName());
+        stopService(new Intent(this, StaffChatService.class));
     }
 
 }

@@ -10,6 +10,19 @@ import java.util.Date;
  */
 public class ChatMessage extends Model {
 
+    /**
+     * The RESTAURANT sender string.
+     */
+    public static final String SENDER_RESTAURANT = "RESTAURANT";
+    /**
+     * The FRONTDESK sender string.
+     */
+    public static final String SENDER_FRONTDESK = "FRONTDESK";
+    /**
+     * The GUEST sender string.
+     */
+    public static final String SENDER_GUEST = "GUEST";
+
     @SerializedName("guest_id") public final String guestId;
 
     public final String from;
@@ -35,6 +48,22 @@ public class ChatMessage extends Model {
         this.message = message;
         this.sent = sent;
         this.read = read;
+    }
+
+    public ChatMessage(String _id, String _rev, String guestId, String from, String message, Date sent, Date read) {
+        super(_id, _rev);
+        this.guestId = guestId;
+        this.from = from;
+        this.message = message;
+        this.sent = sent;
+        this.read = read;
+    }
+
+    /**
+     * @return Whether or not this chat message is from the guest?
+     */
+    public boolean fromGuest() {
+        return from.equals("GUEST");
     }
 
 }

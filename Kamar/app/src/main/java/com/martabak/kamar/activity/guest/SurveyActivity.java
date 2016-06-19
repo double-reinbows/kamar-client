@@ -19,6 +19,7 @@ import com.martabak.kamar.service.FeedbackServer;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 import rx.Observer;
@@ -39,8 +40,14 @@ public class SurveyActivity extends AppCompatActivity {
         LayoutInflater layoutInflater = getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.activity_survey, null);
         setContentView(view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
         setSupportActionBar(toolbar);
+
+        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
+        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("roomNumber", "none");
+        // set room number text
+        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
 
         final RecyclerView rv = (RecyclerView) view.findViewById(R.id.survey_recycleview);
         final LinearLayoutManager llm = new LinearLayoutManager(getBaseContext());

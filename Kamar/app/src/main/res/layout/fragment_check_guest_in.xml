@@ -75,6 +75,7 @@
             <EditText
                 android:layout_width="150dp"
                 android:layout_height="50dp"
+                android:focusableInTouchMode="false"
                 android:id="@+id/guest_date_check_out"/>
         </TableRow>
 

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.martabak.kamar.R;
 
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.service.GuestServer;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class ChatListActivity extends AppCompatActivity {
                 recyclerViewAdapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
-                Log.d(ChatListActivity.class.getCanonicalName(), "onError");
+                Log.d(ChatListActivity.class.getCanonicalName(), "onError", e);
                 e.printStackTrace();
             }
             @Override public void onNext(final Guest guest) {
@@ -57,6 +58,8 @@ public class ChatListActivity extends AppCompatActivity {
 
     public class ChatRecyclerViewAdapter
             extends RecyclerView.Adapter<ChatRecyclerViewAdapter.ViewHolder> {
+
+        protected int selectedPos = -1;
 
         private final List<Guest> mValues;
 
@@ -73,23 +76,10 @@ public class ChatListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+            holder.itemView.setSelected(selectedPos == position);
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).roomNumber);
             holder.mContentView.setText(mValues.get(position).firstName + " " + mValues.get(position).lastName);
-
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle arguments = new Bundle();
-                    arguments.putString(ChatDetailFragment.GUEST_ID, holder.mItem._id);
-                    arguments.putString(ChatDetailFragment.SENDER, getSender());
-                    ChatDetailFragment fragment = new ChatDetailFragment();
-                    fragment.setArguments(arguments);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.chat_detail_container, fragment)
-                            .commit();
-                }
-            });
         }
 
         @Override
@@ -108,6 +98,23 @@ public class ChatListActivity extends AppCompatActivity {
                 mView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
+                mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        notifyItemChanged(selectedPos);
+                        ChatRecyclerViewAdapter.this.selectedPos = getLayoutPosition();
+                        notifyItemChanged(selectedPos);
+
+                        Bundle arguments = new Bundle();
+                        arguments.putString(ChatDetailFragment.GUEST_ID, mItem._id);
+                        arguments.putString(ChatDetailFragment.SENDER, getSender());
+                        ChatDetailFragment fragment = new ChatDetailFragment();
+                        fragment.setArguments(arguments);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.chat_detail_container, fragment)
+                                .commit();
+                    }
+                });
             }
 
             @Override
@@ -119,6 +126,6 @@ public class ChatListActivity extends AppCompatActivity {
 
     private String getSender() {
         SharedPreferences prefs = getSharedPreferences("userSettings", Context.MODE_PRIVATE);
-        return prefs.getString("userSubType", "FRONTDESK");
+        return prefs.getString("userSubType", ChatMessage.SENDER_FRONTDESK);
     }
 }

@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.guest;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -27,6 +28,9 @@ import rx.Observer;
  */
 public class HousekeepingDialogFragment extends DialogFragment {
 
+    private PermintaanDialogListener permintaanDialogListener;
+    private Boolean success = false;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
@@ -40,12 +44,14 @@ public class HousekeepingDialogFragment extends DialogFragment {
                                 view.findViewById(R.id.housekeeping_message_edit_text);
                         String housekeepingMessage = editTransportMessage.getText().toString();
                         sendHousekeepingRequest(housekeepingMessage);
+
                     }
                 })
                 .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        permintaanDialogListener.onDialogNegativeClick(HousekeepingDialogFragment.this);
                     }
                 })
                 .create();
@@ -60,13 +66,13 @@ public class HousekeepingDialogFragment extends DialogFragment {
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_HOUSEKEEPING;
         String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                .getString("roomNumber", null);
+                .getString("roomNumber", "none");
         String guestId= getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                .getString("guestId", null);
+                .getString("guestId", "none");
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
 
-        if (guestId != null) {
+        if (guestId != "none") {
             PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
                             owner,
                             type,
@@ -79,34 +85,33 @@ public class HousekeepingDialogFragment extends DialogFragment {
                     )
             ).subscribe(new Observer<Permintaan>() {
                 @Override public void onCompleted() {
+                    permintaanDialogListener.onDialogPositiveClick(HousekeepingDialogFragment.this, success);
                     Log.d(HousekeepingDialogFragment.class.getCanonicalName(), "On completed");
                 }
                 @Override public void onError(Throwable e) {
                     Log.d(HousekeepingDialogFragment.class.getCanonicalName(), "On error");
                     e.printStackTrace();
-                    Toast.makeText(
-                            HousekeepingDialogFragment.this.getActivity(),
-                            getString(R.string.something_went_wrong),
-                            Toast.LENGTH_LONG
-                    ).show();
+                    success = false;
                 }
                 @Override public void onNext(Permintaan permintaan) {
                     Log.d(HousekeepingDialogFragment.class.getCanonicalName(), "On next");
                     if (permintaan != null) {
-                        Toast.makeText(
-                                HousekeepingDialogFragment.this.getActivity(),
-                                getString(R.string.housekeeping_result),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        success = true;
                     } else {
-                        Toast.makeText(
-                                HousekeepingDialogFragment.this.getActivity(),
-                                getString(R.string.something_went_wrong),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        success = false;
                     }
                 }
             });
         }
+        else {
+            permintaanDialogListener.onDialogPositiveClick(HousekeepingDialogFragment.this, success);
+        }
+    }
+
+
+
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        permintaanDialogListener = (PermintaanDialogListener) activity;
     }
 }

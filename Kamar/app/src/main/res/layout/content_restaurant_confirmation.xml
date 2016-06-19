@@ -12,10 +12,13 @@
     tools:context=".activity.restaurant.RestaurantConfirmationActivity"
     tools:showIn="@layout/activity_restaurant_confirmation">
 
+
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/restaurant_recycleview">
     </android.support.v7.widget.RecyclerView>
+
 
 </LinearLayout>
