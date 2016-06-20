@@ -91,9 +91,8 @@ public class GuestPermintaanActivity extends AppCompatActivity {
      * creates the expandable list.
      */
     private void doGetPermintaansOfStateAndCreateExpList() {
-        Log.d(StaffPermintaanFragment.class.getCanonicalName(), "Doing get permintaans of state");
-
-        final String roomNumber = getSharedPreferences("roomSettings", Context.MODE_PRIVATE).getString("roomNumber", "none");
+        final String roomNumber = getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("roomNumber", "none");
+        Log.d(GuestPermintaanActivity.class.getCanonicalName(), "Doing get permintaans of state for room number " + roomNumber);
         PermintaanServer.getInstance(this)
                 .getPermintaansOfState(
                         Permintaan.STATE_NEW,
