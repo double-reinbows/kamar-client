@@ -129,6 +129,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                                         Log.v(SelectUserTypeActivity.class.getCanonicalName(), "subUserType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
 
                                         startActivity(new Intent(getActivity(), StaffHomeActivity.class));
+                                        getActivity().finish();
                                     }
                                 })
                                 .setNegativeButton(getString(R.string.restaurant), new DialogInterface.OnClickListener() {
@@ -140,6 +141,7 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                                         Log.v(SelectUserTypeActivity.class.getCanonicalName(), "subUserType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
 
                                         startActivity(new Intent(getActivity(), StaffHomeActivity.class));
+                                        getActivity().finish();
                                     }
                                 })
                                 .create().show();
