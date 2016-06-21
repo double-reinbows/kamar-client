@@ -43,7 +43,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private List<Consumable> food;
     private List<Consumable> beverages;
     private List<Consumable> desserts;
-
+    RestaurantExpandableListAdapter listAdapter;
     private ExpandableListView foodExpListView;
     private ExpandableListView bevExpListView;
     private ExpandableListView dessExpListView;
@@ -85,11 +85,32 @@ public class RestaurantActivity extends AppCompatActivity {
                 Log.v("tab", tab.getText().toString());
                 String selectedTab = tab.getText().toString();
                 if (selectedTab.equals("Food")) {
-                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), food, foodExpListView);
+                    //if (food.isEmpty()) {
+                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), food, foodExpListView);
+                    /*} else {
+                        Log.v("tab", "saved food view");
+                        foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+                        foodExpListView.setAdapter(listAdapter);
+                    }
+                    */
                 } else if (selectedTab.equals("Beverages")) {
-                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), beverages, bevExpListView);
+                    //if (beverages.isEmpty()) {
+                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), beverages, bevExpListView);
+                    /*} else {
+                        Log.v("tab", "saved bev view");
+                        bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+                        bevExpListView.setAdapter(listAdapter);
+                    }
+                    */
                 } else if (selectedTab.equals("Desserts")) {
-                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), desserts, dessExpListView);
+                    //if (desserts.isEmpty()) {
+                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), desserts, dessExpListView);
+                    /*} else {
+                        Log.v("tab", "saved dess view");
+                        dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+                        dessExpListView.setAdapter(listAdapter);
+                    }
+                    */
                 }
             }
             @Override
@@ -97,9 +118,11 @@ public class RestaurantActivity extends AppCompatActivity {
             }
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                Log.v("tab", "Reselected tab");
                 String selectedTab = tab.getText().toString();
                 if (selectedTab.equals("Food")) {
                     foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+                    Log.v("tab", "Reselected food");
                 } else if (selectedTab.equals("Beverages")) {
                     bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
                 } else if (selectedTab.equals("Desserts")) {
@@ -113,7 +136,7 @@ public class RestaurantActivity extends AppCompatActivity {
      * Creates an exp list then sets the restaurant exp list onto it
      */
     protected void createExpandableList(List<Consumable> consumables, ExpandableListView view) {
-        RestaurantExpandableListAdapter listAdapter;
+        //RestaurantExpandableListAdapter listAdapter;
         //ExpandableListView expListView;
         List<String> subsectionHeaders; //header text
         //a list of each item's main text with header text as keys
@@ -145,10 +168,21 @@ public class RestaurantActivity extends AppCompatActivity {
                 itemQuantityDict.put(consumable.name, 0); //set quantity to 0
             }
         }
+        //Initialize subtotal
+        if (!itemQuantityDict.containsKey("subtotal")) {
+            Log.v("test", "test");
+            itemQuantityDict.put("subtotal", 0);
+        }
+
+        //set up subtotal text
+        TextView subtotalText = (TextView) findViewById(R.id.restaurant_subtotal);
+        subtotalText.setText("Rp. 0");
 
         //set up restaurant expandable list adapter
         listAdapter = new RestaurantExpandableListAdapter(this, subsectionHeaders, itemTextDict,
-                                                            itemObjectDict, itemQuantityDict);
+                itemObjectDict, itemQuantityDict, subtotalText);
+
+
 
         //set list adapter onto view
         view.setAdapter(listAdapter);
@@ -183,6 +217,8 @@ public class RestaurantActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     /**

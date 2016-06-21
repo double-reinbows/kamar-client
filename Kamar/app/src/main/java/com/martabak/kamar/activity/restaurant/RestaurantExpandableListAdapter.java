@@ -2,6 +2,8 @@ package com.martabak.kamar.activity.restaurant;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.design.widget.CoordinatorLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,22 +27,25 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, Consumable> itemObjectDict;
     //quantity dictionary with consumable.name keys
     private HashMap<String, Integer> itemQuantityDict;
+    private TextView subtotalText;
 
     public RestaurantExpandableListAdapter(Context context, List<String> subsectionHeaders,
                                             HashMap<String, List<String>> listDataChild,
                                             HashMap<String, Consumable> listDataChildString,
-                                            HashMap<String, Integer> quantityDict) {
+                                            HashMap<String, Integer> quantityDict,
+                                            TextView subtotalText) {
         this.context = context;
         this.subsectionHeaders = subsectionHeaders;
         this.itemTextDict = listDataChild;
         this.itemObjectDict = listDataChildString;
         this.itemQuantityDict = quantityDict;
+        this.subtotalText = subtotalText;
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return this.itemTextDict.get(this.subsectionHeaders.get(groupPosition))
-                .get(childPosititon);
+    public Consumable getChild(int groupPosition, int childPosititon) {
+        return itemObjectDict.get(this.itemTextDict.get(this.subsectionHeaders.get(groupPosition))
+                .get(childPosititon));
     }
 
     @Override
@@ -59,7 +64,7 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         //Set up main text
-        String childText = (String) getChild(groupPosition, childPosition);
+        String childText = getChild(groupPosition, childPosition).name;
         TextView txtListChild = (TextView) convertView.findViewById(R.id.item_text);
         txtListChild.setText(childText);
 
@@ -69,10 +74,15 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
         TextView quantity = (TextView) convertView.findViewById(R.id.item_quantity);
         quantity.setText(itemQuantityDict.get(currConsumable.name).toString());
 
+        //Set up price text
+        String priceText = getChild(groupPosition, childPosition).price.toString();
+        TextView priceView = (TextView)convertView.findViewById(R.id.item_price);
+        priceView.setText("Rp. "+priceText+" 000");
+
+
         /**
          * Implement the minus button
          */
-        //TODO: Change button picture to a -
         ImageView minusQuantityButton = (ImageView) convertView.findViewById(R.id.minus_button);
 
         minusQuantityButton.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +94,9 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
                 if (currQuantity - 1 > -1) { //Stop user from setting to -1 quantity
                     //Minus 1 off the quantity
                     itemQuantityDict.put(currConsumable.name, (currQuantity - 1));
+                    //minus subtotal by price of item
+                    itemQuantityDict.put("subtotal", itemQuantityDict.get("subtotal")-currConsumable.price);
+                    subtotalText.setText("Rp. "+itemQuantityDict.get("subtotal").toString()+" 000");
                     notifyDataSetChanged();
                 }
             }
@@ -102,11 +115,14 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
                 Integer currQuantity = itemQuantityDict.get(currConsumable.name);
                 //Add 1 to the quantity
                 itemQuantityDict.put(currConsumable.name, (currQuantity + 1));
+                //plus subtotal by price of item
+                itemQuantityDict.put("subtotal", itemQuantityDict.get("subtotal") + currConsumable.price);
+                subtotalText.setText("Rp. "+itemQuantityDict.get("subtotal").toString()+" 000");
                 notifyDataSetChanged();
             }
         });
 
-        txtListChild.setText(childText);
+        //txtListChild.setText(childText);
         return convertView;
     }
 
