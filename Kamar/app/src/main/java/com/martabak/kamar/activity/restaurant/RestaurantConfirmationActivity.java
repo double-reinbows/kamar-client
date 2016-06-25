@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.SurveyArrayAdapter;
 import com.martabak.kamar.domain.Consumable;
+import com.martabak.kamar.domain.managers.RestaurantOrderManager;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
@@ -36,11 +37,6 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
-        HashMap<String,Consumable> consumableHashMap = (HashMap<String, Consumable>) intent.getSerializableExtra("consumableMap");
-        HashMap<String,Integer> quantityHashMap = (HashMap<String, Integer>) intent.getSerializableExtra("consumableQuantityMap");
-
-
         LayoutInflater layoutInflater = getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.activity_restaurant_confirmation, null);
         setContentView(view);
@@ -49,7 +45,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", null);
+                .getString("roomNumber", "none");
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
 
@@ -63,28 +59,22 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         final List<String> restaurantSubPriceItems = new ArrayList<>();
         final List<String> restaurantQuantityItems = new ArrayList<>();
 
-        final List<OrderItem> restaurantOrderItems = new ArrayList<>();
+        List<OrderItem> restaurantOrderItems = new ArrayList<>();
 
-        //total price
-        Integer totalPrice = 0;
-        // fill in each of the respective display lists based in the hashmap data received
-        Iterator it = consumableHashMap.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry) it.next();
-            Consumable c = (Consumable)pair.getValue();
-            Integer subPrice = c.price * quantityHashMap.get(pair.getKey());
-            restaurantTextItems.add(pair.getKey().toString());
-            restaurantUnitPriceItems.add(c.price.toString());
+        // fill in each of the respective display lists based on the restaurant model manager
+        final RestaurantOrder restaurantOrder = RestaurantOrderManager.getInstance().getOrder();
+        restaurantOrderItems = restaurantOrder.items;
+
+        for (OrderItem restaurantOrderItem : restaurantOrderItems)
+        {
+            Integer subPrice = restaurantOrderItem.price * restaurantOrderItem.quantity;
+            restaurantTextItems.add(restaurantOrderItem.name);
+            restaurantQuantityItems.add(restaurantOrderItem.quantity.toString());
+            restaurantUnitPriceItems.add(restaurantOrderItem.price.toString());
             restaurantSubPriceItems.add(subPrice.toString());
-            restaurantQuantityItems.add(quantityHashMap.get(pair.getKey()).toString());
 
-            //calculate total price
-            totalPrice += subPrice;
-
-            //add order items
-            OrderItem orderItem = new OrderItem(quantityHashMap.get(pair.getKey()),pair.getKey().toString());
-            restaurantOrderItems.add(orderItem);
         }
+
 
 
         final RestaurantConfirmationArrayAdapter restaurantConfirmationArrayAdapter = new
@@ -92,8 +82,6 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
                 restaurantQuantityItems);
         rv.setAdapter(restaurantConfirmationArrayAdapter);
 
-        //instantiate restaurant
-        final RestaurantOrder restaurantOrder = new RestaurantOrder("",restaurantOrderItems,totalPrice);
 
 
         //confirmation
