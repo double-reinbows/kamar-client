@@ -70,8 +70,7 @@ public class BellboyDialogFragment extends DialogFragment {
                 .getString("guestId", "none");
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
-
-        if (guestId != "none") {
+        if (!guestId.equals("none")) {
             PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
                     owner,
                     type,
@@ -79,7 +78,7 @@ public class BellboyDialogFragment extends DialogFragment {
                     guestId,
                     state,
                     currentDate,
-                    currentDate,
+                    null,
                     bellboy)
             ).subscribe(new Observer<Permintaan>() {
                 @Override

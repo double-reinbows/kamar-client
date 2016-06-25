@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.chat.GuestChatActivity;
 import com.martabak.kamar.activity.chat.GuestChatService;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
@@ -125,6 +126,8 @@ public class GuestHomeActivity extends AppCompatActivity
             case Permintaan.TYPE_CHECKOUT:
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
                 break;
+            case "CHAT":
+                startActivity(new Intent(this, GuestChatActivity.class));
             default:
                 break;
         }
@@ -190,7 +193,7 @@ public class GuestHomeActivity extends AppCompatActivity
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         dialog.dismiss();
-        if (option == "CHECKOUT") {
+        if (option.equals("CHECKOUT")) {
             startCheckout(getString(R.string.report_to_frontdesk));
         }
     }
@@ -247,7 +250,7 @@ public class GuestHomeActivity extends AppCompatActivity
         {
             this.getSharedPreferences("userSettings", this.MODE_PRIVATE)
                     .edit()
-                    .putString("guestId", null)
+                    .putString("guestId", "none")
                     .commit();
             Toast.makeText(
                     this,
@@ -291,7 +294,7 @@ public class GuestHomeActivity extends AppCompatActivity
      * Set guest id on shared preferences.
      * @param roomNumber The room number.
      */
-    private void setGuestId(String roomNumber) {
+    private void setGuestId(final String roomNumber) {
         GuestServer.getInstance(getBaseContext()).getGuestInRoom(
                 roomNumber).subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
@@ -305,14 +308,18 @@ public class GuestHomeActivity extends AppCompatActivity
                 // Store the guest id in shared preferences
                 SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
+
+                Log.v(GuestHomeActivity.class.getCanonicalName(), "Room Number : " + roomNumber);
                 if (result == null) {
                     editor.putString("guestId", "none");
                 }
                 else {
                     editor.putString("guestId", result._id);
+                    Log.v(GuestHomeActivity.class.getCanonicalName(), "Setting guest ID to " + result._id);
                 }
+                Log.v(GuestHomeActivity.class.getCanonicalName(), "Guest ID " + getSharedPreferences("userSettings", MODE_PRIVATE)
+                        .getString("guestId", "none"));
                 editor.commit();
-                Log.d(GuestHomeActivity.class.getCanonicalName(), "Setting guest ID to " + result._id);
             }
         });
     }
@@ -322,6 +329,7 @@ public class GuestHomeActivity extends AppCompatActivity
      * @param guestId The guest's ID.
      */
     private void startGuestServices(String guestId) {
+
         if (!guestId.equals("none")) {
             Log.v(GuestHomeActivity.class.getCanonicalName(), "Starting " + GuestPermintaanService.class.getCanonicalName() + " as " + guestId);
             startService(new Intent(this, GuestPermintaanService.class)
@@ -330,6 +338,7 @@ public class GuestHomeActivity extends AppCompatActivity
             startService(new Intent(this, GuestChatService.class)
                     .putExtra("guestId", guestId));
         }
+
     }
 
     /**

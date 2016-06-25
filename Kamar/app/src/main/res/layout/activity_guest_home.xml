@@ -31,6 +31,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nav_header_height"
+        android:gravity="center|center_vertical"
         android:id="@+id/guestlinearlayout">
 
         <GridView
@@ -42,8 +44,7 @@
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
-        android:gravity="center"
-        />
+        android:gravity="center" />
 
     </LinearLayout>
 

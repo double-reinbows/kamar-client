@@ -72,6 +72,7 @@ public class ImageAdapter extends BaseAdapter {
             R.mipmap.ic_transport,
             R.mipmap.ic_tellus,
             R.mipmap.ic_checkout,
+            R.drawable.ic_menu_send
     };
 
     //Text descriptions
@@ -83,6 +84,7 @@ public class ImageAdapter extends BaseAdapter {
             Permintaan.TYPE_MAINTENANCE,
             Permintaan.TYPE_TRANSPORT,
             "TELL US",
-            Permintaan.TYPE_CHECKOUT
+            Permintaan.TYPE_CHECKOUT,
+            "CHAT"
     };
 }

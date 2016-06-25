@@ -121,8 +121,10 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
 
+        Log.v(RestaurantConfirmationActivity.class.getCanonicalName(), restaurantOrder.toString());
+
         /* create permintaan*/
-        if (guestId != null) {
+        if (guestId != "none") {
             PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                     owner,
                     type,
@@ -130,7 +132,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
                     guestId,
                     state,
                     currentDate,
-                    currentDate,
+                    null,
                     restaurantOrder)
             ).subscribe(new Observer<Permintaan>() {
                 @Override public void onCompleted() {
