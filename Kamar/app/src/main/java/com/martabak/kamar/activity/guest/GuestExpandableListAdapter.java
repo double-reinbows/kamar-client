@@ -158,7 +158,16 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.list_state);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
-
+        if (headerTitle.equals("NEW")) {
+            lblListHeader.setBackgroundColor(0xFFac0d13);
+        } else if (headerTitle.equals("IN PROGRESS")) {
+            lblListHeader.setBackgroundColor(0xFFaa373a);
+        } else if (headerTitle.equals("IN DELIVERY")) {
+            lblListHeader.setBackgroundColor(0xFFa66163);
+        } else if (headerTitle.equals("COMPLETED")) {
+            lblListHeader.setBackgroundColor(0xFFa09091);
+        }
+        lblListHeader.invalidate();
         return convertView;
     }
 

@@ -29,7 +29,7 @@ public class GuestHomeActivity extends AppCompatActivity
         implements
         PermintaanDialogListener,
         ChangeRoomNumberDialogFragment.ChangeRoomDialogListener,
-        LogoutDialogFragment.LogoutDialogListener{
+        LogoutDialogFragment.LogoutDialogListener {
 
     private String option;
     private TextView roomNumberTextView;
@@ -203,11 +203,9 @@ public class GuestHomeActivity extends AppCompatActivity
      * @param dialog The dialog fragment.
      */
     @Override
-    public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, Boolean success,
-                                                String reason) {
-        dialog.dismiss();
-        if (success)
-        {
+    public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, boolean success, String reason) {
+        if (success) {
+            dialog.dismiss();
             getSharedPreferences("userSettings", MODE_PRIVATE)
                     .edit().putString("roomNumber", roomNumber)
                     .commit();
@@ -217,16 +215,13 @@ public class GuestHomeActivity extends AppCompatActivity
                     Toast.LENGTH_LONG
             ).show();
             roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
-        }
-        else
-        {
+        } else {
             Toast.makeText(
                     this,
                     reason,
                     Toast.LENGTH_SHORT
             ).show();
         }
-
     }
 
     /**

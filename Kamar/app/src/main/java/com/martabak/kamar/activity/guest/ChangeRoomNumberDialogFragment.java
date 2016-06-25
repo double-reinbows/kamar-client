@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observer;
+import rx.functions.Func1;
 
 /**
  * Change Room Number Fragment.
@@ -35,16 +36,15 @@ import rx.Observer;
 public class ChangeRoomNumberDialogFragment extends DialogFragment {
 
     private ArrayAdapter adapter;
+
     private ChangeRoomDialogListener changeRoomDialogListener;
-    private Boolean success = false;
-    private String reason;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.dialog_change_room_number, null);
         final Spinner spinner = (Spinner) view.findViewById(R.id.change_room_number_spinner);
-        final List<String> roomNumbers = getRoomNumbersWithoutGuests();
+        final List<String> roomNumbers = getRoomNumbers();
 
         adapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
@@ -65,8 +65,6 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
                         String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
                         String password = passwordEditText.getText().toString();
                         changeRoomNumber(roomNumber, password);
-
-
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -85,10 +83,11 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
      * @param password The password string.
      */
     public void changeRoomNumber(final String roomNumber, String password) {
-
         StaffServer.getInstance(getActivity()).login(password).subscribe(new Observer<Boolean>() {
+            boolean success = false;
+            String reason;
             @Override public void onCompleted() {
-                Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "Success: " + success.toString());
+                Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "Success: " + success);
                 changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, success, reason);
                 Log.d(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "On completed");
             }
@@ -110,28 +109,25 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
     }
 
     /**
-     * @return The list of room numbers with no guests checked in.
+     * @return The list of room numbers.
      */
-    private List<String> getRoomNumbersWithoutGuests() {
-        final List<String> roomStrings = new ArrayList<String>();
-        // TODO is this the correct call to getRoomNumbersWithoutGuests?
-        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithoutGuests()
-                .subscribe(new Observer<Room>() {
-                    @Override public void onCompleted() {
-                    }
-                    @Override public void onError(Throwable e) {
-
-                        e.printStackTrace();
-                    }
-                    @Override public void onNext(Room room) {
-                        roomStrings.add(room.number);
+    private List<String> getRoomNumbers() {
+        final List<String> roomStrings = new ArrayList<>();
+        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbers()
+                .subscribe(new Observer<List<Room>>() {
+                    @Override public void onCompleted() {}
+                    @Override public void onError(Throwable e) { e.printStackTrace(); }
+                    @Override public void onNext(List<Room> rooms) {
+                        for (Room room : rooms) {
+                            roomStrings.add(room.number);
+                        }
                     }
                 });
         return roomStrings;
     }
 
     public interface ChangeRoomDialogListener {
-        void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, Boolean success, String reason);
+        void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, boolean success, String reason);
         void onChangeRoomDialogNegativeClick(DialogFragment dialog);
     }
 

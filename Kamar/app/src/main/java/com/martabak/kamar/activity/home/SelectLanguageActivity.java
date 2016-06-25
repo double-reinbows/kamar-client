@@ -38,6 +38,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to English");
 
                     startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    finish();
                 }
             });
         }
@@ -55,6 +56,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Indonesian");
 
                     startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    finish();
                 }
             });
         }

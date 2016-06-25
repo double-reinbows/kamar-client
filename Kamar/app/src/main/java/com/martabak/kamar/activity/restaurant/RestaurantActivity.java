@@ -43,6 +43,10 @@ public class RestaurantActivity extends AppCompatActivity {
     private List<Consumable> food;
     private List<Consumable> beverages;
     private List<Consumable> desserts;
+    RestaurantExpandableListAdapter listAdapter;
+    private ExpandableListView foodExpListView;
+    private ExpandableListView bevExpListView;
+    private ExpandableListView dessExpListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +73,11 @@ public class RestaurantActivity extends AppCompatActivity {
         food = new ArrayList<>();
         beverages = new ArrayList<>();
         desserts = new ArrayList<>();
+        foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+        bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+        dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
 
-        doGetConsumablesOfSectionAndCreateExpList("FOOD", food); //since 1st tab is always food
+        doGetConsumablesOfSectionAndCreateExpList("FOOD", food, foodExpListView); //since 1st tab is always food
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
@@ -78,11 +85,32 @@ public class RestaurantActivity extends AppCompatActivity {
                 Log.v("tab", tab.getText().toString());
                 String selectedTab = tab.getText().toString();
                 if (selectedTab.equals("Food")) {
-                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), food);
+                    //if (food.isEmpty()) {
+                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), food, foodExpListView);
+                    /*} else {
+                        Log.v("tab", "saved food view");
+                        foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+                        foodExpListView.setAdapter(listAdapter);
+                    }
+                    */
                 } else if (selectedTab.equals("Beverages")) {
-                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), beverages);
+                    //if (beverages.isEmpty()) {
+                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), beverages, bevExpListView);
+                    /*} else {
+                        Log.v("tab", "saved bev view");
+                        bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+                        bevExpListView.setAdapter(listAdapter);
+                    }
+                    */
                 } else if (selectedTab.equals("Desserts")) {
-                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), desserts);
+                    //if (desserts.isEmpty()) {
+                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), desserts, dessExpListView);
+                    /*} else {
+                        Log.v("tab", "saved dess view");
+                        dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+                        dessExpListView.setAdapter(listAdapter);
+                    }
+                    */
                 }
             }
             @Override
@@ -90,6 +118,16 @@ public class RestaurantActivity extends AppCompatActivity {
             }
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                Log.v("tab", "Reselected tab");
+                String selectedTab = tab.getText().toString();
+                if (selectedTab.equals("Food")) {
+                    foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+                    Log.v("tab", "Reselected food");
+                } else if (selectedTab.equals("Beverages")) {
+                    bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+                } else if (selectedTab.equals("Desserts")) {
+                    dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+                }
             }
         });
     }
@@ -97,9 +135,9 @@ public class RestaurantActivity extends AppCompatActivity {
     /**
      * Creates an exp list then sets the restaurant exp list onto it
      */
-    protected void createExpandableList(List<Consumable> consumables) {
-        RestaurantExpandableListAdapter listAdapter;
-        ExpandableListView expListView;
+    protected void createExpandableList(List<Consumable> consumables, ExpandableListView view) {
+        //RestaurantExpandableListAdapter listAdapter;
+        //ExpandableListView expListView;
         List<String> subsectionHeaders; //header text
         //a list of each item's main text with header text as keys
         HashMap<String, List<String>> itemTextDict;
@@ -107,7 +145,7 @@ public class RestaurantActivity extends AppCompatActivity {
         //final HashMap<String, Consumable> itemObjectDict;
 
         //find where to inflate the exp list
-        expListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+        //expListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
 
         subsectionHeaders = new ArrayList<String>();
         itemTextDict = new HashMap<String, List<String>>();
@@ -130,17 +168,28 @@ public class RestaurantActivity extends AppCompatActivity {
                 itemQuantityDict.put(consumable.name, 0); //set quantity to 0
             }
         }
+        //Initialize subtotal
+        if (!itemQuantityDict.containsKey("subtotal")) {
+            Log.v("test", "test");
+            itemQuantityDict.put("subtotal", 0);
+        }
+
+        //set up subtotal text
+        TextView subtotalText = (TextView) findViewById(R.id.restaurant_subtotal);
+        subtotalText.setText("Rp. 0");
 
         //set up restaurant expandable list adapter
         listAdapter = new RestaurantExpandableListAdapter(this, subsectionHeaders, itemTextDict,
-                                                            itemObjectDict, itemQuantityDict);
+                itemObjectDict, itemQuantityDict, subtotalText);
 
-        //set list adapter onto exp list
-        expListView.setAdapter(listAdapter);
+
+
+        //set list adapter onto view
+        view.setAdapter(listAdapter);
 
         //set listener for the button
-        FloatingActionButton restarurantButton = (FloatingActionButton) findViewById(R.id.restaurant_add);
-        restarurantButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton restaurantButton = (FloatingActionButton) findViewById(R.id.restaurant_add);
+        restaurantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // only add the ones that are greater than 0
@@ -168,6 +217,8 @@ public class RestaurantActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     /**
@@ -175,7 +226,8 @@ public class RestaurantActivity extends AppCompatActivity {
      * calls createExpandableList().
      */
     private void doGetConsumablesOfSectionAndCreateExpList(final String section,
-                                                            final List<Consumable> consumables) {
+                                                            final List<Consumable> consumables,
+                                                                final ExpandableListView view) {
         Log.d(RestaurantActivity.class.getCanonicalName(), "Doing get consumables of section");
 
         if (consumables.isEmpty()) { //if we haven't pulled the section's consumables yet...
@@ -185,7 +237,7 @@ public class RestaurantActivity extends AppCompatActivity {
                         @Override
                         public void onCompleted() {
                             Log.d(RestaurantActivity.class.getCanonicalName(), "On completed");
-                            createExpandableList(consumables);
+                            createExpandableList(consumables, view);
                         }
 
                         @Override
@@ -201,7 +253,7 @@ public class RestaurantActivity extends AppCompatActivity {
                         }
                     });
         } else { //skip pulling consumables from server
-            createExpandableList(consumables);
+            createExpandableList(consumables, view);
         }
     }
 
