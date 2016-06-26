@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.app.Fragment;
 import com.martabak.kamar.R;
@@ -31,8 +32,8 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_user_type);
 
-        final Button guestButton = (Button) findViewById(R.id.guest);
-        final Button staffButton = (Button) findViewById(R.id.staff);
+        final ImageButton guestButton = (ImageButton) findViewById(R.id.guest);
+        final ImageButton staffButton = (ImageButton) findViewById(R.id.staff);
 
         if (guestButton != null) {
             guestButton.setOnClickListener(new View.OnClickListener() {

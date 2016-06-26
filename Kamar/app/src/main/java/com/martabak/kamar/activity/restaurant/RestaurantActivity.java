@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Consumable;
+import com.martabak.kamar.domain.managers.RestaurantOrderManager;
+import com.martabak.kamar.domain.permintaan.OrderItem;
+import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.MenuServer;
 
 import org.w3c.dom.Text;
@@ -60,8 +63,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", null);
-
+                .getString("roomNumber", "none");
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
         Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
@@ -214,20 +216,24 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // only add the ones that are greater than 0
-                HashMap<String, Consumable> consumableHashMap = new HashMap<String, Consumable>();
-                HashMap<String, Integer> consumableQuantityHashMap = new HashMap<String, Integer>();
+                List<OrderItem> restaurantOrderItems = new ArrayList<>();
                 Iterator it = itemQuantityDict.entrySet().iterator();
                 while (it.hasNext()) {
                     HashMap.Entry pair = (HashMap.Entry) it.next();
-                    if ((int)pair.getValue() > 0){
-                        consumableHashMap.put(pair.getKey().toString(),itemObjectDict.get(pair.getKey().toString()));
-                        consumableQuantityHashMap.put(pair.getKey().toString(), (Integer) pair.getValue());
+                    if (((int)pair.getValue() > 0) && (pair.getKey().toString() != "subtotal")){
+
+                        OrderItem orderItem = new OrderItem((int)pair.getValue(),pair.getKey().toString(),
+                                itemObjectDict.get(pair.getKey().toString()).price);
+                        restaurantOrderItems.add(orderItem);
                     }
                 }
-                if (!consumableHashMap.isEmpty()) { //if user added food
+                if (restaurantOrderItems.size() > 0) { //if user added food
+
+                    RestaurantOrder restaurantOrder = new RestaurantOrder("",restaurantOrderItems,itemQuantityDict.get("subtotal"));
+                    RestaurantOrderManager restaurantOrderManager = RestaurantOrderManager.getInstance();
+                    restaurantOrderManager.setOrder(restaurantOrder);
+
                     Intent intent = new Intent(getBaseContext(), RestaurantConfirmationActivity.class);
-                    intent.putExtra("consumableMap", consumableHashMap);
-                    intent.putExtra("consumableQuantityMap", consumableQuantityHashMap);
                     startActivity(intent);
                 } else { //all quantities are 0
                     Toast.makeText(

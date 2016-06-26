@@ -9,8 +9,12 @@ public class OrderItem {
 
     public final String name;
 
-    public OrderItem(Integer quantity, String name) {
+    public final Integer price;
+
+    public OrderItem(Integer quantity, String name, Integer price) {
         this.quantity = quantity;
         this.name = name;
+        this.price = price;
+
     }
 }
