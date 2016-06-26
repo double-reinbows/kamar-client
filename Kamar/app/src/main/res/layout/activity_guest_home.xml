@@ -1,65 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/guestlayout"
+    android:orientation="vertical"
     tools:context=".activity.guest.GuestHomeActivity">
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:tools="http://schemas.android.com/tools"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|center_vertical"
+        android:orientation="vertical"
+        android:id="@+id/guestlinearlayout">
 
-        <android.support.design.widget.AppBarLayout
+        <GridView
+            android:id="@+id/guestgridview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorNavBar">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/guest_toolbar"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:background="@color/colorNavBar">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:id="@+id/toolbar_roomnumber"/>
-            </android.support.v7.widget.Toolbar>
-
-
-        </android.support.design.widget.AppBarLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/nav_header_height"
-            android:gravity="center|center_vertical"
-            android:id="@+id/guestlinearlayout">
-
-            <GridView
-                android:id="@+id/guestgridview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:columnWidth="300dp"
-                android:numColumns="auto_fit"
-                android:verticalSpacing="10dp"
-                android:horizontalSpacing="10dp"
-                android:stretchMode="columnWidth"
-                android:gravity="center" />
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:columnWidth="350dp"
+            android:numColumns="auto_fit"
+            android:horizontalSpacing="10dp"
+            android:verticalSpacing="10dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center" />
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:tools="http://schemas.android.com/tools"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:layout_gravity="bottom|right"
+                  android:layout_alignParentEnd="true"
+                  android:layout_alignParentBottom="true"
                   android:orientation="horizontal">
 
         <ImageView
@@ -77,4 +50,4 @@
             android:contentDescription="logoutIcon" />
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

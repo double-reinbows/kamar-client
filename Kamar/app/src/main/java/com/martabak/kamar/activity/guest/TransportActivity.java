@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -41,8 +42,14 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transport);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
-        setSupportActionBar(toolbar);
+
+        // Get the ActionBar here to configure the way it behaves.
+        final ActionBar ab = getSupportActionBar();
+
+        ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
+        ab.setDisplayShowTitleEnabled(false); // disable the default title element here (for centered title)
+
+        ab.setCustomView(R.layout.actionbar_guestcustom_view);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -52,7 +59,7 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
 
 
         // set room number text
-        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
+        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
 
         final EditText editTransportDepartureDate = (EditText)
                 findViewById(R.id.transport_depature_date_edit_text);

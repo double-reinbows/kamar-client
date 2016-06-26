@@ -68,6 +68,7 @@
     <string name="guest_checkin_message">Guest has been checked in</string>
 
     <!-- Guest -->
+    <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>
     <string name="transport_departuretime">Departure Time</string>
     <string name="transport_destination">Destination</string>
