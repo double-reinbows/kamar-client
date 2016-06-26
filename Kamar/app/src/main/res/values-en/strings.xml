@@ -69,10 +69,12 @@
 
     <!-- Guest -->
     <string name="transport_passengers">Passengers</string>
+    <string name="transport_departuredate">Departure Date</string>
     <string name="transport_departuretime">Departure Time</string>
     <string name="transport_destination">Destination</string>
     <string name="transport_message">Message</string>
     <string name="transport_result">Transport request sent</string>
+    <string name="transport_send_button">Send</string>
 
     <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>

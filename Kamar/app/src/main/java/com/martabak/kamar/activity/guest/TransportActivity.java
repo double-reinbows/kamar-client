@@ -1,17 +1,17 @@
 package com.martabak.kamar.activity.guest;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
@@ -19,23 +19,23 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.Transport;
 import com.martabak.kamar.service.PermintaanServer;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import rx.Observer;
 
-public class TransportActivity extends AppCompatActivity implements View.OnClickListener{
+public class TransportActivity extends AppCompatActivity {
 
+    private static final SimpleDateFormat WITHOUT_HHMM_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat HHMM_DATE_FORMAT = new SimpleDateFormat("HH:mm");
     private String transportDestination;
     private Integer transportPassengers;
     private String transportMessage;
     private Date transportDepartureDate;
+    private Calendar transportDepartureCal;
     private DatePickerDialog datePickerDialog;
-
-
+    private TimePickerDialog timerPickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,35 +44,52 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
         Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Button submitButton = (Button) findViewById(R.id.submit);
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-
 
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
 
         final EditText editTransportDepartureDate = (EditText)
                 findViewById(R.id.transport_depature_date_edit_text);
-        editTransportDepartureDate.setOnClickListener(this);
-        Calendar newCalendar = Calendar.getInstance();
+        editTransportDepartureDate.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                datePickerDialog.show();
+            }
+        });
 
+        final EditText editTransportDepartureTime = (EditText)
+                findViewById(R.id.transport_depature_time_edit_text);
+        editTransportDepartureTime.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                timerPickerDialog.show();
+            }
+        });
 
+        transportDepartureCal = Calendar.getInstance();
         datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                transportDepartureDate = newDate.getTime();
-                editTransportDepartureDate.setText(newDate.getTime().toString());
+                transportDepartureCal.set(year, monthOfYear, dayOfMonth);
+                transportDepartureDate = transportDepartureCal.getTime();
+                editTransportDepartureDate.setText(WITHOUT_HHMM_DATE_FORMAT.format(transportDepartureCal.getTime()));
             }
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, transportDepartureCal.get(Calendar.YEAR), transportDepartureCal.get(Calendar.MONTH), transportDepartureCal.get(Calendar.DAY_OF_MONTH));
+        timerPickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hour, int minute) {
+                transportDepartureCal.set(Calendar.HOUR, hour);
+                transportDepartureCal.set(Calendar.MINUTE, minute);
+                transportDepartureDate = transportDepartureCal.getTime();
+                editTransportDepartureTime.setText(HHMM_DATE_FORMAT.format(transportDepartureCal.getTime()));
+            }
+        }, transportDepartureCal.get(Calendar.HOUR), transportDepartureCal.get(Calendar.MINUTE), true);
 
-
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
+        if (submitButton != null) {
+            submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     EditText editTransportDestination = (EditText)
@@ -83,7 +100,6 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
                             findViewById(R.id.transport_passengers_edit_text);
                     transportPassengers = Integer.parseInt(editTransportPassengers.getText().toString());
 
-
                     EditText editTransportMessage = (EditText)
                             findViewById(R.id.transport_message_edit_text);
                     transportMessage = editTransportMessage.getText().toString();
@@ -92,7 +108,6 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
                 }
             });
         }
-
     }
 
     /**
@@ -164,11 +179,6 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
             finish();
         }
 
-    }
-
-    @Override
-    public void onClick(View view) {
-        datePickerDialog.show();
     }
 
 }
