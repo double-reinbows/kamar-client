@@ -58,7 +58,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
             listDataChildString.put(permintaan.toString(), permintaan);
             switch (permintaan.state) {
                 case Permintaan.STATE_NEW:
-                    new_permintaan.add(permintaan.toString());
+                    new_permintaan.add(permintaan.type);
                     break;
                 case Permintaan.STATE_INPROGRESS:
                     inprogress_permintaan.add(permintaan.toString());

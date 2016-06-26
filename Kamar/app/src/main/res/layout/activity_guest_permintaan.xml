@@ -6,5 +6,6 @@
         <ExpandableListView
             android:id="@+id/lvExp"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"></ExpandableListView>
+            android:layout_height="fill_parent">
+        </ExpandableListView>
 </LinearLayout>
