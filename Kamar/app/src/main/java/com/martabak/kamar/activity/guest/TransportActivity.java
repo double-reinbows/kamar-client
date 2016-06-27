@@ -47,7 +47,7 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
         final ActionBar ab = getSupportActionBar();
 
         ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
-        ab.setDisplayShowTitleEnabled(false); // disable the default title element here (for centered title)
+        ab.setDisplayShowTitleEnabled(false);
 
         ab.setCustomView(R.layout.actionbar_guestcustom_view);
 
@@ -56,7 +56,6 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-
 
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);

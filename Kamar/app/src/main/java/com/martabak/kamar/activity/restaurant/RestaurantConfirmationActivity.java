@@ -2,6 +2,7 @@ package com.martabak.kamar.activity.restaurant;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,8 +41,15 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         LayoutInflater layoutInflater = getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.activity_restaurant_confirmation, null);
         setContentView(view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
-        setSupportActionBar(toolbar);
+
+        // Get the ActionBar here to configure the way it behaves.
+        final ActionBar ab = getSupportActionBar();
+
+        ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
+        ab.setDisplayShowTitleEnabled(false);
+
+        ab.setCustomView(R.layout.actionbar_guestcustom_view);
+
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -55,7 +63,6 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         rv.setLayoutManager(llm);
 
         final List<String> restaurantTextItems = new ArrayList<>();
-        final List<String> restaurantUnitPriceItems = new ArrayList<>();
         final List<String> restaurantSubPriceItems = new ArrayList<>();
         final List<String> restaurantQuantityItems = new ArrayList<>();
 
@@ -70,7 +77,6 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
             Integer subPrice = restaurantOrderItem.price * restaurantOrderItem.quantity;
             restaurantTextItems.add(restaurantOrderItem.name);
             restaurantQuantityItems.add(restaurantOrderItem.quantity.toString());
-            restaurantUnitPriceItems.add(restaurantOrderItem.price.toString());
             restaurantSubPriceItems.add(subPrice.toString());
 
         }
@@ -78,7 +84,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
 
 
         final RestaurantConfirmationArrayAdapter restaurantConfirmationArrayAdapter = new
-                RestaurantConfirmationArrayAdapter(restaurantTextItems, restaurantUnitPriceItems, restaurantSubPriceItems,
+                RestaurantConfirmationArrayAdapter(restaurantTextItems, restaurantSubPriceItems,
                 restaurantQuantityItems);
         rv.setAdapter(restaurantConfirmationArrayAdapter);
 

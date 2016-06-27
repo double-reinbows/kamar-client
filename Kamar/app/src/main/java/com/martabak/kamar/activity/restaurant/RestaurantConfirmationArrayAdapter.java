@@ -20,31 +20,27 @@ public class RestaurantConfirmationArrayAdapter
         extends RecyclerView.Adapter<RestaurantConfirmationArrayAdapter.RestaurantConfirmationViewHolder> {
 
     private List<String> mRestaurantTextItems;
-    private List<String> mRestaurantUnitPriceItems;
     private List<String> mRestaurantSubPriceItems;
     private List<String> mRestaurantQuantityItems;
 
     public class RestaurantConfirmationViewHolder extends RecyclerView.ViewHolder {
         public TextView restaurantTextView;
-        public TextView restaurantUnitPriceView;
         public TextView restaurantSubPriceTextView;
         public TextView restaurantQuantityTextView;
 
         public RestaurantConfirmationViewHolder(View restaurantConfirmationView) {
             super(restaurantConfirmationView);
             restaurantTextView = (TextView) restaurantConfirmationView.findViewById(R.id.restaurant_confirmation_text);
-            restaurantUnitPriceView = (TextView) restaurantConfirmationView.findViewById(R.id.restaurant_confirmation_unit_price);
             restaurantSubPriceTextView = (TextView) restaurantConfirmationView.findViewById(R.id.restaurant_confirmation_sub_price);
             restaurantQuantityTextView = (TextView) restaurantConfirmationView.findViewById(R.id.restaurant_confirmation_quantity);
         }
     }
 
-    public RestaurantConfirmationArrayAdapter(List<String> restaurantTextItems, List<String> restaurantUnitPriceItems,
+    public RestaurantConfirmationArrayAdapter(List<String> restaurantTextItems,
                                               List<String> restaurantSubPriceItems, List<String> restaurantQuantityItems) {
 
         mRestaurantTextItems = restaurantTextItems;
         mRestaurantQuantityItems = restaurantQuantityItems;
-        mRestaurantUnitPriceItems = restaurantUnitPriceItems;
         mRestaurantSubPriceItems = restaurantSubPriceItems;
     }
 
@@ -65,7 +61,6 @@ public class RestaurantConfirmationArrayAdapter
     public void onBindViewHolder(RestaurantConfirmationViewHolder restaurantConfirmationViewHolder, int i) {
         restaurantConfirmationViewHolder.restaurantTextView.setText(mRestaurantTextItems.get(i));
         restaurantConfirmationViewHolder.restaurantQuantityTextView.setText(mRestaurantQuantityItems.get(i));
-        restaurantConfirmationViewHolder.restaurantUnitPriceView.setText(mRestaurantUnitPriceItems.get(i));
         restaurantConfirmationViewHolder.restaurantSubPriceTextView.setText(mRestaurantSubPriceItems.get(i));
 
     }
