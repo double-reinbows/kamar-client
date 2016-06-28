@@ -73,7 +73,7 @@
     <string name="transport_destination">Destination</string>
     <string name="transport_message">Message</string>>
     <string name="transport_result">Transport request sent</string>
-    <string name="transport_send_button">Send</string>
+    <string name="transport_submit_button">Submit</string>
 
     <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>
@@ -91,6 +91,8 @@
     <string name="tellus_message">Tell us what you think</string>
     <string name="tellus_edittext">Leave your feedback here!</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
+
+    <string name="survey_submit_button">Submit</string>
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>

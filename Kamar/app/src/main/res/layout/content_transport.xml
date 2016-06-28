@@ -115,8 +115,8 @@
         android:layout_marginTop="20dp">
 
         <Button
-            android:id="@+id/submit"
-            android:text="@string/transport_send_button"
+            android:id="@+id/transport_submit"
+            android:text="@string/transport_submit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
