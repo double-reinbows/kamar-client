@@ -1,51 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
-
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/guest_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:id="@+id/toolbar_roomnumber"/>
-        </android.support.v7.widget.Toolbar>
-
-         <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="fixed"
-            app:tabGravity="fill"
-             app:tabMaxWidth="0dp"
-             app:tabTextAppearance="@style/RestoCustomTabStyle"/>
-
-
-        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="net.voidynullness.android.tabitytabs.TabLayoutActivity">
-
-        </android.support.v4.view.ViewPager>
-
-    </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_restaurant" />
 
@@ -58,26 +17,31 @@
         android:layout_marginBottom="16dp"
         android:layout_marginRight="80dp"
         app:fabSize="normal" /-->
-
-    <TextView
-        android:id="@+id/restaurant_subtotal_text"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/restaurant_add"
-        android:elevation="16dp"
-        android:textColor="#000000"
-        android:textSize="30dp"
-        android:background="#FFFFFF"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="25dp"
-        android:layout_marginRight="80dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/restaurant_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        <TextView
+            android:id="@+id/restaurant_subtotal_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="16dp"
+            android:textColor="#000000"
+            android:textSize="30dp"
+            android:background="#FFFFFF"
+            android:layout_gravity="center"/>
 
-</android.support.design.widget.CoordinatorLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/restaurant_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/ic_dialog_email" />
+    </LinearLayout>
+</RelativeLayout>

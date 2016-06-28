@@ -8,17 +8,32 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/wood_background_highres"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.restaurant.RestaurantConfirmationActivity"
     tools:showIn="@layout/activity_restaurant_confirmation">
 
+    <LinearLayout
+        android:layout_width="1000dp"
+        android:layout_height="500dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@color/colorNavBarBackground">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/restaurant_order_summary"
+            android:textSize="25sp"
+            android:layout_gravity="center"
+            android:id="@+id/order_summary" />
 
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/restaurant_recycleview">
+        </android.support.v7.widget.RecyclerView>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/restaurant_recycleview">
-    </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
 
 
 </LinearLayout>

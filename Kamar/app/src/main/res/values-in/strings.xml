@@ -24,6 +24,7 @@
     <string name="language_english">English</string>
     <string name="language_bahasa">Bahasa Indonesia</string>
     <string name="language_set_to">Bahasa diatur ke Indonesia</string>
+    <string name="user_set_to">User set to</string>
     <string name="guest">Tamu</string>
     <string name="staff">Pegawai</string>
     <string name="user_set_to_guest">Pengguna diatur ke Tamu</string>
@@ -54,7 +55,7 @@
     <string name="chat_message_from_guest">Message from guest room</string>
     <string name="chat_message_from_staff">Message from staff</string>
 
-    <!-- Staff -->
+    <!-- Check in/out -->
     <string name="guest_first_name">First Name</string>
     <string name="guest_last_name">Last Name</string>
     <string name="guest_email">Email</string>
@@ -64,14 +65,27 @@
     <string name="guest_room_number">Set Room Number</string>
     <string name="guest_checkout">Check Out Guest</string>
     <string name="guest_checkout_message">Guest has been checked out</string>
+    <string name="guest_checkout_submit_button">Check Out</string>
     <string name="guest_checkin_message">Guest has been checked in</string>
+    <string name="guest_checkin_submit_button">Check In</string>
 
     <!-- Guest -->
+    <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>
-    <string name="transport_departuretime">Departure Time</string>
+    <string name="transport_departing_in">Departing in</string>
+    <string name="transport_minutes">Minutes</string>
     <string name="transport_destination">Destination</string>
     <string name="transport_message">Message</string>>
     <string name="transport_result">Transport request sent</string>
+    <string name="transport_submit_button">Submit</string>
+    <string-array name="departure_increments_array">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+    </string-array>
 
     <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>
@@ -89,6 +103,16 @@
     <string name="tellus_message">Tell us what you think</string>
     <string name="tellus_edittext">Leave your feedback here!</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
+
+    <string name="survey_submit_button">Submit</string>
+
+    <string name="restaurant_label">Menu</string>
+    <string name="restaurant_success"> Successfully placed your order!</string>
+    <string name="restaurant_error"> Error in placing your order!</string>
+
+    <string name="restaurant_order_summary">Order Summary</string>
+    <string name="restaurant_multiply_sign">x</string>
+    <string name="restaurant_equal_sign">=</string>
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>

@@ -1,14 +1,13 @@
 package com.martabak.kamar.domain;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
+import com.martabak.kamar.service.MenuServer;
+import com.martabak.kamar.service.MenuService;
 
 /**
  * A consumable item on a menu that a {@link Guest} can order from the restaurant.
  */
-public class Consumable extends Model{
+public class Consumable extends Model {
 
     /**
      * The FOOD consumable section.
@@ -33,12 +32,12 @@ public class Consumable extends Model{
     /**
      * The description; e.g. Kluwek beef soup served with rice, sambal, lime and crackers.
      */
-    public final String description_en;
+    @SerializedName("description_en") public final String descriptionEn;
 
     /**
-     * The description; e.g. Kluwek beef soup served with rice, sambal, lime and crackers.
+     * The description in INDO; e.g. dwklajdawlkdjd akwjdwadawlk  dka jldkjwal d.
      */
-    public final String description_in;
+    @SerializedName("description_in") public final String descriptionIn;
 
     /**
      * The section; e.g. INDONESIAN.
@@ -62,23 +61,31 @@ public class Consumable extends Model{
 
     public Consumable() {
         this.name = null;
-        this.description_en = null;
-        this.description_in = null;
+        this.descriptionEn = null;
+        this.descriptionIn = null;
         this.section = null;
         this.subsection = null;
         this.order = null;
         this.price = null;
     }
 
-    public Consumable(String name, String description_en, String description_in, String section,
+    public Consumable(String name, String descriptionEn, String descriptionIn, String section,
                       String subsection, Integer order, Integer price) {
         this.name = name;
-        this.description_en = description_en;
-        this.description_in = description_in;
+        this.descriptionEn = descriptionEn;
+        this.descriptionIn = descriptionIn;
         this.section = section;
         this.subsection = subsection;
         this.order = order;
         this.price = price;
+    }
+
+    /**
+     * @return The URL of the image of this consumable.
+     * E.g. http://theserver:5984/219310931202313/image.jpg.
+     */
+    public String getImageUrl() {
+        return MenuServer.getBaseUrl() + "/" + this._id + "/" + MenuService.CONSUMABLE_IMAGE_PATH;
     }
 
 }

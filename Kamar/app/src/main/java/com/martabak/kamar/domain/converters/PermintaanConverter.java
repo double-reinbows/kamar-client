@@ -60,7 +60,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
             case Permintaan.TYPE_TRANSPORT:
                 Transport t = (Transport)src.content;
                 content.addProperty("passengers", t.passengers);
-                content.addProperty("departure_time", dateFormat.format(t.departureTime));
+                content.addProperty("departing_in", dateFormat.format(t.departingIn));
                 content.addProperty("destination", t.destination);
                 break;
             case Permintaan.TYPE_BELLBOY:
@@ -131,14 +131,9 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 break;
             case Permintaan.TYPE_TRANSPORT:
                 Integer passengers = c.getAsJsonPrimitive("passengers").getAsInt();
-                Date departureTime;
-                try {
-                    departureTime = dateFormat.parse(c.getAsJsonPrimitive("departure_time").getAsString());
-                } catch (ParseException e) {
-                    throw new JsonParseException(e);
-                }
+                String departingIn = c.getAsJsonPrimitive("departing_in").getAsString();
                 String destination = c.getAsJsonPrimitive("destination").getAsString();
-                content = new Transport(message, passengers, departureTime, destination);
+                content = new Transport(message, passengers, departingIn, destination);
                 break;
             case Permintaan.TYPE_RESTAURANT:
                 List<OrderItem> restuarantItems = new ArrayList<>();

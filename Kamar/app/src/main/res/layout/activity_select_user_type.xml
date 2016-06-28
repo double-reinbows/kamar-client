@@ -6,6 +6,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="horizontal"
+    android:background="@drawable/wood_background_highres"
     android:gravity="center_horizontal">
 
 <ImageButton

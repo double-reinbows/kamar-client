@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,7 @@ public class CheckGuestOutFragment extends Fragment  {
     private Guest guest;
     private ArrayAdapter rooms;
     private TextView guestInfoText;
-    private FloatingActionButton fab;
+    private Button submitButton;
 
     public CheckGuestOutFragment() {
     }
@@ -50,8 +51,8 @@ public class CheckGuestOutFragment extends Fragment  {
         final View parentView =  inflater.inflate(R.layout.fragment_check_guest_out, container, false);
         guestInfoText = (TextView)parentView.findViewById(R.id.guest_info);
         final Spinner spinner = (Spinner) parentView.findViewById(R.id.guest_spinner_checkout);
-        final List<String> roomNumbers = getRoomNumbersWithoutGuests();
-        fab = (FloatingActionButton) parentView.findViewById(R.id.check_guest_out_btn);
+        final List<String> roomNumbers = getRoomNumbersWithGuests();
+        submitButton = (Button) parentView.findViewById(R.id.check_guest_out_submit);
 
         rooms = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
@@ -65,17 +66,17 @@ public class CheckGuestOutFragment extends Fragment  {
                     roomNumber = roomNumbers.get(position);
                     Log.v(CheckGuestOutFragment.class.getCanonicalName(), "Room number selected is " + roomNumber);
                     getGuestInRoomNumber(roomNumber);
-                    fab.setEnabled(true);
+                    submitButton.setEnabled(true);
                 } else {
-                    fab.setEnabled(false);
+                    submitButton.setEnabled(false);
                 }
             }
             @Override public void onNothingSelected(AdapterView<?> parent) {
-                fab.setEnabled(false);
+                submitButton.setEnabled(false);
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
                 if (guest != null) {
                     checkGuestOut(guest);
@@ -87,9 +88,9 @@ public class CheckGuestOutFragment extends Fragment  {
     }
 
     /**
-     * @return A list of Room Numbers with no guests checked in.
+     * @return A list of room numbers with guests checked in.
      */
-    private List<String> getRoomNumbersWithoutGuests() {
+    private List<String> getRoomNumbersWithGuests() {
         final List <String> roomStrings = new ArrayList<String>();
         // TODO double check that this is the correct method to call
         GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithGuests().subscribe(new Observer<Room>() {
@@ -105,9 +106,6 @@ public class CheckGuestOutFragment extends Fragment  {
                     roomStrings.add(room.number);
                     Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found room: " + room.number);
                 }
-
-
-
             }
         });
         return roomStrings;
@@ -158,6 +156,7 @@ public class CheckGuestOutFragment extends Fragment  {
                     @Override public void onError(Throwable e) {
                         Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On error");
                         e.printStackTrace();
+                        Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     }
                     @Override public void onNext(Boolean result) {
                         Log.v(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On next " + result);

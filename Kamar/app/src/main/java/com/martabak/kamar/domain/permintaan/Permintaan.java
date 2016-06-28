@@ -30,10 +30,6 @@ public class Permintaan<T extends Content> extends Model {
      */
     public static final String TYPE_CHECKOUT = "CHECKOUT";
     /**
-     * The CONSUMABLE type string.
-     */
-    public static final String TYPE_CONSUMABLE = "CONSUMABLE";
-    /**
      * The BELLBOY type string.
      */
     public static final String TYPE_HOUSEKEEPING = "HOUSEKEEPING";

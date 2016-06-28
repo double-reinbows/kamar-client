@@ -19,6 +19,11 @@ import rx.Observable;
  */
 public interface MenuService {
 
+    /**
+     * The sub-path to request for the consumable's image attachment.
+     */
+    String CONSUMABLE_IMAGE_PATH = "image.jpg";
+
     @GET("menu/_design/menu/_view/section")
     Observable<ViewResponse<Consumable>> getMenuBySection(@Query("key") String section2);
 

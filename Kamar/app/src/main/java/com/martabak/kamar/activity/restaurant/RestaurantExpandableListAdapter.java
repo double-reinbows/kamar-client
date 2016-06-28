@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Consumable;
+import com.martabak.kamar.service.Server;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,15 +58,16 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.restaurant_menu_item, null);
         }
 
+        Consumable c = getChild(groupPosition, childPosition);
+
         //Set up main text
-        String childText = getChild(groupPosition, childPosition).name;
+        String childText = c.name;
         TextView txtListChild = (TextView) convertView.findViewById(R.id.item_text);
         Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
         txtListChild.setTypeface(customFont);
@@ -78,7 +81,7 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
 
         //Set up info text
         //if (context.getSharedPreferences("userSettings", MODE_PRIVATE).getString("locale", null).equals("english"));
-        String infoText = getChild(groupPosition, childPosition).description_en;
+        String infoText = c.descriptionEn;
         TextView infoView = (TextView)convertView.findViewById(R.id.item_info);
         infoView.setText(infoText);
 
@@ -90,14 +93,19 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
         quantity.setBackgroundColor(0xFFac0d13);
         quantity.invalidate();
         quantity.setTextColor(Color.WHITE);
+
         //Set up price text
-        String priceText = getChild(groupPosition, childPosition).price.toString();
+        String priceText = c.price.toString();
         TextView priceView = (TextView)convertView.findViewById(R.id.item_price);
         priceView.setText("Rp. "+priceText+" 000");
 
         //Set up item image
         ImageView itemImg = (ImageView) convertView.findViewById(R.id.item_img);
-
+        Picasso.with(context)
+                .load(c.getImageUrl())
+//                .placeholder() TODO when we have a placeholder e.g. loading image
+//                .error() TODO when we have an error image e.g. missing
+                .into(itemImg);
 
         /**
          * Implement the minus button
