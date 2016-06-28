@@ -11,21 +11,21 @@ public class Transport extends Content {
 
     public final Integer passengers;
 
-    @SerializedName("departure_time") public final Date departureTime;
+    @SerializedName("departing_in") public final String departingIn;
 
     public final String destination;
 
     public Transport() {
         super();
         this.passengers = null;
-        this.departureTime = null;
+        this.departingIn = null;
         this.destination = null;
     }
 
-    public Transport(String message, Integer passengers, Date departureTime, String destination) {
+    public Transport(String message, Integer passengers, String departingIn, String destination) {
         super(message);
         this.passengers = passengers;
-        this.departureTime = departureTime;
+        this.departingIn = departingIn;
         this.destination = destination;
     }
 

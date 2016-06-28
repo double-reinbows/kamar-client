@@ -53,51 +53,29 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="left">
+        android:orientation="horizontal">
         <TextView
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:text="@string/transport_departuredate" />
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="20"
-            android:focusableInTouchMode="false"
-            android:id="@+id/transport_depature_date_edit_text"
-            android:layout_gravity="center_vertical" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="left">
+            android:text="@string/transport_departing_in" />
+        <Spinner
+            android:id="@+id/transport_departure_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
         <TextView
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:text="@string/transport_departuretime" />
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="20"
-            android:focusableInTouchMode="false"
-            android:id="@+id/transport_depature_time_edit_text"
-            android:layout_gravity="center_vertical" />
+            android:text="@string/transport_minutes" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <TextView
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:text="@string/transport_message" />
-
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,7 +91,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="20dp">
-
         <Button
             android:id="@+id/transport_submit"
             android:text="@string/transport_submit_button"
