@@ -1,14 +1,12 @@
 package com.martabak.kamar.domain;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.List;
+import com.martabak.kamar.service.MenuServer;
+import com.martabak.kamar.service.MenuService;
 
 /**
  * A consumable item on a menu that a {@link Guest} can order from the restaurant.
  */
-public class Consumable extends Model{
+public class Consumable extends Model {
 
     /**
      * The FOOD consumable section.
@@ -79,6 +77,14 @@ public class Consumable extends Model{
         this.subsection = subsection;
         this.order = order;
         this.price = price;
+    }
+
+    /**
+     * @return The URL of the image of this consumable.
+     * E.g. http://theserver:5984/219310931202313/image.jpg.
+     */
+    public String getImageUrl() {
+        return MenuServer.getBaseUrl() + "/" + this._id + "/" + MenuService.CONSUMABLE_IMAGE_PATH;
     }
 
 }

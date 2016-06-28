@@ -72,7 +72,7 @@ public abstract class Server {
     /**
      * @return The server's base URL.
      */
-    protected String getBaseUrl() {
+    public static String getBaseUrl() {
         return "http://192.168.178.24:5984";
     }
 
