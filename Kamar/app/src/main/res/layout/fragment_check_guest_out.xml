@@ -22,11 +22,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/guest_info" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/check_guest_out_btn"
+    <Button
+        android:id="@+id/check_guest_out_submit"
+        android:text="@string/guest_checkout_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:textColor="@color/colorAccent"
+        android:gravity="bottom|right" />
 
 </LinearLayout>

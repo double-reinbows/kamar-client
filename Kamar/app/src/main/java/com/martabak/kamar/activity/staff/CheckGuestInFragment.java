@@ -1,17 +1,14 @@
 package com.martabak.kamar.activity.staff;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -87,8 +84,8 @@ public class CheckGuestInFragment extends Fragment {
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.check_guest_in_btn);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Button submitButton = (Button) view.findViewById(R.id.check_guest_in_submit);
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText editTextFirstName = (EditText) getView().findViewById(R.id.guest_first_name);
@@ -106,9 +103,9 @@ public class CheckGuestInFragment extends Fragment {
                 String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
 
                 // TODO this needs to be input by staff
-                String welcome = "Welcome to Indoluxe Hotel!";
+                String welcome = "Hi " + firstName + "! Welcome to Indoluxe Hotel!";
 
-                sendGuestRequest(firstName, lastName, phoneNumber, email, roomNumber, checkOutDate,
+                sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber, checkOutDate,
                         welcome);
             }
         });
@@ -120,7 +117,6 @@ public class CheckGuestInFragment extends Fragment {
      */
     private List<String> getRoomNumbersWithoutGuests() {
         final List<String> roomStrings = new ArrayList<String>();
-        // TODO is this the correct call to getRoomNumbersWithoutGuests?
         GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithoutGuests()
                 .subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
@@ -137,11 +133,20 @@ public class CheckGuestInFragment extends Fragment {
         return roomStrings;
     }
 
-    private void sendGuestRequest(String firstName, String lastName, String phoneNumber,
-                                  String email, String roomNumber, Date checkOutDate, String welcome) {
+    /**
+     * Send a request to create a new guest, given their details.
+     * @param firstName Guest's first name.
+     * @param lastName Guest's last name.
+     * @param phoneNumber Guest's phone number.
+     * @param email Guest's email.
+     * @param roomNumber Guest's room number.
+     * @param checkOutDate Guest's expected check-out date.
+     * @param welcome A welcome message for the guest.
+     */
+    private void sendCreateGuestRequest(String firstName, String lastName, String phoneNumber,
+                                        String email, String roomNumber, Date checkOutDate, String welcome) {
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
-        String welcomeMessage = "Hi " + firstName + "!";
 
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
                 firstName,
@@ -159,6 +164,11 @@ public class CheckGuestInFragment extends Fragment {
             @Override public void onError(Throwable e) {
                 Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
+                Toast.makeText(
+                        getActivity(),
+                        R.string.something_went_wrong,
+                        Toast.LENGTH_LONG
+                ).show();
             }
             @Override public void onNext(Guest guest) {
                 Log.v(CheckGuestInFragment.class.getCanonicalName(), "createGuest() " + guest.toString());
