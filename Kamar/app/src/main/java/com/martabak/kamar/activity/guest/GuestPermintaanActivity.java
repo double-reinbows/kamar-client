@@ -35,14 +35,16 @@ public class GuestPermintaanActivity extends AppCompatActivity {
     protected void createExpandableList(List<Permintaan> permintaans) {
         GuestExpandableListAdapter listAdapter;
         ExpandableListView expListView;
-        List<String> listDataHeader = Arrays.asList(
+        List<String> states = Arrays.asList(
                 getString(R.string.new_permintaan),
                 getString(R.string.inprogress_permintaan),
                 getString(R.string.indelivery_permintaan),
                 getString(R.string.completed_permintaan)
         );
-        HashMap<String, List<String>> listDataChild = new HashMap<>(); //mapping of states to a list of permintaan strings
-        HashMap<String, Permintaan> listDataChildString = new HashMap<>(); //mapping of permintaan strings to their permintaans
+        //mapping of states to a list of permintaan IDs
+        HashMap<String, List<String>> statesToPermIds = new HashMap<>();
+        //mapping of permintaan IDs to their permintaan object
+        HashMap<String, Permintaan> idsToPermintaans = new HashMap<>();
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -55,32 +57,33 @@ public class GuestPermintaanActivity extends AppCompatActivity {
 
         // Set up child data
         for (Permintaan permintaan : permintaans) {
-            listDataChildString.put(permintaan.toString(), permintaan);
+            idsToPermintaans.put(permintaan._id, permintaan);
             switch (permintaan.state) {
                 case Permintaan.STATE_NEW:
-                    new_permintaan.add(permintaan.type);
+                    new_permintaan.add(permintaan._id);
                     break;
                 case Permintaan.STATE_INPROGRESS:
-                    inprogress_permintaan.add(permintaan.toString());
+                    inprogress_permintaan.add(permintaan._id);
                     break;
                 case Permintaan.STATE_INDELIVERY:
-                    indelivery_permintaan.add(permintaan.toString());
+                    indelivery_permintaan.add(permintaan._id);
                     break;
                 case Permintaan.STATE_COMPLETED:
-                    completed_permintaan.add(permintaan.toString());
+                    completed_permintaan.add(permintaan._id);
                     break;
                 default:
                     Log.e(GuestPermintaanActivity.class.getCanonicalName(), "Unknown state for " + permintaan);
             }
         }
 
-        listDataChild.put(listDataHeader.get(0), new_permintaan); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), inprogress_permintaan);
-        listDataChild.put(listDataHeader.get(2), indelivery_permintaan);
-        listDataChild.put(listDataHeader.get(3), completed_permintaan);
+        //set the state text and accompanying permintaan IDs
+        statesToPermIds.put(states.get(0), new_permintaan);
+        statesToPermIds.put(states.get(1), inprogress_permintaan);
+        statesToPermIds.put(states.get(2), indelivery_permintaan);
+        statesToPermIds.put(states.get(3), completed_permintaan);
 
         //create expandable list
-        listAdapter = new GuestExpandableListAdapter(this, listDataHeader, listDataChild, listDataChildString);
+        listAdapter = new GuestExpandableListAdapter(this, states, statesToPermIds, idsToPermintaans);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);

@@ -1,18 +1,15 @@
 package com.martabak.kamar.activity.restaurant;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,13 +21,10 @@ import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.MenuServer;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import rx.Observer;
 
@@ -42,8 +36,8 @@ import rx.Observer;
 public class RestaurantActivity extends AppCompatActivity {
 
     //quantity dictionary with consumable.name keys
-    private HashMap<String, Integer> itemQuantityDict;
-    private HashMap<String, Consumable> itemObjectDict;
+    private HashMap<String, Integer> idToQuantity;
+    private HashMap<String, Consumable> idToConsumable;
     //lists of sections
     private List<Consumable> food;
     private List<Consumable> beverages;
@@ -89,8 +83,8 @@ public class RestaurantActivity extends AppCompatActivity {
         }
 
         //initialize constant variables
-        itemQuantityDict = new HashMap<String, Integer>();
-        itemObjectDict = new HashMap<String, Consumable>();
+        idToQuantity = new HashMap<String, Integer>();
+        idToConsumable = new HashMap<String, Consumable>();
         food = new ArrayList<>();
         beverages = new ArrayList<>();
         desserts = new ArrayList<>();
@@ -157,42 +151,34 @@ public class RestaurantActivity extends AppCompatActivity {
      * Creates an exp list then sets the restaurant exp list onto it
      */
     protected void createExpandableList(List<Consumable> consumables, ExpandableListView view) {
-        //RestaurantExpandableListAdapter listAdapter;
-        //ExpandableListView expListView;
-        List<String> subsectionHeaders; //header text
-        //a list of each item's main text with header text as keys
-        HashMap<String, List<String>> itemTextDict;
-        //consumable dictionary with consumable.name keys
-        //final HashMap<String, Consumable> itemObjectDict;
+        List<String> subsections; //list of subsections
+        //a dictionary of lists of consumable IDs with subsections as keys
+        HashMap<String, List<String>> subsectionToIds;
 
-        //find where to inflate the exp list
-        //expListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
-
-        subsectionHeaders = new ArrayList<String>();
-        itemTextDict = new HashMap<String, List<String>>();
-        //itemObjectDict = new HashMap<String, Consumable>();
+        subsections = new ArrayList<String>();
+        subsectionToIds = new HashMap<String, List<String>>();
+        //idToConsumable = new HashMap<String, Consumable>();
 
         //iterate over the consumables for the current tab/section
         for (Consumable consumable : consumables) {
-            if (!subsectionHeaders.contains(consumable.subsection)) {//subsection doesn't exist yet
-                subsectionHeaders.add(consumable.subsection); //add subsection
+            if (!subsections.contains(consumable.subsection)) {//subsection doesn't exist yet
+                subsections.add(consumable.subsection); //add subsection
                 List<String> currList = new ArrayList<>();
-                currList.add(consumable.name); //add displayed text (food's name) to list
-                itemTextDict.put(consumable.subsection, currList); //add list to subsection
-            } else {//subsection already added
-                List<String> currList = itemTextDict.get(consumable.subsection);
-                currList.add(consumable.name);
-                itemTextDict.put(consumable.subsection, currList); //overwrite list with new one
+                currList.add(consumable._id); //add ID to the subsection
+                subsectionToIds.put(consumable.subsection, currList); //reinsert the subsection
+            } else {//subsection previously added
+                List<String> currList = subsectionToIds.get(consumable.subsection);
+                currList.add(consumable._id); //add ID to the subsection
+                subsectionToIds.put(consumable.subsection, currList); //reinsert the subsection
             }
-            itemObjectDict.put(consumable.name, consumable); //set consumable's object
-            if (!itemQuantityDict.containsKey(consumable.name)) {
-                itemQuantityDict.put(consumable.name, 0); //set quantity to 0
+            idToConsumable.put(consumable._id, consumable); //add _id:consumable
+            if (!idToQuantity.containsKey(consumable._id)) {//if quantity hasn't been initialized
+                idToQuantity.put(consumable._id, 0); //initialize quantity
             }
         }
         //Initialize subtotal
-        if (!itemQuantityDict.containsKey("subtotal")) {
-            Log.v("test", "test");
-            itemQuantityDict.put("subtotal", 0);
+        if (!idToQuantity.containsKey("subtotal")) {
+            idToQuantity.put("subtotal", 0);
         }
 
         //set up subtotal text
@@ -203,8 +189,8 @@ public class RestaurantActivity extends AppCompatActivity {
         //FloatingActionButton subtotalButton = (FloatingActionButton) findViewById(R.id.restaurant_subtotal_button);
 
         //set up restaurant expandable list adapter
-        listAdapter = new RestaurantExpandableListAdapter(this, subsectionHeaders, itemTextDict,
-                itemObjectDict, itemQuantityDict, subtotalText);
+        listAdapter = new RestaurantExpandableListAdapter(this, subsections, subsectionToIds,
+                idToConsumable, idToQuantity, subtotalText);
 
 
         //set list adapter onto view
@@ -217,19 +203,19 @@ public class RestaurantActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // only add the ones that are greater than 0
                 List<OrderItem> restaurantOrderItems = new ArrayList<>();
-                Iterator it = itemQuantityDict.entrySet().iterator();
+                Iterator it = idToQuantity.entrySet().iterator();
                 while (it.hasNext()) {
                     HashMap.Entry pair = (HashMap.Entry) it.next();
                     if (((int)pair.getValue() > 0) && (pair.getKey().toString() != "subtotal")){
 
                         OrderItem orderItem = new OrderItem((int)pair.getValue(),pair.getKey().toString(),
-                                itemObjectDict.get(pair.getKey().toString()).price);
+                                idToConsumable.get(pair.getKey().toString()).price);
                         restaurantOrderItems.add(orderItem);
                     }
                 }
                 if (restaurantOrderItems.size() > 0) { //if user added food
 
-                    RestaurantOrder restaurantOrder = new RestaurantOrder("",restaurantOrderItems,itemQuantityDict.get("subtotal"));
+                    RestaurantOrder restaurantOrder = new RestaurantOrder("",restaurantOrderItems, idToQuantity.get("subtotal"));
                     RestaurantOrderManager restaurantOrderManager = RestaurantOrderManager.getInstance();
                     restaurantOrderManager.setOrder(restaurantOrder);
 
