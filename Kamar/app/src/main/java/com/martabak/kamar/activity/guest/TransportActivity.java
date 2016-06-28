@@ -50,7 +50,7 @@ public class TransportActivity extends AppCompatActivity {
 
         ab.setCustomView(R.layout.actionbar_guestcustom_view);
 
-        Button submitButton = (Button) findViewById(R.id.submit);
+        Button submitButton = (Button) findViewById(R.id.transport_submit);
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
