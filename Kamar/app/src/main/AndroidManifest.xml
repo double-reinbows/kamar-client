@@ -9,7 +9,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:largeHeap="true"
+        android:theme="@style/KamarAppTheme">
+
+
         <service android:name=".activity.chat.GuestChatService" />
         <service android:name=".activity.guest.GuestPermintaanService" />
         <service android:name=".activity.chat.StaffChatService" />
@@ -34,6 +37,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".activity.home.SelectUserTypeActivity"
@@ -42,9 +46,7 @@
         <activity
             android:name=".activity.guest.GuestHomeActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".activity.staff.StaffHomeActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -55,20 +57,17 @@
             android:name=".activity.guest.GuestPermintaanActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".activity.guest.TransportActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/transport_label"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.guest.SurveyActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.chat.ChatListActivity"
@@ -84,13 +83,11 @@
             android:name=".activity.restaurant.RestaurantActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="landscape" />
         <activity android:name=".activity.restaurant.RestaurantConfirmationActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

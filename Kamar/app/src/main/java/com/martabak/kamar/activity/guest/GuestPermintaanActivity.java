@@ -2,9 +2,11 @@ package com.martabak.kamar.activity.guest;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.GuestExpandableListAdapter;
@@ -30,6 +32,19 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_permintaan);
         doGetPermintaansOfStateAndCreateExpList();
+        // Get the ActionBar here to configure the way it behaves.
+        final ActionBar ab = getSupportActionBar();
+
+        ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
+        ab.setDisplayShowTitleEnabled(false); // disable the default title element here (for centered title)
+
+        ab.setCustomView(R.layout.actionbar_guestcustom_view);
+
+        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
+        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("roomNumber", "none");
+        // set room number text
+        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
     }
 
     protected void createExpandableList(List<Permintaan> permintaans) {
@@ -58,7 +73,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
             listDataChildString.put(permintaan.toString(), permintaan);
             switch (permintaan.state) {
                 case Permintaan.STATE_NEW:
-                    new_permintaan.add(permintaan.toString());
+                    new_permintaan.add(permintaan.type);
                     break;
                 case Permintaan.STATE_INPROGRESS:
                     inprogress_permintaan.add(permintaan.toString());

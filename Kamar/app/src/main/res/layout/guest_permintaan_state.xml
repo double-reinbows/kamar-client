@@ -8,10 +8,11 @@
     <TableRow>
         <TextView
             android:id="@+id/list_state"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minWidth="9999dp"
             android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
             android:textSize="40dp"
-            android:textColor="#FAFAFA" />
+            android:textColor="#FAFAFA"/>
     </TableRow>
 </TableLayout>

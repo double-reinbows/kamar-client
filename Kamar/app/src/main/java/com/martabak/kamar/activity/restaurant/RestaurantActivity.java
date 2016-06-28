@@ -2,14 +2,17 @@ package com.martabak.kamar.activity.restaurant;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -56,19 +59,40 @@ public class RestaurantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
-        setSupportActionBar(toolbar);
+        // Get the ActionBar here to configure the way it behaves.
+        final ActionBar ab = getSupportActionBar();
+
+        ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
+        ab.setDisplayShowTitleEnabled(false); // disable the default title element here (for centered title)
+
+        ab.setCustomView(R.layout.actionbar_restaurant_customview);
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         // set room number text
-        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
+        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
+        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
 
+        //initialize tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText("Food"));
         tabLayout.addTab(tabLayout.newTab().setText("Beverages"));
         tabLayout.addTab(tabLayout.newTab().setText("Desserts"));
+
+        //set tab text
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        int numTabs = vg.getChildCount();
+        for (int j = 0; j < numTabs; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(customFont);
+                }
+            }
+        }
 
         //initialize constant variables
         itemQuantityDict = new HashMap<String, Integer>();
@@ -178,13 +202,15 @@ public class RestaurantActivity extends AppCompatActivity {
         }
 
         //set up subtotal text
-        TextView subtotalText = (TextView) findViewById(R.id.restaurant_subtotal);
+        TextView subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
         subtotalText.setText("Rp. 0");
+        //subtotalText.setBackgroundColor(0xFFac0d13);
+        //subtotalText.invalidate();
+        //FloatingActionButton subtotalButton = (FloatingActionButton) findViewById(R.id.restaurant_subtotal_button);
 
         //set up restaurant expandable list adapter
         listAdapter = new RestaurantExpandableListAdapter(this, subsectionHeaders, itemTextDict,
                 itemObjectDict, itemQuantityDict, subtotalText);
-
 
 
         //set list adapter onto view

@@ -8,27 +8,31 @@
     android:id="@+id/restaurant_confirmation_layout_item">
     <TextView
         android:id="@+id/restaurant_confirmation_text"
-        android:layout_width="wrap_content"
+        android:layout_width="500dp"
         android:layout_height="wrap_content"
-
-        android:textSize="15sp"/>
+        android:textSize="25sp" />
     <TextView
-        android:id="@+id/restaurant_confirmation_unit_price"
-        android:layout_width="wrap_content"
+        android:id="@+id/restaurant_confirmation_multiply_sign"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:textSize="15sp"/>
-    <TextView
-        android:id="@+id/restaurant_confirmation_sub_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:textSize="15sp"/>
+        android:textSize="25sp"
+        android:text="@string/restaurant_multiply_sign"/>
     <TextView
         android:id="@+id/restaurant_confirmation_quantity"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:textSize="15sp"/>
+        android:textSize="25sp"/>
+    <TextView
+        android:id="@+id/restaurant_confirmation_equal_sign"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text="@string/restaurant_equal_sign"/>
+    <TextView
+        android:id="@+id/restaurant_confirmation_sub_price"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"/>
+
 </LinearLayout>
 

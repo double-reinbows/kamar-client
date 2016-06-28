@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.restaurant;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.Log;
@@ -66,24 +67,40 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
         //Set up main text
         String childText = getChild(groupPosition, childPosition).name;
         TextView txtListChild = (TextView) convertView.findViewById(R.id.item_text);
+        Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
+        txtListChild.setTypeface(customFont);
         txtListChild.setText(childText);
+
+        //Set up info text
+        //if (context.getSharedPreferences("userSettings", MODE_PRIVATE).getString("locale", null).equals("english"));
+        String infoText = getChild(groupPosition, childPosition).description_en;
+        TextView infoView = (TextView)convertView.findViewById(R.id.item_info);
+        infoView.setText(infoText);
 
         //Set up quantity text
         List<String> currConsumables = itemTextDict.get(subsectionHeaders.get(groupPosition));
         Consumable currConsumable = itemObjectDict.get(currConsumables.get(childPosition));
         TextView quantity = (TextView) convertView.findViewById(R.id.item_quantity);
         quantity.setText(itemQuantityDict.get(currConsumable.name).toString());
-
+        quantity.setBackgroundColor(0xFFac0d13);
+        quantity.invalidate();
+        quantity.setTextColor(Color.WHITE);
         //Set up price text
         String priceText = getChild(groupPosition, childPosition).price.toString();
         TextView priceView = (TextView)convertView.findViewById(R.id.item_price);
         priceView.setText("Rp. "+priceText+" 000");
+
+        //Set up item image
+        ImageView itemImg = (ImageView) convertView.findViewById(R.id.item_img);
 
 
         /**
          * Implement the minus button
          */
         ImageView minusQuantityButton = (ImageView) convertView.findViewById(R.id.minus_button);
+        minusQuantityButton.setBackgroundColor(0xFFac0d13);
+        minusQuantityButton.invalidate();
+        minusQuantityButton.setColorFilter(Color.argb(255, 255, 255, 255));
 
         minusQuantityButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +123,9 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
          * Implement the plus button
          */
         ImageView plusQuantityButton = (ImageView) convertView.findViewById(R.id.plus_button);
+        plusQuantityButton.setBackgroundColor(0xFFac0d13);
+        plusQuantityButton.invalidate();
+        plusQuantityButton.setColorFilter(Color.argb(255, 255, 255, 255));
 
         plusQuantityButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +178,10 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.restaurant_subsection);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
+        //lblListHeader.setTypeface(null, Typeface.BOLD);
+        Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
+        Typeface boldFont = Typeface.create(customFont, Typeface.BOLD);
+        lblListHeader.setTypeface(boldFont);
         lblListHeader.setText(headerTitle);
 
         return convertView;

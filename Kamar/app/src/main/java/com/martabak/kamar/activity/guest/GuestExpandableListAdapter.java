@@ -3,7 +3,6 @@ package com.martabak.kamar.activity.guest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
@@ -20,18 +18,15 @@ import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
-import com.martabak.kamar.service.PermintaanServer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import rx.Observer;
-
 class GuestExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context _context;
+    private Context context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
@@ -40,7 +35,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
     public GuestExpandableListAdapter(Context context, List<String> listDataHeader,
                                       HashMap<String, List<String>> listDataChild, HashMap<String,
                                     Permintaan> listDataChildString) {
-        this._context = context;
+        this.context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listDataChild;
         this._listDataChildString = listDataChildString;
@@ -64,7 +59,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
         final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.guest_permintaan_item, null);
         }
@@ -82,7 +77,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                 currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
 
                 DisplayMetrics displayMetrics = new DisplayMetrics();
-                WindowManager manager = (WindowManager) _context.getSystemService(Activity.WINDOW_SERVICE);
+                WindowManager manager = (WindowManager) context.getSystemService(Activity.WINDOW_SERVICE);
                 manager.getDefaultDisplay().getMetrics(displayMetrics);
                 int width, height;
                 //WindowManager.LayoutParams;
@@ -98,7 +93,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                     width = point.x;
                     height = point.y;
                 }
-                AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 //build the AlertDialog's content
                 String simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
                 String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
@@ -120,6 +115,8 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
+        Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
+        txtListChild.setTypeface(customFont);
         txtListChild.setText(childText);
         return convertView;
     }
@@ -150,7 +147,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.guest_permintaan_state, null);
         }
@@ -168,6 +165,10 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
             lblListHeader.setBackgroundColor(0xFFa09091);
         }
         lblListHeader.invalidate();
+
+        Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
+        Typeface boldFont = Typeface.create(customFont, Typeface.BOLD);
+        lblListHeader.setTypeface(boldFont);
         return convertView;
     }
 

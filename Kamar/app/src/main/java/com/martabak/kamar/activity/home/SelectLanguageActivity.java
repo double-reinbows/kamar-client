@@ -2,8 +2,10 @@ package com.martabak.kamar.activity.home;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +23,15 @@ public class SelectLanguageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_language);
+
+        // Get the ActionBar here to configure the way it behaves.
+        final ActionBar ab = getSupportActionBar();
+
+        ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
+        ab.setDisplayShowTitleEnabled(false); // disable the default title element here (for centered title)
+
+        ab.setCustomView(R.layout.actionbar_custom_view);
+
         final ImageButton englishButton = (ImageButton) findViewById(R.id.language_english);
         final ImageButton indonesianButton = (ImageButton) findViewById(R.id.language_bahasa);
 

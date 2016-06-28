@@ -7,21 +7,35 @@
         android:id="@+id/item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:textSize="17dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="45dp"
+        android:layout_alignParentStart="true"
+        android:textSize="30dp"
         android:textColor="#000000" />
+    <TextView
+        android:id="@+id/item_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/item_text"
+        android:textSize="25dp"/>
     <TextView
         android:id="@+id/item_price"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/item_text"
+        android:layout_below="@+id/item_info"
         android:textColor="#cc0000"
-        android:text="Price" />
-
+        android:textSize="23dp" />
+    <ImageView
+        android:id="@+id/item_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="600dp"
+        android:minHeight="175dp"
+        android:src="@drawable/american_burger"
+        android:layout_toStartOf="@+id/minus_button"
+        android:layout_centerVertical="true"/>
     <ImageView
         android:id="@+id/minus_button"
         android:layout_width="wrap_content"
@@ -29,14 +43,16 @@
         android:layout_toStartOf="@+id/item_quantity"
         android:src="@drawable/ic_minus"
         android:layout_centerVertical="true"
-        android:focusable="false"/>
+        android:focusable="false"
+        android:layout_marginRight="2dp"/>
     <TextView
         android:id="@+id/item_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@+id/plus_button"
         android:layout_centerVertical="true"
-        android:textSize="17dp"/>
+        android:textSize="17dp"
+        android:layout_marginRight="10dip"/>
     <ImageView
         android:id="@+id/plus_button"
         android:layout_width="wrap_content"

@@ -54,25 +54,25 @@ public class ImageAdapter extends BaseAdapter {
         //set image and text of each item in the grid
         imageView = (ImageView) grid.findViewById(R.id.grid_image);
         textView = (TextView) grid.findViewById(R.id.grid_text);
-        grid.setLayoutParams(new GridView.LayoutParams(150, 150));
+        grid.setLayoutParams(new GridView.LayoutParams(280, 250));
         textView.setText(mText[position]);
         imageView.setImageResource(mImages[position]);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
         //grid.setPadding(8, 8, 8, 8);
         return grid;
     }
 
     // references to our images
     private Integer[] mImages = {
-            R.mipmap.ic_myrequests,
-            R.mipmap.ic_restaurant,
-            R.mipmap.ic_housekeeping,
-            R.mipmap.ic_bellboy,
-            R.mipmap.ic_maintenance,
-            R.mipmap.ic_transport,
-            R.mipmap.ic_tellus,
-            R.mipmap.ic_checkout,
-            R.drawable.ic_menu_send
+            R.drawable.ic_myrequests,
+            R.drawable.ic_restaurant,
+            R.drawable.ic_housekeeping,
+            R.drawable.ic_bellboy,
+            R.drawable.ic_maintenance,
+            R.drawable.ic_transport,
+            R.drawable.ic_chat,
+            R.drawable.ic_checkout,
+            R.drawable.ic_chat
     };
 
     //Text descriptions
