@@ -63,10 +63,6 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content.addProperty("departure_time", dateFormat.format(t.departureTime));
                 content.addProperty("destination", t.destination);
                 break;
-            case Permintaan.TYPE_BELLBOY:
-            case Permintaan.TYPE_CHECKOUT:
-            case Permintaan.TYPE_HOUSEKEEPING:
-            case Permintaan.TYPE_MAINTENANCE:
             case Permintaan.TYPE_RESTAURANT:
                 RestaurantOrder restaurantOrder = (RestaurantOrder)src.content;
                 content.addProperty("total_price", restaurantOrder.totalPrice);
@@ -81,6 +77,10 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content.add("items", jsonItems);
                 content.addProperty("total_price", restaurantOrder.totalPrice);
                 break;
+            case Permintaan.TYPE_BELLBOY:
+            case Permintaan.TYPE_CHECKOUT:
+            case Permintaan.TYPE_HOUSEKEEPING:
+            case Permintaan.TYPE_MAINTENANCE:
             default:
                 break;
         }
