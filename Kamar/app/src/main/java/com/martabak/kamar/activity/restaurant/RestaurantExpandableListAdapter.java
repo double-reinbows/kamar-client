@@ -76,7 +76,7 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
 
         //Set up info text
         //if (context.getSharedPreferences("userSettings", MODE_PRIVATE).getString("locale", null).equals("english"));
-        String infoText = c.description_en;
+        String infoText = c.descriptionEn;
         TextView infoView = (TextView)convertView.findViewById(R.id.item_info);
         infoView.setText(infoText);
 
