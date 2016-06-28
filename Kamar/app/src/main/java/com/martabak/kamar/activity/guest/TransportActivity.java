@@ -1,17 +1,15 @@
 package com.martabak.kamar.activity.guest;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,23 +18,14 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.Transport;
 import com.martabak.kamar.service.PermintaanServer;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import rx.Observer;
 
-public class TransportActivity extends AppCompatActivity implements View.OnClickListener{
+public class TransportActivity extends AppCompatActivity {
 
-    private String transportDestination;
-    private Integer transportPassengers;
-    private String transportMessage;
-    private Date transportDepartureDate;
-    private DatePickerDialog datePickerDialog;
-
-
+    private String departureIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,68 +34,59 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
 
         // Get the ActionBar here to configure the way it behaves.
         final ActionBar ab = getSupportActionBar();
-
         ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
         ab.setDisplayShowTitleEnabled(false);
-
         ab.setCustomView(R.layout.actionbar_guestcustom_view);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
+        // Set room number text.
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-
-        // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
 
-        final EditText editTransportDepartureDate = (EditText)
-                findViewById(R.id.transport_depature_date_edit_text);
-        editTransportDepartureDate.setOnClickListener(this);
-        Calendar newCalendar = Calendar.getInstance();
-
-
-        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        Spinner spinner = (Spinner) findViewById(R.id.transport_departure_spinner);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.departure_increments_array, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                transportDepartureDate = newDate.getTime();
-                editTransportDepartureDate.setText(newDate.getTime().toString());
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                departureIn = (String)parent.getItemAtPosition(position);
             }
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
-
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
+        Button submitButton = (Button) findViewById(R.id.transport_submit);
+        if (submitButton != null) {
+            submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     EditText editTransportDestination = (EditText)
                             findViewById(R.id.transport_destination_edit_text);
-                    transportDestination = editTransportDestination.getText().toString();
+                    String destination = editTransportDestination.getText().toString();
 
                     EditText editTransportPassengers = (EditText)
                             findViewById(R.id.transport_passengers_edit_text);
-                    transportPassengers = Integer.parseInt(editTransportPassengers.getText().toString());
-
+                    int passengers = Integer.parseInt(editTransportPassengers.getText().toString());
 
                     EditText editTransportMessage = (EditText)
                             findViewById(R.id.transport_message_edit_text);
-                    transportMessage = editTransportMessage.getText().toString();
+                    String message = editTransportMessage.getText().toString();
 
-                    sendTransportRequest();
+                    sendTransportRequest(destination, passengers, departureIn, message);
                 }
             });
         }
-
     }
 
     /**
      * Send a transport request.
      */
-    private void sendTransportRequest() {
-        Transport transport = new Transport(transportMessage, transportPassengers,
-                transportDepartureDate, transportDestination);
+    private void sendTransportRequest(String message, int passengers, String departureIn,
+                                      String destination) {
+        Transport transport = new Transport(message, passengers,
+                departureIn, destination);
+        Log.d(TransportActivity.class.getCanonicalName(), "sendTransportRequest() to " +
+                destination + " in " + departureIn + " for " + passengers + " passengers with message " + message);
 
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_TRANSPORT;
@@ -170,11 +150,6 @@ public class TransportActivity extends AppCompatActivity implements View.OnClick
             finish();
         }
 
-    }
-
-    @Override
-    public void onClick(View view) {
-        datePickerDialog.show();
     }
 
 }

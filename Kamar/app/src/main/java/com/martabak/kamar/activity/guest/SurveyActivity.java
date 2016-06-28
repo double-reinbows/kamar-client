@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.martabak.kamar.R;
@@ -87,7 +88,7 @@ public class SurveyActivity extends AppCompatActivity {
         });
 
         final List<SurveyAnswer> surveyAnswers = new ArrayList<SurveyAnswer>();
-        FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.survey_answer_add);
+        Button button = (Button) view.findViewById(R.id.survey_submit);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
