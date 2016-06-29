@@ -46,7 +46,6 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public Permintaan getChild(int groupPosition, int childPosition) {
-        //return stateToPermIds.get(states.get(groupPosition)).get(childPosition);
         return idToPermintaan.get(stateToPermIds.get(states.get(groupPosition)).get(childPosition));
     }
 

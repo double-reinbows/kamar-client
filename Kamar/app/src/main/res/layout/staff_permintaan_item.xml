@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -16,17 +16,20 @@
         android:textSize="17dp"
         android:textColor="#000000" />
     <ImageView
-        android:id="@+id/progress_permintaan_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_down_arrow"
+        android:id="@+id/regress_permintaan_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toStartOf="@+id/progress_permintaan_button"
+        android:layout_centerVertical="true"
+        android:src="@drawable/up_arrow"
         android:focusable="false"/>
     <ImageView
-        android:id="@+id/regress_permintaan_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ic_up_arrow"
+        android:id="@+id/progress_permintaan_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/arrow_down_green"
         android:focusable="false"/>
-</LinearLayout>
+
+</RelativeLayout>
