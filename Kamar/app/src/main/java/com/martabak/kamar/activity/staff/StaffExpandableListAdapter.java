@@ -23,7 +23,7 @@ import rx.Observer;
 
 class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context _context;
+    private Context context;
     private List<String> states; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> stateToPermintaanIds;
@@ -32,7 +32,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     public StaffExpandableListAdapter(Context context, List<String> states,
                                  HashMap<String, List<String>> stateToPermintaanIds, HashMap<String,
                                     Permintaan> idToPermintaan) {
-        this._context = context;
+        this.context = context;
         this.states = states;
         this.stateToPermintaanIds = stateToPermintaanIds;
         this.idToPermintaan = idToPermintaan;
@@ -54,7 +54,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.staff_permintaan_item, null);
         }
@@ -71,10 +71,10 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         progressPermintaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(_context);
-                builder.setMessage(_context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
                 builder.setCancelable(false);
-                builder.setPositiveButton(_context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Check permintaan can be progressed
@@ -97,7 +97,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     }
                 });
 
-                builder.setNegativeButton(_context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -114,10 +114,10 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         regressPermintaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(_context);
-                builder.setMessage(_context.getApplicationContext().getString(R.string.permintaan_regress_confirmation));
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_regress_confirmation));
                 builder.setCancelable(false);
-                builder.setPositiveButton(_context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Check permintaan can be regressed
@@ -139,7 +139,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     }
                 });
 
-                builder.setNegativeButton(_context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -177,7 +177,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         String currState = setState(groupPosition);
         final String targetState = setState(groupPosition + increment);
 
-        PermintaanServer.getInstance(_context).getPermintaansOfState(currState)
+        PermintaanServer.getInstance(context).getPermintaansOfState(currState)
                                                 .subscribe(new Observer<Permintaan>() {
             Permintaan tempPermintaan = new Permintaan();
 
@@ -187,7 +187,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
                         tempPermintaan.roomNumber, tempPermintaan.guestId, targetState,
                         tempPermintaan.created, new Date(), tempPermintaan.content);
-                PermintaanServer.getInstance(_context).updatePermintaan(updatedPermintaan)
+                PermintaanServer.getInstance(context).updatePermintaan(updatedPermintaan)
                     .subscribe(new Observer<Boolean>() {
                         @Override
                         public void onCompleted() {
@@ -250,7 +250,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.staff_permintaan_state, null);
         }

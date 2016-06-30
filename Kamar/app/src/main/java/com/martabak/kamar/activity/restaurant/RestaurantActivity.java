@@ -46,6 +46,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private ExpandableListView foodExpListView;
     private ExpandableListView bevExpListView;
     private ExpandableListView dessExpListView;
+    private TextView subtotalText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class RestaurantActivity extends AppCompatActivity {
         foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
         bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
         dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+        subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
 
         doGetConsumablesOfSectionAndCreateExpList("FOOD", food, foodExpListView); //since 1st tab is always food
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -184,11 +186,12 @@ public class RestaurantActivity extends AppCompatActivity {
         //Initialize subtotal
         if (!idToQuantity.containsKey("subtotal")) {
             idToQuantity.put("subtotal", 0);
+//            TextView subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
+            subtotalText.setText("Rp. "+ idToQuantity.get("subtotal").toString());
         }
 
         //set up subtotal text
-        TextView subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
-        subtotalText.setText("Rp. 0");
+
         //subtotalText.setBackgroundColor(0xFFac0d13);
         //subtotalText.invalidate();
         //FloatingActionButton subtotalButton = (FloatingActionButton) findViewById(R.id.restaurant_subtotal_button);
