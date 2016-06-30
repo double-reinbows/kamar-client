@@ -44,14 +44,14 @@ public  class StaffPermintaanFragment extends Fragment {
     protected void createExpandableList(View view, List<Permintaan> permintaans) {
         StaffExpandableListAdapter listAdapter;
         ExpandableListView expListView;
-        List<String> listDataHeader = Arrays.asList(
+        List<String> states = Arrays.asList(
                 getString(R.string.new_permintaan),
                 getString(R.string.inprogress_permintaan),
                 getString(R.string.indelivery_permintaan),
                 getString(R.string.completed_permintaan)
         );
-        HashMap<String, List<String>> listDataChild = new HashMap<>(); //mapping of states to a list of permintaan strings
-        HashMap<String, Permintaan> listDataChildString = new HashMap<>(); //mapping of permintaan strings to their permintaans
+        HashMap<String, List<String>> stateToPermintaanIds = new HashMap<>(); //mapping of states to a list of permintaan strings
+        HashMap<String, Permintaan> permintaanIdToPermintaan = new HashMap<>(); //mapping of permintaan strings to their permintaans
 
         // get the listview
         expListView = (ExpandableListView) view.findViewById(R.id.lvExp);
@@ -68,19 +68,19 @@ public  class StaffPermintaanFragment extends Fragment {
         // Set up child data
         for (Permintaan permintaan : permintaans) {
             if (subUserType.equals(permintaan.owner)) {
-                listDataChildString.put(permintaan.toString(), permintaan);
+                permintaanIdToPermintaan.put(permintaan._id, permintaan);
                 switch (permintaan.state) {
                     case Permintaan.STATE_NEW:
-                        new_permintaan.add(permintaan.toString());
+                        new_permintaan.add(permintaan._id);
                         break;
                     case Permintaan.STATE_INPROGRESS:
-                        inprogress_permintaan.add(permintaan.toString());
+                        inprogress_permintaan.add(permintaan._id);
                         break;
                     case Permintaan.STATE_INDELIVERY:
-                        indelivery_permintaan.add(permintaan.toString());
+                        indelivery_permintaan.add(permintaan._id);
                         break;
                     case Permintaan.STATE_COMPLETED:
-                        completed_permintaan.add(permintaan.toString());
+                        completed_permintaan.add(permintaan._id);
                         break;
                     default:
                         Log.e(StaffPermintaanFragment.class.getCanonicalName(), "Unknown state for " + permintaan);
@@ -88,13 +88,13 @@ public  class StaffPermintaanFragment extends Fragment {
             }
         }
 
-        listDataChild.put(listDataHeader.get(0), new_permintaan); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), inprogress_permintaan);
-        listDataChild.put(listDataHeader.get(2), indelivery_permintaan);
-        listDataChild.put(listDataHeader.get(3), completed_permintaan);
+        stateToPermintaanIds.put(states.get(0), new_permintaan); // Header, Child data
+        stateToPermintaanIds.put(states.get(1), inprogress_permintaan);
+        stateToPermintaanIds.put(states.get(2), indelivery_permintaan);
+        stateToPermintaanIds.put(states.get(3), completed_permintaan);
 
         // create expandable list
-        listAdapter = new StaffExpandableListAdapter(this.getActivity(), listDataHeader, listDataChild, listDataChildString);
+        listAdapter = new StaffExpandableListAdapter(this.getActivity(), states, stateToPermintaanIds, permintaanIdToPermintaan);
 
         // setting list rooms
         expListView.setAdapter(listAdapter);
