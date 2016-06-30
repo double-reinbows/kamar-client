@@ -11,10 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.GuestHomeActivity;
+import com.martabak.kamar.activity.guest.GuestPermintaanActivity;
 import com.martabak.kamar.activity.guest.SurveyArrayAdapter;
 import com.martabak.kamar.domain.Consumable;
 import com.martabak.kamar.domain.managers.RestaurantOrderManager;
@@ -23,17 +26,21 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.PermintaanServer;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import rx.Observer;
 
 public class RestaurantConfirmationActivity extends AppCompatActivity {
 
+    RestaurantOrder restaurantOrder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,19 +75,52 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
 
         List<OrderItem> restaurantOrderItems = new ArrayList<>();
 
+        Integer multiplyFactor = 1000;
+
         // fill in each of the respective display lists based on the restaurant model manager
-        final RestaurantOrder restaurantOrder = RestaurantOrderManager.getInstance().getOrder();
-        restaurantOrderItems = restaurantOrder.items;
+        RestaurantOrder tempRestaurantOrder = RestaurantOrderManager.getInstance().getOrder();
+        restaurantOrderItems = tempRestaurantOrder.items;
+
 
         for (OrderItem restaurantOrderItem : restaurantOrderItems)
         {
             Integer subPrice = restaurantOrderItem.price * restaurantOrderItem.quantity;
             restaurantTextItems.add(restaurantOrderItem.name);
             restaurantQuantityItems.add(restaurantOrderItem.quantity.toString());
-            restaurantSubPriceItems.add(subPrice.toString());
+
+
+            Integer newSubPriceInteger = subPrice * multiplyFactor;
+            String newSubPrice = "Rp. " + newSubPriceInteger.toString();
+
+            restaurantSubPriceItems.add(newSubPrice);
 
         }
 
+        //sub price
+        TextView subPriceTextView = (TextView) view.findViewById(R.id.order_sub_total);
+        Integer subFinalPriceInteger = tempRestaurantOrder.totalPrice * multiplyFactor;
+        String subFinalPrice = "Sub Total = Rp. "  + subFinalPriceInteger.toString();
+        subPriceTextView.setText(subFinalPrice);
+
+
+        //final price
+        TextView finalPriceTextView = (TextView) view.findViewById(R.id.order_total);
+        float taxPercentage = 10;
+        float svcChargePercentage = 11;
+
+        float tax = subFinalPriceInteger.floatValue() * (taxPercentage/100);
+        float svcCharge = (tax + subFinalPriceInteger.floatValue()) * (svcChargePercentage/100);
+        float finalPriceFloat = subFinalPriceInteger.floatValue() + tax + svcCharge;
+
+        Integer finalPriceInteger = (int)finalPriceFloat;
+        String newFinalPrice = "Total (inc. tax and service) = Rp. "  + finalPriceInteger.toString();
+
+        finalPriceTextView.setText(newFinalPrice);
+
+        //comment here
+        TextView commentTextView = (TextView) view.findViewById(R.id.restaurant_confirm_input);
+
+        restaurantOrder = new RestaurantOrder(commentTextView.getText().toString(),restaurantOrderItems, finalPriceInteger);
 
 
         final RestaurantConfirmationArrayAdapter restaurantConfirmationArrayAdapter = new
@@ -88,11 +128,9 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
                 restaurantQuantityItems);
         rv.setAdapter(restaurantConfirmationArrayAdapter);
 
-
-
         //confirmation
-        FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.restaurant_confirm);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button restaurantConfirmButton = (Button) view.findViewById(R.id.restaurant_confirm);
+        restaurantConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //restaurant submit
@@ -101,6 +139,16 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
             }
         });
 
+        //back
+        Button restaurantBackButton = (Button) view.findViewById(R.id.restaurant_back);
+        restaurantBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //restaurant back;
+                finish();
+            }
+
+        });
     }
 
     /*Send restaurant request*/
@@ -118,7 +166,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         Log.v(RestaurantConfirmationActivity.class.getCanonicalName(), restaurantOrder.toString());
 
         /* create permintaan*/
-        if (guestId != "none") {
+        if (!guestId.equals("none") && !roomNumber.equals("none")) {
             PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                     owner,
                     type,
@@ -131,6 +179,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
             ).subscribe(new Observer<Permintaan>() {
                 @Override public void onCompleted() {
                     Log.d(RestaurantConfirmationActivity.class.getCanonicalName(), "createPermintaan() On completed");
+                    startActivity(new Intent(getBaseContext(), GuestHomeActivity.class));
                     finish();
                 }
                 @Override public void onError(Throwable e) {

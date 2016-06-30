@@ -35,8 +35,11 @@ public class TransportActivity extends AppCompatActivity {
         // Get the ActionBar here to configure the way it behaves.
         final ActionBar ab = getSupportActionBar();
         ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
-        ab.setDisplayShowTitleEnabled(false);
         ab.setCustomView(R.layout.actionbar_guestcustom_view);
+        ab.setDisplayShowTitleEnabled(false);
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayShowHomeEnabled(true);
+
         // Set room number text.
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -97,7 +100,7 @@ public class TransportActivity extends AppCompatActivity {
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
 
-        if (guestId != "none") {
+        if (!guestId.equals("none") && !roomNumber.equals("none")) {
             PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                     owner,
                     type,

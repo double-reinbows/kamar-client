@@ -1,10 +1,12 @@
 package com.martabak.kamar.activity.guest;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +38,7 @@ public class GuestHomeActivity extends AppCompatActivity
 
     private String option;
     private TextView roomNumberTextView;
+    private String welcomeMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,6 +232,19 @@ public class GuestHomeActivity extends AppCompatActivity
                     Toast.LENGTH_LONG
             ).show();
             roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
+
+            String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
+                    .getString("guestId", "none");
+
+
+            //show welcome message
+            setGuestId(roomNumber);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(welcomeMessage);
+            builder.setPositiveButton("OK",null);
+            builder.show();
+
+
         } else {
             Toast.makeText(
                     this,
@@ -324,6 +340,7 @@ public class GuestHomeActivity extends AppCompatActivity
                 }
                 else {
                     editor.putString("guestId", result._id);
+                    welcomeMessage = result.welcomeMessage;
                     Log.v(GuestHomeActivity.class.getCanonicalName(), "Setting guest ID to " + result._id);
                 }
                 Log.v(GuestHomeActivity.class.getCanonicalName(), "Guest ID " + getSharedPreferences("userSettings", MODE_PRIVATE)
