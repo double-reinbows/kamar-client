@@ -28,6 +28,13 @@
             android:layout_gravity="center"
             android:id="@+id/order_summary" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/restaurant_summary_red_line"
+            />
+
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,7 +60,11 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/restaurant_confirm_input" />
+            android:id="@+id/restaurant_confirm_input"
+            android:inputType="textMultiLine"
+            android:lines="6"
+            android:minLines="3"
+            android:maxLines="9"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
