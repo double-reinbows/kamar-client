@@ -60,7 +60,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
             case Permintaan.TYPE_TRANSPORT:
                 Transport t = (Transport)src.content;
                 content.addProperty("passengers", t.passengers);
-                content.addProperty("departing_in", dateFormat.format(t.departingIn));
+                content.addProperty("departing_in", t.departingIn);
                 content.addProperty("destination", t.destination);
                 break;
             case Permintaan.TYPE_RESTAURANT:
