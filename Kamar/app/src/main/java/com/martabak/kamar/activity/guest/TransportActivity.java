@@ -3,6 +3,8 @@ package com.martabak.kamar.activity.guest;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,9 +25,13 @@ import java.util.Date;
 
 import rx.Observer;
 
-public class TransportActivity extends AppCompatActivity {
+public class TransportActivity extends AppCompatActivity implements TextWatcher {
 
+    private EditText editTransportDestination;
+    private EditText editTransportPassengers;
+    private EditText editTransportMessage;
     private String departureIn;
+    private Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +41,23 @@ public class TransportActivity extends AppCompatActivity {
         // Get the ActionBar here to configure the way it behaves.
         final ActionBar ab = getSupportActionBar();
         ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
-        ab.setDisplayShowTitleEnabled(false);
         ab.setCustomView(R.layout.actionbar_guestcustom_view);
+        ab.setDisplayShowTitleEnabled(false);
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayShowHomeEnabled(true);
+
         // Set room number text.
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
+
+        editTransportDestination = (EditText) findViewById(R.id.transport_destination_edit_text);
+        editTransportPassengers = (EditText) findViewById(R.id.transport_passengers_edit_text);
+        editTransportMessage = (EditText) findViewById(R.id.transport_message_edit_text);
+        editTransportDestination.addTextChangedListener(this);
+        editTransportPassengers.addTextChangedListener(this);
+        editTransportMessage.addTextChangedListener(this);
 
         Spinner spinner = (Spinner) findViewById(R.id.transport_departure_spinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.departure_increments_array, android.R.layout.simple_spinner_item);
@@ -55,34 +71,70 @@ public class TransportActivity extends AppCompatActivity {
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        Button submitButton = (Button) findViewById(R.id.transport_submit);
+        submitButton = (Button) findViewById(R.id.transport_submit);
         if (submitButton != null) {
+            submitButton.setEnabled(false);
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EditText editTransportDestination = (EditText)
-                            findViewById(R.id.transport_destination_edit_text);
                     String destination = editTransportDestination.getText().toString();
-
-                    EditText editTransportPassengers = (EditText)
-                            findViewById(R.id.transport_passengers_edit_text);
                     int passengers = Integer.parseInt(editTransportPassengers.getText().toString());
-
-                    EditText editTransportMessage = (EditText)
-                            findViewById(R.id.transport_message_edit_text);
                     String message = editTransportMessage.getText().toString();
-
                     sendTransportRequest(destination, passengers, departureIn, message);
                 }
             });
         }
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        Log.d(TransportActivity.class.getCanonicalName(), "Validating form");
+        validate();
+    }
+
+    /**
+     * Validate the fields.
+     */
+    private void validate() {
+        boolean invalid = false;
+        if (editTransportDestination.getText().toString().trim().equalsIgnoreCase("")) {
+            Log.d(TransportActivity.class.getCanonicalName(), "Transport field empty");
+            invalid = true;
+            editTransportDestination.setError(getString(R.string.required));
+        }
+        try {
+            String passengers = editTransportPassengers.getText().toString().trim();
+            if (passengers.equalsIgnoreCase("")) {
+                Log.d(TransportActivity.class.getCanonicalName(), "Passenger field empty");
+                invalid = true;
+                editTransportPassengers.setError(getString(R.string.required));
+            } else {
+                if (Integer.parseInt(passengers) <= 0) {
+                    Log.d(TransportActivity.class.getCanonicalName(), "Passenger number not greater than 0");
+                    invalid = true;
+                    editTransportPassengers.setError(getString(R.string.required));
+                }
+            }
+        } catch (NumberFormatException e) {
+            Log.d(TransportActivity.class.getCanonicalName(), "Number format exception");
+            invalid = true;
+            editTransportPassengers.setError(getString(R.string.required));
+        }
+        Log.d(TransportActivity.class.getCanonicalName(), "Setting submit button to " + !invalid);
+        submitButton.setEnabled(!invalid);
+    }
+
     /**
      * Send a transport request.
      */
-    private void sendTransportRequest(String message, int passengers, String departureIn,
-                                      String destination) {
+    private void sendTransportRequest(String destination, int passengers, String departureIn,
+                                      String message) {
         Transport transport = new Transport(message, passengers,
                 departureIn, destination);
         Log.d(TransportActivity.class.getCanonicalName(), "sendTransportRequest() to " +
@@ -97,7 +149,7 @@ public class TransportActivity extends AppCompatActivity {
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
 
-        if (guestId != "none") {
+        if (!guestId.equals("none") && !roomNumber.equals("none")) {
             PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                     owner,
                     type,

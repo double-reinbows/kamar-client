@@ -12,6 +12,7 @@
     <string name="title_activity_survey">SurveyActivity</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="welcome">Welcome</string>
+    <string name="welcome_message">Welcome Message</string>
     <string name="upload">Upload</string>
     <string name="positive">Yes</string>
     <string name="negative">No</string>
@@ -19,6 +20,7 @@
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
     <string name="something_went_wrong">Oops, something went wrong</string>
+    <string name="required">Required</string>
 
     <!-- Home -->
     <string name="language_english">English</string>
@@ -74,7 +76,7 @@
     <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>
     <string name="transport_departing_in">Departing in</string>
-    <string name="transport_minutes">Minutes</string>
+    <string name="transport_minutes">minutes</string>
     <string name="transport_destination">Destination</string>
     <string name="transport_message">Message</string>
     <string name="transport_result">Transport request sent</string>
@@ -114,6 +116,15 @@
     <string name="restaurant_order_summary">Order Summary</string>
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
+    <string name="restaurant_submit_button">Confrim Order</string>
+    <string name="restaurant_back_button">Back</string>
+    <string name="restaurant_confirm_input">Comments...</string>
+    <string name="restaurant_confirmation_dialog_title">Thank you for your order.</string>
+    <string name="restaurant_confirmation_dialog_desc">
+        For updates on your order\'s current progress,\n please click the My Requests button \n
+        located in our Home Page.
+    </string>
+
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>

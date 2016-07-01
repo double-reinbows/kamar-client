@@ -102,8 +102,9 @@ public class CheckGuestInFragment extends Fragment {
 
                 String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
 
-                // TODO this needs to be input by staff
-                String welcome = "Hi " + firstName + "! Welcome to Indoluxe Hotel!";
+
+                EditText editTextWelcomeMessage = (EditText) getView().findViewById(R.id.guest_welcome_message);
+                String welcome = editTextWelcomeMessage.getText().toString();
 
                 sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber, checkOutDate,
                         welcome);

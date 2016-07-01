@@ -215,8 +215,7 @@ public class RestaurantActivity extends AppCompatActivity {
                 while (it.hasNext()) {
                     HashMap.Entry pair = (HashMap.Entry) it.next();
                     if (((int)pair.getValue() > 0) && (pair.getKey().toString() != "subtotal")){
-
-                        OrderItem orderItem = new OrderItem((int)pair.getValue(),pair.getKey().toString(),
+                        OrderItem orderItem = new OrderItem((int)pair.getValue(),idToConsumable.get(pair.getKey().toString()).name,
                                 idToConsumable.get(pair.getKey().toString()).price);
                         restaurantOrderItems.add(orderItem);
                     }

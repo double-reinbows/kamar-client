@@ -5,6 +5,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#E57373</color>
+    <color name="colorButton">#AC0D13</color>
     <color name="guestTextColor">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="darkRed">#AC0D13</color>
+    <color name="lightRed">#DE4646</color>
+    <color name="whiteTransparent">#96ffffff</color>
 </resources>

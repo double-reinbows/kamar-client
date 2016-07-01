@@ -69,7 +69,7 @@ public class MaintenanceDialogFragment extends DialogFragment {
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
 
-        if (guestId != "none") {
+        if (!guestId.equals("none") && !roomNumber.equals("none")) {
             PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
                     owner,
                     type,
