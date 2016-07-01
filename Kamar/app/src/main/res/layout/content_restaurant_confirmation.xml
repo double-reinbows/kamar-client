@@ -77,7 +77,7 @@
                 android:text="@string/restaurant_back_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorNavBar"
+                android:backgroundTint="@color/colorNavBar"
                 android:textColor="@color/colorNavBarBackground"
                 android:layout_gravity="bottom|left" />
 

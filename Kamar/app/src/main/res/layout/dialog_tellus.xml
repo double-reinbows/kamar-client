@@ -10,6 +10,16 @@
         android:textSize="22sp"
         android:textColor="#000000"
         android:text="@string/tellus_message"/>
+
+    <RatingBar
+        android:id="@+id/tellusRatingBar"
+        android:theme="@style/RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:rating="0.0" />
+
     <EditText
         android:id="@+id/tellus_message_edit_text"
         android:layout_width="match_parent"
@@ -19,5 +29,6 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:hint="@string/tellus_edittext"/>
+
 
 </LinearLayout>

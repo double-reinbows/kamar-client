@@ -6,4 +6,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#E57373</color>
     <color name="guestTextColor">#FFFFFF</color>
+    <color name="darkRed">#AC0D13</color>
+    <color name="lightRed">#E57373</color>
+    <color name="dialogConfirmationBackground">#b9ac0d13</color>
 </resources>
