@@ -16,19 +16,27 @@
         android:textSize="35dp"
         android:textColor="#000000" />
     <ImageView
+        android:id="@+id/permintaan_cancel_button"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_toStartOf="@+id/permintaan_chat_button"
+        android:layout_centerVertical="true"
+        android:src="@drawable/permintaan_cancel_button"
+        android:focusable="false"/>
+    <ImageView
         android:id="@+id/permintaan_chat_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_toStartOf="@+id/permintaan_info_button"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_down_arrow"
+        android:src="@drawable/permintaan_chat"
         android:focusable="false"/>
     <ImageView
         android:id="@+id/permintaan_info_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_down_arrow"
+        android:src="@drawable/permintaan_info"
         android:focusable="false"/>
 </RelativeLayout>

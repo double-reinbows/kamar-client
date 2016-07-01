@@ -1,7 +1,7 @@
 package com.martabak.kamar.activity.home;
 
 import android.app.AlertDialog;
-import android.content.Context;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,14 +9,14 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import android.app.Fragment;
+
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.activity.staff.StaffHomeActivity;

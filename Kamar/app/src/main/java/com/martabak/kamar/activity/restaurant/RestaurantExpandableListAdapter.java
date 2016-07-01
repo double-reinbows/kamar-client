@@ -3,8 +3,6 @@ package com.martabak.kamar.activity.restaurant;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.design.widget.CoordinatorLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,32 +21,33 @@ import java.util.List;
 class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> subsectionHeaders; //header text
+    private List<String> subsections; //header text
     //a list of each item's main text with header text as keys
-    private HashMap<String, List<String>> itemTextDict;
+    private HashMap<String, List<String>> subsectionToIds;
     //consumable dictionary with consumable.name keys
-    private HashMap<String, Consumable> itemObjectDict;
+    private HashMap<String, Consumable> idToConsumable;
     //quantity dictionary with consumable.name keys
-    private HashMap<String, Integer> itemQuantityDict;
+    private HashMap<String, Integer> idToQuantity;
     private TextView subtotalText;
 
-    public RestaurantExpandableListAdapter(Context context, List<String> subsectionHeaders,
-                                            HashMap<String, List<String>> listDataChild,
-                                            HashMap<String, Consumable> listDataChildString,
-                                            HashMap<String, Integer> quantityDict,
+    public RestaurantExpandableListAdapter(Context context, List<String> subsections,
+                                            HashMap<String, List<String>> subsectionToIds,
+                                            HashMap<String, Consumable> idToConsumable,
+                                            HashMap<String, Integer> idToQuantity,
                                             TextView subtotalText) {
         this.context = context;
-        this.subsectionHeaders = subsectionHeaders;
-        this.itemTextDict = listDataChild;
-        this.itemObjectDict = listDataChildString;
-        this.itemQuantityDict = quantityDict;
+        this.subsections = subsections;
+        this.subsectionToIds = subsectionToIds;
+        this.idToConsumable = idToConsumable;
+        this.idToQuantity = idToQuantity;
         this.subtotalText = subtotalText;
     }
 
     @Override
-    public Consumable getChild(int groupPosition, int childPosititon) {
-        return itemObjectDict.get(this.itemTextDict.get(this.subsectionHeaders.get(groupPosition))
-                .get(childPosititon));
+    public Consumable getChild(int groupPosition, int childPosition) {
+//        return idToConsumable.get(this.subsectionToIds.get(this.subsections.get(groupPosition))
+//                .get(childPosititon));
+        return idToConsumable.get(subsectionToIds.get(subsections.get(groupPosition)).get(childPosition));
     }
 
     @Override
@@ -73,6 +72,12 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
         Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
         txtListChild.setTypeface(customFont);
         txtListChild.setText(childText);
+        if (txtListChild.length() > 20) { //reduce space between text name and info
+            txtListChild.setPadding(txtListChild.getPaddingLeft(),
+                                    txtListChild.getPaddingTop(),
+                                    txtListChild.getPaddingRight(),
+                                    30);
+        }
 
         //Set up info text
         //if (context.getSharedPreferences("userSettings", MODE_PRIVATE).getString("locale", null).equals("english"));
@@ -81,10 +86,10 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
         infoView.setText(infoText);
 
         //Set up quantity text
-        List<String> currConsumables = itemTextDict.get(subsectionHeaders.get(groupPosition));
-        Consumable currConsumable = itemObjectDict.get(currConsumables.get(childPosition));
+//        List<String> currConsumables = subsectionToIds.get(subsections.get(groupPosition));
+        Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
         TextView quantity = (TextView) convertView.findViewById(R.id.item_quantity);
-        quantity.setText(itemQuantityDict.get(currConsumable.name).toString());
+        quantity.setText(idToQuantity.get(currConsumable._id).toString());
         quantity.setBackgroundColor(0xFFac0d13);
         quantity.invalidate();
         quantity.setTextColor(Color.WHITE);
@@ -106,22 +111,22 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
          * Implement the minus button
          */
         ImageView minusQuantityButton = (ImageView) convertView.findViewById(R.id.minus_button);
-        minusQuantityButton.setBackgroundColor(0xFFac0d13);
-        minusQuantityButton.invalidate();
-        minusQuantityButton.setColorFilter(Color.argb(255, 255, 255, 255));
+        //minusQuantityButton.setBackgroundColor(0xFFac0d13);
+        //minusQuantityButton.invalidate();
+        //minusQuantityButton.setColorFilter(Color.argb(255, 255, 255, 255));
 
         minusQuantityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                List<String> currConsumables = itemTextDict.get(subsectionHeaders.get(groupPosition));
-                Consumable currConsumable = itemObjectDict.get(currConsumables.get(childPosition));
-                Integer currQuantity = itemQuantityDict.get(currConsumable.name);
+//                List<String> currConsumables = subsectionToIds.get(subsections.get(groupPosition));
+                Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
+                Integer currQuantity = idToQuantity.get(currConsumable._id);
                 if (currQuantity - 1 > -1) { //Stop user from setting to -1 quantity
                     //Minus 1 off the quantity
-                    itemQuantityDict.put(currConsumable.name, (currQuantity - 1));
+                    idToQuantity.put(currConsumable._id, (currQuantity - 1));
                     //minus subtotal by price of item
-                    itemQuantityDict.put("subtotal", itemQuantityDict.get("subtotal")-currConsumable.price);
-                    subtotalText.setText("Rp. "+itemQuantityDict.get("subtotal").toString()+" 000");
+                    idToQuantity.put("subtotal", idToQuantity.get("subtotal")-currConsumable.price);
+                    subtotalText.setText("Rp. "+ idToQuantity.get("subtotal").toString()+" 000");
                     notifyDataSetChanged();
                 }
             }
@@ -131,43 +136,42 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
          * Implement the plus button
          */
         ImageView plusQuantityButton = (ImageView) convertView.findViewById(R.id.plus_button);
-        plusQuantityButton.setBackgroundColor(0xFFac0d13);
-        plusQuantityButton.invalidate();
-        plusQuantityButton.setColorFilter(Color.argb(255, 255, 255, 255));
+        //plusQuantityButton.setBackgroundColor(0xFFac0d13);
+        //plusQuantityButton.invalidate();
+        //plusQuantityButton.setColorFilter(Color.argb(255, 255, 255, 255));
 
         plusQuantityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                List<String> currConsumables = itemTextDict.get(subsectionHeaders.get(groupPosition));
-                Consumable currConsumable = itemObjectDict.get(currConsumables.get(childPosition));
-                Integer currQuantity = itemQuantityDict.get(currConsumable.name);
+//                List<String> currConsumables = subsectionToIds.get(subsections.get(groupPosition));
+                Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
+                Integer currQuantity = idToQuantity.get(currConsumable._id);
                 //Add 1 to the quantity
-                itemQuantityDict.put(currConsumable.name, (currQuantity + 1));
+                idToQuantity.put(currConsumable._id, (currQuantity + 1));
                 //plus subtotal by price of item
-                itemQuantityDict.put("subtotal", itemQuantityDict.get("subtotal") + currConsumable.price);
-                subtotalText.setText("Rp. "+itemQuantityDict.get("subtotal").toString()+" 000");
+                idToQuantity.put("subtotal", idToQuantity.get("subtotal") + currConsumable.price);
+                subtotalText.setText("Rp. "+ idToQuantity.get("subtotal").toString()+" 000");
                 notifyDataSetChanged();
             }
         });
 
-        //txtListChild.setText(childText);
         return convertView;
     }
 
    @Override
     public int getChildrenCount(int groupPosition) {
-        return this.itemTextDict.get(subsectionHeaders.get(groupPosition))
+        return this.subsectionToIds.get(subsections.get(groupPosition))
                 .size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this.subsectionHeaders.get(groupPosition);
+        return this.subsections.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this.subsectionHeaders.size();
+        return this.subsections.size();
     }
 
     @Override

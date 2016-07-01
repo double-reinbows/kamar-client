@@ -23,25 +23,24 @@ import rx.Observer;
 
 class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context _context;
-    private List<String> _listDataHeader; // header titles
+    private Context context;
+    private List<String> states; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
-    private HashMap<String, Permintaan> _listDataChildString;
+    private HashMap<String, List<String>> stateToPermintaanIds;
+    private HashMap<String, Permintaan> idToPermintaan;
 
-    public StaffExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listDataChild, HashMap<String,
-                                    Permintaan> listDataChildString) {
-        this._context = context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listDataChild;
-        this._listDataChildString = listDataChildString;
+    public StaffExpandableListAdapter(Context context, List<String> states,
+                                 HashMap<String, List<String>> stateToPermintaanIds, HashMap<String,
+                                    Permintaan> idToPermintaan) {
+        this.context = context;
+        this.states = states;
+        this.stateToPermintaanIds = stateToPermintaanIds;
+        this.idToPermintaan = idToPermintaan;
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+    public Permintaan getChild(int groupPosition, int childPosition) {
+        return idToPermintaan.get(stateToPermintaanIds.get(states.get(groupPosition)).get(childPosition));
     }
 
     @Override
@@ -52,15 +51,19 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText = (String) getChild(groupPosition, childPosition);
+
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.staff_permintaan_item, null);
         }
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
+
+        //Set up child text
+        final String childText = (String) getChild(groupPosition, childPosition).type;
+
 
         //TODO: Change button picture to a down arrow
         ImageView progressPermintaanButton = (ImageView) convertView.findViewById(R.id.progress_permintaan_button);
@@ -68,36 +71,33 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         progressPermintaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(_context);
-                builder.setMessage(_context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
                 builder.setCancelable(false);
-                builder.setPositiveButton(_context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Check permintaan can be progressed
                         if (groupPosition + 1 < 4) {
-                            Permintaan currPermintaan;
-                            List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
-                            currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
+                            Permintaan currPermintaan = getChild(groupPosition, childPosition);
                             Log.v("id", currPermintaan._id);
 
                             doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, 1);
 
                             //Get the list of permintaans in the next state
-                            List<String> nextPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition + 1));
+                            List<String> nextPermintaans = stateToPermintaanIds.get(states.get(groupPosition + 1));
 
-                            //TODO: Should the following block be done in onCompleted()?
                             //Add child to the next state
-                            nextPermintaans.add(currPermintaans.get(childPosition));
+                            nextPermintaans.add(currPermintaan._id);
                             //Remove the child from the current state
-                            currPermintaans.remove(childPosition);
+                            stateToPermintaanIds.get(states.get(groupPosition)).remove(currPermintaan._id);
                         } else {
                             //TODO: Tell the user they can't progress the permintaan
                         }
                     }
                 });
 
-                builder.setNegativeButton(_context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -114,35 +114,32 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         regressPermintaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(_context);
-                builder.setMessage(_context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_regress_confirmation));
                 builder.setCancelable(false);
-                builder.setPositiveButton(_context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Check permintaan can be regressed
                         if (groupPosition - 1 > -1) {
-                            Permintaan currPermintaan;
-                            List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
-                            currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
+
+                            Permintaan currPermintaan = getChild(groupPosition, childPosition);
 
                             doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, -1);
 
-                            //Get the list of permintaans in the previous state
-                            List<String> prevPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition - 1));
-
-                            //TODO: Should the following block should be done in onCompleted()?
-                            //Add child to the next state
-                            prevPermintaans.add(currPermintaans.get(childPosition));
-                            //Remove the child from the current state
-                            currPermintaans.remove(childPosition);
+                            //Get the list of permintaans in the current & previous state
+                            List<String> currPermintaans = stateToPermintaanIds.get(states.get(groupPosition));
+                            List<String> prevPermintaans = stateToPermintaanIds.get(states.get(groupPosition - 1));
+                            //Add child to the previous state and remove from current state
+                            prevPermintaans.add(currPermintaan._id);
+                            currPermintaans.remove(currPermintaan._id);
                         } else {
                             //TODO tell user they cannot regress
                         }
                     }
                 });
 
-                builder.setNegativeButton(_context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -180,7 +177,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         String currState = setState(groupPosition);
         final String targetState = setState(groupPosition + increment);
 
-        PermintaanServer.getInstance(_context).getPermintaansOfState(currState)
+        PermintaanServer.getInstance(context).getPermintaansOfState(currState)
                                                 .subscribe(new Observer<Permintaan>() {
             Permintaan tempPermintaan = new Permintaan();
 
@@ -190,7 +187,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
                         tempPermintaan.roomNumber, tempPermintaan.guestId, targetState,
                         tempPermintaan.created, new Date(), tempPermintaan.content);
-                PermintaanServer.getInstance(_context).updatePermintaan(updatedPermintaan)
+                PermintaanServer.getInstance(context).updatePermintaan(updatedPermintaan)
                     .subscribe(new Observer<Boolean>() {
                         @Override
                         public void onCompleted() {
@@ -229,18 +226,18 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return this.stateToPermintaanIds.get(this.states.get(groupPosition))
                 .size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this._listDataHeader.get(groupPosition);
+        return this.states.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this._listDataHeader.size();
+        return this.states.size();
     }
 
     @Override
@@ -253,7 +250,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.staff_permintaan_state, null);
         }

@@ -12,6 +12,7 @@
     <string name="title_activity_survey">SurveyActivity</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="welcome">Welcome</string>
+    <string name="welcome_message">Welcome Message</string>
     <string name="upload">Upload</string>
     <string name="positive">Yes</string>
     <string name="negative">No</string>
@@ -45,6 +46,7 @@
     <string name="deleted_permintaan">DELETED</string>
     <string name="cancelled_permintaan">CANCELLED</string>
     <string name="permintaan_progress_confirmation">Are you sure you want to progress this request?</string>
+    <string name="permintaan_regress_confirmation">Are you sure you want to regress this request?</string>
     <string name="permintaan_status_is_now">Status is now</string>
 
     <!-- Chat -->
@@ -114,6 +116,15 @@
     <string name="restaurant_order_summary">Order Summary</string>
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
+    <string name="restaurant_submit_button">Confrim Order</string>
+    <string name="restaurant_back_button">Back</string>
+    <string name="restaurant_confirm_input">Comments...</string>
+    <string name="restaurant_confirmation_dialog_title">Thank you for your order.</string>
+    <string name="restaurant_confirmation_dialog_desc">
+        For updates on your order\'s current progress,\n please click the My Requests button \n
+        located in our Home Page.
+    </string>
+
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -18,33 +19,39 @@ import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.PermintaanServer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import rx.Observer;
+
 class GuestExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
-    private HashMap<String, Permintaan> _listDataChildString;
+    private List<String> states; // list of states
+    // dictionary of lists of IDs, with the state as keys
+    private HashMap<String, List<String>> stateToPermIds;
+    // dictionary of permintaans with their IDs as keys
+    private HashMap<String, Permintaan> idToPermintaan;
 
-    public GuestExpandableListAdapter(Context context, List<String> listDataHeader,
-                                      HashMap<String, List<String>> listDataChild, HashMap<String,
-                                    Permintaan> listDataChildString) {
+    public GuestExpandableListAdapter(Context context, List<String> states,
+                                      HashMap<String, List<String>> stateToPermIds, HashMap<String,
+                                    Permintaan> idToPermintaan) {
         this.context = context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listDataChild;
-        this._listDataChildString = listDataChildString;
+        this.states = states;
+        this.stateToPermIds = stateToPermIds;
+        this.idToPermintaan = idToPermintaan;
     }
 
+    /**
+     * Returns a permintaan from the expandable list.
+     */
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+    public Permintaan getChild(int groupPosition, int childPosition) {
+        return idToPermintaan.get(stateToPermIds.get(states.get(groupPosition)).get(childPosition));
     }
 
     @Override
@@ -56,35 +63,89 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
-
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.guest_permintaan_item, null);
         }
 
-        TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
+        //Set up the "x" or permintaan cancel button
+        ImageView cancelPermintaanButton = (ImageView) convertView.findViewById(R.id.permintaan_cancel_button);
 
+        //if chosen child is NEW, then provide a cancel button
+        if (getChild(groupPosition, childPosition).state.equals("NEW")) {
+
+            cancelPermintaanButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    final Permintaan currPermintaan = getChild(groupPosition, childPosition);
+                    PermintaanServer.getInstance(context).getPermintaansOfState(currPermintaan.state)
+                            .subscribe(new Observer<Permintaan>() {
+                                Permintaan tempPermintaan = new Permintaan();
+
+                                @Override
+                                public void onCompleted() {
+                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "doGetAndUpdatePermintaan() On completed");
+                                    Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
+                                            tempPermintaan.roomNumber, tempPermintaan.guestId, "CANCELLED",
+                                            tempPermintaan.created, new Date(), tempPermintaan.content);
+                                    PermintaanServer.getInstance(context).updatePermintaan(updatedPermintaan)
+                                            .subscribe(new Observer<Boolean>() {
+                                                @Override
+                                                public void onCompleted() {
+                                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On completed");
+//                                                notifyDataSetChanged();
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+                                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On error");
+                                                    e.printStackTrace();
+                                                }
+
+                                                @Override
+                                                public void onNext(Boolean result) {
+                                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() staff permintaan update " + result);
+                                                }
+                                            });
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On error");
+                                }
+
+                                @Override
+                                public void onNext(Permintaan result) {
+                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On next" + result._id + " " + currPermintaan._id);
+                                    if (result._id.equals(currPermintaan._id)) {
+                                        tempPermintaan = result;
+                                        Log.v("Id", tempPermintaan._id);
+                                    }
+                                }
+                            });
+                    //remove currPermintaan's ID from the list of states.
+                    stateToPermIds.get(currPermintaan.state).remove(currPermintaan._id);
+                    notifyDataSetChanged();
+                }
+            });
+        } else { //remove the cancel ImageView from the View
+            cancelPermintaanButton.setVisibility(View.GONE);
+        }
+
+        // Set up the "i" or info button
         ImageView permintaanInfoButton = (ImageView) convertView.findViewById(R.id.permintaan_info_button);
 
         permintaanInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //get the selected permintaan into currPermintaan
-                Permintaan currPermintaan;
-                List<String> currPermintaans = _listDataChild.get(_listDataHeader.get(groupPosition));
-                currPermintaan = _listDataChildString.get(currPermintaans.get(childPosition));
-
+                Permintaan currPermintaan = getChild(groupPosition, childPosition); //idToPermintaan.get(currPermintaans.get(childPosition));
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 WindowManager manager = (WindowManager) context.getSystemService(Activity.WINDOW_SERVICE);
                 manager.getDefaultDisplay().getMetrics(displayMetrics);
                 int width, height;
-                //WindowManager.LayoutParams;
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
-                    Log.d("herp", "derp");
-                    //width = manager.getDefaultDisplay().getMetrics(displayMetrics);
-                    //height = manager.getDefaultDisplay().getHeight();
                     width = displayMetrics.widthPixels;
                     height = displayMetrics.heightPixels;
                 } else {
@@ -95,10 +156,17 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 //build the AlertDialog's content
-                String simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
-                String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
+                String simpleUpdated;
+                long lastStateChange;
+                if (currPermintaan.updated != null) {
+                    simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
+                    lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime())/1000;
+                } else {
+                    simpleUpdated = "never";
+                    lastStateChange = 0;
+                }
+                String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.created);
 
-                long lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime())/1000;
 
                 builder
                         .setTitle(currPermintaan.type + " ORDER DETAILS")
@@ -115,6 +183,8 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
+        final String childText =  getChild(groupPosition, childPosition).type;
+        TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
         Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
         txtListChild.setTypeface(customFont);
         txtListChild.setText(childText);
@@ -123,18 +193,18 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return this.stateToPermIds.get(this.states.get(groupPosition))
                 .size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this._listDataHeader.get(groupPosition);
+        return this.states.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this._listDataHeader.size();
+        return this.states.size();
     }
 
     @Override
@@ -145,16 +215,18 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.guest_permintaan_state, null);
         }
 
+        String headerTitle = (String) getGroup(groupPosition);
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.list_state);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
+        lblListHeader.setTypeface(null, Typeface.BOLD); //bolded text
         lblListHeader.setText(headerTitle);
+        // Set different bg colour for each state
         if (headerTitle.equals("NEW")) {
             lblListHeader.setBackgroundColor(0xFFac0d13);
         } else if (headerTitle.equals("IN PROGRESS")) {
