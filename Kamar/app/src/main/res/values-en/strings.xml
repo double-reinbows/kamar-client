@@ -19,6 +19,7 @@
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
     <string name="something_went_wrong">Oops, something went wrong</string>
+    <string name="required">Required</string>
 
     <!-- Home -->
     <string name="language_english">English</string>
@@ -73,7 +74,7 @@
     <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>
     <string name="transport_departing_in">Departing in</string>
-    <string name="transport_minutes">Minutes</string>
+    <string name="transport_minutes">minutes</string>
     <string name="transport_destination">Destination</string>
     <string name="transport_message">Message</string>
     <string name="transport_result">Transport request sent</string>

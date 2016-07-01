@@ -14,77 +14,130 @@
               tools:showIn="@layout/activity_transport"
               android:gravity="right">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="@string/transport_destination" />
-        <EditText
+        android:layout_margin="10dp"
+        card_view:cardBackgroundColor="@color/whiteTransparent"
+        card_view:cardCornerRadius="4dp">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPostalAddress"
-            android:ems="100"
-            android:id="@+id/transport_destination_edit_text"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/darkRed"
+                android:text="@string/transport_destination"
+                android:textAlignment="center"
+                android:textSize="25dp"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:ems="100"
+                android:id="@+id/transport_destination_edit_text"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="left">
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="@string/transport_passengers" />
-        <EditText
+        android:layout_margin="10dp"
+        card_view:cardBackgroundColor="@color/whiteTransparent"
+        card_view:cardCornerRadius="4dp">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="5"
-            android:id="@+id/transport_passengers_edit_text"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:layout_gravity="left">
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/darkRed"
+                android:text="@string/transport_passengers"
+                android:textAlignment="center"
+                android:textSize="25dp"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="5"
+                android:id="@+id/transport_passengers_edit_text"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="@string/transport_departing_in" />
-        <Spinner
-            android:id="@+id/transport_departure_spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="@string/transport_minutes" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="@string/transport_message" />
-        <EditText
+        android:layout_margin="10dp"
+        card_view:cardBackgroundColor="@color/whiteTransparent"
+        card_view:cardCornerRadius="4dp">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="100"
-            android:id="@+id/transport_message_edit_text"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/darkRed"
+                android:text="@string/transport_departing_in"
+                android:textAlignment="center"
+                android:textSize="25dp"/>
+            <Spinner
+                android:id="@+id/transport_departure_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:textColor="@color/darkRed"
+                android:text="@string/transport_minutes" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        card_view:cardBackgroundColor="@color/whiteTransparent"
+        card_view:cardCornerRadius="4dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textColor="@color/darkRed"
+                android:text="@string/transport_message"
+                android:textAlignment="center"
+                android:textSize="25dp"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="100"
+                android:id="@+id/transport_message_edit_text"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -96,8 +149,10 @@
             android:text="@string/transport_submit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:gravity="right" />
+            android:background="@drawable/redbutton"
+            android:textColor="@android:color/white"
+            android:textAlignment="center"
+            android:gravity="center" />
     </LinearLayout>
 
 </LinearLayout>
