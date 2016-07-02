@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,23 +36,32 @@ public class MaintenanceDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState){
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.dialog_maintenance, null);
-        return new AlertDialog.Builder(getActivity())
-                .setView(view)
-                .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        EditText editMaintenanceMessage = (EditText)
-                                view.findViewById(R.id.maintenance_message_edit_text);
-                        String maintenanceMessage = editMaintenanceMessage.getText().toString();
-                        sendMaintenanceRequest(maintenanceMessage);
-                    }
-                })
-                .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        permintaanDialogListener.onDialogNegativeClick(MaintenanceDialogFragment.this);
-                    }
-                })
-                .create();
+        final Button confirmButton = (Button) view.findViewById(R.id.maintenance_confirm);
+        final Button cancelButton = (Button) view.findViewById(R.id.maintenance_cancel);
+
+        final AlertDialog dialog= new AlertDialog.Builder(getActivity()).create();
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editMaintenanceMessage = (EditText)
+                        view.findViewById(R.id.maintenance_message_edit_text);
+                String maintenanceMessage = editMaintenanceMessage.getText().toString();
+                sendMaintenanceRequest(maintenanceMessage);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                permintaanDialogListener.onDialogNegativeClick(MaintenanceDialogFragment.this);
+            }
+        });
+
+        dialog.setView(view);
+
+        return dialog;
     }
 
     /**

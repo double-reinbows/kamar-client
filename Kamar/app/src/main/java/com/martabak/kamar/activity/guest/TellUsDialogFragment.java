@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
@@ -32,26 +33,35 @@ public class TellUsDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState){
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.dialog_tellus, null);
-        return new AlertDialog.Builder(getActivity())
-                .setView(view)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        EditText editBellboyMessage = (EditText)
-                                view.findViewById(R.id.tellus_message_edit_text);
-                        RatingBar rB = (RatingBar) view.findViewById(R.id.tellusRatingBar);
+        final Button confirmButton = (Button) view.findViewById(R.id.tellus_confirm);
+        final Button cancelButton = (Button) view.findViewById(R.id.tellus_cancel);
 
-                        Log.v("LOGG", Float.toString(rB.getRating()));
-                        String tellUsMessage = editBellboyMessage.getText().toString();
-                        sendTellUs(tellUsMessage);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        permintaanDialogListener.onDialogNegativeClick(TellUsDialogFragment.this);
-                        dialog.dismiss();
-                    }
-                })
-                .create();
+        final AlertDialog dialog= new AlertDialog.Builder(getActivity()).create();
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText tellusBellboyMessage = (EditText)
+                        view.findViewById(R.id.tellus_message_edit_text);
+                RatingBar rB = (RatingBar) view.findViewById(R.id.tellusRatingBar);
+
+                String tellUsMessage = tellusBellboyMessage.getText().toString();
+                sendTellUs(tellUsMessage);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                permintaanDialogListener.onDialogNegativeClick(TellUsDialogFragment.this);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setView(view);
+
+        return dialog;
+
     }
 
     /**

@@ -141,7 +141,10 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 Permintaan currPermintaan = getChild(groupPosition, childPosition); //idToPermintaan.get(currPermintaans.get(childPosition));
+
+                /*
                 DisplayMetrics displayMetrics = new DisplayMetrics();
+
                 WindowManager manager = (WindowManager) context.getSystemService(Activity.WINDOW_SERVICE);
                 manager.getDefaultDisplay().getMetrics(displayMetrics);
                 int width, height;
@@ -154,7 +157,12 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                     width = point.x;
                     height = point.y;
                 }
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                */
+
+                LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View view = layoutInflater.inflate(R.layout.dialog_request_info, null);
+                final AlertDialog dialog= new AlertDialog.Builder(context).create();
+
                 //build the AlertDialog's content
                 String simpleUpdated;
                 long lastStateChange;
@@ -168,18 +176,15 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                 String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.created);
 
 
-                builder
-                        .setTitle(currPermintaan.type + " ORDER DETAILS")
-                        .setMessage("Status: "+currPermintaan.state+"\n"+
-                                    "Message: "+currPermintaan.content.message+"\n"+
-                                    "Order lodged at: "+simpleCreated+"\n"+
-                                    "Last Status change at "+simpleUpdated+"\n"+
-                                    "Time since latest Status change: "+lastStateChange/60+" minutes ago")
-                        .setCancelable(true)
-                        ;
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                alertDialog.getWindow().setLayout(width, (height-100));
+                TextView requestInfoDetails = (TextView)
+                        view.findViewById(R.id.request_content);
+                requestInfoDetails.setText("Status: "+currPermintaan.state+"\n"+
+                        "Message: "+currPermintaan.content.message+"\n"+
+                        "Order lodged at: "+simpleCreated+"\n"+
+                        "Last Status change at "+simpleUpdated+"\n"+
+                        "Time since latest Status change: "+lastStateChange/60+" minutes ago" + "\n");
+                dialog.setView(view);
+                dialog.show();
             }
         });
 

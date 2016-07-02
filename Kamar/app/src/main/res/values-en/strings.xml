@@ -125,6 +125,7 @@
         located in our Home Page.
     </string>
 
+    <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>

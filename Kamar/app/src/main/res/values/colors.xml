@@ -12,4 +12,5 @@
     <color name="darkRed">#AC0D13</color>
     <color name="lightRed">#DE4646</color>
     <color name="whiteTransparent">#96ffffff</color>
+    <color name="colorChatInput">#FFFFFF</color>
 </resources>
