@@ -20,7 +20,6 @@ import com.martabak.kamar.domain.managers.RestaurantOrderManager;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.MenuServer;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,7 +57,6 @@ public class RestaurantActivity extends AppCompatActivity {
 
         ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
         ab.setDisplayShowTitleEnabled(false); // disable the default title element here (for centered title)
-
         ab.setCustomView(R.layout.actionbar_restaurant_customview);
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
@@ -89,8 +87,8 @@ public class RestaurantActivity extends AppCompatActivity {
         }
 
         //initialize constant variables
-        idToQuantity = new HashMap<String, Integer>();
-        idToConsumable = new HashMap<String, Consumable>();
+        idToQuantity = new HashMap<>();
+        idToConsumable = new HashMap<>();
         food = new ArrayList<>();
         beverages = new ArrayList<>();
         desserts = new ArrayList<>();
@@ -162,9 +160,9 @@ public class RestaurantActivity extends AppCompatActivity {
         //a dictionary of lists of consumable IDs with subsections as keys
         HashMap<String, List<String>> subsectionToIds;
 
-        subsections = new ArrayList<String>();
-        subsectionToIds = new HashMap<String, List<String>>();
-        //idToConsumable = new HashMap<String, Consumable>();
+        subsections = new ArrayList<>();
+        subsectionToIds = new HashMap<>();
+        //idToConsumable = new HashMap<>();
 
         //iterate over the consumables for the current tab/section
         for (Consumable consumable : consumables) {
@@ -199,7 +197,6 @@ public class RestaurantActivity extends AppCompatActivity {
         //set up restaurant expandable list adapter
         listAdapter = new RestaurantExpandableListAdapter(this, subsections, subsectionToIds,
                 idToConsumable, idToQuantity, subtotalText);
-
 
         //set list adapter onto view
         view.setAdapter(listAdapter);
@@ -237,8 +234,6 @@ public class RestaurantActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     /**
@@ -256,7 +251,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
                         @Override
                         public void onCompleted() {
-                            Log.d(RestaurantActivity.class.getCanonicalName(), "On completed");
+                            Log.d(RestaurantActivity.class.getCanonicalName(), "getMenuBySection: On completed");
                             createExpandableList(consumables, view);
                         }
 
@@ -268,7 +263,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
                         @Override
                         public void onNext(Consumable result) {
-                            Log.d(RestaurantActivity.class.getCanonicalName(), "On next");
+                            Log.d(RestaurantActivity.class.getCanonicalName(), "getMenuBySection: On next: " + result.name);
                             consumables.add(result);
                         }
                     });

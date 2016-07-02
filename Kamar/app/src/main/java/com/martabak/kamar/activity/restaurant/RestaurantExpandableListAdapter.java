@@ -1,7 +1,6 @@
 package com.martabak.kamar.activity.restaurant;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,13 +10,18 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Consumable;
+import com.martabak.kamar.service.AuthorizationInterceptor;
 import com.martabak.kamar.service.Server;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -106,12 +110,13 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
         TextView priceView = (TextView)convertView.findViewById(R.id.item_price);
         priceView.setText("Rp. "+priceText+" 000");
 
-        //Set up item image
+        //Set up item image1
         ImageView itemImg = (ImageView) convertView.findViewById(R.id.item_img);
-        Picasso.with(context)
+        Log.d(RestaurantExpandableListAdapter.class.getCanonicalName(), "Loading image " + c.getImageUrl() + " into " + itemImg);
+        Server.picasso(context)
                 .load(c.getImageUrl())
-//                .placeholder() TODO when we have a placeholder e.g. loading image
-//                .error() TODO when we have an error image e.g. missing
+                .placeholder(R.drawable.loading_batik)
+                .error(R.drawable.error)
                 .into(itemImg);
 
         /**

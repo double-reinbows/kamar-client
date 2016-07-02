@@ -36,7 +36,6 @@
         android:layout_height="wrap_content"
         android:maxWidth="500dp"
         android:maxHeight="175dp"
-        android:src="@drawable/american_burger"
         android:layout_toStartOf="@+id/minus_button"
         android:layout_centerVertical="true"/>
     <ImageView

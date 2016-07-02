@@ -85,7 +85,7 @@ public class Consumable extends Model {
      * E.g. http://theserver:5984/219310931202313/image.jpg.
      */
     public String getImageUrl() {
-        return MenuServer.getBaseUrl() + "/" + this._id + "/" + MenuService.CONSUMABLE_IMAGE_PATH;
+        return MenuServer.getBaseUrl() + "/menu/" + this._id + "/" + MenuService.CONSUMABLE_IMAGE_PATH;
     }
 
 }
