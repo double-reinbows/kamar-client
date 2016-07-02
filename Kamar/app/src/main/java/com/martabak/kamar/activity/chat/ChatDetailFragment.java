@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.chat;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -190,6 +191,14 @@ public class ChatDetailFragment extends Fragment {
             } else { // If the message has been sent and read
                 holder.mIconView.setImageResource(R.drawable.ic_menu_share);
             }
+
+            //set the background row colors here
+            if (position % 2 == 1) {
+                holder.mView.setBackgroundColor(Color.GRAY);
+            } else {
+                holder.mView.setBackgroundColor(Color.WHITE);
+            }
+
         }
 
         @Override

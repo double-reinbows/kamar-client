@@ -24,7 +24,7 @@ public class StaffHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         startStaffServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
         setContentView(R.layout.activity_staff_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.staff_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

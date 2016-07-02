@@ -15,8 +15,6 @@
         android:name="com.martabak.kamar.activity.chat.ChatDetailFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_above="@+id/chat_message_send_line"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.martabak.kamar.activity.chat.ChatListActivity"
@@ -27,11 +25,9 @@
         android:id="@+id/chat_message_send_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:layout_alignParentBottom="true"
         android:baselineAligned="false"
-        android:background="@color/colorChatInput"
         android:divider="?android:attr/dividerHorizontal"
         android:orientation="horizontal"
         android:showDividers="none"
@@ -41,7 +37,8 @@
 
         <EditText
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:background="@color/colorChatInput"
             android:hint="@string/chat_message_text"
             android:id="@+id/chat_message_edit_text"
             android:layout_weight="0.95" />
