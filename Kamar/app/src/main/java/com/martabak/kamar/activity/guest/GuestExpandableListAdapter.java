@@ -3,6 +3,7 @@ package com.martabak.kamar.activity.guest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.media.Image;
@@ -78,56 +79,73 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
             cancelPermintaanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     final Permintaan currPermintaan = getChild(groupPosition, childPosition);
-                    PermintaanServer.getInstance(context).getPermintaansOfState(currPermintaan.state)
-                            .subscribe(new Observer<Permintaan>() {
-                                Permintaan tempPermintaan = new Permintaan();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_cancel_confirmation));
+                    builder.setCancelable(false);
+                    builder.setPositiveButton(context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                                @Override
-                                public void onCompleted() {
-                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "doGetAndUpdatePermintaan() On completed");
-                                    Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
-                                            tempPermintaan.roomNumber, tempPermintaan.guestId, "CANCELLED",
-                                            tempPermintaan.created, new Date(), tempPermintaan.content);
-                                    PermintaanServer.getInstance(context).updatePermintaan(updatedPermintaan)
-                                            .subscribe(new Observer<Boolean>() {
-                                                @Override
-                                                public void onCompleted() {
-                                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On completed");
-//                                                notifyDataSetChanged();
-                                                }
+                        PermintaanServer.getInstance(context).getPermintaansOfState(currPermintaan.state)
+                                .subscribe(new Observer<Permintaan>() {
+                                    Permintaan tempPermintaan = new Permintaan();
 
-                                                @Override
-                                                public void onError(Throwable e) {
-                                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On error");
-                                                    e.printStackTrace();
-                                                }
+                                    @Override
+                                    public void onCompleted() {
+                                        Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "doGetAndUpdatePermintaan() On completed");
+                                        Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
+                                                tempPermintaan.roomNumber, tempPermintaan.guestId, "CANCELLED",
+                                                tempPermintaan.created, new Date(), tempPermintaan.content);
+                                        PermintaanServer.getInstance(context).updatePermintaan(updatedPermintaan)
+                                                .subscribe(new Observer<Boolean>() {
+                                                    @Override
+                                                    public void onCompleted() {
+                                                        Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On completed");
+                                                        //remove currPermintaan's ID from the list of states.
+                                                        stateToPermIds.get(currPermintaan.state).remove(currPermintaan._id);
+                                                        notifyDataSetChanged();
+                                                    }
 
-                                                @Override
-                                                public void onNext(Boolean result) {
-                                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() staff permintaan update " + result);
-                                                }
-                                            });
-                                }
+                                                    @Override
+                                                    public void onError(Throwable e) {
+                                                        Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On error");
+                                                        e.printStackTrace();
+                                                    }
 
-                                @Override
-                                public void onError(Throwable e) {
-                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On error");
-                                }
-
-                                @Override
-                                public void onNext(Permintaan result) {
-                                    Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On next" + result._id + " " + currPermintaan._id);
-                                    if (result._id.equals(currPermintaan._id)) {
-                                        tempPermintaan = result;
-                                        Log.v("Id", tempPermintaan._id);
+                                                    @Override
+                                                    public void onNext(Boolean result) {
+                                                        Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() staff permintaan update " + result);
+                                                    }
+                                                });
                                     }
-                                }
-                            });
-                    //remove currPermintaan's ID from the list of states.
-                    stateToPermIds.get(currPermintaan.state).remove(currPermintaan._id);
-                    notifyDataSetChanged();
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On error");
+                                    }
+
+                                    @Override
+                                    public void onNext(Permintaan result) {
+                                        Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On next" + result._id + " " + currPermintaan._id);
+                                        if (result._id.equals(currPermintaan._id)) {
+                                            tempPermintaan = result;
+                                            Log.v("Id", tempPermintaan._id);
+                                        }
+                                    }
+                                });
+                            }
+
+                    });
+
+                    builder.setNegativeButton(context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                 }
             });
         } else { //remove the cancel ImageView from the View

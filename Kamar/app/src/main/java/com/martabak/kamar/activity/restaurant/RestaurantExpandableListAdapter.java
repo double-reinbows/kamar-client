@@ -65,10 +65,15 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.restaurant_menu_item, null);
         }
 
-        Consumable c = getChild(groupPosition, childPosition);
+        final Consumable currConsumable = getChild(groupPosition, childPosition);
+
+        final TextView quantity = (TextView) convertView.findViewById(R.id.item_quantity);
+        quantity.setText(idToQuantity.get(currConsumable._id).toString());
+        quantity.setBackgroundColor(0xFFac0d13);
+        quantity.invalidate();
 
         //Set up main text
-        String childText = c.name;
+        String childText = currConsumable.name;
         final TextView txtListChild = (TextView) convertView.findViewById(R.id.item_text);
         Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
         txtListChild.setTypeface(customFont);
@@ -76,40 +81,45 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
         txtListChild.post(new Runnable() {
             @Override
             public void run() {
-                Log.v("line count", Integer.toString(txtListChild.getLineCount()));
+                Log.v("Child info", "child: "+currConsumable.name+" no. of lines: "+Integer.toString(txtListChild.getLineCount()));
                 if (txtListChild.getLineCount() > 1) {//if 2 lines used for item name
-                    //reduce padding item name padding
+                    //reduce item name padding
                     txtListChild.setPadding(txtListChild.getPaddingLeft(),
                             txtListChild.getPaddingTop(),
                             txtListChild.getPaddingRight(),
                             15);
+                } else {
+                    //set item name padding to default
+                    txtListChild.setPadding(txtListChild.getPaddingLeft(),
+                            txtListChild.getPaddingTop(),
+                            txtListChild.getPaddingRight(),
+                            90);
+
+//                    quantity.margin
                 }
             }
         });
 
         //Set up info text
         //if (context.getSharedPreferences("userSettings", MODE_PRIVATE).getString("locale", null).equals("english"));
-        String infoText = c.descriptionEn;
+        String infoText = currConsumable.descriptionEn;
         TextView infoView = (TextView)convertView.findViewById(R.id.item_info);
         infoView.setText(infoText);
 
         //Set up quantity text
 //        List<String> currConsumables = subsectionToIds.get(subsections.get(groupPosition));
-        Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
-        TextView quantity = (TextView) convertView.findViewById(R.id.item_quantity);
-        quantity.setText(idToQuantity.get(currConsumable._id).toString());
-        quantity.setBackgroundColor(0xFFac0d13);
-        quantity.invalidate();
+//        Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
+
 
         //Set up price text
-        String priceText = c.price.toString();
+        String priceText = currConsumable.price.toString();
         TextView priceView = (TextView)convertView.findViewById(R.id.item_price);
         priceView.setText("Rp. "+priceText+" 000");
 
         //Set up item image
         ImageView itemImg = (ImageView) convertView.findViewById(R.id.item_img);
         Picasso.with(context)
-                .load(c.getImageUrl())
+                .load(currConsumable.getImageUrl())
 //                .placeholder() TODO when we have a placeholder e.g. loading image
 //                .error() TODO when we have an error image e.g. missing
                 .into(itemImg);
@@ -126,7 +136,7 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(final View v) {
 //                List<String> currConsumables = subsectionToIds.get(subsections.get(groupPosition));
-                Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
+//                Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
                 Integer currQuantity = idToQuantity.get(currConsumable._id);
                 if (currQuantity - 1 > -1) { //Stop user from setting to -1 quantity
                     //Minus 1 off the quantity
@@ -151,7 +161,7 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(final View v) {
 //                List<String> currConsumables = subsectionToIds.get(subsections.get(groupPosition));
-                Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
+//                Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
                 Integer currQuantity = idToQuantity.get(currConsumable._id);
                 //Add 1 to the quantity
                 idToQuantity.put(currConsumable._id, (currQuantity + 1));
