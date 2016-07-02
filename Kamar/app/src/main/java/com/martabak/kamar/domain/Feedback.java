@@ -11,12 +11,19 @@ public class Feedback extends Model {
      */
     public final String text;
 
+    /**
+     * The stars rating out of 5.
+     */
+    public final Float rating;
+
     public Feedback() {
         this.text = null;
+        this.rating = null;
     }
 
-    public Feedback(String text) {
+    public Feedback(String text, float rating) {
         this.text = text;
+        this.rating = rating;
     }
 
 }
