@@ -46,7 +46,7 @@ public class TellUsDialogFragment extends DialogFragment {
                 RatingBar rB = (RatingBar) view.findViewById(R.id.tellusRatingBar);
 
                 String tellUsMessage = tellusBellboyMessage.getText().toString();
-                sendTellUs(tellUsMessage);
+                sendTellUs(tellUsMessage, rB.getRating());
             }
         });
 
@@ -61,15 +61,14 @@ public class TellUsDialogFragment extends DialogFragment {
         dialog.setView(view);
 
         return dialog;
-
     }
 
     /**
      * Send the feedback message to the server.
      * @param message The feedback message.
      */
-    private void sendTellUs(String message) {
-        FeedbackServer.getInstance(getActivity()).createFeedback(new Feedback(message)).subscribe(new Observer<Boolean>() {
+    private void sendTellUs(String message, float rating) {
+        FeedbackServer.getInstance(getActivity()).createFeedback(new Feedback(message, rating)).subscribe(new Observer<Boolean>() {
                 @Override public void onCompleted() {
                     Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On completed");
                     permintaanDialogListener.onDialogPositiveClick(TellUsDialogFragment.this, success);
