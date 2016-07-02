@@ -28,6 +28,15 @@
             android:id="@+id/toolbar"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:background="@color/colorNavBar"/>
+            android:background="@color/colorNavBar"
+            android:padding="-16dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:contentInsetRight="0dp"
+            android:contentInsetEnd="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetEnd="0dp" />
     </LinearLayout>
  </android.support.design.widget.AppBarLayout>

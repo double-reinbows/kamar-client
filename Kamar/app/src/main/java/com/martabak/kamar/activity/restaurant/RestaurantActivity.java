@@ -20,7 +20,7 @@ import com.martabak.kamar.domain.managers.RestaurantOrderManager;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.MenuServer;
-
+1
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,7 +58,6 @@ public class RestaurantActivity extends AppCompatActivity {
 
         ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
         ab.setDisplayShowTitleEnabled(false); // disable the default title element here (for centered title)
-
         ab.setCustomView(R.layout.actionbar_restaurant_customview);
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
