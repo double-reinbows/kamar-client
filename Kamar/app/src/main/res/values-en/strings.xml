@@ -47,6 +47,7 @@
     <string name="cancelled_permintaan">CANCELLED</string>
     <string name="permintaan_progress_confirmation">Are you sure you want to progress this request?</string>
     <string name="permintaan_regress_confirmation">Are you sure you want to regress this request?</string>
+    <string name="permintaan_cancel_confirmation">Are you sure you want to cancel this request?</string>
     <string name="permintaan_status_is_now">Status is now</string>
 
     <!-- Chat -->

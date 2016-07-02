@@ -41,11 +41,17 @@ public class RestaurantActivity extends AppCompatActivity {
     private List<Consumable> food;
     private List<Consumable> beverages;
     private List<Consumable> desserts;
+
     RestaurantExpandableListAdapter listAdapter;
+    private TextView subtotalText;
+    private Boolean dessertFlag = false;
+
+    //Views
     private ExpandableListView foodExpListView;
     private ExpandableListView bevExpListView;
     private ExpandableListView dessExpListView;
-    private TextView subtotalText;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +111,7 @@ public class RestaurantActivity extends AppCompatActivity {
                 Log.v("tab", tab.getText().toString());
                 String selectedTab = tab.getText().toString();
                 if (selectedTab.equals("Food")) {
+                    dessertFlag = false;
                     //if (food.isEmpty()) {
                         doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), food, foodExpListView);
                     /*} else {
@@ -114,6 +121,7 @@ public class RestaurantActivity extends AppCompatActivity {
                     }
                     */
                 } else if (selectedTab.equals("Beverages")) {
+                    dessertFlag = false;
                     //if (beverages.isEmpty()) {
                         doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), beverages, bevExpListView);
                     /*} else {
@@ -124,7 +132,8 @@ public class RestaurantActivity extends AppCompatActivity {
                     */
                 } else if (selectedTab.equals("Desserts")) {
                     //if (desserts.isEmpty()) {
-                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), desserts, dessExpListView);
+                    dessertFlag = true;
+                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), desserts, dessExpListView);
                     /*} else {
                         Log.v("tab", "saved dess view");
                         dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
@@ -200,6 +209,9 @@ public class RestaurantActivity extends AppCompatActivity {
 
         //set list adapter onto view
         view.setAdapter(listAdapter);
+        if (dessertFlag.equals(true)) {
+            view.expandGroup(0, true);
+        }
 
         //set listener for the button
         FloatingActionButton restaurantButton = (FloatingActionButton) findViewById(R.id.restaurant_add);

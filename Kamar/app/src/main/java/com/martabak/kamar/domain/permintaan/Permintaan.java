@@ -3,8 +3,11 @@ package com.martabak.kamar.domain.permintaan;
 import com.google.gson.annotations.SerializedName;
 import com.martabak.kamar.domain.Model;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -63,13 +66,14 @@ public class Permintaan<T extends Content> extends Model {
      */
     public static final String STATE_COMPLETED = "COMPLETED";
     /**
-     * The DELETED state string.
-     */
-    public static final String STATE_DELETED = "DELETED";
-    /**
      * The CANCELLED state string.
      */
     public static final String STATE_CANCELLED = "CANCELLED";
+
+    /**
+     * The set of cancellable states.
+     */
+    private static final Set<String> CANCELLABLE_STATES = new HashSet<>(Arrays.asList(STATE_NEW, STATE_INPROGRESS, STATE_INDELIVERY));
 
     /**
      * The owner of the request. One of:
@@ -168,6 +172,13 @@ public class Permintaan<T extends Content> extends Model {
         this.created = created;
         this.updated = updated;
         this.content = content;
+    }
+
+    /**
+     * @return Whether or not this permintaan is cancellable.
+     */
+    public boolean isCancellable() {
+        return CANCELLABLE_STATES.contains(state);
     }
 
     @Override
