@@ -89,7 +89,6 @@ public abstract class Server {
                 .downloader(new OkHttp3Downloader(client))
                 .build();
         p.setLoggingEnabled(true);
-        p.setIndicatorsEnabled(true);
         return p;
     }
 
