@@ -61,7 +61,6 @@ public class TellUsDialogFragment extends DialogFragment {
         dialog.setView(view);
 
         return dialog;
-
     }
 
     /**

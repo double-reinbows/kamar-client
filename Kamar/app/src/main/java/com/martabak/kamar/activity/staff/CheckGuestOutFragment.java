@@ -92,7 +92,6 @@ public class CheckGuestOutFragment extends Fragment  {
      */
     private List<String> getRoomNumbersWithGuests() {
         final List <String> roomStrings = new ArrayList<String>();
-        // TODO double check that this is the correct method to call
         GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithGuests().subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
                 rooms.notifyDataSetChanged();
