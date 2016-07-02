@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,26 +36,34 @@ public class HousekeepingDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState){
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.dialog_housekeeping, null);
-        return new AlertDialog.Builder(getActivity())
-                .setView(view)
-                .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText editTransportMessage = (EditText)
-                                view.findViewById(R.id.housekeeping_message_edit_text);
-                        String housekeepingMessage = editTransportMessage.getText().toString();
-                        sendHousekeepingRequest(housekeepingMessage);
+        final Button confirmButton = (Button) view.findViewById(R.id.housekeeping_confirm);
+        final Button cancelButton = (Button) view.findViewById(R.id.housekeeping_cancel);
 
-                    }
-                })
-                .setNegativeButton(R.string.negative, new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        permintaanDialogListener.onDialogNegativeClick(HousekeepingDialogFragment.this);
-                    }
-                })
-                .create();
+        final AlertDialog dialog= new AlertDialog.Builder(getActivity()).create();
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editTransportMessage = (EditText)
+                        view.findViewById(R.id.housekeeping_message_edit_text);
+                String housekeepingMessage = editTransportMessage.getText().toString();
+                sendHousekeepingRequest(housekeepingMessage);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                permintaanDialogListener.onDialogNegativeClick(HousekeepingDialogFragment.this);
+            }
+        });
+
+        dialog.setView(view);
+
+        return dialog;
+
+
     }
 
     /**

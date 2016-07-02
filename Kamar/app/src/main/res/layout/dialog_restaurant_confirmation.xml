@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="800dp"
     android:layout_height="400dp"
     android:gravity="center"
-    android:background="@color/colorNavBar">
+    android:background="@color/dialogConfirmationBackground">
 
 
     <ImageView

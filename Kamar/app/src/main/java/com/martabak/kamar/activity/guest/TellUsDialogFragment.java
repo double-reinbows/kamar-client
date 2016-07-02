@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
@@ -37,6 +38,9 @@ public class TellUsDialogFragment extends DialogFragment {
                     @Override public void onClick(DialogInterface dialog, int which) {
                         EditText editBellboyMessage = (EditText)
                                 view.findViewById(R.id.tellus_message_edit_text);
+                        RatingBar rB = (RatingBar) view.findViewById(R.id.tellusRatingBar);
+
+                        Log.v("LOGG", Float.toString(rB.getRating()));
                         String tellUsMessage = editBellboyMessage.getText().toString();
                         sendTellUs(tellUsMessage);
                     }
