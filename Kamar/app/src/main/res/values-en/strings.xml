@@ -31,7 +31,7 @@
     <string name="staff">Staff</string>
     <string name="user_set_to_guest">User set to Guest</string>
     <string name="user_set_to_staff">User set to Staff</string>
-    <string name="password_prompt">Password: </string>
+    <string name="password_prompt">Enter Staff Password: </string>
     <string name="incorrect_password">The password you entered is incorrect</string>
     <string name="frontdesk">Front Desk</string>
     <string name="restaurant">Restaurant</string>

@@ -30,7 +30,7 @@
     <string name="staff">Pegawai</string>
     <string name="user_set_to_guest">Pengguna diatur ke Tamu</string>
     <string name="user_set_to_staff">Pengguna diatur ke Pegawai</string>
-    <string name="password_prompt">Kata Sandi: </string>
+    <string name="password_prompt">Enter Staff Password: </string>
     <string name="incorrect_password">Kata sandi yang anda masukki salah</string>
     <string name="frontdesk">Front Desk</string>
     <string name="restaurant">Restaurant</string>
