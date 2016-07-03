@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.staff;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
@@ -161,6 +162,7 @@ public class CheckGuestOutFragment extends Fragment  {
                         Log.v(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On next " + result);
                         if (result) {
                             Toast.makeText(getActivity(), getString(R.string.guest_checkout_message), Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(getActivity(), StaffHomeActivity.class));
                         } else {
                             Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                         }

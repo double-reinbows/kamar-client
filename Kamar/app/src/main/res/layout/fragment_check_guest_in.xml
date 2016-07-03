@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,21 +7,30 @@
     android:orientation="vertical"
     tools:context=".activity.staff.CheckGuestInFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/guest_checkin"
+        android:textColor="@color/darkRed"
+        android:textSize="40dp"/>
+
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="left"
         android:id="@+id/tableLayout">
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dip"
-                android:text="@string/guest_first_name" />
+                android:textColor="@color/darkRed"
+                android:text="@string/guest_first_name"
+                android:textSize="25dp"/>
             <EditText
-                android:layout_width="150dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:id="@+id/guest_first_name" />
         </TableRow>
         <TableRow>
@@ -29,11 +38,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dip"
-                android:text="@string/guest_last_name" />
+                android:textColor="@color/darkRed"
+                android:text="@string/guest_last_name"
+                android:textSize="25dp"/>
             <EditText
-                android:layout_width="150dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:id="@+id/guest_last_name"/>
         </TableRow>
         <TableRow>
@@ -41,9 +52,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dip"
-                android:text="@string/guest_email" />
+                android:textColor="@color/darkRed"
+                android:text="@string/guest_email"
+                android:textSize="25dp"/>
             <EditText
-                android:layout_width="150dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:inputType="textEmailAddress"
                 android:id="@+id/guest_email"/>
@@ -53,9 +66,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dip"
-                android:text="@string/guest_phone" />
+                android:textColor="@color/darkRed"
+                android:text="@string/guest_phone"
+                android:textSize="25dp"/>
             <EditText
-                android:layout_width="150dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:inputType="phone"
                 android:id="@+id/guest_phone"/>
@@ -65,9 +80,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dip"
-                android:text="@string/guest_date_check_out" />
+                android:textColor="@color/darkRed"
+                android:text="@string/guest_date_check_out"
+                android:textSize="25dp"/>
             <EditText
-                android:layout_width="150dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:focusableInTouchMode="false"
                 android:id="@+id/guest_date_check_out"/>
@@ -77,10 +94,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dip"
+                android:textColor="@color/darkRed"
                 android:text="@string/guest_room_number"
-                android:id="@+id/guest_room_number"/>
+                android:id="@+id/guest_room_number"
+                android:textSize="25dp"/>
             <Spinner
-                android:layout_width="200dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:id="@+id/guest_spinner"/>
         </TableRow>
@@ -89,14 +108,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dip"
-                android:text="@string/welcome_message"/>
+                android:textColor="@color/darkRed"
+                android:text="@string/welcome_message"
+                android:textSize="25dp"/>
             <EditText
-
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:lines="5"
-                android:minLines="3"
+                android:minLines="1"
                 android:maxLines="8"
-                android:layout_width="150dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/guest_welcome_message"/>
         </TableRow>
@@ -107,9 +127,10 @@
         android:text="@string/guest_checkin_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:gravity="right"
+        android:layout_gravity="right"
         android:layout_below="@+id/tableLayout"
-        android:layout_toEndOf="@+id/tableLayout" />
+        android:layout_toEndOf="@+id/tableLayout"
+        android:background="@drawable/redbutton"
+        android:textColor="@android:color/white" />
 
-</RelativeLayout>
+</LinearLayout>
