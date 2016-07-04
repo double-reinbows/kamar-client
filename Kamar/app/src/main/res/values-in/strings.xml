@@ -73,6 +73,13 @@
     <string name="guest_checkin_message">Guest has been checked in</string>
     <string name="guest_checkin_submit_button">Check In</string>
 
+    <!-- Nav drawer -->
+    <string name="nav_drawer_requests">REQUESTS</string>
+    <string name="nav_drawer_chat">CHAT</string>
+    <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
+    <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
+    <string name="nav_drawer_logout">LOGOUT</string>
+
     <!-- Guest -->
     <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>

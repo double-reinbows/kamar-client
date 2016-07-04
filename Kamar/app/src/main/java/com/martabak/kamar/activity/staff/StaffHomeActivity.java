@@ -11,18 +11,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.ChatListActivity;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
+import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.Server;
+
+import org.w3c.dom.Text;
 
 public class StaffHomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startStaffServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
+        String staffType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none");
+        startStaffServices(staffType);
         setContentView(R.layout.activity_staff_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -31,6 +38,25 @@ public class StaffHomeActivity extends AppCompatActivity {
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
         }
+        ImageView staffImageView = (ImageView) findViewById(R.id.staff_image);
+        if (staffImageView != null) {
+            int staffImage;
+            switch (staffType) {
+                case Permintaan.OWNER_FRONTDESK:
+                    staffImage = R.drawable.hotel_information;
+                    break;
+                case Permintaan.OWNER_RESTAURANT:
+                    staffImage = R.drawable.restaurant;
+                    break;
+                default:
+                    staffImage = R.drawable.question_mark;
+            }
+            Server.picasso(this)
+                    .load(staffImage)
+                    .into(staffImageView);
+        }
+        TextView staffTitleView = (TextView) findViewById(R.id.staff_title);
+        if (staffTitleView != null) staffTitleView.setText(staffType);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
