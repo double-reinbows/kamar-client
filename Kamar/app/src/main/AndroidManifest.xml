@@ -31,7 +31,9 @@
         <activity
             android:name=".activity.home.SelectLanguageActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,7 +44,9 @@
         <activity
             android:name=".activity.home.SelectUserTypeActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="landscape" />
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.guest.GuestHomeActivity"
             android:configChanges="orientation|keyboardHidden"

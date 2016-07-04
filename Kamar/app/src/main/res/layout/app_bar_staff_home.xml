@@ -37,7 +37,6 @@
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:background="@color/colorNavBar"
-                android:padding="-16dp"
                 android:contentInsetLeft="0dp"
                 android:contentInsetStart="0dp"
                 app:contentInsetLeft="0dp"

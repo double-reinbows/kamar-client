@@ -1,12 +1,10 @@
 package com.martabak.kamar.activity.chat;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
-
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.service.GuestServer;
@@ -25,22 +22,35 @@ import java.util.List;
 import rx.Observer;
 
 /**
- * An activity representing a list of Chats. The activity presents the list of items and
- * item details side-by-side using two vertical panes.
+ * Created by adarsh on 3/07/16.
  */
-public class ChatListActivity extends AppCompatActivity {
+public class StaffChatFragment extends Fragment{
+
+    /**
+     * @return A new instance of fragment StaffChatFragment
+     */
+    public static StaffChatFragment newInstance() {
+        return new StaffChatFragment();
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_list);
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.chat_list);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.activity_chat_list, container, false);
+
+        RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.chat_list);
         final List<Guest> guests = new ArrayList<Guest>();
         final ChatRecyclerViewAdapter recyclerViewAdapter = new ChatRecyclerViewAdapter(guests);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        GuestServer.getInstance(this).getGuestsCheckedIn().subscribe(new Observer<Guest>() {
+        GuestServer.getInstance(this.getActivity()).getGuestsCheckedIn().subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
                 Log.d(ChatListActivity.class.getCanonicalName(), "onCompleted");
                 recyclerViewAdapter.notifyDataSetChanged();
@@ -54,6 +64,8 @@ public class ChatListActivity extends AppCompatActivity {
                 guests.add(guest);
             }
         });
+
+        return rootView;
     }
 
     public class ChatRecyclerViewAdapter
@@ -78,7 +90,7 @@ public class ChatListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.itemView.setSelected(selectedPos == position);
             holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).roomNumber);
+            holder.mIdView.setText("ROOM " + mValues.get(position).roomNumber);
             holder.mContentView.setText(mValues.get(position).firstName + " " + mValues.get(position).lastName);
         }
 
@@ -125,7 +137,7 @@ public class ChatListActivity extends AppCompatActivity {
     }
 
     private String getSender() {
-        SharedPreferences prefs = getSharedPreferences("userSettings", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE);
         return prefs.getString("userSubType", ChatMessage.SENDER_FRONTDESK);
     }
 }
