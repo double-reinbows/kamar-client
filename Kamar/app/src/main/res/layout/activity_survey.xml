@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wood_background_highres"
-    tools:context="com.martabak.kamar.activity.guest.SurveyActivity">
+    android:fitsSystemWindows="true">
 
-    <include layout="@layout/content_survey" />
+    <include layout="@layout/actionbar_guestcustom_view"/>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/wood_background_highres"
+        tools:context="com.martabak.kamar.activity.guest.SurveyActivity">
 
-</RelativeLayout>
+        <include layout="@layout/content_survey" />
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

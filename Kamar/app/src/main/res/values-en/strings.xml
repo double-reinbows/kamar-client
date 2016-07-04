@@ -38,6 +38,7 @@
     <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
 
     <!-- Permintaan -->
+    <string name="permintaan_title">Requests</string>
     <string name="permintaan">request</string>
     <string name="new_permintaan">NEW</string>
     <string name="inprogress_permintaan">IN PROGRESS</string>
@@ -109,6 +110,7 @@
     <string name="tellus_edittext">Leave your feedback here</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
 
+    <string name="survey_label">Survey</string>
     <string name="survey_submit_button">Submit</string>
 
     <string name="restaurant_label">Menu</string>

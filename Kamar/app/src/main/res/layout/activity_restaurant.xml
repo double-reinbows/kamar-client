@@ -1,47 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
+    android:fitsSystemWindows="true">
 
-    <include layout="@layout/content_restaurant" />
+    <include layout="@layout/actionbar_restaurant_customview"/>
 
-    <!--android.support.design.widget.FloatingActionButton
-        android:id="@+id/restaurant_subtotal_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:color/transparent"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="80dp"
-        app:fabSize="normal" /-->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="200dp"
+        tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
 
-        <TextView
-            android:id="@+id/restaurant_subtotal_text"
+        <include layout="@layout/content_restaurant" />
+
+        <!--android.support.design.widget.FloatingActionButton
+            android:id="@+id/restaurant_subtotal_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="16dp"
-            android:textColor="#000000"
-            android:textSize="30dp"
-            android:background="#FFFFFF"
-            android:layout_gravity="center"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/restaurant_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:src="@android:color/transparent"
             android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_dialog_email" />
-    </LinearLayout>
-</RelativeLayout>
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="80dp"
+            app:fabSize="normal" /-->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/restaurant_subtotal_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="16dp"
+                android:textColor="#000000"
+                android:textSize="30dp"
+                android:background="#FFFFFF"
+                android:layout_gravity="center"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/restaurant_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@android:drawable/ic_dialog_email" />
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

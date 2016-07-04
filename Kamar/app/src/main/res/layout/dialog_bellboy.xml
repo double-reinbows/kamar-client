@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorNavBar"
-        android:textSize="30sp"
+        android:textSize="26sp"
         android:gravity="center"
         android:textColor="@color/guestTextColor"
         android:text="@string/bellboy_message"/>
@@ -40,7 +40,10 @@
             android:id="@+id/bellboy_cancel"
             android:text="@string/negative"
             android:background="@drawable/redbutton"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:layout_gravity="start"/>
+
+
 
         <Button
             android:layout_width="wrap_content"
@@ -49,7 +52,8 @@
             android:text="@string/positive"
             android:background="@drawable/redbutton"
             android:textColor="@android:color/white"
-            android:layout_marginLeft="375dp"/>
+            android:layout_gravity="end"
+            android:layout_marginLeft="200dp"/>
 
     </LinearLayout>
 

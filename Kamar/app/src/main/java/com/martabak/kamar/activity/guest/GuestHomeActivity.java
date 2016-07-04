@@ -44,19 +44,9 @@ public class GuestHomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_home);
-        // Get the ActionBar here to configure the way it behaves.
-        final ActionBar ab = getSupportActionBar();
 
-        ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
-        ab.setDisplayShowTitleEnabled(false); // disable the default title element here (for centered title)
-
-        ab.setCustomView(R.layout.actionbar_guestcustom_view);
-
-        View v = getSupportActionBar().getCustomView();
-        ViewGroup.LayoutParams lp = v.getLayoutParams();
-        lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        v.setLayoutParams(lp);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        setSupportActionBar(toolbar);
 
         final ImageAdapter imgAdapter = new ImageAdapter(this);
         final GridView gridView = (GridView) findViewById(R.id.guestgridview);
@@ -72,7 +62,7 @@ public class GuestHomeActivity extends AppCompatActivity
         startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
 
         // set room number text
-        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
+        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
         gridView.setAdapter(imgAdapter);
 
         // display feature text on each item click

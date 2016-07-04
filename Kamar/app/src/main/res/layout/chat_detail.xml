@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/chat_message_send_line"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.martabak.kamar.activity.chat.ChatListActivity"
         tools:listitem="@layout/chat_message" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
