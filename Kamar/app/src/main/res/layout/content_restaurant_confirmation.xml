@@ -48,7 +48,18 @@
             android:textSize="25sp"
             android:layout_gravity="center"
             android:id="@+id/order_sub_total" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_gravity="center"
+            android:id="@+id/order_tax" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_gravity="center"
+            android:id="@+id/order_svc_charge" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

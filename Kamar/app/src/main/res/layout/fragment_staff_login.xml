@@ -10,8 +10,9 @@
         android:id="@+id/TextViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/darkRed"
         android:text="@string/password_prompt"
-        android:textSize="10pt">
+        android:textSize="15pt">
     </TextView>
 
     <EditText
@@ -25,7 +26,9 @@
         android:id="@+id/submit"
         android:layout_height="wrap_content"
         android:text="@string/submit"
-        android:layout_width="fill_parent">
+        android:layout_width="fill_parent"
+        android:background="@drawable/redbutton"
+        android:textColor="@android:color/white">
     </Button>
 
 </LinearLayout>

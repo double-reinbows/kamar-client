@@ -31,7 +31,7 @@
     <string name="staff">Staff</string>
     <string name="user_set_to_guest">User set to Guest</string>
     <string name="user_set_to_staff">User set to Staff</string>
-    <string name="password_prompt">Password: </string>
+    <string name="password_prompt">Enter Staff Password: </string>
     <string name="incorrect_password">The password you entered is incorrect</string>
     <string name="frontdesk">Front Desk</string>
     <string name="restaurant">Restaurant</string>
@@ -47,6 +47,7 @@
     <string name="cancelled_permintaan">CANCELLED</string>
     <string name="permintaan_progress_confirmation">Are you sure you want to progress this request?</string>
     <string name="permintaan_regress_confirmation">Are you sure you want to regress this request?</string>
+    <string name="permintaan_cancel_confirmation">Are you sure you want to cancel this request?</string>
     <string name="permintaan_status_is_now">Status is now</string>
 
     <!-- Chat -->
@@ -67,6 +68,7 @@
     <string name="guest_date_check_out">Date Check Out</string>
     <string name="guest_room_number">Set Room Number</string>
     <string name="guest_checkout">Check Out Guest</string>
+    <string name="guest_checkin">Check In Guest</string>
     <string name="guest_checkout_message">Guest has been checked out</string>
     <string name="guest_checkout_submit_button">Check Out</string>
     <string name="guest_checkin_message">Guest has been checked in</string>
