@@ -82,10 +82,11 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                         if (savedInstanceState != null) {
                             return;
                         }
+
                     }
 
                     getFragmentManager().beginTransaction().
-                            replace(R.id.fragment_container, new StaffTypeFragment()).commit();
+                            replace(R.id.fragment_container, new StaffTypeFragment()).addToBackStack(null).commit();
                 }
             });
         }
