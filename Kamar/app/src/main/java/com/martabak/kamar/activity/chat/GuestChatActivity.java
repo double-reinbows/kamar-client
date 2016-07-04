@@ -50,7 +50,7 @@ public class GuestChatActivity extends AppCompatActivity {
         arguments.putString(ChatDetailFragment.SENDER, getSender());
         ChatDetailFragment fragment = new ChatDetailFragment();
         fragment.setArguments(arguments);
-        getSupportFragmentManager().beginTransaction()
+        getFragmentManager().beginTransaction()
                 .replace(R.id.chat_detail_container, fragment)
                 .commit();
     }

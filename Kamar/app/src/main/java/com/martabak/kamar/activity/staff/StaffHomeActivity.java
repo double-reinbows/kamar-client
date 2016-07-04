@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.ChatListActivity;
+import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
 
@@ -61,27 +62,7 @@ public class StaffHomeActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.staff_home, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override
@@ -94,7 +75,9 @@ public class StaffHomeActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_chat:
                     Log.v(StaffHomeActivity.class.toString(), "Going to chat activity for staff");
-                    startActivity(new Intent(StaffHomeActivity.this, ChatListActivity.class));
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.staff_container, StaffChatFragment.newInstance())
+                            .commit();
                     break;
                 case R.id.nav_check_guest_in:
                     Log.v(StaffHomeActivity.class.toString(), "Loading check-guest-in fragment");

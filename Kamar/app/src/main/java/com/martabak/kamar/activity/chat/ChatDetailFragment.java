@@ -3,7 +3,7 @@ package com.martabak.kamar.activity.chat;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -99,7 +99,7 @@ public class ChatDetailFragment extends Fragment {
             mRecyclerViewAdapter = new MessageRecyclerViewAdapter(mChatMessages);
             recyclerView.setAdapter(mRecyclerViewAdapter);
             refreshChatMessages();
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             layoutManager.setStackFromEnd(true);
             recyclerView.setLayoutManager(layoutManager);
 
@@ -187,14 +187,14 @@ public class ChatDetailFragment extends Fragment {
             holder.mSentTimeView.setText(mValues.get(position).sent.toString());
             holder.mMessageView.setText(mValues.get(position).message);
             if (mValues.get(position).read == null) { // If the message has been sent but not read
-                holder.mIconView.setImageResource(R.drawable.ic_menu_slideshow);
+                holder.mIconView.setImageResource(R.drawable.checkmark_grey);
             } else { // If the message has been sent and read
-                holder.mIconView.setImageResource(R.drawable.ic_menu_share);
+                holder.mIconView.setImageResource(R.drawable.checkmark_green);
             }
 
             //set the background row colors here
             if (position % 2 == 1) {
-                holder.mView.setBackgroundColor(Color.GRAY);
+                holder.mView.setBackgroundColor(Color.LTGRAY);
             } else {
                 holder.mView.setBackgroundColor(Color.WHITE);
             }

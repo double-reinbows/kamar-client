@@ -25,8 +25,8 @@
         android:id="@+id/chat_message_send_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="2dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
         android:baselineAligned="false"
         android:divider="?android:attr/dividerHorizontal"
         android:orientation="horizontal"
@@ -36,20 +36,20 @@
         android:layout_gravity="bottom">
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="600dp"
             android:layout_height="50dp"
-            android:background="@color/colorChatInput"
+            android:background="@drawable/chat_edit_text_style"
             android:hint="@string/chat_message_text"
             android:id="@+id/chat_message_edit_text"
-            android:layout_weight="0.95" />
+            android:layout_weight="0.95"/>
 
         <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="@string/chat_send_button"
             android:id="@+id/chat_send_button"
-            android:layout_gravity="right" />
+            android:layout_gravity="end"
+            android:background="@drawable/redbutton"/>
 
     </LinearLayout>
 
