@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -39,22 +40,29 @@ public class LogoutDialogFragment extends DialogFragment {
         final EditText passwordEditText = (EditText)
                 view.findViewById(R.id.password_edit_text);
 
-        return new AlertDialog.Builder(getActivity())
-                .setView(view)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {;
-                        String password = passwordEditText.getText().toString();
-                        sendLogoutRequest(password);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        logoutDialogListener.onLogoutDialogNegativeClick(LogoutDialogFragment.this);
-                    }
-                })
-                .create();
+        final Button confirmButton = (Button) view.findViewById(R.id.logout_confirm);
+        final Button cancelButton = (Button) view.findViewById(R.id.logout_cancel);
+
+        final AlertDialog dialog= new AlertDialog.Builder(getActivity()).create();
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String password = passwordEditText.getText().toString();
+                sendLogoutRequest(password);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logoutDialogListener.onLogoutDialogNegativeClick(LogoutDialogFragment.this);
+            }
+        });
+
+        dialog.setView(view);
+
+        return dialog;
     }
 
     /**
