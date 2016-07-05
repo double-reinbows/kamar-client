@@ -4,19 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:title="REQUESTS" />
+            android:title="@string/nav_drawer_requests" />
         <item
             android:id="@+id/nav_chat"
-            android:title="CHAT" />
+            android:title="@string/nav_drawer_chat" />
         <item
             android:id="@+id/nav_check_guest_in"
-            android:title="CHECK GUEST IN" />
+            android:title="@string/nav_drawer_checkguestin" />
         <item
             android:id="@+id/nav_check_guest_out"
-            android:title="CHECK GUEST OUT" />
+            android:title="@string/nav_drawer_checkguestout" />
         <item
             android:id="@+id/nav_logout"
-            android:title="LOGOUT" />
+            android:title="@string/nav_drawer_logout" />
     </group>
 
 </menu>

@@ -57,13 +57,20 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         final View view = layoutInflater.inflate(R.layout.activity_restaurant_confirmation, null);
         setContentView(view);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        setSupportActionBar(toolbar);
+
         // Get the ActionBar here to configure the way it behaves.
-        final ActionBar ab = getSupportActionBar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
-        ab.setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
 
-        ab.setCustomView(R.layout.actionbar_guestcustom_view);
+        });
 
 
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);

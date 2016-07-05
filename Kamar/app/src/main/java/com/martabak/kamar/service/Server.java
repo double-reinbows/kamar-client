@@ -4,11 +4,12 @@ package com.martabak.kamar.service;
 import android.content.Context;
 
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.martabak.kamar.domain.converters.DateConverter;
 import com.martabak.kamar.domain.converters.PermintaanConverter;
 import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
@@ -26,7 +27,12 @@ public abstract class Server {
     /**
      * The Retrofit instance.
      */
-    private Retrofit retrofit;
+    private static Retrofit retrofit;
+
+    /**
+     * The OkHttpClient instance.
+     */
+    private static OkHttpClient client;
 
     /**
      * The pattern used for representing dates in a String.
@@ -37,27 +43,24 @@ public abstract class Server {
      * Construct the Retrofit server.
      */
     protected Server(Context c) {
-        retrofit = new Retrofit.Builder()
-                .client(new OkHttpClient.Builder()
-                        .addInterceptor(new AuthorizationInterceptor(c))
-                        .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                        .build())
-                .baseUrl(getBaseUrl())
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
-                        .registerTypeAdapter(Permintaan.class, new PermintaanConverter(datePattern))
-                        .registerTypeAdapter(Date.class, new DateConverter(datePattern))
-                        .setDateFormat(datePattern)
-                        .create()))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-    }
-
-    /**
-     * Construct a Retrofit server given a Retrofit instance.
-     * @param retrofit The retrofit instance.
-     */
-    protected Server(Retrofit retrofit) {
-        this.retrofit = retrofit;
+        if (client == null) {
+            client = new OkHttpClient.Builder()
+                    .addInterceptor(new AuthorizationInterceptor(c))
+                    .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .build();
+        }
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .client(client)
+                    .baseUrl(getBaseUrl())
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
+                            .registerTypeAdapter(Permintaan.class, new PermintaanConverter(datePattern))
+                            .registerTypeAdapter(Date.class, new DateConverter(datePattern))
+                            .setDateFormat(datePattern)
+                            .create()))
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .build();
+        }
     }
 
     /**
@@ -74,6 +77,20 @@ public abstract class Server {
      */
     public static String getBaseUrl() {
         return "http://192.168.1.101:5984";
+    }
+
+
+    /**
+     * Fetch an instance of Picasso to load an image.
+     * @param c The context.
+     * @return The Picasso instance.
+     */
+    public static Picasso picasso(Context c) {
+        Picasso p = new Picasso.Builder(c)
+                .downloader(new OkHttp3Downloader(client))
+                .build();
+        p.setLoggingEnabled(true);
+        return p;
     }
 
 }

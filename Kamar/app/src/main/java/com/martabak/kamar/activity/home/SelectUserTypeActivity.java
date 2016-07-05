@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,13 +34,8 @@ public class SelectUserTypeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_user_type);
 
-        // Get the ActionBar here to configure the way it behaves.
-        final ActionBar ab = getSupportActionBar();
-
-        ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
-        ab.setDisplayShowTitleEnabled(false); // disable the default title element here (for centered title)
-
-        ab.setCustomView(R.layout.actionbar_custom_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         final ImageButton guestButton = (ImageButton) findViewById(R.id.guest);
         final ImageButton staffButton = (ImageButton) findViewById(R.id.staff);
@@ -86,10 +82,11 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                         if (savedInstanceState != null) {
                             return;
                         }
+
                     }
 
                     getFragmentManager().beginTransaction().
-                            replace(R.id.fragment_container, new StaffTypeFragment()).commit();
+                            replace(R.id.fragment_container, new StaffTypeFragment()).addToBackStack(null).commit();
                 }
             });
         }

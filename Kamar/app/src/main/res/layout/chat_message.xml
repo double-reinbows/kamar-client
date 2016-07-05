@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp"
     android:baselineAligned="false"
     android:divider="?android:attr/dividerVertical"
     android:orientation="vertical"
@@ -16,8 +14,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:showDividers="none"
@@ -27,6 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/chat_message_from" />
 
@@ -34,12 +32,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/chat_message_sent_time" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
             android:padding="2dp"
             android:id="@+id/chat_message_icon" />
 
@@ -49,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="2dp"
+        android:textColor="@color/black"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/chat_message_text" />
 

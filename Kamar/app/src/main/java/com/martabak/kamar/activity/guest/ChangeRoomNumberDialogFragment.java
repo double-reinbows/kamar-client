@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -57,24 +58,31 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
         final EditText passwordEditText = (EditText)
                 view.findViewById(R.id.password_edit_text);
 
-        return new AlertDialog.Builder(getActivity())
-                .setView(view)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {;
-                        String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
-                        String password = passwordEditText.getText().toString();
-                        changeRoomNumber(roomNumber, password);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        changeRoomDialogListener.onChangeRoomDialogNegativeClick(ChangeRoomNumberDialogFragment.this);
-                    }
-                })
-                .create();
+        final Button confirmButton = (Button) view.findViewById(R.id.change_room_number_confirm);
+        final Button cancelButton = (Button) view.findViewById(R.id.change_room_number_cancel);
+
+        final AlertDialog dialog= new AlertDialog.Builder(getActivity()).create();
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
+                String password = passwordEditText.getText().toString();
+                changeRoomNumber(roomNumber, password);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                changeRoomDialogListener.onChangeRoomDialogNegativeClick(ChangeRoomNumberDialogFragment.this);
+            }
+        });
+
+        dialog.setView(view);
+
+        return dialog;
     }
 
     /**

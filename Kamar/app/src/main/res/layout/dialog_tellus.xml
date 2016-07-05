@@ -4,20 +4,66 @@
     android:layout_height="wrap_content">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="center"
-        android:background="#C0C0C0"
-        android:textSize="22sp"
-        android:textColor="#000000"
+        android:layout_height="match_parent"
+        android:background="@color/colorNavBar"
+        android:textSize="26sp"
+        android:gravity="center"
+        android:textColor="@color/guestTextColor"
         android:text="@string/tellus_message"/>
-    <EditText
-        android:id="@+id/tellus_message_edit_text"
+
+    <RatingBar
+        android:id="@+id/tellusRatingBar"
+        android:theme="@style/RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1.0"
+        android:rating="0.0"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/chat_image"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/chat_grey" />
+
+        <EditText
+            android:id="@+id/tellus_message_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/tellus_edittext"/>
+    </LinearLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="@string/tellus_edittext"/>
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/tellus_cancel"
+            android:text="@string/negative"
+            android:background="@drawable/redbutton"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/tellus_confirm"
+            android:text="@string/positive"
+            android:background="@drawable/redbutton"
+            android:textColor="@android:color/white"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

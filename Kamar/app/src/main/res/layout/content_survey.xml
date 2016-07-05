@@ -8,28 +8,34 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.guest.SurveyActivity"
     tools:showIn="@layout/activity_survey">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/survey_recycleview"/>
+        android:layout_height="450dp"
+        android:id="@+id/survey_recycleview"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:background="@android:color/transparent"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
-
+        android:layout_gravity="right">
         <Button
             android:id="@+id/survey_submit"
             android:text="@string/survey_submit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:gravity="right" />
+            android:background="@drawable/redbutton"
+            android:textColor="@android:color/white"
+            android:textAlignment="center"
+            android:gravity="center" />
     </LinearLayout>
+
 
 </LinearLayout>

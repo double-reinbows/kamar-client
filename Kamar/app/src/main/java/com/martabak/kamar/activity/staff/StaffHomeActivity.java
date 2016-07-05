@@ -11,26 +11,53 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.ChatListActivity;
+import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
+import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.Server;
+
+import org.w3c.dom.Text;
 
 public class StaffHomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startStaffServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
+        String staffType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none");
+        startStaffServices(staffType);
         setContentView(R.layout.activity_staff_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.staff_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
         }
+        ImageView staffImageView = (ImageView) findViewById(R.id.staff_image);
+        if (staffImageView != null) {
+            int staffImage;
+            switch (staffType) {
+                case Permintaan.OWNER_FRONTDESK:
+                    staffImage = R.drawable.hotel_information;
+                    break;
+                case Permintaan.OWNER_RESTAURANT:
+                    staffImage = R.drawable.restaurant;
+                    break;
+                default:
+                    staffImage = R.drawable.question_mark;
+            }
+            Server.picasso(this)
+                    .load(staffImage)
+                    .into(staffImageView);
+        }
+        TextView staffTitleView = (TextView) findViewById(R.id.staff_title);
+        if (staffTitleView != null) staffTitleView.setText(staffType);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -61,27 +88,7 @@ public class StaffHomeActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.staff_home, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override
@@ -94,7 +101,9 @@ public class StaffHomeActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_chat:
                     Log.v(StaffHomeActivity.class.toString(), "Going to chat activity for staff");
-                    startActivity(new Intent(StaffHomeActivity.this, ChatListActivity.class));
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.staff_container, StaffChatFragment.newInstance())
+                            .commit();
                     break;
                 case R.id.nav_check_guest_in:
                     Log.v(StaffHomeActivity.class.toString(), "Loading check-guest-in fragment");

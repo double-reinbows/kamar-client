@@ -72,23 +72,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/restaurant_confirm_input"
-            android:inputType="textMultiLine"
-            android:lines="6"
-            android:minLines="3"
-            android:maxLines="9"/>
+            android:inputType="text" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="60dp">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/restaurant_back"
                 android:text="@string/restaurant_back_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorNavBar"
+                android:backgroundTint="@color/colorNavBar"
                 android:textColor="@color/colorNavBarBackground"
                 android:layout_gravity="bottom|left" />
 

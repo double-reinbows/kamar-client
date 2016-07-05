@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:gravity="bottom">
+    android:background="@color/colorNavBarBackground"
+    android:gravity="bottom"
+    android:theme="@style/AppTheme.AppBarOverlay">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,8 +25,6 @@
             android:layout_gravity="center"
             android:background="@drawable/batikbackground"
             />
-
-
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/guest_toolbar"

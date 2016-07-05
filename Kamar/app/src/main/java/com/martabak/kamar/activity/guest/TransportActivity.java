@@ -3,6 +3,7 @@ package com.martabak.kamar.activity.guest;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -39,12 +40,19 @@ public class TransportActivity extends AppCompatActivity implements TextWatcher 
         setContentView(R.layout.activity_transport);
 
         // Get the ActionBar here to configure the way it behaves.
-        final ActionBar ab = getSupportActionBar();
-        ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
-        ab.setCustomView(R.layout.actionbar_guestcustom_view);
-        ab.setDisplayShowTitleEnabled(false);
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setDisplayShowHomeEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+
+        });
 
         // Set room number text.
         TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);

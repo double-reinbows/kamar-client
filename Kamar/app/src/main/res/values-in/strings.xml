@@ -30,7 +30,7 @@
     <string name="staff">Pegawai</string>
     <string name="user_set_to_guest">Pengguna diatur ke Tamu</string>
     <string name="user_set_to_staff">Pengguna diatur ke Pegawai</string>
-    <string name="password_prompt">Kata Sandi: </string>
+    <string name="password_prompt">Enter Staff Password: </string>
     <string name="incorrect_password">Kata sandi yang anda masukki salah</string>
     <string name="frontdesk">Front Desk</string>
     <string name="restaurant">Restaurant</string>
@@ -67,10 +67,18 @@
     <string name="guest_date_check_out">Date Check Out</string>
     <string name="guest_room_number">Set Room Number</string>
     <string name="guest_checkout">Check Out Guest</string>
+    <string name="guest_checkin">Check In Guest</string>
     <string name="guest_checkout_message">Guest has been checked out</string>
     <string name="guest_checkout_submit_button">Check Out</string>
     <string name="guest_checkin_message">Guest has been checked in</string>
     <string name="guest_checkin_submit_button">Check In</string>
+
+    <!-- Nav drawer -->
+    <string name="nav_drawer_requests">REQUESTS</string>
+    <string name="nav_drawer_chat">CHAT</string>
+    <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
+    <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
+    <string name="nav_drawer_logout">LOGOUT</string>
 
     <!-- Guest -->
     <string name="transport_label">Transport</string>

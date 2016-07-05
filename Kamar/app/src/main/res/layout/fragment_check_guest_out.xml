@@ -10,24 +10,44 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/guest_checkout" />
+        android:text="@string/guest_checkout"
+        android:textColor="@color/darkRed"
+        android:textSize="40dp"/>
 
-    <Spinner
-        android:layout_width="200dp"
+    <TableLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guest_spinner_checkout"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/guest_info" />
+        android:layout_gravity="left"
+        android:id="@+id/tableLayout">
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dip"
+                android:textColor="@color/darkRed"
+                android:text="@string/room_number"
+                android:textSize="25dp"/>
+            <Spinner
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/guest_spinner_checkout"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/guest_info"
+                android:textColor="@color/darkRed"
+                android:textSize="20dp"
+                android:layout_marginLeft="16dp"/>
+        </TableRow>
+    </TableLayout>
 
     <Button
         android:id="@+id/check_guest_out_submit"
         android:text="@string/guest_checkout_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:gravity="bottom|right" />
+        android:layout_gravity="right"
+        android:background="@drawable/redbutton"
+        android:textColor="@android:color/white"/>
 
 </LinearLayout>

@@ -31,13 +31,14 @@
     <string name="staff">Staff</string>
     <string name="user_set_to_guest">User set to Guest</string>
     <string name="user_set_to_staff">User set to Staff</string>
-    <string name="password_prompt">Password: </string>
+    <string name="password_prompt">Enter Staff Password: </string>
     <string name="incorrect_password">The password you entered is incorrect</string>
     <string name="frontdesk">Front Desk</string>
     <string name="restaurant">Restaurant</string>
     <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
 
     <!-- Permintaan -->
+    <string name="permintaan_title">Requests</string>
     <string name="permintaan">request</string>
     <string name="new_permintaan">NEW</string>
     <string name="inprogress_permintaan">IN PROGRESS</string>
@@ -68,10 +69,18 @@
     <string name="guest_date_check_out">Date Check Out</string>
     <string name="guest_room_number">Set Room Number</string>
     <string name="guest_checkout">Check Out Guest</string>
+    <string name="guest_checkin">Check In Guest</string>
     <string name="guest_checkout_message">Guest has been checked out</string>
     <string name="guest_checkout_submit_button">Check Out</string>
     <string name="guest_checkin_message">Guest has been checked in</string>
     <string name="guest_checkin_submit_button">Check In</string>
+
+    <!-- Nav drawer -->
+    <string name="nav_drawer_requests">REQUESTS</string>
+    <string name="nav_drawer_chat">CHAT</string>
+    <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
+    <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
+    <string name="nav_drawer_logout">LOGOUT</string>
 
     <!-- Guest -->
     <string name="transport_label">Transport</string>
@@ -108,6 +117,7 @@
     <string name="tellus_edittext">Leave your feedback here</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
 
+    <string name="survey_label">Survey</string>
     <string name="survey_submit_button">Submit</string>
 
     <string name="restaurant_label">Menu</string>
@@ -126,6 +136,7 @@
         located in our Home Page.
     </string>
 
+    <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>
@@ -133,7 +144,7 @@
     <string name="room_number_changed">Room number changed</string>
     <string name="room_number_password">Input password</string>
     <string name="room_number_result">Room number changed</string>
-
+    <string name="logout">Logout</string>
     <string name="logout_result">Logged out of guest</string>
 
 </resources>
