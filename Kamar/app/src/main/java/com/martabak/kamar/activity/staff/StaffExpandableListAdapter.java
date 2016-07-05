@@ -1,18 +1,24 @@
 package com.martabak.kamar.activity.staff;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Point;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,9 +72,11 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         final Permintaan currPermintaan = getChild(groupPosition, childPosition);
         //Set up child text
         final String childText = currPermintaan.type;
+        txtListChild.setText(childText);
 
-        //Set up the "x" or permintaan cancel button
+        //Assign the ImageViews
         ImageView cancelPermintaanButton = (ImageView) convertView.findViewById(R.id.cancel_permintaan_button);
+        ImageView infoPermintaanButton = (ImageView) convertView.findViewById(R.id.info_permintaan_button);
         ImageView progressPermintaanButton = (ImageView) convertView.findViewById(R.id.progress_permintaan_button);
         ImageView regressPermintaanButton = (ImageView) convertView.findViewById(R.id.regress_permintaan_button);
 
@@ -153,6 +161,51 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
             //.cancelPermintaanButton.setVisibility(View.GONE);
         }
 
+        infoPermintaanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                WindowManager manager = (WindowManager) context.getSystemService(Activity.WINDOW_SERVICE);
+                manager.getDefaultDisplay().getMetrics(displayMetrics);
+                int width, height;
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
+                    width = displayMetrics.widthPixels;
+                    height = displayMetrics.heightPixels;
+                } else {
+                    Point point = new Point();
+                    manager.getDefaultDisplay().getSize(point);
+                    width = point.x;
+                    height = point.y;
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                //build the AlertDialog's content
+                String simpleUpdated;
+                long lastStateChange;
+                if (currPermintaan.updated != null) {
+                    simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
+                    lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime())/1000;
+                } else {
+                    simpleUpdated = "never";
+                    lastStateChange = 0;
+                }
+                String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.created);
+
+
+                builder
+                        .setTitle(currPermintaan.type + " ORDER DETAILS")
+                        .setMessage("Status: "+currPermintaan.state+"\n"+
+                                "Message: "+currPermintaan.content.message+"\n"+
+                                "Order lodged at: "+simpleCreated+"\n"+
+                                "Last Status change at "+simpleUpdated+"\n"+
+                                "Time since latest Status change: "+lastStateChange/60+" minutes ago")
+                        .setCancelable(true)
+                ;
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                alertDialog.getWindow().setLayout(width, (height-100));
+            }
+
+        });
 
 
         if (currPermintaan.isCancellable()) {
@@ -246,7 +299,6 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
             //regressPermintaanButton.setVisibility(View.GONE);
         }
 
-        txtListChild.setText(childText);
         return convertView;
     }
 

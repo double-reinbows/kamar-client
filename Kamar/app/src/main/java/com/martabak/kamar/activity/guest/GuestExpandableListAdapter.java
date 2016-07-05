@@ -22,6 +22,7 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -174,24 +175,37 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 //build the AlertDialog's content
-                String simpleUpdated;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd hh:mm a");
+                Date parsed;
+                String updatedString = null;
                 long lastStateChange;
                 if (currPermintaan.updated != null) {
-                    simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
+                    try {
+                        parsed = dateFormat.parse(currPermintaan.updated.toString());
+                        updatedString = parsed.toString();
+                    } catch (ParseException pe) {
+                        Log.v("ERROR", "updated date parse error");
+                    }
                     lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime())/1000;
                 } else {
-                    simpleUpdated = "never";
+                    updatedString = "never";
                     lastStateChange = 0;
                 }
-                String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.created);
-
+//                String simpleCreated = new SimpleDateFormat("EEE MMM dd hh:mm a").format(currPermintaan.created);
+                String createdString = null;
+                try {
+                    parsed = dateFormat.parse(currPermintaan.created.toString());
+                    createdString = parsed.toString();
+                } catch (ParseException pe) {
+                    Log.v("ERROR", "created date parse error");
+                }
 
                 builder
                         .setTitle(currPermintaan.type + " ORDER DETAILS")
                         .setMessage("Status: "+currPermintaan.state+"\n"+
                                     "Message: "+currPermintaan.content.message+"\n"+
-                                    "Order lodged at: "+simpleCreated+"\n"+
-                                    "Last Status change at "+simpleUpdated+"\n"+
+                                    "Order lodged at: "+createdString+"\n"+
+                                    "Last Status change at "+updatedString+"\n"+
                                     "Time since latest Status change: "+lastStateChange/60+" minutes ago")
                         .setCancelable(true)
                         ;
