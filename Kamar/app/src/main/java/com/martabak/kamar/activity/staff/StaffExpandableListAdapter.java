@@ -10,6 +10,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -24,7 +26,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.domain.permintaan.RestaurantOrder;
+import com.martabak.kamar.domain.permintaan.Transport;
 import com.martabak.kamar.service.PermintaanServer;
 
 import rx.Observer;
@@ -36,6 +41,11 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, List<String>> stateToPermIds;
     private HashMap<String, Permintaan> idToPermintaan;
+    ImageView cancelPermintaanButton;
+    ImageView infoPermintaanButton;
+    ImageView progressPermintaanButton;
+    ImageView regressPermintaanButton;
+
 
     public StaffExpandableListAdapter(Context context, List<String> states,
                                  HashMap<String, List<String>> stateToPermIds, HashMap<String,
@@ -48,6 +58,8 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Permintaan getChild(int groupPosition, int childPosition) {
+        Log.v("states", states.toString());
+        Log.v("stateToPermIds", stateToPermIds.toString());
         return idToPermintaan.get(stateToPermIds.get(states.get(groupPosition)).get(childPosition));
     }
 
@@ -60,33 +72,40 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
+        Permintaan p = getChild(groupPosition, childPosition);
 
-        if (convertView == null) {
+//        if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.staff_permintaan_item, null);
-        }
+//        }
 
+
+        //Set main text
         TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
-
-        final Permintaan currPermintaan = getChild(groupPosition, childPosition);
-        //Set up child text
-        final String childText = currPermintaan.type;
+        String simpleCreated = new SimpleDateFormat("hh:mm a").format(p.created);
+        final String childText = p.type+" ~~~ Room No. "+p.roomNumber+" ~~~ Ordered @ "+simpleCreated;
         txtListChild.setText(childText);
 
-        //Assign the ImageViews
-        ImageView cancelPermintaanButton = (ImageView) convertView.findViewById(R.id.cancel_permintaan_button);
-        ImageView infoPermintaanButton = (ImageView) convertView.findViewById(R.id.info_permintaan_button);
-        ImageView progressPermintaanButton = (ImageView) convertView.findViewById(R.id.progress_permintaan_button);
-        ImageView regressPermintaanButton = (ImageView) convertView.findViewById(R.id.regress_permintaan_button);
+        //Set up grey filter
+//        ColorMatrix matrix = new ColorMatrix();
+//        matrix.setSaturation(0);  //0 means grayscale
+//        ColorMatrixColorFilter cf = new ColorMatrixColorFilter(matrix);
+
+        //Initialize the ImageViews (buttons)
+//        cancelPermintaanButton = (ImageView) convertView.findViewById(R.id.cancel_permintaan_button);
+        infoPermintaanButton = (ImageView) convertView.findViewById(R.id.info_permintaan_button);
+        progressPermintaanButton = (ImageView) convertView.findViewById(R.id.progress_permintaan_button);
+        regressPermintaanButton = (ImageView) convertView.findViewById(R.id.regress_permintaan_button);
 
         //if child is cancellable then display cancel button
-        if (currPermintaan.isCancellable()) {
-
+        /*
+        if (p.isCancellable()) {
             cancelPermintaanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    final Permintaan currPermintaan = getChild(groupPosition, childPosition);
+                    Log.v("cancelPermintaan", String.valueOf(groupPosition)+" "+String.valueOf(childPosition));
+                    final Permintaan currPermintaan = getChild(groupPosition, childPosition);
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_cancel_confirmation));
                     builder.setCancelable(false);
@@ -94,6 +113,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (currPermintaan.isCancellable()) {
+                                Log.v("Currpermintaan state", currPermintaan.state);
                                 PermintaanServer.getInstance(context).getPermintaansOfState(currPermintaan.state)
                                         .subscribe(new Observer<Permintaan>() {
                                             Permintaan tempPermintaan = new Permintaan();
@@ -101,7 +121,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                                             @Override
                                             public void onCompleted() {
                                                 Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "doGetAndUpdatePermintaan() On completed");
-                                                Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
+                                                final Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
                                                         tempPermintaan.roomNumber, tempPermintaan.guestId, "CANCELLED",
                                                         tempPermintaan.created, new Date(), tempPermintaan.content);
                                                 PermintaanServer.getInstance(context).updatePermintaan(updatedPermintaan)
@@ -110,8 +130,11 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                                                             public void onCompleted() {
                                                                 Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On completed");
                                                                 //remove currPermintaan's ID from the list of states.
-                                                                stateToPermIds.get(Permintaan.STATE_CANCELLED).add(currPermintaan._id);
-                                                                stateToPermIds.get(currPermintaan.state).remove(currPermintaan._id);
+//                                                                stateToPermIds.get(Permintaan.STATE_CANCELLED).add(currPermintaan._id);
+//                                                                stateToPermIds.get(currPermintaan.state).remove(currPermintaan._id);
+//                                                                cancelPermintaanButton.setOnClickListener(null); //disable click listener
+                                                                //update Permintaan dictionary
+                                                                idToPermintaan.put(updatedPermintaan._id, updatedPermintaan);
                                                                 notifyDataSetChanged();
                                                             }
 
@@ -143,6 +166,8 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                                             }
                                         });
                             }
+                            stateToPermIds.get(Permintaan.STATE_CANCELLED).add(currPermintaan._id);
+                            stateToPermIds.get(currPermintaan.state).remove(currPermintaan._id);
                         }
 
                     });
@@ -158,12 +183,15 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 }
             });
         } else { //remove the cancel ImageView from the View
-            //.cancelPermintaanButton.setVisibility(View.GONE);
+//            cancelPermintaanButton.setColorFilter(cf);
+//            cancelPermintaanButton.setAlpha(128);   // 128 = 0.5
         }
-
+*/
         infoPermintaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.v("infoPermintaan", String.valueOf(groupPosition)+" "+String.valueOf(childPosition));
+                final Permintaan currPermintaan = getChild(groupPosition, childPosition);
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 WindowManager manager = (WindowManager) context.getSystemService(Activity.WINDOW_SERVICE);
                 manager.getDefaultDisplay().getMetrics(displayMetrics);
@@ -188,16 +216,32 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     simpleUpdated = "never";
                     lastStateChange = 0;
                 }
+//                RestaurantOrder restoOrder = null;
+                String contentString = "";
                 String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.created);
-
+                if (currPermintaan.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
+                    RestaurantOrder restoOrder = (RestaurantOrder) currPermintaan.content;
+                    for (OrderItem o:restoOrder.items) {
+                        contentString += "\n"+o.quantity+" "+o.name+" Rp. "+o.price;
+                    }
+                    contentString += " \nTotal: Rp. "+ restoOrder.totalPrice;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_TRANSPORT)) {
+                    Transport transportOrder = (Transport) currPermintaan.content;
+                    contentString += "\nDeparting in: "+transportOrder.departingIn+
+                                    "\nDestination: "+transportOrder.destination+
+                                    "\nNumber of passengers: "+transportOrder.passengers;
+                }
 
                 builder
                         .setTitle(currPermintaan.type + " ORDER DETAILS")
-                        .setMessage("Status: "+currPermintaan.state+"\n"+
+                        .setMessage("Room No. "+currPermintaan.roomNumber+"\n"+
+                                "Guest's name: "+currPermintaan.guestId+"\n"+
+                                "State: "+currPermintaan.state+"\n"+
                                 "Message: "+currPermintaan.content.message+"\n"+
                                 "Order lodged at: "+simpleCreated+"\n"+
                                 "Last Status change at "+simpleUpdated+"\n"+
-                                "Time since latest Status change: "+lastStateChange/60+" minutes ago")
+                                "Time since latest Status change: "+lastStateChange/60+" minutes ago\n"+
+                                "Content: "+contentString)
                         .setCancelable(true)
                 ;
                 AlertDialog alertDialog = builder.create();
@@ -208,10 +252,12 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         });
 
 
-        if (currPermintaan.isCancellable()) {
+        if (p.isCancellable()) {
             progressPermintaanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.v("progressPermintaan", String.valueOf(groupPosition)+" "+String.valueOf(childPosition));
+                    final Permintaan currPermintaan = getChild(groupPosition, childPosition);
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
                     builder.setCancelable(false);
@@ -219,7 +265,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //Check permintaan can be progressed
-                            if (groupPosition + 1 < 4) {
+                            if (currPermintaan.isCancellable()) {
 //                                Permintaan currPermintaan = getChild(groupPosition, childPosition);
                                 Log.v("id", currPermintaan._id);
 
@@ -251,13 +297,16 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
             });
         } else {
-            //progressPermintaanButton.setVisibility(View.GONE);
+//            progressPermintaanButton.setColorFilter(cf);
+//            progressPermintaanButton.setAlpha(128);   // 128 = 0.5
         }
 
-        if (currPermintaan.isCancellable()) {
+        if (p.isRegressable()) {
             regressPermintaanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.v("regressPermintaan", String.valueOf(groupPosition)+" "+String.valueOf(childPosition));
+                    final Permintaan currPermintaan = getChild(groupPosition, childPosition);
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_regress_confirmation));
                     builder.setCancelable(false);
@@ -265,7 +314,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //Check permintaan can be regressed
-                            if (groupPosition - 1 > -1 && groupPosition != 3) {
+                            if (currPermintaan.isRegressable()) {
 
 //                                Permintaan currPermintaan = getChild(groupPosition, childPosition);
 
@@ -296,43 +345,54 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
             });
         } else {
-            //regressPermintaanButton.setVisibility(View.GONE);
+//            regressPermintaanButton.setColorFilter(cf);
+//            regressPermintaanButton.setAlpha(128);   // 128 = 0.5
         }
 
         return convertView;
     }
 
-    private String setState(int groupPosition) {
+    private String setTargetState(String currState, int increment) {
 
         String state = new String();
 
-        if (groupPosition == 0) {
-            state = Permintaan.STATE_NEW;
-        } else if (groupPosition == 1) {
-            state = Permintaan.STATE_INPROGRESS;
-        } else if (groupPosition == 2) {
-            state = Permintaan.STATE_INDELIVERY;
-        } else if (groupPosition == 3) {
-            state = Permintaan.STATE_COMPLETED;
+        if (currState.equals(Permintaan.STATE_NEW)) {
+            return Permintaan.STATE_INPROGRESS;
+        } else if (currState.equals(Permintaan.STATE_INPROGRESS)) {
+            if (increment == 1) {
+                return Permintaan.STATE_INDELIVERY;
+            } else {
+                return Permintaan.STATE_NEW;
+            }
+        } else if (currState.equals(Permintaan.STATE_INDELIVERY)) {
+            if (increment == 1) {
+                return Permintaan.STATE_COMPLETED;
+            }else {
+                return Permintaan.STATE_INPROGRESS;
+            }
+        } else if (currState.equals((Permintaan.STATE_COMPLETED))) {
+            return Permintaan.STATE_INDELIVERY;
         }
 
         return state;
     }
+
     private void doGetAndUpdatePermintaan(final String _id, final int groupPosition, final int increment) {
         Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "Doing get permintaan of state");
 
-        final String currState = setState(groupPosition);
-        final String targetState = setState(groupPosition + increment);
+        final String currState = idToPermintaan.get(_id).state;
+        final String targetState = setTargetState(currState, increment);
+        Log.v("TARGET", targetState);
+        Log.v("CURRENT", currState);
 
         PermintaanServer.getInstance(context).getPermintaansOfState(currState)
                                                 .subscribe(new Observer<Permintaan>() {
             Permintaan tempPermintaan = new Permintaan();
 
-
             @Override
             public void onCompleted() {
-                Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "doGetAndUpdatePermintaan() On completed");
-                Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
+                Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "completed getpermintaan, now updating");
+                final Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
                         tempPermintaan.roomNumber, tempPermintaan.guestId, targetState,
                         tempPermintaan.created, new Date(), tempPermintaan.content);
                 PermintaanServer.getInstance(context).updatePermintaan(updatedPermintaan)
@@ -342,13 +402,13 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                             Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On completed"
                             +currState+targetState);
 
-                            //Get the list of permintaans in the next state
-                            stateToPermIds.get(targetState).add(tempPermintaan._id);
-
                             //Add child to the next state
-//                            nextPermintaans.add(tempPermintaan._id);
+                            stateToPermIds.get(targetState).add(tempPermintaan._id);
                             //Remove the child from the current state
                             stateToPermIds.get(currState).remove(tempPermintaan._id);
+                            //update Permintaan dictionary
+                            idToPermintaan.put(updatedPermintaan._id, updatedPermintaan);
+
                             notifyDataSetChanged();
                         }
 
@@ -406,11 +466,11 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
-        if (convertView == null) {
+//        if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.staff_permintaan_state, null);
-        }
+//        }
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.list_state);
         lblListHeader.setTypeface(null, Typeface.BOLD);

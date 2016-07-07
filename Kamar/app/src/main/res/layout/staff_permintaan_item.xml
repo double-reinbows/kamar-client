@@ -14,15 +14,15 @@
         android:paddingBottom="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
         android:textSize="17dp"
-        android:textColor="#000000" />
-    <ImageView
+        android:textColor="@color/guestTextColor" />
+    <!--ImageView
         android:id="@+id/cancel_permintaan_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_toStartOf="@+id/info_permintaan_button"
         android:layout_centerVertical="true"
         android:src="@drawable/permintaan_cancel_button"
-        android:focusable="false"/>
+        android:focusable="false"/-->
     <ImageView
         android:id="@+id/info_permintaan_button"
         android:layout_width="50dp"

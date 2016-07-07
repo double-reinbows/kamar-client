@@ -76,6 +76,13 @@ public class Permintaan<T extends Content> extends Model {
     private static final Set<String> CANCELLABLE_STATES = new HashSet<>(Arrays.asList(STATE_NEW, STATE_INPROGRESS, STATE_INDELIVERY));
 
     /**
+     * The set of regressable states.
+     */
+    private static final Set<String> REGRESSABLE_STATES = new HashSet<>(Arrays.asList(STATE_INPROGRESS, STATE_INDELIVERY, STATE_COMPLETED));
+
+
+
+    /**
      * The owner of the request. One of:
      * <ul>
      * <li>RESTAURANT</li>
@@ -179,6 +186,13 @@ public class Permintaan<T extends Content> extends Model {
      */
     public boolean isCancellable() {
         return CANCELLABLE_STATES.contains(state);
+    }
+
+    /**
+     * @return Whether or not this permintaan is cancellable.
+     */
+    public boolean isRegressable() {
+        return REGRESSABLE_STATES.contains(state);
     }
 
     @Override

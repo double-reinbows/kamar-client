@@ -14,7 +14,7 @@
         android:paddingBottom="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
         android:textSize="35dp"
-        android:textColor="#000000" />
+        android:textColor="@color/guestTextColor" />
     <ImageView
         android:id="@+id/permintaan_cancel_button"
         android:layout_width="80dp"

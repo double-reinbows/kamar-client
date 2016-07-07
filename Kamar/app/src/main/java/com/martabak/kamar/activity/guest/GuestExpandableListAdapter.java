@@ -65,11 +65,11 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        if (convertView == null) {
+//        if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.guest_permintaan_item, null);
-        }
+//        }
 
         //Set up the "x" or permintaan cancel button
         ImageView cancelPermintaanButton = (ImageView) convertView.findViewById(R.id.permintaan_cancel_button);
@@ -95,7 +95,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                                     @Override
                                     public void onCompleted() {
                                         Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "doGetAndUpdatePermintaan() On completed");
-                                        Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
+                                        final Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
                                                 tempPermintaan.roomNumber, tempPermintaan.guestId, "CANCELLED",
                                                 tempPermintaan.created, new Date(), tempPermintaan.content);
                                         PermintaanServer.getInstance(context).updatePermintaan(updatedPermintaan)
@@ -105,6 +105,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                                                         Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On completed");
                                                         //remove currPermintaan's ID from the list of states.
                                                         stateToPermIds.get(currPermintaan.state).remove(currPermintaan._id);
+                                                        idToPermintaan.put(currPermintaan._id, updatedPermintaan);
                                                         notifyDataSetChanged();
                                                     }
 
@@ -253,11 +254,11 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
 
-        if (convertView == null) {
+//        if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.guest_permintaan_state, null);
-        }
+//        }
 
         String headerTitle = (String) getGroup(groupPosition);
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.list_state);
