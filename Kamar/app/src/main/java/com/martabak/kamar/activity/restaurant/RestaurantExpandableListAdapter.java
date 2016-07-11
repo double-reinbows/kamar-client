@@ -91,7 +91,7 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
                     txtListChild.setPadding(txtListChild.getPaddingLeft(),
                             txtListChild.getPaddingTop(),
                             txtListChild.getPaddingRight(),
-                            15);
+                            35);
                 } else {
                     //set item name padding to default
                     txtListChild.setPadding(txtListChild.getPaddingLeft(),
