@@ -91,8 +91,8 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
                     txtListChild.setPadding(txtListChild.getPaddingLeft(),
                             txtListChild.getPaddingTop(),
                             txtListChild.getPaddingRight(),
-                            35);
-                } else {
+                            20);
+                } /*else {
                     //set item name padding to default
                     txtListChild.setPadding(txtListChild.getPaddingLeft(),
                             txtListChild.getPaddingTop(),
@@ -100,7 +100,7 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
                             90);
 
 //                    quantity.margin
-                }
+                }*/
             }
         });
 
