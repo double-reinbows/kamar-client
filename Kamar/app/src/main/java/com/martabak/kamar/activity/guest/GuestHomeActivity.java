@@ -229,10 +229,11 @@ public class GuestHomeActivity extends AppCompatActivity
 
             //show welcome message
             setGuestId(roomNumber);
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(welcomeMessage);
-            builder.setPositiveButton("OK", null);
-            builder.show();
+
+            final AlertDialog welcomeDialog= new AlertDialog.Builder(this).create();
+
+            welcomeDialog.setMessage(welcomeMessage);
+            welcomeDialog.show();
 
 
         } else {

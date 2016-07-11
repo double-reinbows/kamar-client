@@ -27,10 +27,11 @@
                 android:id="@+id/guestgridview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:columnWidth="350dp"
+                android:layout_marginTop="20dp"
+                android:columnWidth="250dp"
                 android:numColumns="auto_fit"
                 android:horizontalSpacing="10dp"
-                android:verticalSpacing="10dp"
+                android:verticalSpacing="60dp"
                 android:stretchMode="columnWidth"
                 android:gravity="center" />
         </LinearLayout>
