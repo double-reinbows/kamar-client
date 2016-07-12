@@ -8,6 +8,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:textSize="40dp"
-        android:textColor="#230913" />
+        android:textSize="32dp"
+        android:textColor="@color/guestTextColor" />
 </RelativeLayout>
