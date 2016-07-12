@@ -127,7 +127,7 @@
     <string name="restaurant_order_summary">Order Summary</string>
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
-    <string name="restaurant_submit_button">Confrim Order</string>
+    <string name="restaurant_submit_button">Confirm Order</string>
     <string name="restaurant_back_button">Back</string>
     <string name="restaurant_confirm_input">Comments...</string>
     <string name="restaurant_confirmation_dialog_title">Thank you for your order.</string>
