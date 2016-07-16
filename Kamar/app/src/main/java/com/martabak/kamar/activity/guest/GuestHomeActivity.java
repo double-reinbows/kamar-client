@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -231,8 +232,11 @@ public class GuestHomeActivity extends AppCompatActivity
             setGuestId(roomNumber);
 
             final AlertDialog welcomeDialog= new AlertDialog.Builder(this).create();
+            final View view = this.getLayoutInflater().inflate(R.layout.dialog_welcome_message, null);
 
-            welcomeDialog.setMessage(welcomeMessage);
+            final TextView textView = (TextView) view.findViewById(R.id.guest_welcome_text);
+            textView.setText(welcomeMessage);
+            welcomeDialog.setView(view);
             welcomeDialog.show();
 
 
@@ -332,7 +336,8 @@ public class GuestHomeActivity extends AppCompatActivity
                 else {
                     editor.putString("guestId", result._id);
                     welcomeMessage = result.welcomeMessage;
-                    Log.v(GuestHomeActivity.class.getCanonicalName(), "Setting guest ID to " + result._id);
+                    Log.v(GuestHomeActivity.class
+                            .getCanonicalName(), "Setting guest ID to " + result._id);
                 }
                 Log.v(GuestHomeActivity.class.getCanonicalName(), "Guest ID " + getSharedPreferences("userSettings", MODE_PRIVATE)
                         .getString("guestId", "none"));

@@ -147,4 +147,6 @@
     <string name="logout">Logout</string>
     <string name="logout_result">Logged out of guest</string>
 
+    <string name="guest_welcome_title">Welcome!</string>
+
 </resources>
