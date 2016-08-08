@@ -67,8 +67,11 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
-                String password = passwordEditText.getText().toString();
-                changeRoomNumber(roomNumber, password);
+                //Not necessary because pwd has been verified by this stage
+                //String password = passwordEditText.getText().toString();
+                //changeRoomNumberWithPassword(roomNumber, password);
+                changeRoomNumber(roomNumber);
+
             }
         });
 
@@ -86,11 +89,12 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
     }
 
     /**
-     * Change the room number if the password is correct.
+     * Change the room number if the password is correct. This has been commented out because
+     * password has already been requested.
      * @param roomNumber The room number.
      * @param password The password string.
      */
-    public void changeRoomNumber(final String roomNumber, String password) {
+    public void changeRoomNumberWithPassword(final String roomNumber, String password) {
         StaffServer.getInstance(getActivity()).login(password).subscribe(new Observer<Boolean>() {
             boolean success = false;
             String reason;
@@ -114,6 +118,16 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
 
             }
         });
+    }
+
+    /**
+     * Change the room number.
+     * @param roomNumber The room number.
+     */
+    public void changeRoomNumber(final String roomNumber) {
+
+        changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, true, null);
+
     }
 
     /**
