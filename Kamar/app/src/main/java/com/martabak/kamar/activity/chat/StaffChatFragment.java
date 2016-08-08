@@ -52,15 +52,15 @@ public class StaffChatFragment extends Fragment{
 
         GuestServer.getInstance(this.getActivity()).getGuestsCheckedIn().subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
-                Log.d(ChatListActivity.class.getCanonicalName(), "onCompleted");
+                Log.d(StaffChatFragment.class.getCanonicalName(), "onCompleted");
                 recyclerViewAdapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
-                Log.d(ChatListActivity.class.getCanonicalName(), "onError", e);
+                Log.d(StaffChatFragment.class.getCanonicalName(), "onError", e);
                 e.printStackTrace();
             }
             @Override public void onNext(final Guest guest) {
-                Log.d(ChatListActivity.class.getCanonicalName(), "Guest found in room " + guest.roomNumber);
+                Log.d(StaffChatFragment.class.getCanonicalName(), "Guest found in room " + guest.roomNumber);
                 guests.add(guest);
             }
         });
