@@ -220,7 +220,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
      * @param checkOutDate Guest's expected check-out date.
      * @param welcome A welcome message for the guest.
      */
-    private void sendCreateGuestRequest(String firstName, String lastName, String phoneNumber,
+    public void sendCreateGuestRequest(String firstName, String lastName, String phoneNumber,
                                         String email, String roomNumber, Date checkOutDate, String welcome) {
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
