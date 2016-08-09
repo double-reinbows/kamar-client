@@ -41,9 +41,9 @@ public class Staff extends Model {
     public final String phone;
 
     /**
-     * The staff member's responsibility, e.g. MASSAGE.
+     * The staff member's division, e.g. MASSAGE.
      */
-    public final String resp;
+    public final String division;
 
     /**
      * The staff member's areas of expertise, e.g. SHIATSU, TRADITIONAL.
@@ -64,29 +64,29 @@ public class Staff extends Model {
         this.firstName = null;
         this.lastName = null;
         this.phone = null;
-        this.resp = null;
+        this.division = null;
         this.expertise = null;
         this.start_time = null;
         this.end_time = null;
     }
 
-    public Staff(String firstName, String lastName, String phone, String resp, List<String> expertise, Date start_time, Date end_time) {
+    public Staff(String firstName, String lastName, String phone, String division, List<String> expertise, Date start_time, Date end_time) {
         super(null, null);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
-        this.resp = resp;
+        this.division = division;
         this.expertise = expertise;
         this.start_time = start_time;
         this.end_time = end_time;
     }
 
-    public Staff(String _id, String _rev, String firstName, String lastName, String phone, String resp, List<String> expertise, Date start_time, Date end_time) {
+    public Staff(String _id, String _rev, String firstName, String lastName, String phone, String division, List<String> expertise, Date start_time, Date end_time) {
         super(_id, _rev);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
-        this.resp = resp;
+        this.division = division;
         this.expertise = expertise;
         this.start_time = start_time;
         this.end_time = end_time;

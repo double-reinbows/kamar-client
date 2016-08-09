@@ -71,15 +71,15 @@ public class StaffServer extends Server {
     }
 
     /**
-     * Get all the staff that match the given responsibilities.
-     * I.E. {@code getStaffOfResponsibilitiy("MASSAGE", "ENGINEERING")}
-     * @param responsibilities The responsibilities to match on.
+     * Get all the staff that match the given division.
+     * I.E. {@code getStaffOfDivision("MASSAGE", "ENGINEERING")}
+     * @param divisions The divisions to match on.
      * @return Observable on the staff.
      */
-    public Observable<Staff> getStaffOfResponsibility(String... responsibilities) {
-        List<Observable<Staff>> results = new ArrayList<>(responsibilities.length);
-        for (String resp : responsibilities) {
-            results.add(service.getStaffOfResponsibility('"' + resp + '"')
+    public Observable<Staff> getStaffOfDivision(String... divisions) {
+        List<Observable<Staff>> results = new ArrayList<>(divisions.length);
+        for (String div : divisions) {
+            results.add(service.getStaffOfDivision('"' + div + '"')
                     .flatMap(new Func1<ViewResponse<Staff>, Observable<Staff>>() {
                         @Override
                         public Observable<Staff> call(ViewResponse<Staff> response) {

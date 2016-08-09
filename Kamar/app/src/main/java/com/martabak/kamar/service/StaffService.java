@@ -20,8 +20,8 @@ public interface StaffService {
     @GET("password/_design/password/_view/password")
     Observable<ViewResponse<Boolean>> login(@Query("key") String password);
 
-    @GET("staff/_design/staff/_view/responsibility")
-    Observable<ViewResponse<Staff>> getStaffOfResponsibility(@Query("key") String resp);
+    @GET("staff/_design/staff/_view/division")
+    Observable<ViewResponse<Staff>> getStaffOfDivision(@Query("key") String resp);
 
     @GET("massage_options/_all_docs?include_docs=true")
     Observable<AllResponse<MassageOption>> getMassageOptions();
