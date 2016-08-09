@@ -3,7 +3,15 @@ package com.martabak.kamar.service;
 import android.content.Context;
 
 
+import com.martabak.kamar.domain.Staff;
+import com.martabak.kamar.domain.options.EngineeringOption;
+import com.martabak.kamar.domain.options.HousekeepingOption;
+import com.martabak.kamar.domain.options.MassageOption;
+import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.ViewResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -56,6 +64,86 @@ public class StaffServer extends Server {
                             return Observable.just(i.value);
                         }
                         return Observable.just(false);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * Get all the staff that match the given responsibilities.
+     * I.E. {@code getStaffOfResponsibilitiy("MASSAGE", "ENGINEERING")}
+     * @param responsibilities The responsibilities to match on.
+     * @return Observable on the staff.
+     */
+    public Observable<Staff> getStaffOfResponsibility(String... responsibilities) {
+        List<Observable<Staff>> results = new ArrayList<>(responsibilities.length);
+        for (String resp : responsibilities) {
+            results.add(service.getStaffOfResponsibility('"' + resp + '"')
+                    .flatMap(new Func1<ViewResponse<Staff>, Observable<Staff>>() {
+                        @Override
+                        public Observable<Staff> call(ViewResponse<Staff> response) {
+                            List<Staff> staff = new ArrayList<>(response.total_rows);
+                            for (ViewResponse<Staff>.ViewResult<Staff> i : response.rows) {
+                                staff.add(i.value);
+                            }
+                            return Observable.from(staff);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()));
+        }
+        return Observable.merge(results);
+    }
+
+    /**
+     * @return All the massage options that are available.
+     */
+    public Observable<List<MassageOption>> getMassageOptions() {
+        return service.getMassageOptions()
+                .flatMap(new Func1<AllResponse<MassageOption>, Observable<List<MassageOption>>>() {
+                    @Override public Observable<List<MassageOption>> call(AllResponse<MassageOption> response) {
+                        List<MassageOption> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<MassageOption>.AllResult<MassageOption> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+                        return Observable.just(toReturn);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * @return All the engineering options that are available.
+     */
+    public Observable<List<EngineeringOption>> getEngineeringOptions() {
+        return service.getEngineeringOptions()
+                .flatMap(new Func1<AllResponse<EngineeringOption>, Observable<List<EngineeringOption>>>() {
+                    @Override public Observable<List<EngineeringOption>> call(AllResponse<EngineeringOption> response) {
+                        List<EngineeringOption> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<EngineeringOption>.AllResult<EngineeringOption> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+                        return Observable.just(toReturn);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * @return All the housekeeping options that are available.
+     */
+    public Observable<List<HousekeepingOption>> getHousekeepingOptions() {
+        return service.getHousekeepingOptions()
+                .flatMap(new Func1<AllResponse<HousekeepingOption>, Observable<List<HousekeepingOption>>>() {
+                    @Override public Observable<List<HousekeepingOption>> call(AllResponse<HousekeepingOption> response) {
+                        List<HousekeepingOption> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<HousekeepingOption>.AllResult<HousekeepingOption> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+                        return Observable.just(toReturn);
                     }
                 })
                 .subscribeOn(Schedulers.io())
