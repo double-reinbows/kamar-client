@@ -2,6 +2,7 @@ package com.martabak.kamar.activity.guest;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,9 +26,15 @@ import com.martabak.kamar.activity.chat.GuestChatService;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
+import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.GuestServer;
+import com.martabak.kamar.activity.staff.CheckGuestInFragment;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import rx.Observer;
 
@@ -40,6 +47,7 @@ public class GuestHomeActivity extends AppCompatActivity
     private String option;
     private TextView roomNumberTextView;
     private String welcomeMessage;
+    private Guest guest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +59,12 @@ public class GuestHomeActivity extends AppCompatActivity
 
         final ImageAdapter imgAdapter = new ImageAdapter(this);
         final GridView gridView = (GridView) findViewById(R.id.guestgridview);
-        View passwordIconView = findViewById(R.id.passwordChangeIcon);
+        //View passwordIconView = findViewById(R.id.passwordChangeIcon);
         View logoutView = findViewById(R.id.logoutIcon);
+        guest = new Guest();
 
         roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
-        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
+        final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         setGuestId(roomNumber);
 
@@ -75,7 +84,7 @@ public class GuestHomeActivity extends AppCompatActivity
                 createAction();
             }
         });
-
+/*
         // open the change room number as a fragment
         if (passwordIconView != null) {
             passwordIconView.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +95,7 @@ public class GuestHomeActivity extends AppCompatActivity
                 }
             });
         }
-
+*/
         // logout guest
         if (logoutView != null) {
             logoutView.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +103,47 @@ public class GuestHomeActivity extends AppCompatActivity
                 public void onClick(View v) {
                     DialogFragment logoutDialogFragment = new LogoutDialogFragment();
                     logoutDialogFragment.show(getFragmentManager(), "logout");
+
+                    /*
+                    new AlertDialog.Builder(GuestHomeActivity.this)
+                            .setMessage(getString(R.string.logout_options))
+                            .setCancelable(false)
+
+                            .setNegativeButton(getString(R.string.logout_change_room_number), new DialogInterface.OnClickListener() {
+                                @Override public void onClick(DialogInterface dialog, int which) {
+                                    DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
+                                    changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
+                                }
+                            })
+
+                            .setNeutralButton(getString(R.string.logout_staff), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int which) {
+                                    SharedPreferences.Editor editor = GuestHomeActivity.this
+                                            .getSharedPreferences("userSettings", MODE_PRIVATE)
+                                            .edit();
+                                    editor.putString("subUserType", User.TYPE_STAFF_FRONTDESK)
+                                            .commit();
+
+                                    //Log.v(SelectUserTypeActivity.class.getCanonicalName(), "userType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none"));
+                                    //Log.v(SelectUserTypeActivity.class.getCanonicalName(), "subUserType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
+
+                                    startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
+                                    GuestHomeActivity.this.finish();
+                                }
+                            })
+
+                            .setPositiveButton(getString(R.string.logout_reset_tablet), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.v("App Action", "Resetting tablet");
+                                    checkGuestOut(roomNumber);
+                                }
+                            })
+
+                    .create().show();
+
+*/
                 }
             });
         }
@@ -224,13 +274,13 @@ public class GuestHomeActivity extends AppCompatActivity
             ).show();
             roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
 
-            String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
-                    .getString("guestId", "none");
+            //String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
+              //      .getString("guestId", "none");
 
 
             //show welcome message
             setGuestId(roomNumber);
-
+/*
             final AlertDialog welcomeDialog= new AlertDialog.Builder(this).create();
             final View view = this.getLayoutInflater().inflate(R.layout.dialog_welcome_message, null);
 
@@ -238,7 +288,7 @@ public class GuestHomeActivity extends AppCompatActivity
             textView.setText(welcomeMessage);
             welcomeDialog.setView(view);
             welcomeDialog.show();
-
+*/
 
         } else {
             Toast.makeText(
@@ -267,7 +317,7 @@ public class GuestHomeActivity extends AppCompatActivity
     public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String reason) {
         dialog.dismiss();
         if (success)
-        {
+        {/*
             this.getSharedPreferences("userSettings", this.MODE_PRIVATE)
                     .edit()
                     .putString("guestId", "none")
@@ -287,8 +337,65 @@ public class GuestHomeActivity extends AppCompatActivity
                     reason,
                     Toast.LENGTH_SHORT
             ).show();
-        }
+            */
+            final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
+                    .getString("roomNumber", "none");
+            new AlertDialog.Builder(GuestHomeActivity.this)
+                    .setMessage(getString(R.string.logout_options))
+                    .setCancelable(true)
 
+                    .setNegativeButton(getString(R.string.logout_change_room_number), new DialogInterface.OnClickListener() {
+                        @Override public void onClick(DialogInterface dialog, int which) {
+                            DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
+                            changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
+                        }
+                    })
+
+                    .setNeutralButton(getString(R.string.logout_staff), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            SharedPreferences.Editor editor = GuestHomeActivity.this
+                                    .getSharedPreferences("userSettings", MODE_PRIVATE)
+                                    .edit();
+                            editor.putString("subUserType", User.TYPE_STAFF_FRONTDESK)
+                                    .commit();
+
+                            //Log.v(SelectUserTypeActivity.class.getCanonicalName(), "userType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none"));
+                            //Log.v(SelectUserTypeActivity.class.getCanonicalName(), "subUserType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
+
+                            startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
+                            GuestHomeActivity.this.finish();
+                        }
+                    })
+
+                    .setPositiveButton(getString(R.string.logout_reset_tablet), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.v("App Action", "Resetting tablet");
+                            checkGuestOut(roomNumber);
+                            GuestHomeActivity.this.getSharedPreferences("userSettings", GuestHomeActivity.this.MODE_PRIVATE)
+                                    .edit()
+                                    .putString("guestId", "none")
+                                    .commit();
+                            Toast.makeText(
+                                    GuestHomeActivity.this,
+                                    getString(R.string.logout_result),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            Intent intent = new Intent(GuestHomeActivity.this, SelectLanguageActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+
+                    .create().show();
+        }
+        else {
+            Toast.makeText(
+                    this,
+                    reason,
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
     }
 
     /**
@@ -371,6 +478,69 @@ public class GuestHomeActivity extends AppCompatActivity
         stopService(new Intent(this, GuestPermintaanService.class));
         Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + GuestChatService.class.getCanonicalName());
         stopService(new Intent(this, GuestChatService.class));
+    }
+
+    /**
+     * Check the guest out.
+     */
+    private void checkGuestOut2(Guest guest) {
+        Calendar c = Calendar.getInstance();
+        Date currentDate = c.getTime();
+        //getGuestInRoomNumber(roomNumber); //get Guest from
+        Guest updatedGuest;
+        //Log.v("roomNo", roomNumber);
+        Log.v("Guest", guest._rev);
+        updatedGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
+                guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
+                guest.roomNumber);
+        GuestServer.getInstance(GuestHomeActivity.this.getBaseContext()).updateGuest(updatedGuest)
+                .subscribe(new Observer<Boolean>() {
+                    @Override public void onCompleted() {
+                        //rooms.notifyDataSetChanged();
+                        Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On completed");
+                    }
+                    @Override public void onError(Throwable e) {
+                        Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On error");
+                        e.printStackTrace();
+                        Toast.makeText(GuestHomeActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    }
+                    @Override public void onNext(Boolean result) {
+                        Log.v(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On next " + result);
+                        if (result) {
+                            Toast.makeText(GuestHomeActivity.this, getString(R.string.guest_checkout_message), Toast.LENGTH_LONG).show();
+                            //startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
+                        } else {
+                            Toast.makeText(GuestHomeActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Get the guest currently checked in to the room number.
+     * @param roomNumber The room number.
+     * @return The guest.
+     */
+    private void checkGuestOut(final String roomNumber) {
+        //final Guest guest = null;
+        GuestServer.getInstance(GuestHomeActivity.this.getBaseContext()).getGuestInRoom(
+                roomNumber).subscribe(new Observer<Guest>() {
+            Guest guest = null;
+            @Override public void onCompleted() {
+                if (guest != null) {
+                    checkGuestOut2(guest);
+                }
+                //Log.d(CheckGuestInFragment.class.getCanonicalName(), "On completed");
+            }
+            @Override public void onError(Throwable e) {
+                //Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
+                e.printStackTrace();
+            }
+            @Override public void onNext(Guest result) {
+                guest = result;
+                //Log.d(CheckGuestInFragment.class.getCanonicalName(), "On next guest " + result);
+            }
+        });
     }
 
 }
