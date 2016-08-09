@@ -43,7 +43,9 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
         final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
+
         setGuestId(roomNumber);
+
         String guestId = getSharedPreferences("userSettings", MODE_PRIVATE).
                 getString("guestId", "none");
         Log.v("guestId Shared Pref", guestId);
@@ -124,34 +126,40 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     /**
      * Set guest id on shared preferences.
+     *
      * @param roomNumber The room number.
      */
     private void setGuestId(final String roomNumber) {
         GuestServer.getInstance(getBaseContext()).getGuestInRoom(
                 roomNumber).subscribe(new Observer<Guest>() {
-            @Override public void onCompleted() {
-                Log.d(GuestHomeActivity.class.getCanonicalName(), "Completed setting guest ID");
+            @Override
+            public void onCompleted() {
+                Log.d(SelectLanguageActivity.class.getCanonicalName(), "Completed setting guest ID");
             }
-            @Override public void onError(Throwable e) {
-                Log.d(GuestHomeActivity.class.getCanonicalName(), "On error");
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(SelectLanguageActivity.class.getCanonicalName(), "On error");
                 e.printStackTrace();
             }
-            @Override public void onNext(Guest result) {
+
+            @Override
+            public void onNext(Guest result) {
                 // Store the guest id in shared preferences
                 SharedPreferences pref = getSharedPreferences("userSettings", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
 
-                Log.v(GuestHomeActivity.class.getCanonicalName(), "Room Number : " + roomNumber);
+                Log.v(SelectLanguageActivity.class.getCanonicalName(), "Room Number : " + roomNumber);
                 if (result == null) {
                     editor.putString("guestId", "none");
-                }
-                else {
+                } else {
+                    //set guestId in Shared Preferences
                     editor.putString("guestId", result._id);
                     welcomeMessage = result.welcomeMessage;
-                    Log.v(GuestHomeActivity.class
+                    Log.v(SelectLanguageActivity.class
                             .getCanonicalName(), "Setting guest ID to " + result._id);
                 }
-                Log.v(GuestHomeActivity.class.getCanonicalName(), "Guest ID " + getSharedPreferences("userSettings", MODE_PRIVATE)
+                Log.v(SelectLanguageActivity.class.getCanonicalName(), "Guest ID " + getSharedPreferences("userSettings", MODE_PRIVATE)
                         .getString("guestId", "none"));
                 editor.commit();
             }

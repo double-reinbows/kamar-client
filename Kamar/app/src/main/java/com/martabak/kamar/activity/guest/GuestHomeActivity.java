@@ -277,18 +277,7 @@ public class GuestHomeActivity extends AppCompatActivity
             //String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
               //      .getString("guestId", "none");
 
-
-            //show welcome message
             setGuestId(roomNumber);
-/*
-            final AlertDialog welcomeDialog= new AlertDialog.Builder(this).create();
-            final View view = this.getLayoutInflater().inflate(R.layout.dialog_welcome_message, null);
-
-            final TextView textView = (TextView) view.findViewById(R.id.guest_welcome_text);
-            textView.setText(welcomeMessage);
-            welcomeDialog.setView(view);
-            welcomeDialog.show();
-*/
 
         } else {
             Toast.makeText(
@@ -317,27 +306,7 @@ public class GuestHomeActivity extends AppCompatActivity
     public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String reason) {
         dialog.dismiss();
         if (success)
-        {/*
-            this.getSharedPreferences("userSettings", this.MODE_PRIVATE)
-                    .edit()
-                    .putString("guestId", "none")
-                    .commit();
-            Toast.makeText(
-                    this,
-                    getString(R.string.logout_result),
-                    Toast.LENGTH_LONG
-            ).show();
-            Intent intent = new Intent(this, SelectLanguageActivity.class);
-            startActivity(intent);
-        }
-        else
         {
-            Toast.makeText(
-                    this,
-                    reason,
-                    Toast.LENGTH_SHORT
-            ).show();
-            */
             final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                     .getString("roomNumber", "none");
             new AlertDialog.Builder(GuestHomeActivity.this)
