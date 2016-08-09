@@ -44,12 +44,12 @@
                       android:layout_alignParentBottom="true"
                       android:orientation="horizontal">
 
-            <ImageView
+            <!--ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/passwordChangeIcon"
                 android:src="@mipmap/ic_change_room_number"
-                android:contentDescription="passwordChangeIcon" />
+                android:contentDescription="passwordChangeIcon" /-->
 
             <ImageView
                 android:layout_width="wrap_content"

@@ -55,6 +55,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
                 .getString("roomNumber", "none");
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
+
     }
 
     protected void createExpandableList(List<Permintaan> permintaans) {
@@ -119,17 +120,18 @@ public class GuestPermintaanActivity extends AppCompatActivity {
      * creates the expandable list.
      */
     private void doGetPermintaansOfStateAndCreateExpList() {
-        final String roomNumber = getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("roomNumber", "none");
-        Log.d(GuestPermintaanActivity.class.getCanonicalName(), "Doing get permintaans of state for room number " + roomNumber);
+        final String guestId = getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("guestId", "none");
+        Log.d(GuestPermintaanActivity.class.getCanonicalName(), "Doing get permintaans of state for guestId " + guestId);
         PermintaanServer.getInstance(this)
-                .getPermintaansOfState(
-                        Permintaan.STATE_NEW,
-                        Permintaan.STATE_INPROGRESS,
-                        Permintaan.STATE_INDELIVERY,
-                        Permintaan.STATE_COMPLETED)
+                .getPermintaansForGuest(guestId)
+                        //Permintaan.STATE_NEW,
+                        //Permintaan.STATE_INPROGRESS)
+                        //Permintaan.STATE_INDELIVERY,
+                        //Permintaan.STATE_COMPLETED)
                 .filter(new Func1<Permintaan, Boolean>() {
                     @Override public Boolean call(Permintaan permintaan) {
-                        return permintaan.roomNumber.equals(roomNumber);
+                        return permintaan.state.equals(Permintaan.STATE_NEW) ||
+                                permintaan.state.equals(Permintaan.STATE_INPROGRESS);
                     }
                 })
                 .subscribe(new Observer<Permintaan>() {

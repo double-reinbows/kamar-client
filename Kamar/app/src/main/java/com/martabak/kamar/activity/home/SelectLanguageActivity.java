@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.GuestHomeActivity;
 
 import java.util.Locale;
 
@@ -44,7 +45,8 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     ).show();
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to English");
 
-                    startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
                     finish();
                 }
             });
@@ -62,7 +64,8 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     ).show();
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Indonesian");
 
-                    startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
                     finish();
                 }
             });

@@ -59,7 +59,7 @@ public class GuestHomeActivity extends AppCompatActivity
 
         final ImageAdapter imgAdapter = new ImageAdapter(this);
         final GridView gridView = (GridView) findViewById(R.id.guestgridview);
-        View passwordIconView = findViewById(R.id.passwordChangeIcon);
+        //View passwordIconView = findViewById(R.id.passwordChangeIcon);
         View logoutView = findViewById(R.id.logoutIcon);
         guest = new Guest();
 
@@ -490,9 +490,9 @@ public class GuestHomeActivity extends AppCompatActivity
         Guest updatedGuest;
         //Log.v("roomNo", roomNumber);
         Log.v("Guest", guest._rev);
-        updatedGuest = new Guest(guest._id, guest._rev, null, null,
-                null, null, null, currentDate, guest.roomNumber,
-                null);
+        updatedGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
+                guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
+                guest.roomNumber);
         GuestServer.getInstance(GuestHomeActivity.this.getBaseContext()).updateGuest(updatedGuest)
                 .subscribe(new Observer<Boolean>() {
                     @Override public void onCompleted() {
