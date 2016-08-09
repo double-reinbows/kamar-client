@@ -274,13 +274,13 @@ public class GuestHomeActivity extends AppCompatActivity
             ).show();
             roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
 
-            String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
-                    .getString("guestId", "none");
+            //String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
+              //      .getString("guestId", "none");
 
 
             //show welcome message
             setGuestId(roomNumber);
-
+/*
             final AlertDialog welcomeDialog= new AlertDialog.Builder(this).create();
             final View view = this.getLayoutInflater().inflate(R.layout.dialog_welcome_message, null);
 
@@ -288,7 +288,7 @@ public class GuestHomeActivity extends AppCompatActivity
             textView.setText(welcomeMessage);
             welcomeDialog.setView(view);
             welcomeDialog.show();
-
+*/
 
         } else {
             Toast.makeText(
