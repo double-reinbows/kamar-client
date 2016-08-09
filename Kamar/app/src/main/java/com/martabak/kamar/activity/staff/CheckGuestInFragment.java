@@ -44,8 +44,8 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
     private EditText editLastName;
     private EditText editEmail;
     private EditText editPhoneNumber;
-    private Date checkOutDate;
-    private EditText editDateCheckOut;
+    //private Date checkOutDate;
+    //private EditText editDateCheckOut;
     private Spinner spinnerRoomNumber;
     private EditText editWelcomeMessage;
     private Button submitButton;
@@ -69,13 +69,13 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         editPhoneNumber = (EditText) view.findViewById(R.id.guest_phone);
         editEmail = (EditText) view.findViewById(R.id.guest_email);
         spinnerRoomNumber = (Spinner) view.findViewById(R.id.guest_spinner);
-        editDateCheckOut = (EditText) view.findViewById(R.id.guest_date_check_out);
+        //editDateCheckOut = (EditText) view.findViewById(R.id.guest_date_check_out);
         editWelcomeMessage = (EditText) view.findViewById(R.id.guest_welcome_message);
         editFirstName.addTextChangedListener(this);
         editLastName.addTextChangedListener(this);
         editPhoneNumber.addTextChangedListener(this);
-        editDateCheckOut.addTextChangedListener(this);
-
+        //editDateCheckOut.addTextChangedListener(this);
+/*
         DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
             @Override public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
@@ -97,7 +97,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                 datePickerDialog.show();
             }
         });
-
+*/
         final List<String> roomNumbers = getRoomNumbersWithoutGuests();
         ArrayAdapter adapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
@@ -120,7 +120,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                 String roomNumber = roomNumbers.get((int)spinnerRoomNumber.getSelectedItemId()).toString();
                 String welcome = editWelcomeMessage.getText().toString();
                 sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber,
-                        checkOutDate, welcome);
+                        null, welcome);
             }
         });
         return view;
@@ -170,6 +170,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
             invalid = true;
             editPhoneNumber.setError(getString(R.string.required));
         }
+        /*
         if (editDateCheckOut.getText().toString().trim().equalsIgnoreCase("")) {
             Log.d(CheckGuestInFragment.class.getCanonicalName(), "Check out date field empty");
             invalid = true;
@@ -177,6 +178,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         } else {
             editDateCheckOut.setError(null);
         }
+        */
         if ((int)spinnerRoomNumber.getSelectedItemId() <= 0) {
             Log.d(CheckGuestInFragment.class.getCanonicalName(), "Valid room number required");
             invalid = true;

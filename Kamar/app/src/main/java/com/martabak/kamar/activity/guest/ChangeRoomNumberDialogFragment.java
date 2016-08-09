@@ -79,7 +79,8 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                changeRoomDialogListener.onChangeRoomDialogNegativeClick(ChangeRoomNumberDialogFragment.this);
+                changeRoomDialogListener.onChangeRoomDialogNegativeClick(
+                        ChangeRoomNumberDialogFragment.this);
             }
         });
 
@@ -89,7 +90,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
     }
 
     /**
-     * Change the room number if the password is correct. This has been commented out because
+     * Change the room number if the password is correct. This is unused because
      * password has already been requested.
      * @param roomNumber The room number.
      * @param password The password string.
@@ -100,17 +101,20 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
             String reason;
             @Override public void onCompleted() {
                 Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "Success: " + success);
-                changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, success, reason);
+                changeRoomDialogListener.onChangeRoomDialogPositiveClick(
+                        ChangeRoomNumberDialogFragment.this, roomNumber, success, reason);
                 Log.d(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "On completed");
             }
             @Override public void onError(Throwable e) {
                 Log.d(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
                 reason = "Something went wrong";
-                changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, success, reason);
+                changeRoomDialogListener.onChangeRoomDialogPositiveClick(
+                        ChangeRoomNumberDialogFragment.this, roomNumber, success, reason);
             }
             @Override public void onNext(Boolean loginResponse) {
-                Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(), "Login response: " + loginResponse.toString());
+                Log.v(ChangeRoomNumberDialogFragment.class.getCanonicalName(),
+                        "Login response: " + loginResponse.toString());
                 success = loginResponse;
                 if (!loginResponse) {
                     reason = "Incorrect Password";
@@ -126,7 +130,8 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
      */
     public void changeRoomNumber(final String roomNumber) {
 
-        changeRoomDialogListener.onChangeRoomDialogPositiveClick(ChangeRoomNumberDialogFragment.this, roomNumber, true, null);
+        changeRoomDialogListener.onChangeRoomDialogPositiveClick(
+                ChangeRoomNumberDialogFragment.this, roomNumber, true, null);
 
     }
 
@@ -149,7 +154,8 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
     }
 
     public interface ChangeRoomDialogListener {
-        void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, boolean success, String reason);
+        void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber,
+                                             boolean success, String reason);
         void onChangeRoomDialogNegativeClick(DialogFragment dialog);
     }
 
