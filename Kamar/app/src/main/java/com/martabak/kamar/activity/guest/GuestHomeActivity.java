@@ -175,7 +175,7 @@ public class GuestHomeActivity extends AppCompatActivity
             case Permintaan.TYPE_BELLBOY:
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
                 break;
-            case Permintaan.TYPE_MAINTENANCE:
+            case Permintaan.TYPE_ENGINEERING:
                 new MaintenanceDialogFragment().show(getFragmentManager(), "maintenance");
                 break;
             case "TELL US":
@@ -213,7 +213,7 @@ public class GuestHomeActivity extends AppCompatActivity
                             Toast.LENGTH_LONG
                     ).show();
                     break;
-                case Permintaan.TYPE_MAINTENANCE:
+                case Permintaan.TYPE_ENGINEERING:
                     Toast.makeText(
                             this,
                             getString(R.string.maintenance_result),
