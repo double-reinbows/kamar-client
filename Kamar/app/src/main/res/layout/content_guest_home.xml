@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include
+        layout="@layout/actionbar_guestcustom_view"/>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/guest_container"
+        android:orientation="vertical"
+        android:background="@drawable/wood_background_highres"
+        android:layout_marginTop="200dp"
+        tools:context=".activity.guest.GuestHomeActivity">
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
