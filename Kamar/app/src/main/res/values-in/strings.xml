@@ -107,8 +107,8 @@
     <string name="bellboy_result">Bellboy request sent</string>
     <string name="report_to_frontdesk">Please report to front desk</string>
 
-    <string name="maintenance_message">Are you sure you want maintenance?</string>
-    <string name="maintenance_edittext">Input maintenance details</string>
+    <string name="maintenance_message">Are you sure you want engineering?</string>
+    <string name="maintenance_edittext">Input engineering details</string>
     <string name="maintenance_result">Maintenance request sent</string>
 
     <string name="tellus_message">Tell us what you think</string>

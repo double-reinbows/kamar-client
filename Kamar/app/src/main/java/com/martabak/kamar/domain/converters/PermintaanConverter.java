@@ -10,10 +10,11 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.martabak.kamar.domain.permintaan.Bellboy;
 import com.martabak.kamar.domain.permintaan.Checkout;
+import com.martabak.kamar.domain.permintaan.Massage;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.domain.permintaan.Content;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
-import com.martabak.kamar.domain.permintaan.Maintenance;
+import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.Transport;
@@ -80,7 +81,8 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
             case Permintaan.TYPE_BELLBOY:
             case Permintaan.TYPE_CHECKOUT:
             case Permintaan.TYPE_HOUSEKEEPING:
-            case Permintaan.TYPE_MAINTENANCE:
+            case Permintaan.TYPE_ENGINEERING:
+            case Permintaan.TYPE_MASSAGE:
             default:
                 break;
         }
@@ -123,11 +125,14 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
             case Permintaan.TYPE_CHECKOUT:
                 content = new Checkout(message);
                 break;
-            case Permintaan.TYPE_MAINTENANCE:
-                content = new Maintenance(message);
+            case Permintaan.TYPE_ENGINEERING:
+                content = new Engineering(message, null);
                 break;
             case Permintaan.TYPE_HOUSEKEEPING:
-                content = new Housekeeping(message);
+                content = new Housekeeping(message, null);
+                break;
+            case Permintaan.TYPE_MASSAGE:
+                content = new Massage(message, null, null, null, null);
                 break;
             case Permintaan.TYPE_TRANSPORT:
                 Integer passengers = c.getAsJsonPrimitive("passengers").getAsInt();
@@ -151,6 +156,6 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 throw new JsonParseException("Unknown Permintaan content type.");
         }
 
-        return new Permintaan(_id, _rev, owner, ptype, roomNumber, guestId, state, created, updated, content);
+        return new Permintaan(_id, _rev, owner, ptype, roomNumber, guestId, state, created, updated, null, content);
     }
 }

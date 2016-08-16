@@ -129,14 +129,15 @@ public class GuestHomeActivity extends AppCompatActivity implements
     /**
      * Stop any relevant guest services.
      */
+
     private void stopGuestServices() {
         Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + GuestPermintaanService.class.getCanonicalName());
         stopService(new Intent(this, GuestPermintaanService.class));
         Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + GuestChatService.class.getCanonicalName());
         stopService(new Intent(this, GuestChatService.class));
+
+
     }
-
-
 
     /**
      * Positive click.
@@ -160,7 +161,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
                             Toast.LENGTH_LONG
                     ).show();
                     break;
-                case Permintaan.TYPE_MAINTENANCE:
+                case Permintaan.TYPE_ENGINEERING:
                     Toast.makeText(
                             this,
                             getString(R.string.maintenance_result),
@@ -378,7 +379,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
             case Permintaan.TYPE_BELLBOY:
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
                 break;
-            case Permintaan.TYPE_MAINTENANCE:
+            case Permintaan.TYPE_ENGINEERING:
                 new MaintenanceDialogFragment().show(getFragmentManager(), "maintenance");
                 break;
             case "TELL US":

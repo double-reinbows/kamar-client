@@ -37,9 +37,13 @@ public class Permintaan<T extends Content> extends Model {
      */
     public static final String TYPE_HOUSEKEEPING = "HOUSEKEEPING";
     /**
-     * The MAINTENANCE type string.
+     * The ENGINEERING type string.
      */
-    public static final String TYPE_MAINTENANCE = "MAINTENANCE";
+    public static final String TYPE_ENGINEERING = "ENGINEERING";
+    /**
+     * The MASSAGE type string.
+     */
+    public static final String TYPE_MASSAGE = "MASSAGE";
     /**
      * The RESTAURANT type string.
      */
@@ -79,8 +83,6 @@ public class Permintaan<T extends Content> extends Model {
      * The set of regressable states.
      */
     private static final Set<String> REGRESSABLE_STATES = new HashSet<>(Arrays.asList(STATE_INPROGRESS, STATE_INDELIVERY, STATE_COMPLETED));
-
-
 
     /**
      * The owner of the request. One of:
@@ -144,6 +146,11 @@ public class Permintaan<T extends Content> extends Model {
      */
     public final Date updated;
 
+    /**
+     * The staff member responsible for this permintaan. E.g. Ratna Sulaman.
+     */
+    public final String assignee;
+
     public Permintaan() {
         this.owner = null;
         this.type = null;
@@ -153,10 +160,11 @@ public class Permintaan<T extends Content> extends Model {
         this.state = null;
         this.created = null;
         this.updated = null;
+        this.assignee = null;
     }
 
     public Permintaan(String owner, String type, String roomNumber, String guestId, String state,
-                      Date created, Date updated, T content) {
+                      Date created, Date updated, String assignee, T content) {
         super(null, null);
         this.owner = owner;
         this.type = type;
@@ -165,11 +173,12 @@ public class Permintaan<T extends Content> extends Model {
         this.state = state;
         this.created = created;
         this.updated = updated;
+        this.assignee = assignee;
         this.content = content;
     }
 
     public Permintaan(String _id, String _rev, String owner, String type, String roomNumber, String guestId, String state,
-                      Date created, Date updated, T content) {
+                      Date created, Date updated, String assignee, T content) {
         super(_id, _rev);
         this.owner = owner;
         this.type = type;
@@ -178,6 +187,7 @@ public class Permintaan<T extends Content> extends Model {
         this.state = state;
         this.created = created;
         this.updated = updated;
+        this.assignee = assignee;
         this.content = content;
     }
 
