@@ -49,6 +49,11 @@ public class Guest extends Model {
      */
     @SerializedName("welcome_message") public final String welcomeMessage;
 
+    /**
+     * The path to the guest's promotional image on the server.
+     */
+    @SerializedName("promo_img_id") public final String promoImgId;
+
     public Guest() {
         this.firstName = null;
         this.lastName = null;
@@ -58,9 +63,10 @@ public class Guest extends Model {
         this.checkOut = null;
         this.roomNumber = null;
         this.welcomeMessage = null;
+        this.promoImgId = null;
     }
 
-    public Guest(String firstName, String lastName, String phone, String email, Date checkIn, Date checkOut, String roomNumber, String welcomeMessage) {
+    public Guest(String firstName, String lastName, String phone, String email, Date checkIn, Date checkOut, String roomNumber, String welcomeMessage, String promoImgId) {
         super(null, null);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -70,9 +76,10 @@ public class Guest extends Model {
         this.checkOut = checkOut;
         this.roomNumber = roomNumber;
         this.welcomeMessage = welcomeMessage;
+        this.promoImgId = promoImgId;
     }
 
-    public Guest(String _id, String _rev, String firstName, String lastName, String phone, String email, Date checkIn, Date checkOut, String roomNumber, String welcomeMessage) {
+    public Guest(String _id, String _rev, String firstName, String lastName, String phone, String email, Date checkIn, Date checkOut, String roomNumber, String welcomeMessage, String promoImgId) {
         super(_id, _rev);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -82,6 +89,7 @@ public class Guest extends Model {
         this.checkOut = checkOut;
         this.roomNumber = roomNumber;
         this.welcomeMessage = welcomeMessage;
+        this.promoImgId = promoImgId;
     }
 
 }

@@ -134,5 +134,12 @@
     <string name="room_number_result">Room number changed</string>
 
     <string name="logout_result">Logged out of guest</string>
+    <string name="logout_options">Silakan pilih salah satu opsi...</string>
+    <string name="logout_change_room_number">Ganti nomor kamar</string>
+    <string name="logout_reset_tablet">Reset tablet</string>
+    <string name="logout_staff">Staff mode</string>
+    <string name="promo_img_select">Promotional Image</string>
+
+    <string name="guest_welcome_title">Welcome!</string>
 
 </resources>

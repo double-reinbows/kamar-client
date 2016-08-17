@@ -305,13 +305,16 @@ public class GuestHomeActivity extends AppCompatActivity implements
         Log.v("Guest", guest._rev);
         updatedGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
                 guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
-                guest.roomNumber);
-        GuestServer.getInstance(getBaseContext()).updateGuest(updatedGuest)
+                guest.roomNumber, guest.promoImgId);
+        GuestServer.getInstance(GuestHomeActivity.this.getBaseContext()).updateGuest(updatedGuest)
                 .subscribe(new Observer<Boolean>() {
                     @Override public void onCompleted() {
                         //rooms.notifyDataSetChanged();
                         Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On completed");
-                    }
+                        /*getSharedPreferences("userSettings", MODE_PRIVATE)
+                                .edit().putString("roomNumber", "none")
+                                .commit();*/
+                        }
                     @Override public void onError(Throwable e) {
                         Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On error");
                         e.printStackTrace();

@@ -3,22 +3,24 @@ package com.martabak.kamar.activity.home;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
+import com.martabak.kamar.domain.Event;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.service.EventServer;
 import com.martabak.kamar.service.GuestServer;
+import com.martabak.kamar.service.Server;
 
 import java.util.Locale;
 
@@ -28,6 +30,8 @@ import rx.Observer;
 public class SelectLanguageActivity extends AppCompatActivity {
 
     private String welcomeMessage;
+    private String promoImgId;
+    Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +68,14 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to English");
 
                     //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    //if there is a guest checked in...
                     if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
                             getString("guestId", "none")).equals("none")) {
-
-                        final AlertDialog welcomeDialog = new AlertDialog.Builder(SelectLanguageActivity.this).create();
-                        final View view = SelectLanguageActivity.this.getLayoutInflater().inflate(R.layout.dialog_welcome_message, null);
-                        final TextView textView = (TextView) view.findViewById(R.id.guest_welcome_text);
-                        textView.setText(welcomeMessage);
-                        welcomeDialog.setView(view);
-                        welcomeDialog.show();
+                        PromoWelcomeDialog();
+                    } else { //skip welcome + promo pop-up
+                        startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
+                        finish();
                     }
-                    startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
-                    finish();
                 }
             });
         }
@@ -93,18 +93,14 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Indonesian");
 
                     //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    //if there is a guest checked in...
                     if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
                             getString("guestId", "none")).equals("none")) {
-
-                        final AlertDialog welcomeDialog = new AlertDialog.Builder(SelectLanguageActivity.this).create();
-                        final View view = SelectLanguageActivity.this.getLayoutInflater().inflate(R.layout.dialog_welcome_message, null);
-                        final TextView textView = (TextView) view.findViewById(R.id.guest_welcome_text);
-                        textView.setText(welcomeMessage);
-                        welcomeDialog.setView(view);
-                        welcomeDialog.show();
+                        PromoWelcomeDialog();
+                    } else { //skip welcome + promo dialog
+                        startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
+                        finish();
                     }
-                    startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
-                    finish();
                 }
             });
         }
@@ -152,16 +148,76 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 Log.v(SelectLanguageActivity.class.getCanonicalName(), "Room Number : " + roomNumber);
                 if (result == null) {
                     editor.putString("guestId", "none");
+                    editor.putString("roomNumber", "none");
                 } else {
                     //set guestId in Shared Preferences
                     editor.putString("guestId", result._id);
                     welcomeMessage = result.welcomeMessage;
+                    promoImgId = result.promoImgId;
                     Log.v(SelectLanguageActivity.class
                             .getCanonicalName(), "Setting guest ID to " + result._id);
                 }
                 Log.v(SelectLanguageActivity.class.getCanonicalName(), "Guest ID " + getSharedPreferences("userSettings", MODE_PRIVATE)
                         .getString("guestId", "none"));
                 editor.commit();
+            }
+        });
+    }
+
+    private void PromoWelcomeDialog() {
+        final AlertDialog welcomeDialog = new AlertDialog.Builder(SelectLanguageActivity.this).create();
+        //set up the view and clickListener
+        final View view = SelectLanguageActivity.this.getLayoutInflater().inflate(R.layout.dialog_welcome_message, null);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                welcomeDialog.dismiss();
+                startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
+                finish();
+            }
+        });
+
+        //set up promo image
+        ImageView promoImg = (ImageView) view.findViewById(R.id.guest_welcome_image);
+        setPromoImg(promoImgId, promoImg);
+        /*Server.picasso(this)
+                .load(currConsumable.getImageUrl())
+                .placeholder(R.drawable.loading_batik)
+                .error(R.drawable.error)
+                .into(itemImg);
+*/
+        //set up welcome text and show dialog
+        final TextView textView = (TextView) view.findViewById(R.id.guest_welcome_text);
+        textView.setText(welcomeMessage);
+        welcomeDialog.setView(view);
+        welcomeDialog.show();
+    }
+
+    private void setPromoImg(final String promoImgId, final ImageView promoImg) {
+        EventServer.getInstance(getBaseContext()).getEvent(
+                promoImgId).subscribe(new Observer<Event>() {
+            @Override
+            public void onCompleted() {
+                Log.d(SelectLanguageActivity.class.getCanonicalName(), "Completed setting promo img");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(SelectLanguageActivity.class.getCanonicalName(), "On error");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(Event result) {
+                Log.d(SelectLanguageActivity.class.getCanonicalName(), "getEvent On next");
+                if (result._id.equals(promoImgId)) {
+                    String menuImgPath = result.getImageUrl()+result.name+".jpg";
+                    Server.picasso(SelectLanguageActivity.this)
+                            .load(menuImgPath)
+                            .placeholder(R.drawable.loading_batik)
+                            .error(R.drawable.error)
+                            .into(promoImg);
+                }
             }
         });
     }
