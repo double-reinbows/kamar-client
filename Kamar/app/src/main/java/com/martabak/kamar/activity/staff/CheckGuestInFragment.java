@@ -107,7 +107,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         final List<String> roomNumbers = getRoomNumbersWithoutGuests();
         ArrayAdapter adapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
-        //roomNumbers.add(0, getString(R.string.room_select));
+        roomNumbers.add(0, getString(R.string.room_select));
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         adapter.notifyDataSetChanged();
         spinnerRoomNumber.setAdapter(adapter);
@@ -119,7 +119,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
 
         ArrayAdapter adapter2 = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, promoImageNames);
-        //promoImageNames.add(0,getString(R.string.promo_img_select));
+        promoImageNames.add(0, getString(R.string.promo_img_select));
         adapter2.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         adapter2.notifyDataSetChanged();
         spinnerPromoImg.setAdapter(adapter2);
@@ -136,10 +136,18 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                 String phoneNumber = editPhoneNumber.getText().toString();
                 String email = editEmail.getText().toString();
                 String roomNumber = roomNumbers.get((int)spinnerRoomNumber.getSelectedItemId()).toString();
-                String promoImg = promoImages.get((int)spinnerPromoImg.getSelectedItemId())._id;
+                Log.v("selectedRoomNo", roomNumber);
+                Integer selectedPromoId = (int)spinnerPromoImg.getSelectedItemId(); //promoImages.get((int)spinnerPromoImg.getSelectedItemId());
+                Log.v("selectedPromoImg", selectedPromoId.toString());
                 String welcome = editWelcomeMessage.getText().toString();
-                sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber,
-                        null, welcome, promoImg);
+                if (selectedPromoId == 0) {
+                    sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber,
+                            null, welcome, null);
+                } else {
+                    String promoImgId = promoImages.get(selectedPromoId - 1)._id;
+                    sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber,
+                            null, welcome, promoImgId);
+                }
             }
         });
         return view;
@@ -197,7 +205,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         } else {
             editDateCheckOut.setError(null);
         }
-
+*/
         if ((int)spinnerRoomNumber.getSelectedItemId() <= 0) {
             Log.d(CheckGuestInFragment.class.getCanonicalName(), "Valid room number required");
             invalid = true;
@@ -206,7 +214,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
             spinnerErrorText.setTextColor(Color.RED);
             spinnerErrorText.setText(getString(R.string.required));
         }
-        */
+
         Log.d(CheckGuestInFragment.class.getCanonicalName(), "Setting submit button to " + !invalid);
         submitButton.setEnabled(!invalid);
     }

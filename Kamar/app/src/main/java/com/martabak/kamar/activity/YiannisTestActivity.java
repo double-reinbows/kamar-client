@@ -14,8 +14,12 @@ import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.guest.GuestPermintaanService;
 import com.martabak.kamar.activity.staff.StaffPermintaanService;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.Staff;
 import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.domain.Room;
+import com.martabak.kamar.domain.options.EngineeringOption;
+import com.martabak.kamar.domain.options.HousekeepingOption;
+import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.SurveyQuestion;
 import com.martabak.kamar.service.ChatServer;
@@ -44,19 +48,113 @@ public class YiannisTestActivity extends AppCompatActivity {
         doSomething1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doGetRoomNumbers();
+                doGetStaff();
             }
         });
         doSomething2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doGetRoomNumbersWithGuests();
+                doGetEngineeringOptions();
             }
         });
         doSomething3Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doGetRoomNumbersWithoutGuests();
+                doGetHousekeepingOptions();
+            }
+        });
+    }
+
+    private void doGetStaff() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get staff of division");
+        StaffServer.getInstance(getBaseContext()).getStaffOfDivision(Staff.RESP_MASSAGE).subscribe(new Observer<Staff>() {
+            List<Staff> staff = new ArrayList<>();
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(staff.toString());
+            }
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+            @Override
+            public void onNext(Staff result) {
+                Log.i(YiannisTestActivity.class.getCanonicalName(), "On next " + result.firstName);
+                staff.add(result);
+            }
+        });
+    }
+
+    private void doGetMassageOptions() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get massage options");
+        StaffServer.getInstance(getBaseContext()).getMassageOptions().subscribe(new Observer<List<MassageOption>>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+            @Override
+            public void onNext(List<MassageOption> result) {
+                Log.i(YiannisTestActivity.class.getCanonicalName(), "On next " + result.size());
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(result.toString());
+            }
+        });
+    }
+
+    private void doGetEngineeringOptions() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get engineering options");
+        StaffServer.getInstance(getBaseContext()).getEngineeringOptions().subscribe(new Observer<List<EngineeringOption>>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+            @Override
+            public void onNext(List<EngineeringOption> result) {
+                Log.i(YiannisTestActivity.class.getCanonicalName(), "On next " + result.size());
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(result.toString());
+            }
+        });
+    }
+
+    private void doGetHousekeepingOptions() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get massage options");
+        StaffServer.getInstance(getBaseContext()).getHousekeepingOptions().subscribe(new Observer<List<HousekeepingOption>>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(e.getMessage());
+                e.printStackTrace();
+            }
+            @Override
+            public void onNext(List<HousekeepingOption> result) {
+                Log.i(YiannisTestActivity.class.getCanonicalName(), "On next " + result.size());
+                TextView textView = (TextView) findViewById(R.id.doSomethingText);
+                textView.setText(result.toString());
             }
         });
     }

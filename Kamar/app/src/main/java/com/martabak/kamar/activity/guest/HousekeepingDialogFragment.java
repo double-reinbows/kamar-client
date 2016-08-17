@@ -70,7 +70,7 @@ public class HousekeepingDialogFragment extends DialogFragment {
      * Send a housekeeping request.
      */
     private void sendHousekeepingRequest(String housekeepingMessage) {
-        Housekeeping housekeeping = new Housekeeping(housekeepingMessage);
+        Housekeeping housekeeping = new Housekeeping(housekeepingMessage, null);
 
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_HOUSEKEEPING;
@@ -90,6 +90,7 @@ public class HousekeepingDialogFragment extends DialogFragment {
                             state,
                             currentDate,
                             currentDate,
+                            null,
                             housekeeping
                     )
             ).subscribe(new Observer<Permintaan>() {
@@ -123,4 +124,6 @@ public class HousekeepingDialogFragment extends DialogFragment {
         super.onAttach(activity);
         permintaanDialogListener = (PermintaanDialogListener) activity;
     }
+
+
 }

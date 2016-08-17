@@ -4,18 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.activity.guest.GuestHomeActivity;
-import com.martabak.kamar.domain.permintaan.Maintenance;
+import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 
@@ -25,7 +22,7 @@ import java.util.Date;
 import rx.Observer;
 
 /**
- * Maintenance Dialog Fragment
+ * Engineering Dialog Fragment
  */
 public class MaintenanceDialogFragment extends DialogFragment {
 
@@ -68,10 +65,10 @@ public class MaintenanceDialogFragment extends DialogFragment {
      * Send a maintenance request.
      */
     private void sendMaintenanceRequest(String maintenanceMessage) {
-        Maintenance maintenance = new Maintenance(maintenanceMessage);
+        Engineering engineering = new Engineering(maintenanceMessage, null);
 
         String owner = Permintaan.OWNER_FRONTDESK;
-        String type = Permintaan.TYPE_MAINTENANCE;
+        String type = Permintaan.TYPE_ENGINEERING;
         String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", "none");
         String guestId= getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
@@ -88,7 +85,8 @@ public class MaintenanceDialogFragment extends DialogFragment {
                     state,
                     currentDate,
                     currentDate,
-                    maintenance)
+                    null,
+                    engineering)
             ).subscribe(new Observer<Permintaan>() {
                 @Override
                 public void onCompleted() {

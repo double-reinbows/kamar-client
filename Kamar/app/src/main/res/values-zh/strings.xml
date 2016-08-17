@@ -75,18 +75,13 @@
     <string name="guest_checkin_message">Guest has been checked in</string>
     <string name="guest_checkin_submit_button">Check In</string>
 
-    <!-- Staff Nav drawer -->
+    <!-- Nav drawer -->
     <string name="nav_drawer_requests">REQUESTS</string>
     <string name="nav_drawer_chat">CHAT</string>
     <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
     <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
     <string name="nav_drawer_staff_hours">STAFF HOURS</string>
     <string name="nav_drawer_logout">LOGOUT</string>
-
-    <!-- Guest Nav drawer -->
-    <string name="nav_drawer_home">HOME</string>
-    <string name="nav_drawer_change_language">CHANGE LANGUAGE</string>
-    <string name="nav_drawer_about">ABOUT</string>
 
     <!-- Guest -->
     <string name="transport_label">Transport</string>
@@ -152,11 +147,6 @@
     <string name="room_number_result">Room number changed</string>
     <string name="logout">Logout</string>
     <string name="logout_result">Logged out of guest</string>
-    <string name="logout_options">Please choose one of the following options...</string>
-    <string name="logout_change_room_number">Change room no.</string>
-    <string name="logout_reset_tablet">Reset tablet</string>
-    <string name="logout_staff">Staff mode</string>
-    <string name="promo_img_select">Promotional Image</string>
 
     <string name="guest_welcome_title">Welcome!</string>
 

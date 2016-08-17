@@ -166,6 +166,7 @@ public class TransportActivity extends AppCompatActivity implements TextWatcher 
                     state,
                     currentDate,
                     currentDate,
+                    null,
                     transport)
             ).subscribe(new Observer<Permintaan>() {
                 @Override public void onCompleted() {

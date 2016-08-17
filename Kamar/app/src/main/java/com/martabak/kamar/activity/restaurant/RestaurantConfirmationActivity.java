@@ -216,6 +216,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
                     state,
                     currentDate,
                     null,
+                    null,
                     restaurantOrder)
             ).subscribe(new Observer<Permintaan>() {
                 @Override public void onCompleted() {

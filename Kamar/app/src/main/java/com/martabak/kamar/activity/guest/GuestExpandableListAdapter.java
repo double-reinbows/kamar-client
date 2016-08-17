@@ -97,7 +97,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                                         Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "doGetAndUpdatePermintaan() On completed");
                                         final Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
                                                 tempPermintaan.roomNumber, tempPermintaan.guestId, "CANCELLED",
-                                                tempPermintaan.created, new Date(), tempPermintaan.content);
+                                                tempPermintaan.created, new Date(), null, tempPermintaan.content);
                                         PermintaanServer.getInstance(context).updatePermintaan(updatedPermintaan)
                                                 .subscribe(new Observer<Boolean>() {
                                                     @Override

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Feedback;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.FeedbackServer;
 
 import rx.Observer;

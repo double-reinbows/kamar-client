@@ -81,7 +81,7 @@ public class ImageAdapter extends BaseAdapter {
             Permintaan.TYPE_RESTAURANT,
             Permintaan.TYPE_HOUSEKEEPING,
             Permintaan.TYPE_BELLBOY,
-            Permintaan.TYPE_MAINTENANCE,
+            Permintaan.TYPE_ENGINEERING,
             Permintaan.TYPE_TRANSPORT,
             "TELL US",
             Permintaan.TYPE_CHECKOUT,

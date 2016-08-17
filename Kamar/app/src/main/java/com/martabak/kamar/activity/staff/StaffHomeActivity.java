@@ -88,8 +88,6 @@ public class StaffHomeActivity extends AppCompatActivity {
         }
     }
 
-
-
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
@@ -119,6 +117,13 @@ public class StaffHomeActivity extends AppCompatActivity {
                             .addToBackStack(null)
                             .commit();
                     break;
+//                case R.id.nav_staff_hours:
+//                    Log.v(StaffHomeActivity.class.toString(), "Loading staff hours fragment");
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.staff_container, StaffHoursFragment.newInstance())
+//                            .addToBackStack(null)
+//                            .commit();
+//                    break;
                 case R.id.nav_logout:
                     Log.v(StaffHomeActivity.class.toString(), "Loading select language activity");
                     startActivity(new Intent(StaffHomeActivity.this, SelectLanguageActivity.class));

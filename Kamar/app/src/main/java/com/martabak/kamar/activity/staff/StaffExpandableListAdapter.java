@@ -394,7 +394,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "completed getpermintaan, now updating");
                 final Permintaan updatedPermintaan = new Permintaan(tempPermintaan._id, tempPermintaan._rev, tempPermintaan.owner, tempPermintaan.type,
                         tempPermintaan.roomNumber, tempPermintaan.guestId, targetState,
-                        tempPermintaan.created, new Date(), tempPermintaan.content);
+                        tempPermintaan.created, new Date(), null, tempPermintaan.content);
                 PermintaanServer.getInstance(context).updatePermintaan(updatedPermintaan)
                     .subscribe(new Observer<Boolean>() {
                         @Override

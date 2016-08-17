@@ -101,7 +101,9 @@
             <Spinner
                 android:layout_width="300dp"
                 android:layout_height="50dp"
-                android:id="@+id/guest_spinner"/>
+                android:id="@+id/guest_spinner"
+
+                />
         </TableRow>
         <TableRow>
             <TextView
