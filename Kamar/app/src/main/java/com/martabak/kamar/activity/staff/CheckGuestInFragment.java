@@ -22,8 +22,10 @@ import android.widget.Toast;
 
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.Event;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Room;
+import com.martabak.kamar.service.EventServer;
 import com.martabak.kamar.service.GuestServer;
 
 import java.util.ArrayList;
@@ -48,7 +50,9 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
     //private EditText editDateCheckOut;
     private Spinner spinnerRoomNumber;
     private EditText editWelcomeMessage;
+    private Spinner spinnerPromoImg;
     private Button submitButton;
+    private List<Event> promoImages;
 
     public CheckGuestInFragment() {
     }
@@ -71,9 +75,11 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         spinnerRoomNumber = (Spinner) view.findViewById(R.id.guest_spinner);
         //editDateCheckOut = (EditText) view.findViewById(R.id.guest_date_check_out);
         editWelcomeMessage = (EditText) view.findViewById(R.id.guest_welcome_message);
+        spinnerPromoImg = (Spinner) view.findViewById(R.id.promo_img_spinner);
         editFirstName.addTextChangedListener(this);
         editLastName.addTextChangedListener(this);
         editPhoneNumber.addTextChangedListener(this);
+        promoImages = null;
         //editDateCheckOut.addTextChangedListener(this);
 /*
         DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
@@ -101,12 +107,24 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         final List<String> roomNumbers = getRoomNumbersWithoutGuests();
         ArrayAdapter adapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
-        roomNumbers.add(0, getString(R.string.room_select));
+        //roomNumbers.add(0, getString(R.string.room_select));
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         adapter.notifyDataSetChanged();
         spinnerRoomNumber.setAdapter(adapter);
         spinnerRoomNumber.setSelection(0);
         spinnerRoomNumber.setOnItemSelectedListener(this);
+
+        final List<String> promoImageNames = getPromoImages();
+
+
+        ArrayAdapter adapter2 = new ArrayAdapter(getActivity().getBaseContext(),
+                R.layout.support_simple_spinner_dropdown_item, promoImageNames);
+        //promoImageNames.add(0,getString(R.string.promo_img_select));
+        adapter2.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        adapter2.notifyDataSetChanged();
+        spinnerPromoImg.setAdapter(adapter2);
+        spinnerPromoImg.setSelection(0);
+        spinnerPromoImg.setOnItemSelectedListener(this);
 
         submitButton = (Button) view.findViewById(R.id.check_guest_in_submit);
         submitButton.setEnabled(false);
@@ -118,9 +136,10 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                 String phoneNumber = editPhoneNumber.getText().toString();
                 String email = editEmail.getText().toString();
                 String roomNumber = roomNumbers.get((int)spinnerRoomNumber.getSelectedItemId()).toString();
+                String promoImg = promoImages.get((int)spinnerPromoImg.getSelectedItemId())._id;
                 String welcome = editWelcomeMessage.getText().toString();
                 sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber,
-                        null, welcome);
+                        null, welcome, promoImg);
             }
         });
         return view;
@@ -178,7 +197,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         } else {
             editDateCheckOut.setError(null);
         }
-        */
+
         if ((int)spinnerRoomNumber.getSelectedItemId() <= 0) {
             Log.d(CheckGuestInFragment.class.getCanonicalName(), "Valid room number required");
             invalid = true;
@@ -187,6 +206,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
             spinnerErrorText.setTextColor(Color.RED);
             spinnerErrorText.setText(getString(R.string.required));
         }
+        */
         Log.d(CheckGuestInFragment.class.getCanonicalName(), "Setting submit button to " + !invalid);
         submitButton.setEnabled(!invalid);
     }
@@ -213,6 +233,33 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
     }
 
     /**
+     * Sets List<Event> promoImages and....
+     * @return A list of image names stored in the event database.
+     */
+    private List<String> getPromoImages() {
+        final List<String>[] promoImageNames = new List[]{new ArrayList<Event>()};
+        EventServer.getInstance(getActivity().getBaseContext()).getAllEvents()
+                .subscribe(new Observer<List<Event>>() {
+
+                    @Override public void onCompleted() {
+                    }
+                    @Override public void onError(Throwable e) {
+                        Log.v(CheckGuestInFragment.class.getCanonicalName(),  "getPromoImages() onError");
+                        e.printStackTrace();
+                    }
+                    @Override public void onNext(List<Event> result) {
+                        for (Event event : result) {
+                            Log.v("EVENT_name", event.name);
+                            promoImageNames[0].add(event.name);
+                        }
+                        Log.v(CheckGuestInFragment.class.getCanonicalName(), "getPromoImages() onNext");
+                        promoImages = result;
+                    }
+                });
+        return promoImageNames[0];
+    }
+
+    /**
      * Send a request to create a new guest, given their details.
      * @param firstName Guest's first name.
      * @param lastName Guest's last name.
@@ -221,9 +268,10 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
      * @param roomNumber Guest's room number.
      * @param checkOutDate Guest's expected check-out date.
      * @param welcome A welcome message for the guest.
+     * @param promoImageId id of the promo image.
      */
     public void sendCreateGuestRequest(String firstName, String lastName, String phoneNumber,
-                                        String email, String roomNumber, Date checkOutDate, String welcome) {
+            String email, String roomNumber, Date checkOutDate, String welcome, String promoImageId) {
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
 
@@ -235,7 +283,8 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                 currentDate,
                 checkOutDate,
                 roomNumber,
-                welcome)
+                welcome,
+                promoImageId)
         ).subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
                 Log.d(CheckGuestInFragment.class.getCanonicalName(), "createGuest() On completed");

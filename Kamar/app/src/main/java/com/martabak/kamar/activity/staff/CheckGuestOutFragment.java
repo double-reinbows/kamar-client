@@ -4,8 +4,6 @@ package com.martabak.kamar.activity.staff;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -146,7 +144,7 @@ public class CheckGuestOutFragment extends Fragment  {
 
         updateGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
                 guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
-                guest.welcomeMessage);
+                guest.welcomeMessage, guest.promoImgId);
         GuestServer.getInstance(getActivity().getBaseContext()).updateGuest(updateGuest)
                 .subscribe(new Observer<Boolean>() {
                     @Override public void onCompleted() {

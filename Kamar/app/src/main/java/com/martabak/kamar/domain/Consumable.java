@@ -32,12 +32,12 @@ public class Consumable extends Model {
     /**
      * The description; e.g. Kluwek beef soup served with rice, sambal, lime and crackers.
      */
-    @SerializedName("description_en") public final String descriptionEn;
+    @SerializedName("descriptionEn") public final String descriptionEn;
 
     /**
      * The description in INDO; e.g. dwklajdawlkdjd akwjdwadawlk  dka jldkjwal d.
      */
-    @SerializedName("description_in") public final String descriptionIn;
+    @SerializedName("descriptionIn") public final String descriptionIn;
 
     /**
      * The section; e.g. INDONESIAN.

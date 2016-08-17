@@ -323,7 +323,8 @@ public class YiannisTestActivity extends AppCompatActivity {
                 null,
                 null,
                 "69",
-                "Welcome.")
+                "Welcome.",
+                "TBA")
         ).subscribe(new Observer<Guest>() {
             @Override
             public void onCompleted() {

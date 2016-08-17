@@ -1,21 +1,16 @@
 package com.martabak.kamar.activity.guest;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +18,6 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.GuestChatActivity;
 import com.martabak.kamar.activity.chat.GuestChatService;
-import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.activity.staff.StaffHomeActivity;
@@ -66,7 +60,7 @@ public class GuestHomeActivity extends AppCompatActivity
         roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-        setGuestId(roomNumber);
+        //setGuestId(roomNumber);
 
         // Start any guest services.
         startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
@@ -461,13 +455,16 @@ public class GuestHomeActivity extends AppCompatActivity
         Log.v("Guest", guest._rev);
         updatedGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
                 guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
-                guest.roomNumber);
+                guest.roomNumber, guest.promoImgId);
         GuestServer.getInstance(GuestHomeActivity.this.getBaseContext()).updateGuest(updatedGuest)
                 .subscribe(new Observer<Boolean>() {
                     @Override public void onCompleted() {
                         //rooms.notifyDataSetChanged();
                         Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On completed");
-                    }
+                        /*getSharedPreferences("userSettings", MODE_PRIVATE)
+                                .edit().putString("roomNumber", "none")
+                                .commit();*/
+                        }
                     @Override public void onError(Throwable e) {
                         Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On error");
                         e.printStackTrace();
