@@ -1,21 +1,23 @@
 package com.martabak.kamar.domain.permintaan;
 
+import com.martabak.kamar.domain.options.EngineeringOption;
+
 /**
  * Engineering content type of a {@link Permintaan}.
  */
 public class Engineering extends Content {
 
     /**
-     * The engineering option, e.g. TELEVISION.
+     * The engineering option.
      */
-    public final String option;
+    public final EngineeringOption option;
 
     public Engineering() {
         super();
         this.option = null;
     }
 
-    public Engineering(String message, String option) {
+    public Engineering(String message, EngineeringOption option) {
         super(message);
         this.option = option;
     }

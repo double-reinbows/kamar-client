@@ -14,58 +14,17 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 
 
 /**
- * Image adapter to show the permintaan image types.
+ * Image adapter to show the permintaan image types in guest home.
  */
 public class ImageAdapter extends BaseAdapter {
-    private Context mContext;
 
-    public ImageAdapter(Context c) {
-        mContext = c;
-    }
-
-    public int getCount() {
-        return mImages.length;
-    }
-
-    public Object getItem(int position) {
-
-        return mText[position];
-    }
-
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    // create a new ImageView for each item referenced by the Adapter
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        View grid;
-        TextView textView;
-        ImageView imageView;
-        if (convertView == null) {
-            // if it's not recycled, initialize some attributes
-            LayoutInflater inflater = (LayoutInflater) mContext.
-                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            grid = inflater.inflate(R.layout.grid_view, null);
-        } else {
-            grid = (View) convertView;
-        }
-
-        //set image and text of each item in the grid
-        imageView = (ImageView) grid.findViewById(R.id.grid_image);
-        textView = (TextView) grid.findViewById(R.id.grid_text);
-        grid.setLayoutParams(new GridView.LayoutParams(280, 250));
-        textView.setText(mText[position]);
-        imageView.setImageResource(mImages[position]);
-
-        //grid.setPadding(8, 8, 8, 8);
-        return grid;
-    }
-
-    // references to our images
-    private Integer[] mImages = {
+    /**
+     * References to our images.
+     */
+    private static final Integer[] IMAGES = {
             R.drawable.ic_myrequests,
             R.drawable.ic_restaurant,
+            R.drawable.ic_housekeeping,
             R.drawable.ic_housekeeping,
             R.drawable.ic_bellboy,
             R.drawable.ic_maintenance,
@@ -75,10 +34,13 @@ public class ImageAdapter extends BaseAdapter {
             R.drawable.ic_chat
     };
 
-    //Text descriptions
-    private String[] mText = {
+    /**
+     * Text descriptions.
+     */
+    private static final String[] TEXT = {
             "MY REQUESTS",
             Permintaan.TYPE_RESTAURANT,
+            Permintaan.TYPE_MASSAGE,
             Permintaan.TYPE_HOUSEKEEPING,
             Permintaan.TYPE_BELLBOY,
             Permintaan.TYPE_ENGINEERING,
@@ -87,4 +49,50 @@ public class ImageAdapter extends BaseAdapter {
             Permintaan.TYPE_CHECKOUT,
             "CHAT"
     };
+
+    private Context mContext;
+
+    public ImageAdapter(Context c) {
+        mContext = c;
+    }
+
+    public int getCount() {
+        return IMAGES.length;
+    }
+
+    public Object getItem(int position) {
+        return TEXT[position];
+    }
+
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    /**
+     * Create a new ImageView for each item referenced by the Adapter.
+     */
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View grid;
+        TextView textView;
+        ImageView imageView;
+
+        if (convertView == null) {
+            // if it's not recycled, initialize some attributes
+            LayoutInflater inflater = (LayoutInflater) mContext.
+                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            grid = inflater.inflate(R.layout.grid_view, null);
+        } else {
+            grid = convertView;
+        }
+
+        //set image and text of each item in the grid
+        imageView = (ImageView) grid.findViewById(R.id.grid_image);
+        textView = (TextView) grid.findViewById(R.id.grid_text);
+        grid.setLayoutParams(new GridView.LayoutParams(280, 250));
+        textView.setText(TEXT[position]);
+        imageView.setImageResource(IMAGES[position]);
+
+        //grid.setPadding(8, 8, 8, 8);
+        return grid;
+    }
 }

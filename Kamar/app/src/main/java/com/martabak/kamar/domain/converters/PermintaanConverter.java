@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Bellboy;
 import com.martabak.kamar.domain.permintaan.Checkout;
 import com.martabak.kamar.domain.permintaan.Massage;
@@ -126,13 +127,13 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content = new Checkout(message);
                 break;
             case Permintaan.TYPE_ENGINEERING:
-                content = new Engineering(message, null);
+                content = new Engineering(message, null); // TODO real option
                 break;
             case Permintaan.TYPE_HOUSEKEEPING:
-                content = new Housekeeping(message, null);
+                content = new Housekeeping(message, null); // TODO real option
                 break;
             case Permintaan.TYPE_MASSAGE:
-                content = new Massage(message, null, null, null, null);
+                content = new Massage(message, null); // TODO real option
                 break;
             case Permintaan.TYPE_TRANSPORT:
                 Integer passengers = c.getAsJsonPrimitive("passengers").getAsInt();

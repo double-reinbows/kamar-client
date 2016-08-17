@@ -27,7 +27,6 @@ import rx.Observer;
  */
 public class StaffHoursFragment extends Fragment {
 
-
     public StaffHoursFragment() {
     }
 
