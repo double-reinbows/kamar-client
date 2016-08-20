@@ -84,6 +84,8 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
             case Permintaan.TYPE_HOUSEKEEPING:
             case Permintaan.TYPE_ENGINEERING:
             case Permintaan.TYPE_MASSAGE:
+                Massage massage = (Massage)src.content;
+                // TODO
             default:
                 break;
         }
