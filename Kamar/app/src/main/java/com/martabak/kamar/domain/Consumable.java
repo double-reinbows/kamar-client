@@ -69,6 +69,11 @@ public class Consumable extends Model {
     public final Integer order;
 
     /**
+     * The name of the image attachment.
+     */
+    @SerializedName("attachment_name") public final String attachmentName;
+
+    /**
      * The price; e.g. 65.
      */
     public final Integer price;
@@ -83,10 +88,12 @@ public class Consumable extends Model {
         this.subsection = null;
         this.order = null;
         this.price = null;
+        this.attachmentName = null;
     }
 
     public Consumable(String name, String descriptionEn, String descriptionIn, String descriptionZh,
-                      String descriptionRu, String section, String subsection, Integer order, Integer price) {
+                      String descriptionRu, String section, String subsection, Integer order,
+                      Integer price, String attachmentName) {
         this.name = name;
         this.descriptionEn = descriptionEn;
         this.descriptionIn = descriptionIn;
@@ -96,6 +103,7 @@ public class Consumable extends Model {
         this.subsection = subsection;
         this.order = order;
         this.price = price;
+        this.attachmentName = attachmentName;
     }
 
     /**
@@ -121,7 +129,7 @@ public class Consumable extends Model {
      * E.g. http://theserver:5984/219310931202313/image.jpg.
      */
     public String getImageUrl() {
-        return MenuServer.getBaseUrl() + "/menu/" + this._id + "/" + MenuService.CONSUMABLE_IMAGE_PATH;
+        return MenuServer.getBaseUrl() + "/menu/" + this._id + "/" + this.attachmentName;
     }
 
 }

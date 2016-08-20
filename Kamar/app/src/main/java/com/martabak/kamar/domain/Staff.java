@@ -1,6 +1,8 @@
 package com.martabak.kamar.domain;
 
 import com.google.gson.annotations.SerializedName;
+import com.martabak.kamar.service.MenuServer;
+import com.martabak.kamar.service.StaffServer;
 
 import java.util.Date;
 import java.util.List;
@@ -60,6 +62,11 @@ public class Staff extends Model {
      */
     @SerializedName("end_time") public final Date endTime;
 
+    /**
+     * The name of the image attachment.
+     */
+    @SerializedName("attachment_name") public final String attachmentName;
+
     public Staff() {
         this.firstName = null;
         this.lastName = null;
@@ -68,9 +75,11 @@ public class Staff extends Model {
         this.expertise = null;
         this.startTime = null;
         this.endTime = null;
+        this.attachmentName = null;
     }
 
-    public Staff(String firstName, String lastName, String phone, String division, List<String> expertise, Date startTime, Date endTime) {
+    public Staff(String firstName, String lastName, String phone, String division,
+                 List<String> expertise, Date startTime, Date endTime, String attachmentName) {
         super(null, null);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -79,9 +88,11 @@ public class Staff extends Model {
         this.expertise = expertise;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.attachmentName = attachmentName;
     }
 
-    public Staff(String _id, String _rev, String firstName, String lastName, String phone, String division, List<String> expertise, Date startTime, Date endTime) {
+    public Staff(String _id, String _rev, String firstName, String lastName, String phone,
+                 String division, List<String> expertise, Date startTime, Date endTime, String attachmentName) {
         super(_id, _rev);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -90,6 +101,15 @@ public class Staff extends Model {
         this.expertise = expertise;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.attachmentName = attachmentName;
+    }
+
+    /**
+     * @return The URL of the image of this consumable.
+     * E.g. http://theserver:5984/219310931202313/image.jpg.
+     */
+    public String getImageUrl() {
+        return StaffServer.getBaseUrl() + "/staff/" + this._id + "/" + this.attachmentName;
     }
 
 }
