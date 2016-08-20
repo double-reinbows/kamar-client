@@ -32,6 +32,11 @@ public class Event extends Model {
     @SerializedName("descriptionZh") public final String descriptionZh;
 
     /**
+     * The event's type, i.e Bali events or Hotel events.
+     */
+    @SerializedName("type") public final String type;
+
+    /**
      * The event's start date.
      */
     @SerializedName("start_date") public final Date startDate;
@@ -47,28 +52,31 @@ public class Event extends Model {
         this.descriptionEn = null;
         this.descriptionIn = null;
         this.descriptionZh = null;
+        this.type = null;
         this.startDate = null;
         this.endDate = null;
     }
 
-    public Event(String name, String descriptionEn, String descriptionIn, String descriptionZh,
+    public Event(String name, String descriptionEn, String descriptionIn, String descriptionZh, String type,
                  Date startDate, Date endDate) {
         super(null, null);
         this.name = name;
         this.descriptionEn = descriptionEn;
         this.descriptionIn = descriptionIn;
         this.descriptionZh = descriptionZh;
+        this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
     public Event(String _id, String _rev, String name, String descriptionEn, String descriptionIn,
-                 String descriptionZh, Date startDate, Date endDate) {
+                 String descriptionZh, String type, Date startDate, Date endDate) {
         super(_id, _rev);
         this.name = name;
         this.descriptionEn = descriptionEn;
         this.descriptionIn = descriptionIn;
         this.descriptionZh = descriptionZh;
+        this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
     }

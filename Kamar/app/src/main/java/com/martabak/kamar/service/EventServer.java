@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.martabak.kamar.domain.Event;
 import com.martabak.kamar.service.response.AllResponse;
+import com.martabak.kamar.service.response.ViewResponse;
 //import com.martabak.kamar.service.response.PostResponse;
 //import com.martabak.kamar.service.response.PutResponse;
 //import com.martabak.kamar.service.response.ViewResponse;
@@ -11,6 +12,8 @@ import com.martabak.kamar.service.response.AllResponse;
 import java.util.ArrayList;
 //import java.util.List;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import rx.Observable;
@@ -78,5 +81,26 @@ public class EventServer extends Server {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * @return Event based on the type of event, which should also be greater than today's date.
+     * @param type The Event's type.
+     */
+    public Observable<Event> getCurrentEventsByType(String type) {
+        return service.getCurrentEventsByType('"' + type + '"')
+                .flatMap(new Func1<ViewResponse<Event>, Observable<Event>>() {
+                    @Override public Observable<Event> call(ViewResponse<Event> response) {
+                        List<Event> toReturn = new ArrayList<>();
+                        for (ViewResponse<Event>.ViewResult<Event> i : response.rows) {
+                            toReturn.add(i.value);
+                        }
+                        return Observable.from(toReturn);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
     }
 }

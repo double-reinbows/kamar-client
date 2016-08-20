@@ -29,4 +29,7 @@ public interface EventService {
 
     @GET("event/_all_docs?include_docs=true")
     Observable<AllResponse<Event>> getAllEvents();
+
+    @GET("event/_design/event/_view/event")
+    Observable<ViewResponse<Event>> getCurrentEventsByType(@Query("key") String type);
 }
