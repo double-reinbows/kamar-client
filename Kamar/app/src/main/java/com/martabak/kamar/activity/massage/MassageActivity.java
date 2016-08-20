@@ -1,7 +1,8 @@
 package com.martabak.kamar.activity.massage;
 
-import android.graphics.Typeface;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -11,21 +12,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.options.MassageOption;
+import com.martabak.kamar.domain.permintaan.Massage;
+import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.PermintaanServer;
 import com.martabak.kamar.service.StaffServer;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import rx.Observer;
 
 /**
  * This activity generates the list of massage options and allows the guest to request one.
  */
-public class MassageActivity extends AppCompatActivity {
+public class MassageActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private RecyclerView recyclerView;
+    private List<MassageOption> massageOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +57,8 @@ public class MassageActivity extends AppCompatActivity {
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
         // END GENERIC LAYOUT STUFF
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.massage_list);
-        final List<MassageOption> massageOptions = new ArrayList<>();
+        recyclerView = (RecyclerView)findViewById(R.id.massage_list);
+        massageOptions = new ArrayList<>();
         final MassageRecyclerViewAdapter recyclerViewAdapter = new MassageRecyclerViewAdapter(massageOptions);
         recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -69,6 +78,63 @@ public class MassageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Handle a click on a single massage option.
+     * Bring up a confirmation dialog.
+     * @param view The view that was clicked on.
+     */
+    @Override
+    public void onClick(final View view) {
+        int itemPosition = recyclerView.getChildLayoutPosition(view);
+        final MassageOption item = massageOptions.get(itemPosition);
+        new AlertDialog.Builder(this)
+                .setTitle(item.getName())
+                .setMessage(R.string.massage_message)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String owner = Permintaan.OWNER_FRONTDESK;
+                        String type = Permintaan.TYPE_MASSAGE;
+                        String roomNumber = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
+                                .getString("roomNumber", "none");
+                        String guestId= MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
+                                .getString("guestId", "none");
+                        String state = Permintaan.STATE_NEW;
+                        Date currentDate = Calendar.getInstance().getTime();
+                        PermintaanServer.getInstance(MassageActivity.this).createPermintaan(
+                                new Permintaan(owner, type, roomNumber, guestId, state, currentDate, null, null,
+                                        new Massage("", item))
+                        ).subscribe(new Observer<Permintaan>() {
+                            boolean success;
+                            @Override
+                            public void onCompleted() {
+                                Log.d(MassageActivity.class.getCanonicalName(), "On completed");
+                                Toast.makeText(
+                                        MassageActivity.this.getApplicationContext(),
+                                        R.string.massage_result,
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d(MassageActivity.class.getCanonicalName(), "On error");
+                                e.printStackTrace();
+                                success = false;
+                            }
+                            @Override
+                            public void onNext(Permintaan permintaan) {
+                                Log.d(MassageActivity.class.getCanonicalName(), "On next");
+                                if (permintaan != null) {
+                                    success = true;
+                                } else {
+                                    success = false;
+                                }
+                            }
+                        });
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+    }
+
     public class MassageRecyclerViewAdapter
             extends RecyclerView.Adapter<MassageRecyclerViewAdapter.ViewHolder> {
 
@@ -84,6 +150,7 @@ public class MassageActivity extends AppCompatActivity {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.massage_list_row, parent, false);
+            view.setOnClickListener(MassageActivity.this);
             return new ViewHolder(view);
         }
 
@@ -91,11 +158,16 @@ public class MassageActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.itemView.setSelected(selectedPos == position);
             holder.item = mValues.get(position);
+
+            Log.d(MassageActivity.class.getCanonicalName(), "onBindViewHolder " + holder.item.getName());
             // TODO image view
-            holder.lengthView.setText(holder.item.length.toString() + " mins");
-            holder.priceView.setText("Rp. " + holder.item.price.toString());
-            if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage()))
             holder.nameView.setText(holder.item.getName());
+            if (holder.item.length != null) {
+                holder.lengthView.setText(holder.item.length.toString() + " mins");
+            }
+            if (holder.item.price != null) {
+                holder.priceView.setText("Rp. " + holder.item.price.toString());
+            }
             holder.descriptionView.setText(holder.item.getDescription());
         }
 

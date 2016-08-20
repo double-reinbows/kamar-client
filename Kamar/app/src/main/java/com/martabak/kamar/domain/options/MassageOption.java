@@ -3,6 +3,7 @@ package com.martabak.kamar.domain.options;
 import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
+import com.martabak.kamar.service.StaffServer;
 
 import java.util.Locale;
 
@@ -51,8 +52,9 @@ public class MassageOption extends Option {
     }
 
     public MassageOption(String nameEn, String nameIn, String nameZh, String nameRu, String descriptionEn,
-                         String descriptionIn, String descriptionZh, String descriptionRu, Integer order, Integer price, Integer length) {
-        super(null, null, nameEn, nameIn, nameZh, nameRu, order);
+                         String descriptionIn, String descriptionZh, String descriptionRu,
+                         Integer order,Integer price, Integer length, String attachmentName) {
+        super(null, null, nameEn, nameIn, nameZh, nameRu, order, attachmentName);
         this.descriptionEn = descriptionEn;
         this.descriptionIn = descriptionIn;
         this.descriptionZh = descriptionZh;
@@ -63,8 +65,8 @@ public class MassageOption extends Option {
 
     public MassageOption(String _id, String _rev, String nameEn, String nameIn, String nameZh, String nameRu,
                          String descriptionEn, String descriptionIn, String descriptionZh, String descriptionRu,
-                         Integer order, Integer price, Integer length) {
-        super(_id, _rev, nameEn, nameIn, nameZh, nameRu, order);
+                         Integer order, Integer price, Integer length, String attachmentName) {
+        super(_id, _rev, nameEn, nameIn, nameZh, nameRu, order, attachmentName);
         this.descriptionEn = descriptionEn;
         this.descriptionIn = descriptionIn;
         this.descriptionZh = descriptionZh;
@@ -89,6 +91,14 @@ public class MassageOption extends Option {
             Log.e(MassageOption.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
             return this.descriptionEn;
         }
+    }
+
+    /**
+     * @return The URL of the image of this option.
+     * E.g. http://theserver:5984/219310931202313/image.jpg.
+     */
+    public String getImageUrl() {
+        return StaffServer.getBaseUrl() + "/massage_option/" + this._id + "/" + this.attachmentName;
     }
 
 }

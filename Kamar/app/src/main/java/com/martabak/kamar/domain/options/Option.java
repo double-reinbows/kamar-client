@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 import com.martabak.kamar.domain.Model;
+import com.martabak.kamar.service.StaffServer;
 
 import java.util.Locale;
 
@@ -33,6 +34,11 @@ public abstract class Option extends Model {
     @SerializedName("name_ru") public final String nameRu;
 
     /**
+     * The name of the image attachment.
+     */
+    @SerializedName("attachment_name") public final String attachmentName;
+
+    /**
      * The order that this option should appear relative to other options.
      */
     public final Integer order;
@@ -43,24 +49,27 @@ public abstract class Option extends Model {
         this.nameZh = null;
         this.nameRu = null;
         this.order = null;
+        this.attachmentName = null;
     }
 
-    public Option(String nameEn, String nameIn, String nameZh, String nameRu, Integer order) {
+    public Option(String nameEn, String nameIn, String nameZh, String nameRu, Integer order, String attachmentName) {
         super(null, null);
         this.nameEn = nameEn;
         this.nameIn = nameIn;
         this.nameZh = nameZh;
         this.nameRu = nameRu;
         this.order = order;
+        this.attachmentName = attachmentName;
     }
 
-    public Option(String _id, String _rev, String nameEn, String nameIn, String nameZh, String nameRu, Integer order) {
+    public Option(String _id, String _rev, String nameEn, String nameIn, String nameZh, String nameRu, Integer order, String attachmentName) {
         super(_id, _rev);
         this.nameEn = nameEn;
         this.nameIn = nameIn;
         this.nameZh = nameZh;
         this.nameRu = nameRu;
         this.order = order;
+        this.attachmentName = attachmentName;
     }
 
     /**

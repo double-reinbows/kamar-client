@@ -8,6 +8,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.martabak.kamar.domain.options.EngineeringOption;
+import com.martabak.kamar.domain.options.HousekeepingOption;
 import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Bellboy;
 import com.martabak.kamar.domain.permintaan.Checkout;
@@ -82,8 +84,33 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
             case Permintaan.TYPE_BELLBOY:
             case Permintaan.TYPE_CHECKOUT:
             case Permintaan.TYPE_HOUSEKEEPING:
+                Housekeeping housekeeping = (Housekeeping)src.content;
+                content.addProperty("name_en", housekeeping.option.nameEn);
+                content.addProperty("name_in", housekeeping.option.nameIn);
+                content.addProperty("name_zh", housekeeping.option.nameZh);
+                content.addProperty("name_ru", housekeeping.option.nameRu);
+                content.addProperty("section_en", housekeeping.option.sectionEn);
+                content.addProperty("section_in", housekeeping.option.sectionIn);
+                content.addProperty("section_zh", housekeeping.option.sectionZh);
+                content.addProperty("section_ru", housekeeping.option.sectionRu);
             case Permintaan.TYPE_ENGINEERING:
+                Engineering engineering = (Engineering)src.content;
+                content.addProperty("name_en", engineering.option.nameEn);
+                content.addProperty("name_in", engineering.option.nameIn);
+                content.addProperty("name_zh", engineering.option.nameZh);
+                content.addProperty("name_ru", engineering.option.nameRu);
             case Permintaan.TYPE_MASSAGE:
+                Massage massage = (Massage)src.content;
+                content.addProperty("name_en", massage.option.nameEn);
+                content.addProperty("name_in", massage.option.nameIn);
+                content.addProperty("name_zh", massage.option.nameZh);
+                content.addProperty("name_ru", massage.option.nameRu);
+                content.addProperty("description_en", massage.option.descriptionEn);
+                content.addProperty("description_in", massage.option.descriptionIn);
+                content.addProperty("description_zh", massage.option.descriptionZh);
+                content.addProperty("description_ru", massage.option.descriptionRu);
+                content.addProperty("price", massage.option.price);
+                content.addProperty("length", massage.option.length);
             default:
                 break;
         }
@@ -127,13 +154,42 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content = new Checkout(message);
                 break;
             case Permintaan.TYPE_ENGINEERING:
-                content = new Engineering(message, null); // TODO real option
+                String nameEnEngineering = c.getAsJsonPrimitive("name_en").getAsString();
+                String nameInEngineering = c.getAsJsonPrimitive("name_in").getAsString();
+                String nameZhEngineering = c.getAsJsonPrimitive("name_zh").getAsString();
+                String nameRuEngineering = c.getAsJsonPrimitive("name_ru").getAsString();
+                EngineeringOption optionEngineering = new EngineeringOption(
+                        nameEnEngineering, nameInEngineering, nameZhEngineering, nameRuEngineering, null);
+                content = new Engineering(message, optionEngineering);
                 break;
             case Permintaan.TYPE_HOUSEKEEPING:
-                content = new Housekeeping(message, null); // TODO real option
+                String nameEnHousekeeping = c.getAsJsonPrimitive("name_en").getAsString();
+                String nameInHousekeeping = c.getAsJsonPrimitive("name_in").getAsString();
+                String nameZhHousekeeping = c.getAsJsonPrimitive("name_zh").getAsString();
+                String nameRuHousekeeping = c.getAsJsonPrimitive("name_ru").getAsString();
+                String sectionEn = c.getAsJsonPrimitive("section_en").getAsString();
+                String sectionIn = c.getAsJsonPrimitive("section_in").getAsString();
+                String sectionZh = c.getAsJsonPrimitive("section_zh").getAsString();
+                String sectionRu = c.getAsJsonPrimitive("section_ru").getAsString();
+                HousekeepingOption optionHousekeeping = new HousekeepingOption(
+                        nameEnHousekeeping, nameInHousekeeping, nameZhHousekeeping, nameRuHousekeeping,
+                        null, sectionEn, sectionIn, sectionZh, sectionRu);
+                content = new Housekeeping(message, optionHousekeeping);
                 break;
             case Permintaan.TYPE_MASSAGE:
-                content = new Massage(message, null); // TODO real option
+                String nameEnMassage = c.getAsJsonPrimitive("name_en").getAsString();
+                String nameInMassage = c.getAsJsonPrimitive("name_in").getAsString();
+                String nameZhMassage = c.getAsJsonPrimitive("name_zh").getAsString();
+                String nameRuMassage = c.getAsJsonPrimitive("name_ru").getAsString();
+                String descriptionEn = c.getAsJsonPrimitive("description_en").getAsString();
+                String descriptionIn = c.getAsJsonPrimitive("description_in").getAsString();
+                String descriptionZh = c.getAsJsonPrimitive("description_zh").getAsString();
+                String descriptionRu = c.getAsJsonPrimitive("description_ru").getAsString();
+                Integer priceMassage = c.getAsJsonPrimitive("price").getAsInt();
+                Integer length = c.getAsJsonPrimitive("length").getAsInt();
+                MassageOption optionMassage = new MassageOption(nameEnMassage, nameInMassage, nameZhMassage, nameRuMassage,
+                        descriptionEn, descriptionIn, descriptionZh, descriptionRu, null, priceMassage, length);
+                content = new Massage(message, optionMassage);
                 break;
             case Permintaan.TYPE_TRANSPORT:
                 Integer passengers = c.getAsJsonPrimitive("passengers").getAsInt();
@@ -142,16 +198,16 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content = new Transport(message, passengers, departingIn, destination);
                 break;
             case Permintaan.TYPE_RESTAURANT:
-                List<OrderItem> restuarantItems = new ArrayList<>();
+                List<OrderItem> restaurantItems = new ArrayList<>();
                 for (int i = 0; i < c.getAsJsonArray("items").size(); i++) {
                     JsonObject item = (JsonObject)c.getAsJsonArray("items").get(i);
                     Integer quantity = item.getAsJsonPrimitive("quantity").getAsInt();
-                    Integer price = item.getAsJsonPrimitive("price").getAsInt();
+                    Integer priceRestaurant = item.getAsJsonPrimitive("price").getAsInt();
                     String name = item.getAsJsonPrimitive("name").getAsString();
-                    restuarantItems.add(new OrderItem(quantity, name, price));
+                    restaurantItems.add(new OrderItem(quantity, name, priceRestaurant));
                 }
                 Integer totalRestaurantPrice = c.getAsJsonPrimitive("total_price").getAsInt();
-                content = new RestaurantOrder(message, restuarantItems, totalRestaurantPrice);
+                content = new RestaurantOrder(message, restaurantItems, totalRestaurantPrice);
                 break;
             default:
                 throw new JsonParseException("Unknown Permintaan content type.");
