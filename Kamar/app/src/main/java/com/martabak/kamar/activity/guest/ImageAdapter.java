@@ -29,6 +29,7 @@ public class ImageAdapter extends BaseAdapter {
             R.drawable.ic_bellboy,
             R.drawable.ic_maintenance,
             R.drawable.ic_transport,
+            R.drawable.ic_bellboy,
             R.drawable.ic_chat,
             R.drawable.ic_checkout,
             R.drawable.ic_chat
@@ -45,6 +46,7 @@ public class ImageAdapter extends BaseAdapter {
             Permintaan.TYPE_BELLBOY,
             Permintaan.TYPE_ENGINEERING,
             Permintaan.TYPE_TRANSPORT,
+            "EVENT",
             "TELL US",
             Permintaan.TYPE_CHECKOUT,
             "CHAT"

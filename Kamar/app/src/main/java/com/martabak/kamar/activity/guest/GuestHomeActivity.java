@@ -367,6 +367,9 @@ public class GuestHomeActivity extends AppCompatActivity implements
             case Permintaan.TYPE_CHECKOUT:
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
                 break;
+             case "EVENT":
+                startActivity(new Intent(this, GuestEventActivity.class));
+                break;
             case "CHAT":
                 startActivity(new Intent(this, GuestChatActivity.class));
             default:
