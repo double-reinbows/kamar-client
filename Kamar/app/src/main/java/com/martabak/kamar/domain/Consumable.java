@@ -1,8 +1,12 @@
 package com.martabak.kamar.domain;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 import com.martabak.kamar.service.MenuServer;
 import com.martabak.kamar.service.MenuService;
+
+import java.util.Locale;
 
 /**
  * A consumable item on a menu that a {@link Guest} can order from the restaurant.
@@ -40,6 +44,16 @@ public class Consumable extends Model {
     @SerializedName("descriptionIn") public final String descriptionIn;
 
     /**
+     * The description in CHINESE; e.g. xing xong xang.
+     */
+    @SerializedName("description_zh") public final String descriptionZh;
+
+    /**
+     * The description in RUSSIAN; e.g. vodka kommisar.
+     */
+    @SerializedName("description_ru") public final String descriptionRu;
+
+    /**
      * The section; e.g. INDONESIAN.
      */
     public final String section;
@@ -63,21 +77,43 @@ public class Consumable extends Model {
         this.name = null;
         this.descriptionEn = null;
         this.descriptionIn = null;
+        this.descriptionZh = null;
+        this.descriptionRu = null;
         this.section = null;
         this.subsection = null;
         this.order = null;
         this.price = null;
     }
 
-    public Consumable(String name, String descriptionEn, String descriptionIn, String section,
-                      String subsection, Integer order, Integer price) {
+    public Consumable(String name, String descriptionEn, String descriptionIn, String descriptionZh,
+                      String descriptionRu, String section, String subsection, Integer order, Integer price) {
         this.name = name;
         this.descriptionEn = descriptionEn;
         this.descriptionIn = descriptionIn;
+        this.descriptionZh = descriptionZh;
+        this.descriptionRu = descriptionRu;
         this.section = section;
         this.subsection = subsection;
         this.order = order;
         this.price = price;
+    }
+
+    /**
+     * @return The description in the appropriate language.
+     */
+    public String getDescription() {
+        if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage())) {
+            return this.descriptionEn;
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("in").getLanguage())) {
+            return this.descriptionIn;
+        } else if (Locale.getDefault().getLanguage().equals(Locale.CHINESE.getLanguage())) {
+            return this.descriptionZh;
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("ru").getLanguage())) {
+            return this.descriptionRu;
+        } else {
+            Log.e(Consumable.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
+            return this.descriptionEn;
+        }
     }
 
     /**

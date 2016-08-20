@@ -23,13 +23,13 @@ public interface StaffService {
     @GET("staff/_design/staff/_view/division")
     Observable<ViewResponse<Staff>> getStaffOfDivision(@Query("key") String resp);
 
-    @GET("massage_options/_all_docs?include_docs=true")
+    @GET("massage_option/_all_docs?include_docs=true")
     Observable<AllResponse<MassageOption>> getMassageOptions();
 
-    @GET("engineering_options/_all_docs?include_docs=true")
+    @GET("engineering_option/_all_docs?include_docs=true")
     Observable<AllResponse<EngineeringOption>> getEngineeringOptions();
 
-    @GET("housekeeping_options/_all_docs?include_docs=true")
+    @GET("housekeeping_option/_all_docs?include_docs=true")
     Observable<AllResponse<HousekeepingOption>> getHousekeepingOptions();
 
 }

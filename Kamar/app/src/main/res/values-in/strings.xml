@@ -116,7 +116,11 @@
     <string name="tellus_edittext">Leave your feedback here!</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
 
+    <string name="survey_label">Survey</string>
     <string name="survey_submit_button">Submit</string>
+
+    <string name="massage_message">Are you sure you want to book this massage?</string>
+    <string name="massage_result">Massage request sent</string>
 
     <string name="restaurant_label">Menu</string>
     <string name="restaurant_success"> Successfully placed your order!</string>

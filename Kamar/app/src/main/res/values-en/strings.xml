@@ -128,6 +128,9 @@
     <string name="survey_label">Survey</string>
     <string name="survey_submit_button">Submit</string>
 
+    <string name="massage_message">Are you sure you want to book this massage?</string>
+    <string name="massage_result">Massage request sent</string>
+
     <string name="restaurant_label">Menu</string>
     <string name="restaurant_success"> Successfully placed your order!</string>
     <string name="restaurant_error"> Error in placing your order!</string>

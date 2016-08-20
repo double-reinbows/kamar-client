@@ -1,19 +1,13 @@
 package com.martabak.kamar.activity.guest;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Point;
 import android.graphics.Typeface;
-import android.media.Image;
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +24,9 @@ import java.util.List;
 
 import rx.Observer;
 
+/**
+ * Handles guest's requests list.
+ */
 class GuestExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;

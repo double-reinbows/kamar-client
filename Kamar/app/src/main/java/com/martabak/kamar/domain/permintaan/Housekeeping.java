@@ -1,20 +1,23 @@
 package com.martabak.kamar.domain.permintaan;
+
+import com.martabak.kamar.domain.options.HousekeepingOption;
+
 /**
  * Housekeeping content type of a {@link Permintaan}.
  */
 public class Housekeeping extends Content {
 
     /**
-     * The housekeeping option, e.g. HAND TOWEL.
+     * The housekeeping option.
      */
-    public final String option;
+    public final HousekeepingOption option;
 
     public Housekeeping() {
         super();
         this.option = null;
     }
 
-    public Housekeeping(String message, String option) {
+    public Housekeeping(String message, HousekeepingOption option) {
         super(message);
         this.option = option;
     }

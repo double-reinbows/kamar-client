@@ -1,6 +1,7 @@
 package com.martabak.kamar.domain.permintaan;
 
-import java.util.Date;
+import com.martabak.kamar.domain.options.MassageOption;
+
 
 /**
  * Massage content type of a {@link Permintaan}.
@@ -8,39 +9,18 @@ import java.util.Date;
 public class Massage extends Content {
 
     /**
-     * The massage option, e.g. REFLEXOLOGY.
+     * The massage option.
      */
-    public final String option;
-
-    /**
-     * The starting time for this massage.
-     */
-    public final Date time;
-
-    /**
-     * The length of time for this massage, in minutes.
-     */
-    public final Integer length;
-
-    /**
-     * The price of this massage, in thousands of Rp.
-     */
-    public final Integer price;
+    public final MassageOption option;
 
     public Massage() {
         super();
         this.option = null;
-        this.time = null;
-        this.length = null;
-        this.price = null;
     }
 
-    public Massage(String message, String option, Date time, Integer length, Integer price) {
+    public Massage(String message, MassageOption option) {
         super(message);
         this.option = option;
-        this.time = time;
-        this.length = length;
-        this.price = price;
     }
 
     public String getType() {

@@ -1,7 +1,7 @@
 package com.martabak.kamar.domain.permintaan;
 
 /**
- * A single item from a {@link RestaurantOrder} order.
+ * A single item from a {@link RestaurantOrder}.
  */
 public class OrderItem {
 
