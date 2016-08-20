@@ -373,7 +373,8 @@ public class GuestHomeActivity extends AppCompatActivity implements
                 startActivity(new Intent(this, TransportActivity.class));
                 break;
             case Permintaan.TYPE_HOUSEKEEPING:
-                new HousekeepingDialogFragment().show(getFragmentManager(), "housekeeping");
+                //new HousekeepingDialogFragment().show(getFragmentManager(), "housekeeping");
+                startActivity(new Intent(this, GuestHousekeepingActivity.class));
                 break;
             case Permintaan.TYPE_BELLBOY:
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");

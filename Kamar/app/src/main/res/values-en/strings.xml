@@ -50,6 +50,7 @@
     <string name="permintaan_regress_confirmation">Are you sure you want to regress this request?</string>
     <string name="permintaan_cancel_confirmation">Are you sure you want to cancel this request?</string>
     <string name="permintaan_status_is_now">Status is now</string>
+    <string name="permintaan_assign_person">Please enter staff person\'s name</string>
 
     <!-- Chat -->
     <string name="title_chat_list">Chats</string>
@@ -106,6 +107,7 @@
         <item>120</item>
     </string-array>
 
+    <string name="housekeeping_label">Housekeeping</string>
     <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>
     <string name="housekeeping_result">Housekeeping request sent</string>

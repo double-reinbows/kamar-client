@@ -24,6 +24,14 @@
         android:src="@drawable/permintaan_cancel_button"
         android:focusable="false"/-->
     <ImageView
+        android:id="@+id/assign_permintaan_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toStartOf="@+id/info_permintaan_button"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_perm_identity_white_48dp"
+        android:focusable="false"/>
+    <ImageView
         android:id="@+id/info_permintaan_button"
         android:layout_width="50dp"
         android:layout_height="50dp"

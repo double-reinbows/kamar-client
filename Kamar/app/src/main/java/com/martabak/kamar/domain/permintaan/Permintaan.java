@@ -56,11 +56,13 @@ public class Permintaan<T extends Content> extends Model {
     /**
      * The NEW state string.
      */
-    public static final String STATE_NEW = "NEW";
+    public static final String STATE_NEW = "ORDER-SENT";
+    //public static final String STATE_NEW = "NEW";
     /**
      * The IN-PROGRESS state string.
      */
-    public static final String STATE_INPROGRESS= "IN-PROGRESS";
+    public static final String STATE_INPROGRESS= "ORDER-PROCESSED";
+    //public static final String STATE_INPROGRESS= "IN-PROGRESS";
     /**
      * The IN-DELIVERY state string.
      */
