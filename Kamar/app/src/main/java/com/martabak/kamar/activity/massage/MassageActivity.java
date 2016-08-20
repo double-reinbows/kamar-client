@@ -19,6 +19,7 @@ import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Massage;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
+import com.martabak.kamar.service.Server;
 import com.martabak.kamar.service.StaffServer;
 
 import java.util.ArrayList;
@@ -159,8 +160,12 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
             holder.itemView.setSelected(selectedPos == position);
             holder.item = mValues.get(position);
 
-            Log.d(MassageActivity.class.getCanonicalName(), "onBindViewHolder " + holder.item.getName());
-            // TODO image view
+            Log.d(MassageActivity.class.getCanonicalName(), "Loading image " + holder.item.getImageUrl() + " into " + holder.imageView);
+            Server.picasso(MassageActivity.this)
+                    .load(holder.item.getImageUrl())
+                    .placeholder(R.drawable.loading_batik)
+                    .error(R.drawable.error)
+                    .into(holder.imageView);
             holder.nameView.setText(holder.item.getName());
             if (holder.item.length != null) {
                 holder.lengthView.setText(holder.item.length.toString() + " mins");

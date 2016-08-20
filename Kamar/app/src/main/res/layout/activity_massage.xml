@@ -10,8 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="200dp"
         android:divider="?android:attr/dividerHorizontal"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:showDividers="none">
 
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:divider="?android:attr/dividerVertical"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:showDividers="none">
 
             <TextView
@@ -39,13 +40,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:divider="?android:attr/dividerVertical"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:showDividers="none">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:divider="?android:attr/dividerVertical"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:showDividers="none">
                     <TextView
                         android:layout_width="wrap_content"
@@ -61,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:divider="?android:attr/dividerVertical"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:showDividers="none">
                     <TextView
                         android:layout_width="wrap_content"

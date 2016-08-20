@@ -159,7 +159,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 String nameZhEngineering = c.getAsJsonPrimitive("name_zh").getAsString();
                 String nameRuEngineering = c.getAsJsonPrimitive("name_ru").getAsString();
                 EngineeringOption optionEngineering = new EngineeringOption(
-                        nameEnEngineering, nameInEngineering, nameZhEngineering, nameRuEngineering, null);
+                        nameEnEngineering, nameInEngineering, nameZhEngineering, nameRuEngineering, null, null);
                 content = new Engineering(message, optionEngineering);
                 break;
             case Permintaan.TYPE_HOUSEKEEPING:
@@ -173,7 +173,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 String sectionRu = c.getAsJsonPrimitive("section_ru").getAsString();
                 HousekeepingOption optionHousekeeping = new HousekeepingOption(
                         nameEnHousekeeping, nameInHousekeeping, nameZhHousekeeping, nameRuHousekeeping,
-                        null, sectionEn, sectionIn, sectionZh, sectionRu);
+                        null, sectionEn, sectionIn, sectionZh, sectionRu, null);
                 content = new Housekeeping(message, optionHousekeeping);
                 break;
             case Permintaan.TYPE_MASSAGE:
@@ -188,7 +188,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 Integer priceMassage = c.getAsJsonPrimitive("price").getAsInt();
                 Integer length = c.getAsJsonPrimitive("length").getAsInt();
                 MassageOption optionMassage = new MassageOption(nameEnMassage, nameInMassage, nameZhMassage, nameRuMassage,
-                        descriptionEn, descriptionIn, descriptionZh, descriptionRu, null, priceMassage, length);
+                        descriptionEn, descriptionIn, descriptionZh, descriptionRu, null, priceMassage, length, null);
                 content = new Massage(message, optionMassage);
                 break;
             case Permintaan.TYPE_TRANSPORT:

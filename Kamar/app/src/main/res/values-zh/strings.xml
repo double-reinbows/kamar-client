@@ -121,6 +121,7 @@
     <string name="survey_label">Survey</string>
     <string name="survey_submit_button">Submit</string>
 
+    <string name="massage_label">Massage</string>
     <string name="massage_message">Are you sure you want to book this massage?</string>
     <string name="massage_result">Massage request sent</string>
 
@@ -134,6 +135,7 @@
     <string name="restaurant_submit_button">Confirm Order</string>
     <string name="restaurant_back_button">Back</string>
     <string name="restaurant_confirm_input">Comments...</string>
+    <string name="restaurant_confirmation_label">Restaurant Confirmation</string>
     <string name="restaurant_confirmation_dialog_title">Thank you for your order.</string>
     <string name="restaurant_confirmation_dialog_desc">
         For updates on your order\'s current progress,\n please click the My Requests button \n

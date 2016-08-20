@@ -119,6 +119,7 @@
     <string name="survey_label">Survey</string>
     <string name="survey_submit_button">Submit</string>
 
+    <string name="massage_label">Massage</string>
     <string name="massage_message">Are you sure you want to book this massage?</string>
     <string name="massage_result">Massage request sent</string>
 
@@ -129,6 +130,7 @@
     <string name="restaurant_order_summary">Order Summary</string>
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
+    <string name="restaurant_confirmation_label">Restaurant Confirmation</string>
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>
