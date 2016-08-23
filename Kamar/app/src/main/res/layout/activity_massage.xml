@@ -36,45 +36,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Please wait 15-20 minutes TODO languagify"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:divider="?android:attr/dividerVertical"
-                android:orientation="horizontal"
-                android:showDividers="none">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:divider="?android:attr/dividerVertical"
-                    android:orientation="horizontal"
-                    android:showDividers="none">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Order Sent TODO languagify"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/order_sent_image"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:divider="?android:attr/dividerVertical"
-                    android:orientation="horizontal"
-                    android:showDividers="none">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Order Processed TODO languagify"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/order_processed_image"/>
-                </LinearLayout>
-            </LinearLayout>
+            <include layout="@layout/permintaan_status"/>
 
         </LinearLayout>
     </LinearLayout>

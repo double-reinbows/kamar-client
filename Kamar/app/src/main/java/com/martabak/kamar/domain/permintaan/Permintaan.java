@@ -33,7 +33,7 @@ public class Permintaan<T extends Content> extends Model {
      */
     public static final String TYPE_CHECKOUT = "CHECKOUT";
     /**
-     * The BELLBOY type string.
+     * The HOUSEKEEPING type string.
      */
     public static final String TYPE_HOUSEKEEPING = "HOUSEKEEPING";
     /**
@@ -49,28 +49,32 @@ public class Permintaan<T extends Content> extends Model {
      */
     public static final String TYPE_RESTAURANT = "RESTAURANT";
     /**
-     * The BELLBOY type string.
+     * The TRANSPORT type string.
      */
     public static final String TYPE_TRANSPORT = "TRANSPORT";
+    /**
+     * The LAUNDRY type string.
+     */
+    public static final String TYPE_LAUNDRY = "TRANSPORT";
 
     /**
-     * The NEW state string.
+     * The NEW state string. A.k.a. SENT.
      */
     public static final String STATE_NEW = "NEW";
     /**
-     * The IN-PROGRESS state string.
+     * The IN-PROGRESS state string. A.k.a. PROCESSED.
      */
     public static final String STATE_INPROGRESS= "IN-PROGRESS";
     /**
-     * The IN-DELIVERY state string.
+     * The IN-DELIVERY state string. Not in use.
      */
     public static final String STATE_INDELIVERY= "IN-DELIVERY";
     /**
-     * The COMPLETE state string.
+     * The COMPLETED state string.
      */
     public static final String STATE_COMPLETED = "COMPLETED";
     /**
-     * The CANCELLED state string.
+     * The CANCELLED state string. Not in use.
      */
     public static final String STATE_CANCELLED = "CANCELLED";
 

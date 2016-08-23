@@ -76,7 +76,7 @@ public abstract class Server {
      * @return The server's base URL.
      */
     public static String getBaseUrl() {
-        return "http://192.168.1.107:5984/";
+        return "http://192.168.178.24:5984/";
     }
 
 

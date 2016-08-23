@@ -98,7 +98,7 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
                         String type = Permintaan.TYPE_MASSAGE;
                         String roomNumber = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
                                 .getString("roomNumber", "none");
-                        String guestId= MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
+                        String guestId = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
                                 .getString("guestId", "none");
                         String state = Permintaan.STATE_NEW;
                         Date currentDate = Calendar.getInstance().getTime();
