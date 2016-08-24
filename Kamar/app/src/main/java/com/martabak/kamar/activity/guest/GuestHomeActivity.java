@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.GuestChatActivity;
 import com.martabak.kamar.activity.chat.GuestChatService;
+import com.martabak.kamar.activity.engineering.EngineeringActivity;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
 import com.martabak.kamar.activity.massage.MassageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
@@ -138,13 +139,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
                     Toast.makeText(
                             this,
                             getString(R.string.bellboy_result),
-                            Toast.LENGTH_LONG
-                    ).show();
-                    break;
-                case Permintaan.TYPE_ENGINEERING:
-                    Toast.makeText(
-                            this,
-                            getString(R.string.maintenance_result),
                             Toast.LENGTH_LONG
                     ).show();
                     break;
@@ -359,7 +353,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
                 break;
             case Permintaan.TYPE_ENGINEERING:
-                new MaintenanceDialogFragment().show(getFragmentManager(), "maintenance");
+                startActivity(new Intent(this, EngineeringActivity.class));
                 break;
             case "TELL US":
                 new TellUsDialogFragment().show(getFragmentManager(), "tellus");
@@ -474,7 +468,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
                 case R.id.nav_about:
                     Log.v(GuestHomeActivity.class.toString(), "");
                     break;
-
             }
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);

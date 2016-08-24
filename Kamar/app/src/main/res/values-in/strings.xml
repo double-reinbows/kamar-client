@@ -48,6 +48,8 @@
     <string name="permintaan_regress_confirmation">Apakah anda tentu ingin mundurkan pesan ini?</string>
     <string name="permintaan_cancel_confirmation">Apakah anda tentu ingin batal pesan ini?</string>
     <string name="permintaan_status_is_now">Status is now</string>
+    <string name="permintaan_order_sent">Order Sent</string>
+    <string name="permintaan_order_received">Order Received</string>
 
     <!-- Chat -->
     <string name="title_chat_list">Pesan</string>
@@ -82,6 +84,8 @@
     <string name="nav_drawer_logout">LOGOUT</string>
 
     <!-- Guest -->
+    <string name="please_wait">Please wait 10-20 minutes for a staff member to arrive at your room</string>
+
     <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>
     <string name="transport_departing_in">Departing in</string>
@@ -108,9 +112,9 @@
     <string name="bellboy_result">Bellboy request sent</string>
     <string name="report_to_frontdesk">Please report to front desk</string>
 
-    <string name="maintenance_message">Are you sure you want engineering?</string>
-    <string name="maintenance_edittext">Input engineering details</string>
-    <string name="maintenance_result">Maintenance request sent</string>
+    <string name="engineering_label">Engineering</string>
+    <string name="engineering_message">Are you sure you want to request engineering?</string>
+    <string name="engineering_result">Maintenance request sent</string>
 
     <string name="tellus_message">Tell us what you think</string>
     <string name="tellus_edittext">Leave your feedback here!</string>
@@ -119,6 +123,7 @@
     <string name="survey_label">Survey</string>
     <string name="survey_submit_button">Submit</string>
 
+    <string name="massage_label">Massage</string>
     <string name="massage_message">Are you sure you want to book this massage?</string>
     <string name="massage_result">Massage request sent</string>
 
@@ -129,6 +134,7 @@
     <string name="restaurant_order_summary">Order Summary</string>
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
+    <string name="restaurant_confirmation_label">Restaurant Confirmation</string>
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>

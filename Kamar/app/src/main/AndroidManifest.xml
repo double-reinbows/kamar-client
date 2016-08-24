@@ -96,17 +96,23 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activity.restaurant.RestaurantConfirmationActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name"
+            android:label="@string/restaurant_confirmation_label"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.massage.MassageActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/restaurant_label"
+            android:label="@string/massage_label"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.guest.GuestEventActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/restaurant_label"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.engineering.EngineeringActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/restaurant_label"
             android:screenOrientation="landscape"

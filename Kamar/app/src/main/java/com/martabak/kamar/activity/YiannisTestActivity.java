@@ -17,6 +17,7 @@ import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Staff;
 import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.domain.Room;
+import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.options.HousekeepingOption;
 import com.martabak.kamar.domain.options.MassageOption;
@@ -60,7 +61,8 @@ public class YiannisTestActivity extends AppCompatActivity {
         doSomething3Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doGetHousekeepingOptions();
+                //doGetHousekeepingOptions();
+                doGetPermintaanManager();
             }
         });
     }
@@ -442,6 +444,44 @@ public class YiannisTestActivity extends AppCompatActivity {
                 Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
                 TextView textView = (TextView)findViewById(R.id.doSomethingText);
                 textView.setText(guest.firstName + " " + guest.lastName);
+            }
+        });
+    }
+
+    private void doGetPermintaanManager() {
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done create guest");
+        PermintaanManager.getInstance().getMassageStatus(getBaseContext()
+        ).subscribe(new Observer<String>() {
+            @Override
+            public void onCompleted() {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
+                TextView textView = (TextView)findViewById(R.id.doSomethingText);
+                textView.setText("RED RED");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(String result) {
+                Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
+                TextView textView = (TextView)findViewById(R.id.doSomethingText);
+                switch (result) {
+                    case Permintaan.STATE_NEW:
+                        textView.setText("GREEN RED");
+                        break;
+                    case Permintaan.STATE_INPROGRESS:
+                        textView.setText("GREEN GREEN");
+                        break;
+                    case Permintaan.STATE_COMPLETED:
+                        textView.setText("RED RED");
+                        break;
+                    default:
+                        break;
+                }
             }
         });
     }

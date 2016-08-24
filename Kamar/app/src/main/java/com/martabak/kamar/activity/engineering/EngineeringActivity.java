@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity.massage;
+package com.martabak.kamar.activity.engineering;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -15,7 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.options.MassageOption;
+import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Massage;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
@@ -30,17 +32,17 @@ import java.util.List;
 import rx.Observer;
 
 /**
- * This activity generates the list of massage options and allows the guest to request one.
+ * This activity generates the list of engineering options and allows the guest to request one.
  */
-public class MassageActivity extends AppCompatActivity implements View.OnClickListener {
+public class EngineeringActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
-    private List<MassageOption> massageOptions;
+    private List<EngineeringOption> engOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_massage);
+        setContentView(R.layout.activity_engineering);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,72 +61,69 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
         // END GENERIC LAYOUT STUFF
 
         recyclerView = (RecyclerView)findViewById(R.id.massage_list);
-        massageOptions = new ArrayList<>();
-        final MassageRecyclerViewAdapter recyclerViewAdapter = new MassageRecyclerViewAdapter(massageOptions);
+        engOptions = new ArrayList<>();
+        final EngineeringRecyclerViewAdapter recyclerViewAdapter = new EngineeringRecyclerViewAdapter(engOptions);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        StaffServer.getInstance(this).getMassageOptions().subscribe(new Observer<List<MassageOption>>() {
+        StaffServer.getInstance(this).getEngineeringOptions().subscribe(new Observer<List<EngineeringOption>>() {
             @Override public void onCompleted() {
-                Log.d(MassageActivity.class.getCanonicalName(), "onCompleted");
+                Log.d(EngineeringActivity.class.getCanonicalName(), "onCompleted");
                 recyclerViewAdapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
-                Log.d(MassageActivity.class.getCanonicalName(), "onError", e);
+                Log.d(EngineeringActivity.class.getCanonicalName(), "onError", e);
                 e.printStackTrace();
             }
-            @Override public void onNext(final List<MassageOption> options) {
-                Log.d(MassageActivity.class.getCanonicalName(), options.size() + " massage options found");
-                massageOptions.addAll(options);
+            @Override public void onNext(final List<EngineeringOption> options) {
+                Log.d(EngineeringActivity.class.getCanonicalName(), options.size() + " engineering options found");
+                engOptions.addAll(options);
             }
         });
     }
 
     /**
-     * Handle a click on a single massage option.
+     * Handle a click on a single engineering option.
      * Bring up a confirmation dialog.
      * @param view The view that was clicked on.
      */
     @Override
     public void onClick(final View view) {
         int itemPosition = recyclerView.getChildLayoutPosition(view);
-        final MassageOption item = massageOptions.get(itemPosition);
+        final EngineeringOption item = engOptions.get(itemPosition);
         new AlertDialog.Builder(this)
                 .setTitle(item.getName())
-                .setMessage(R.string.massage_message)
+                .setMessage(R.string.engineering_message)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String owner = Permintaan.OWNER_FRONTDESK;
-                        String type = Permintaan.TYPE_MASSAGE;
-                        String roomNumber = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
+                        String type = Permintaan.TYPE_ENGINEERING;
+                        String roomNumber = EngineeringActivity.this.getSharedPreferences("userSettings", EngineeringActivity.this.MODE_PRIVATE)
                                 .getString("roomNumber", "none");
-                        String guestId = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
+                        String guestId = EngineeringActivity.this.getSharedPreferences("userSettings", EngineeringActivity.this.MODE_PRIVATE)
                                 .getString("guestId", "none");
                         String state = Permintaan.STATE_NEW;
                         Date currentDate = Calendar.getInstance().getTime();
-                        PermintaanServer.getInstance(MassageActivity.this).createPermintaan(
+                        PermintaanServer.getInstance(EngineeringActivity.this).createPermintaan(
                                 new Permintaan(owner, type, roomNumber, guestId, state, currentDate, null, null,
-                                        new Massage("", item))
+                                        new Engineering("", item))
                         ).subscribe(new Observer<Permintaan>() {
                             boolean success;
-                            @Override
-                            public void onCompleted() {
-                                Log.d(MassageActivity.class.getCanonicalName(), "On completed");
+                            @Override public void onCompleted() {
+                                Log.d(EngineeringActivity.class.getCanonicalName(), "On completed");
                                 Toast.makeText(
-                                        MassageActivity.this.getApplicationContext(),
-                                        R.string.massage_result,
+                                        EngineeringActivity.this.getApplicationContext(),
+                                        R.string.engineering_result,
                                         Toast.LENGTH_SHORT
                                 ).show();
                             }
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.d(MassageActivity.class.getCanonicalName(), "On error");
+                            @Override public void onError(Throwable e) {
+                                Log.d(EngineeringActivity.class.getCanonicalName(), "On error");
                                 e.printStackTrace();
                                 success = false;
                             }
-                            @Override
-                            public void onNext(Permintaan permintaan) {
-                                Log.d(MassageActivity.class.getCanonicalName(), "On next");
+                            @Override public void onNext(Permintaan permintaan) {
+                                Log.d(EngineeringActivity.class.getCanonicalName(), "On next");
                                 if (permintaan != null) {
                                     success = true;
                                 } else {
@@ -136,22 +135,22 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
-    public class MassageRecyclerViewAdapter
-            extends RecyclerView.Adapter<MassageRecyclerViewAdapter.ViewHolder> {
+    public class EngineeringRecyclerViewAdapter
+            extends RecyclerView.Adapter<EngineeringRecyclerViewAdapter.ViewHolder> {
 
         protected int selectedPos = -1;
 
-        private final List<MassageOption> mValues;
+        private final List<EngineeringOption> mValues;
 
-        public MassageRecyclerViewAdapter(List<MassageOption> items) {
+        public EngineeringRecyclerViewAdapter(List<EngineeringOption> items) {
             mValues = items;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.massage_list_row, parent, false);
-            view.setOnClickListener(MassageActivity.this);
+                    .inflate(R.layout.engineering_list_row, parent, false);
+            view.setOnClickListener(EngineeringActivity.this);
             return new ViewHolder(view);
         }
 
@@ -160,20 +159,13 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
             holder.itemView.setSelected(selectedPos == position);
             holder.item = mValues.get(position);
 
-            Log.d(MassageActivity.class.getCanonicalName(), "Loading image " + holder.item.getImageUrl() + " into " + holder.imageView);
-            Server.picasso(MassageActivity.this)
+            Log.d(EngineeringActivity.class.getCanonicalName(), "Loading image " + holder.item.getImageUrl() + " into " + holder.imageView);
+            Server.picasso(EngineeringActivity.this)
                     .load(holder.item.getImageUrl())
                     .placeholder(R.drawable.loading_batik)
                     .error(R.drawable.error)
                     .into(holder.imageView);
             holder.nameView.setText(holder.item.getName());
-            if (holder.item.length != null) {
-                holder.lengthView.setText(holder.item.length.toString() + " mins");
-            }
-            if (holder.item.price != null) {
-                holder.priceView.setText("Rp. " + holder.item.price.toString());
-            }
-            holder.descriptionView.setText(holder.item.getDescription());
         }
 
         @Override
@@ -182,22 +174,16 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public MassageOption item;
+            public EngineeringOption item;
             public final View rootView;
             public final ImageView imageView;
             public final TextView nameView;
-            public final TextView lengthView;
-            public final TextView priceView;
-            public final TextView descriptionView;
 
             public ViewHolder(View view) {
                 super(view);
                 rootView = view;
-                imageView = (ImageView) view.findViewById(R.id.massage_image);
-                nameView = (TextView) view.findViewById(R.id.massage_name);
-                lengthView = (TextView) view.findViewById(R.id.massage_length);
-                priceView = (TextView) view.findViewById(R.id.massage_price);
-                descriptionView = (TextView) view.findViewById(R.id.massage_description);
+                imageView = (ImageView) view.findViewById(R.id.engineering_image);
+                nameView = (TextView) view.findViewById(R.id.engineering_name);
             }
 
             @Override
