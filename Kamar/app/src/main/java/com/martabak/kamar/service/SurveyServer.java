@@ -2,9 +2,8 @@ package com.martabak.kamar.service;
 
 import android.content.Context;
 
-import com.martabak.kamar.domain.Feedback;
 import com.martabak.kamar.service.response.PostResponse;
-import com.martabak.kamar.domain.SurveyAnswer;
+import com.martabak.kamar.domain.SurveyAnswers;
 import com.martabak.kamar.domain.SurveyQuestion;
 import com.martabak.kamar.service.response.ViewResponse;
 
@@ -17,66 +16,45 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
- * Exposes {@link FeedbackService}.
+ * Exposes {@link SurveyService}.
  */
-public class FeedbackServer extends Server {
+public class SurveyServer extends Server {
 
     /**
      * The singleton instance.
      */
-    private static FeedbackServer instance;
+    private static SurveyServer instance;
 
     /**
      * The service api conf.
      */
-    private FeedbackService service;
+    private SurveyService service;
 
     /**
      * Constructor.
      */
-    private FeedbackServer(Context c) {
+    private SurveyServer(Context c) {
         super(c);
-        service = createService(FeedbackService.class);
+        service = createService(SurveyService.class);
     }
 
     /**
      * Obtains singleton instance.
      * @return The singleton instance.
      */
-    public static FeedbackServer getInstance(Context c) {
+    public static SurveyServer getInstance(Context c) {
         if (instance == null)
-            instance = new FeedbackServer(c);
+            instance = new SurveyServer(c);
         return instance;
     }
 
     /**
-     * Submit some feedback.
-     * @param feedback The feedback model to be created.
-     * @return Whether or not the feedback was successfully created.
+     * Submit an answer to the survey.
+     * @param surveyAnswers The survey answer model to be created.
+     * @return Whether or not the survey answer was successfully created.
      */
-    public Observable<Boolean> createFeedback(Feedback feedback) {
-        return service.createFeedback(feedback)
-                .map(new Func1<PostResponse, Boolean>() {
-                    @Override public Boolean call(PostResponse response) {
-                        return response.ok;
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    /**
-     * Submit some survey answers.
-     * @param surveyAnswers The survey answers model to be created.
-     * @return Whether or not each survey answer was successfully created.
-     */
-    public Observable<Boolean> createSurveyAnswers(List<SurveyAnswer> surveyAnswers) {
-        return Observable.from(surveyAnswers)
-                .flatMap(new Func1<SurveyAnswer, Observable<PostResponse>>() {
-                    @Override public Observable<PostResponse> call(SurveyAnswer surveyAnswer) {
-                        return service.createSurveyAnswer(surveyAnswer);
-                    }
-                })
+    public Observable<Boolean> createSurveyAnswers(SurveyAnswers surveyAnswers) {
+            return service.createSurveyAnswers(surveyAnswers)
                 .map(new Func1<PostResponse, Boolean>() {
                     @Override public Boolean call(PostResponse response) {
                         return response.ok;

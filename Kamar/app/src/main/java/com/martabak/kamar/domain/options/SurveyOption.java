@@ -1,4 +1,4 @@
-package com.martabak.kamar.domain;
+package com.martabak.kamar.domain.options;
 
 import android.util.Log;
 
@@ -7,13 +7,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Locale;
 
 /**
- * A single survey question.
+ * A Survey Option (Question) {@link Option}.
  */
-public class SurveyQuestion extends Model {
-
-    public final int order;
-
-    public final boolean active;
+public class SurveyOption extends Option {
 
     /**
      * The question of the option, in English.
@@ -35,19 +31,26 @@ public class SurveyQuestion extends Model {
      */
     @SerializedName("question_ru") public final String questionRu;
 
-    public SurveyQuestion() {
-        this.order = Integer.MAX_VALUE;
-        this.active = false;
+    public SurveyOption() {
         this.questionEn = null;
         this.questionIn = null;
         this.questionZh = null;
         this.questionRu = null;
     }
 
-    public SurveyQuestion(int order, boolean active, String questionEn, String questionIn,
-                          String questionZh, String questionRu) {
-        this.order = order;
-        this.active = active;
+    public SurveyOption(String nameEn, String nameIn, String nameZh, String nameRu, String questionEn,
+                        String questionIn, String questionZh, String questionRu, Integer order) {
+        super(null, null, nameEn, nameIn, nameZh, nameRu, order);
+        this.questionEn = questionEn;
+        this.questionIn = questionIn;
+        this.questionZh = questionZh;
+        this.questionRu = questionRu;
+    }
+
+    public SurveyOption(String _id, String _rev, String nameEn, String nameIn, String nameZh, String nameRu,
+                        String questionEn, String questionIn, String questionZh, String questionRu,
+                        Integer order) {
+        super(_id, _rev, nameEn, nameIn, nameZh, nameRu, order);
         this.questionEn = questionEn;
         this.questionIn = questionIn;
         this.questionZh = questionZh;
@@ -67,7 +70,7 @@ public class SurveyQuestion extends Model {
         } else if (Locale.getDefault().getLanguage().equals(new Locale("ru").getLanguage())) {
             return this.questionRu;
         } else {
-            Log.e(SurveyQuestion.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
+            Log.e(SurveyOption.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
             return this.questionEn;
         }
     }

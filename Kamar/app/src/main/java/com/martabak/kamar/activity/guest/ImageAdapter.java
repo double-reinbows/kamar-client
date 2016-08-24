@@ -45,9 +45,9 @@ public class ImageAdapter extends BaseAdapter {
             Permintaan.TYPE_BELLBOY,
             Permintaan.TYPE_ENGINEERING,
             Permintaan.TYPE_TRANSPORT,
-            "TELL US",
+            Permintaan.TYPE_SURVEY,
             Permintaan.TYPE_CHECKOUT,
-            "CHAT"
+            Permintaan.TYPE_CHAT
     };
 
     private Context mContext;

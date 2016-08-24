@@ -22,11 +22,11 @@
             android:name=".activity.YiannisTestActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape">
-            <!--intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter-->
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.home.SelectLanguageActivity"
@@ -34,10 +34,10 @@
             android:screenOrientation="landscape"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+            <!--intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter-->
 
         </activity>
         <activity
@@ -75,7 +75,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.guest.SurveyActivity"
+            android:name=".activity.survey.SurveyActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/survey_label"
             android:screenOrientation="landscape"

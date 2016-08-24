@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Feedback;
-import com.martabak.kamar.domain.permintaan.Permintaan;
-import com.martabak.kamar.service.FeedbackServer;
+import com.martabak.kamar.service.SurveyServer;
 
 import rx.Observer;
 
@@ -69,7 +66,7 @@ public class TellUsDialogFragment extends DialogFragment {
      * @param message The feedback message.
      */
     private void sendTellUs(String message, float rating) {
-        FeedbackServer.getInstance(getActivity()).createFeedback(new Feedback(message, rating)).subscribe(new Observer<Boolean>() {
+        SurveyServer.getInstance(getActivity()).createFeedback(new Feedback(message, rating)).subscribe(new Observer<Boolean>() {
                 @Override public void onCompleted() {
                     Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On completed");
                     permintaanDialogListener.onDialogPositiveClick(TellUsDialogFragment.this, success);

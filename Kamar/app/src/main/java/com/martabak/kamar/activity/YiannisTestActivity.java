@@ -15,6 +15,8 @@ import com.martabak.kamar.activity.guest.GuestPermintaanService;
 import com.martabak.kamar.activity.staff.StaffPermintaanService;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Staff;
+import com.martabak.kamar.domain.SurveyAnswer;
+import com.martabak.kamar.domain.SurveyAnswers;
 import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.domain.options.EngineeringOption;
@@ -23,7 +25,7 @@ import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.SurveyQuestion;
 import com.martabak.kamar.service.ChatServer;
-import com.martabak.kamar.service.FeedbackServer;
+import com.martabak.kamar.service.SurveyServer;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.PermintaanServer;
 import com.martabak.kamar.service.StaffServer;
@@ -60,7 +62,7 @@ public class YiannisTestActivity extends AppCompatActivity {
         doSomething3Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doGetHousekeepingOptions();
+                doCreateSurveyAnswers();
             }
         });
     }
@@ -388,7 +390,7 @@ public class YiannisTestActivity extends AppCompatActivity {
 
     private void doGetSurveyQuestions() {
         Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get survey questions");
-        FeedbackServer.getInstance(getBaseContext()).getSurveyQuestions().subscribe(new Observer<List<SurveyQuestion>>() {
+        SurveyServer.getInstance(getBaseContext()).getSurveyQuestions().subscribe(new Observer<List<SurveyQuestion>>() {
             @Override
             public void onCompleted() {
                 Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
@@ -444,5 +446,29 @@ public class YiannisTestActivity extends AppCompatActivity {
                 textView.setText(guest.firstName + " " + guest.lastName);
             }
         });
+    }
+
+    private void doCreateSurveyAnswers() {
+
+        final List<SurveyAnswer> surveyAnswers = new ArrayList<SurveyAnswer>();
+        final List<SurveyQuestion> surveyQuestions = new ArrayList<>();
+
+        surveyAnswers.add(new SurveyAnswer("46abbef316832bf8648f4473a207efca", 3, null));
+        surveyAnswers.add(new SurveyAnswer("46abbef316832bf8648f4473a207f26b", 2, "pool is crap"));
+
+        final SurveyAnswers surveyAnswer = new SurveyAnswers("GUEST_ID", surveyAnswers);
+            SurveyServer.getInstance(this).createSurveyAnswers(surveyAnswer)
+                .subscribe(new Observer<Boolean>() {
+                    @Override public void onCompleted() {
+                        Log.d(YiannisTestActivity.class.getCanonicalName(), "createSurveyAnswers() On completed");
+                    }
+                    @Override public void onError(Throwable e) {
+                        Log.d(YiannisTestActivity.class.getCanonicalName(), "createSurveyAnswers() On error");
+                        e.printStackTrace();
+                    }
+                    @Override public void onNext(Boolean b) {
+                        Log.d(YiannisTestActivity.class.getCanonicalName(), "createSurveyAnswers() On next");
+                    }
+                });
     }
 }

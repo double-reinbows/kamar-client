@@ -1,8 +1,6 @@
-package com.martabak.kamar.activity.guest;
+package com.martabak.kamar.activity.survey;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +13,9 @@ import android.widget.EditText;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.SurveyAnswer;
+import com.martabak.kamar.domain.SurveyAnswers;
 import com.martabak.kamar.domain.SurveyQuestion;
-import com.martabak.kamar.service.FeedbackServer;
+import com.martabak.kamar.service.SurveyServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +74,7 @@ public class SurveyActivity extends AppCompatActivity {
         rv.setAdapter(surveyArrayAdapter);
 
         /* Retrieve all questions */
-        FeedbackServer.getInstance(this).getSurveyQuestions()
+        SurveyServer.getInstance(this).getSurveyQuestions()
                 .subscribe(new Observer<List<SurveyQuestion>>() {
                     @Override public void onCompleted() {
                         Log.d(SurveyActivity.class.getCanonicalName(), String.valueOf(surveyQuestions.size()));
@@ -89,7 +88,7 @@ public class SurveyActivity extends AppCompatActivity {
                     @Override public void onNext(List<SurveyQuestion> results) {
                         for (int i=0; i < results.size(); i++) {
                             surveyQuestions.add(results.get(i));
-                            viewSurveyQuestions.add(surveyQuestions.get(i).question);
+                            viewSurveyQuestions.add(surveyQuestions.get(i).getQuestion());
                         }
                         Log.d(SurveyActivity.class.getCanonicalName(), "getSurveyQuestions() On next");
                     }
@@ -104,15 +103,15 @@ public class SurveyActivity extends AppCompatActivity {
                 /* Adding all survey answers to the server */
                 for (int i = 0; i < surveyQuestions.size(); i++) {
                     View surveyView = llm.findViewByPosition(i);
-                    EditText editText = (EditText)surveyView.findViewById(R.id.survey_answer);
+                    EditText editText = (EditText)surveyView.findViewById(R.id.survey_comment);
                     if (editText.getText() != null) {
-                        SurveyAnswer surveyAnswer = new SurveyAnswer(surveyQuestions.get(i)._id
-                                , editText.getText().toString());
+                        SurveyAnswer surveyAnswer = new SurveyAnswer(surveyQuestions.get(i)._id,
+                                3, editText.getText().toString());
                         surveyAnswers.add(surveyAnswer);
                     }
                 }
 
-                FeedbackServer.getInstance(getBaseContext()).createSurveyAnswers(surveyAnswers)
+                SurveyServer.getInstance(getBaseContext()).createSurveyAnswers(new SurveyAnswers("GUEST_ID", surveyAnswers))
                         .subscribe(new Observer<Boolean>() {
                             @Override public void onCompleted() {
                                 Toast.makeText(
