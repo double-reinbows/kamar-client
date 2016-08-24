@@ -354,7 +354,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
                 break;
             case Permintaan.TYPE_HOUSEKEEPING:
                 //new HousekeepingDialogFragment().show(getFragmentManager(), "housekeeping");
-                startActivity(new Intent(this, GuestHousekeepingActivity.class));
+                startActivity(new Intent(this, HousekeepingActivity.class));
                 break;
             case Permintaan.TYPE_BELLBOY:
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
