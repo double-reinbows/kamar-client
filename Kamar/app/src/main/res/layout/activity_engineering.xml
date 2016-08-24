@@ -21,7 +21,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 app:layoutManager="LinearLayoutManager"
-                                                tools:listitem="@layout/massage_list_row" />
+                                                tools:listitem="@layout/engineering_list_row" />
 
         <LinearLayout
             android:layout_width="wrap_content"

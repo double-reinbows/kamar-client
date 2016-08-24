@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Order Sent TODO languagify"/>
+            android:text="@string/permintaan_order_sent"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Order Processed TODO languagify"/>
+            android:text="@string/permintaan_order_received"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

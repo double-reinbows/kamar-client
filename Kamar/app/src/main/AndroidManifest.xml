@@ -111,6 +111,12 @@
             android:label="@string/restaurant_label"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.engineering.EngineeringActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/restaurant_label"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

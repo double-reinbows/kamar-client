@@ -82,7 +82,9 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content.addProperty("total_price", restaurantOrder.totalPrice);
                 break;
             case Permintaan.TYPE_BELLBOY:
+                break;
             case Permintaan.TYPE_CHECKOUT:
+                break;
             case Permintaan.TYPE_HOUSEKEEPING:
                 Housekeeping housekeeping = (Housekeeping)src.content;
                 content.addProperty("name_en", housekeeping.option.nameEn);
@@ -93,12 +95,14 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content.addProperty("section_in", housekeeping.option.sectionIn);
                 content.addProperty("section_zh", housekeeping.option.sectionZh);
                 content.addProperty("section_ru", housekeeping.option.sectionRu);
+                break;
             case Permintaan.TYPE_ENGINEERING:
                 Engineering engineering = (Engineering)src.content;
                 content.addProperty("name_en", engineering.option.nameEn);
                 content.addProperty("name_in", engineering.option.nameIn);
                 content.addProperty("name_zh", engineering.option.nameZh);
                 content.addProperty("name_ru", engineering.option.nameRu);
+                break;
             case Permintaan.TYPE_MASSAGE:
                 Massage massage = (Massage)src.content;
                 content.addProperty("name_en", massage.option.nameEn);
@@ -111,6 +115,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content.addProperty("description_ru", massage.option.descriptionRu);
                 content.addProperty("price", massage.option.price);
                 content.addProperty("length", massage.option.length);
+                break;
             default:
                 break;
         }
