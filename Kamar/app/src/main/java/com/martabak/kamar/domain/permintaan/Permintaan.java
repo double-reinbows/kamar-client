@@ -56,15 +56,25 @@ public class Permintaan<T extends Content> extends Model {
      * The TRANSPORT type string.
      */
     public static final String TYPE_TRANSPORT = "TRANSPORT";
+    /**
+     * The SURVEY type string.
+     */
+    public static final String TYPE_SURVEY = "GUEST COMMENTS";
+    /**
+     * The CHAT type string.
+     */
+    public static final String TYPE_CHAT = "CHAT";
 
     /**
      * The NEW state string. A.k.a. SENT.
      */
-    public static final String STATE_NEW = "NEW";
+    public static final String STATE_NEW = "ORDER-SENT";
+    //public static final String STATE_NEW = "NEW";
     /**
      * The IN-PROGRESS state string. A.k.a. PROCESSED.
      */
-    public static final String STATE_INPROGRESS= "IN-PROGRESS";
+    public static final String STATE_INPROGRESS= "ORDER-PROCESSED";
+    //public static final String STATE_INPROGRESS= "IN-PROGRESS";
     /**
      * The IN-DELIVERY state string. Not in use.
      */

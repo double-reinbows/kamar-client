@@ -137,10 +137,10 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                 String email = editEmail.getText().toString();
                 String roomNumber = roomNumbers.get((int)spinnerRoomNumber.getSelectedItemId()).toString();
                 Log.v("selectedRoomNo", roomNumber);
-                Integer selectedPromoId = (int)spinnerPromoImg.getSelectedItemId(); //promoImages.get((int)spinnerPromoImg.getSelectedItemId());
+                Integer selectedPromoId = (int)spinnerPromoImg.getSelectedItemId();
                 Log.v("selectedPromoImg", selectedPromoId.toString());
                 String welcome = editWelcomeMessage.getText().toString();
-                if (selectedPromoId == 0) {
+                if (selectedPromoId == 0) { //No promo image selected, set it to null
                     sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber,
                             null, welcome, null);
                 } else {

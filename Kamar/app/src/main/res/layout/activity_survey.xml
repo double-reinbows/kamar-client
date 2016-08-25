@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="200dp"
         android:background="@drawable/wood_background_highres"
-        tools:context="com.martabak.kamar.activity.guest.SurveyActivity">
+        tools:context=".activity.survey.SurveyActivity">
 
         <include layout="@layout/content_survey" />
 

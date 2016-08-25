@@ -25,6 +25,7 @@ import com.martabak.kamar.activity.home.SelectLanguageActivity;
 import com.martabak.kamar.activity.massage.MassageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.activity.staff.StaffHomeActivity;
+import com.martabak.kamar.activity.survey.SurveyActivity;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -347,7 +348,8 @@ public class GuestHomeActivity extends AppCompatActivity implements
                 startActivity(new Intent(this, TransportActivity.class));
                 break;
             case Permintaan.TYPE_HOUSEKEEPING:
-                new HousekeepingDialogFragment().show(getFragmentManager(), "housekeeping");
+                //new HousekeepingDialogFragment().show(getFragmentManager(), "housekeeping");
+                startActivity(new Intent(this, HousekeepingActivity.class));
                 break;
             case Permintaan.TYPE_BELLBOY:
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
@@ -355,8 +357,9 @@ public class GuestHomeActivity extends AppCompatActivity implements
             case Permintaan.TYPE_ENGINEERING:
                 startActivity(new Intent(this, EngineeringActivity.class));
                 break;
-            case "TELL US":
-                new TellUsDialogFragment().show(getFragmentManager(), "tellus");
+            case Permintaan.TYPE_SURVEY:
+                startActivity(new Intent(this, SurveyActivity.class));
+                //new TellUsDialogFragment().show(getFragmentManager(), "tellus");
                 break;
             case Permintaan.TYPE_CHECKOUT:
                 new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
@@ -364,7 +367,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
              case "EVENT":
                 startActivity(new Intent(this, GuestEventActivity.class));
                 break;
-            case "CHAT":
+            case Permintaan.TYPE_CHAT:
                 startActivity(new Intent(this, GuestChatActivity.class));
             default:
                 break;

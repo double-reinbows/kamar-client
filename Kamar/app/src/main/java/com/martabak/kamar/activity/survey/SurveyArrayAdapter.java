@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity.guest;
+package com.martabak.kamar.activity.survey;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,8 +24,8 @@ public class SurveyArrayAdapter extends RecyclerView.Adapter<SurveyArrayAdapter.
 
         public SurveyViewHolder(View surveyView) {
             super(surveyView);
-            textView = (TextView) surveyView.findViewById(R.id.survey_question);
-            editText = (EditText) surveyView.findViewById(R.id.survey_answer);
+//            textView = (TextView) surveyView.findViewById(R.id.survey_question);
+//            editText = (EditText) surveyView.findViewById(R.id.survey_comment);
         }
     }
 
@@ -41,7 +41,7 @@ public class SurveyArrayAdapter extends RecyclerView.Adapter<SurveyArrayAdapter.
     @Override
     public SurveyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).
-                inflate(R.layout.survey_item, viewGroup, false);
+                inflate(R.layout.survey_fragment_slide, viewGroup, false);
         SurveyViewHolder svh = new SurveyViewHolder(v);
         return svh;
     }
