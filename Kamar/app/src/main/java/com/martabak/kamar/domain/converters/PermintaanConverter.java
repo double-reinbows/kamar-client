@@ -163,8 +163,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 String nameInEngineering = c.getAsJsonPrimitive("name_in").getAsString();
                 String nameZhEngineering = c.getAsJsonPrimitive("name_zh").getAsString();
                 String nameRuEngineering = c.getAsJsonPrimitive("name_ru").getAsString();
-                EngineeringOption optionEngineering = new EngineeringOption(
-                        nameEnEngineering, nameInEngineering, nameZhEngineering, nameRuEngineering, null, null);
+                EngineeringOption optionEngineering = new EngineeringOption(nameEnEngineering, nameInEngineering, nameZhEngineering, nameRuEngineering, null, null);
                 content = new Engineering(message, optionEngineering);
                 break;
             case Permintaan.TYPE_HOUSEKEEPING:

@@ -34,14 +34,17 @@ public abstract class SectionedOption extends Option {
         this.sectionRu = null;
     }
 
-    public SectionedOption(String nameEn, String nameIn, String nameZh, String nameRu, Integer order,
-                           String sectionEn, String sectionIn, String sectionZh, String sectionRu, String attachmentName) {
+
+    public SectionedOption(String nameEn, String nameIn, String nameZh, String nameRu, Integer order, String attachmentName,
+                           String sectionEn, String sectionIn, String sectionZh, String sectionRu) {
+
         super(null, null, nameEn, nameIn, nameZh, nameRu, order, attachmentName);
         this.sectionEn = sectionEn;
         this.sectionIn = sectionIn;
         this.sectionZh = sectionZh;
         this.sectionRu = sectionRu;
     }
+
 
     public SectionedOption(String _id, String _rev, String nameEn, String nameIn, String nameZh,
                            String nameRu, Integer order, String sectionEn, String sectionIn,

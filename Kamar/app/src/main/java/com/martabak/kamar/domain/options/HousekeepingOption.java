@@ -11,13 +11,13 @@ public class HousekeepingOption extends SectionedOption {
     }
 
     public HousekeepingOption(String nameEn, String nameIn, String nameZh, String nameRu,
-                              Integer order, String sectionEn, String sectionIn, String sectionZh, String sectionRu, String attachmentName) {
-        super(null, null, nameEn, nameIn, nameZh, nameRu, order, sectionEn, sectionIn, sectionZh, sectionRu, attachmentName);
+                              Integer order, String attachmentName, String sectionEn, String sectionIn, String sectionZh, String sectionRu) {
+        super(null, null, nameEn, nameIn, nameZh, nameRu, order, attachmentName, sectionEn, sectionIn, sectionZh, sectionRu);
     }
 
     public HousekeepingOption(String _id, String _rev, String nameEn, String nameIn, String nameZh,
-                              String nameRu, Integer order, String sectionEn, String sectionIn, String sectionZh, String sectionRu, String attachmentName) {
-        super(_id, _rev, nameEn, nameIn, nameZh, nameRu, order, sectionEn, sectionIn, sectionZh, sectionRu, attachmentName);
+                              String nameRu, Integer order, String attachmentName, String sectionEn, String sectionIn, String sectionZh, String sectionRu) {
+        super(_id, _rev, nameEn, nameIn, nameZh, nameRu, order, attachmentName, sectionEn, sectionIn, sectionZh, sectionRu);
     }
 
     /**
