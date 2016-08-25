@@ -44,7 +44,7 @@ public class TellUsDialogFragment extends DialogFragment {
                 RatingBar rB = (RatingBar) view.findViewById(R.id.tellusRatingBar);
 
                 String tellUsMessage = tellusBellboyMessage.getText().toString();
-                sendTellUs(tellUsMessage, rB.getRating());
+//                sendTellUs(tellUsMessage, rB.getRating());
             }
         });
 
@@ -65,28 +65,28 @@ public class TellUsDialogFragment extends DialogFragment {
      * Send the feedback message to the server.
      * @param message The feedback message.
      */
-    private void sendTellUs(String message, float rating) {
-        SurveyServer.getInstance(getActivity()).createFeedback(new Feedback(message, rating)).subscribe(new Observer<Boolean>() {
-                @Override public void onCompleted() {
-                    Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On completed");
-                    permintaanDialogListener.onDialogPositiveClick(TellUsDialogFragment.this, success);
-                }
-                @Override
-                public void onError(Throwable e) {
-                    Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On error");
-                    e.printStackTrace();
-                    permintaanDialogListener.onDialogPositiveClick(TellUsDialogFragment.this, success);
-                }
-                @Override public void onNext(Boolean b) {
-                    Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On next " + b);
-                    if (b) {
-                        success = true;
-                    } else {
-                        success = false;
-                    }
-                }
-        });
-    }
+//    private void sendTellUs(String message, float rating) {
+//        SurveyServer.getInstance(getActivity()).createFeedback(new Feedback(message, rating)).subscribe(new Observer<Boolean>() {
+//                @Override public void onCompleted() {
+//                    Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On completed");
+//                    permintaanDialogListener.onDialogPositiveClick(TellUsDialogFragment.this, success);
+//                }
+//                @Override
+//                public void onError(Throwable e) {
+//                    Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On error");
+//                    e.printStackTrace();
+//                    permintaanDialogListener.onDialogPositiveClick(TellUsDialogFragment.this, success);
+//                }
+//                @Override public void onNext(Boolean b) {
+//                    Log.d(TellUsDialogFragment.class.getCanonicalName(), "createFeedback() On next " + b);
+//                    if (b) {
+//                        success = true;
+//                    } else {
+//                        success = false;
+//                    }
+//                }
+//        });
+//    }
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
