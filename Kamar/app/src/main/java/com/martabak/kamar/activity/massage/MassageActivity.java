@@ -39,7 +39,7 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
     private View sentImageView;
     private View processedImageView;
     private List<MassageOption> massageOptions;
-    private boolean existingRequest = false;
+    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +84,7 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         // Get the status
+        status = Permintaan.STATE_COMPLETED;
         sentImageView = findViewById(R.id.sent_image);
         processedImageView = findViewById(R.id.processed_image);
         PermintaanManager.getInstance().getMassageStatus(getBaseContext()).subscribe(new Observer<String>() {
@@ -94,14 +95,14 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
                 Log.d(MassageActivity.class.getCanonicalName(), "getMassageStatus#onError", e);
                 e.printStackTrace();
             }
-            @Override public void onNext(final String state) {
-                Log.d(MassageActivity.class.getCanonicalName(), "Massage status is " + state);
-                switch (state) {
+            @Override public void onNext(final String status) {
+                Log.d(MassageActivity.class.getCanonicalName(), "Massage status is " + status);
+                MassageActivity.this.status = status;
+                switch (status) {
                     case Permintaan.STATE_INPROGRESS:
                         processedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
                     case Permintaan.STATE_NEW:
                         sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
-                        existingRequest = true;
                         break;
                 }
             }
@@ -115,13 +116,15 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
      */
     @Override
     public void onClick(final View view) {
-        if (existingRequest) {
-            Toast.makeText(
-                    MassageActivity.this.getApplicationContext(),
-                    R.string.existing_request,
-                    Toast.LENGTH_SHORT
-            ).show();
-            return;
+        switch (status) {
+            case Permintaan.STATE_INPROGRESS:
+            case Permintaan.STATE_NEW:
+                Toast.makeText(
+                        MassageActivity.this.getApplicationContext(),
+                        R.string.existing_request,
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
         }
         int itemPosition = recyclerView.getChildLayoutPosition(view);
         final MassageOption item = massageOptions.get(itemPosition);
@@ -153,7 +156,7 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
                                             R.string.massage_result,
                                             Toast.LENGTH_SHORT
                                     ).show();
-                                    existingRequest = true;
+                                    status = Permintaan.STATE_NEW;
                                     sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
                                 } else {
                                     Toast.makeText(

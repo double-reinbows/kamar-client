@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Engineering;
@@ -25,9 +26,12 @@ import com.martabak.kamar.service.Server;
 import com.martabak.kamar.service.StaffServer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observer;
 
@@ -38,11 +42,13 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
 
     private RecyclerView recyclerView;
     private List<EngineeringOption> engOptions;
+    private Map<String, String> statuses; // Maps engineering option ID -> request status
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_engineering);
+        // BEGIN GENERIC LAYOUT STUFF
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -60,11 +66,11 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
         // END GENERIC LAYOUT STUFF
 
+        // Get the options
         recyclerView = (RecyclerView)findViewById(R.id.massage_list);
         engOptions = new ArrayList<>();
         final EngineeringRecyclerViewAdapter recyclerViewAdapter = new EngineeringRecyclerViewAdapter(engOptions);
         recyclerView.setAdapter(recyclerViewAdapter);
-
         StaffServer.getInstance(this).getEngineeringOptions().subscribe(new Observer<List<EngineeringOption>>() {
             @Override public void onCompleted() {
                 Log.d(EngineeringActivity.class.getCanonicalName(), "onCompleted");
@@ -79,6 +85,22 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                 engOptions.addAll(options);
             }
         });
+
+        // Get the statuses
+        PermintaanManager.getInstance().getEngineeringStatuses(getBaseContext()).subscribe(new Observer<Map<String, String>>() {
+            @Override public void onCompleted() {
+                Log.d(EngineeringActivity.class.getCanonicalName(), "getEngineeringStatuses#onCompleted");
+                recyclerViewAdapter.notifyDataSetChanged();
+            }
+            @Override public void onError(Throwable e) {
+                Log.d(EngineeringActivity.class.getCanonicalName(), "getEngineeringStatuses#onError", e);
+                e.printStackTrace();
+            }
+            @Override public void onNext(final Map<String, String> statuses) {
+                Log.d(EngineeringActivity.class.getCanonicalName(), "Fetching statuses of size " + statuses.size());
+                EngineeringActivity.this.statuses = statuses;
+            }
+        });
     }
 
     /**
@@ -90,6 +112,20 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
     public void onClick(final View view) {
         int itemPosition = recyclerView.getChildLayoutPosition(view);
         final EngineeringOption item = engOptions.get(itemPosition);
+        Log.d(EngineeringActivity.class.getCanonicalName(), "Selected " + item.getName() + " with ID " + item._id);
+        Log.d(EngineeringActivity.class.getCanonicalName(), "Statuses map is " + Arrays.toString(statuses.entrySet().toArray()));
+        if (statuses.containsKey(item._id)) {
+            switch (statuses.get(item._id)) {
+                case Permintaan.STATE_INPROGRESS:
+                case Permintaan.STATE_NEW:
+                    Toast.makeText(
+                            EngineeringActivity.this.getApplicationContext(),
+                            R.string.existing_request,
+                            Toast.LENGTH_SHORT
+                    ).show();
+                    return;
+            }
+        }
         new AlertDialog.Builder(this)
                 .setTitle(item.getName())
                 .setMessage(R.string.engineering_message)
@@ -111,11 +147,22 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                             boolean success;
                             @Override public void onCompleted() {
                                 Log.d(EngineeringActivity.class.getCanonicalName(), "On completed");
-                                Toast.makeText(
-                                        EngineeringActivity.this.getApplicationContext(),
-                                        R.string.engineering_result,
-                                        Toast.LENGTH_SHORT
-                                ).show();
+                                if (success) {
+                                    Toast.makeText(
+                                            EngineeringActivity.this.getApplicationContext(),
+                                            R.string.engineering_result,
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                    EngineeringActivity.this.statuses.put(item._id, Permintaan.STATE_NEW);
+                                    View sentImageView = view.findViewById(R.id.sent_image);
+                                    sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                                } else {
+                                    Toast.makeText(
+                                            EngineeringActivity.this.getApplicationContext(),
+                                            R.string.something_went_wrong,
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                }
                             }
                             @Override public void onError(Throwable e) {
                                 Log.d(EngineeringActivity.class.getCanonicalName(), "On error");
@@ -166,6 +213,15 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                     .error(R.drawable.error)
                     .into(holder.imageView);
             holder.nameView.setText(holder.item.getName());
+            String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_COMPLETED;
+            Log.d(EngineeringActivity.class.getCanonicalName(), "Status for engineering " + holder.item.getName() + " is " + state);
+            switch (state) {
+                case Permintaan.STATE_INPROGRESS:
+                    holder.processedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                case Permintaan.STATE_NEW:
+                    holder.sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                    break;
+            }
         }
 
         @Override
@@ -178,12 +234,16 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
             public final View rootView;
             public final ImageView imageView;
             public final TextView nameView;
+            public final View sentImageView;
+            public final View processedImageView;
 
             public ViewHolder(View view) {
                 super(view);
                 rootView = view;
                 imageView = (ImageView) view.findViewById(R.id.engineering_image);
                 nameView = (TextView) view.findViewById(R.id.engineering_name);
+                sentImageView = view.findViewById(R.id.sent_image);
+                processedImageView = view.findViewById(R.id.processed_image);
             }
 
             @Override

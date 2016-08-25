@@ -87,6 +87,8 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 break;
             case Permintaan.TYPE_HOUSEKEEPING:
                 Housekeeping housekeeping = (Housekeeping)src.content;
+                content.addProperty("_id", housekeeping.option._id);
+                content.addProperty("_rev", housekeeping.option._rev);
                 content.addProperty("name_en", housekeeping.option.nameEn);
                 content.addProperty("name_in", housekeeping.option.nameIn);
                 content.addProperty("name_zh", housekeeping.option.nameZh);
@@ -98,6 +100,8 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 break;
             case Permintaan.TYPE_ENGINEERING:
                 Engineering engineering = (Engineering)src.content;
+                content.addProperty("_id", engineering.option._id);
+                content.addProperty("_rev", engineering.option._rev);
                 content.addProperty("name_en", engineering.option.nameEn);
                 content.addProperty("name_in", engineering.option.nameIn);
                 content.addProperty("name_zh", engineering.option.nameZh);
@@ -105,6 +109,8 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 break;
             case Permintaan.TYPE_MASSAGE:
                 Massage massage = (Massage)src.content;
+                content.addProperty("_id", massage.option._id);
+                content.addProperty("_rev", massage.option._rev);
                 content.addProperty("name_en", massage.option.nameEn);
                 content.addProperty("name_in", massage.option.nameIn);
                 content.addProperty("name_zh", massage.option.nameZh);
@@ -159,14 +165,19 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content = new Checkout(message);
                 break;
             case Permintaan.TYPE_ENGINEERING:
+                String idEngineering = c.getAsJsonPrimitive("_id").getAsString();
+                String revEngineering = c.getAsJsonPrimitive("_rev").getAsString();
                 String nameEnEngineering = c.getAsJsonPrimitive("name_en").getAsString();
                 String nameInEngineering = c.getAsJsonPrimitive("name_in").getAsString();
                 String nameZhEngineering = c.getAsJsonPrimitive("name_zh").getAsString();
                 String nameRuEngineering = c.getAsJsonPrimitive("name_ru").getAsString();
-                EngineeringOption optionEngineering = new EngineeringOption(nameEnEngineering, nameInEngineering, nameZhEngineering, nameRuEngineering, null, null);
+                EngineeringOption optionEngineering = new EngineeringOption(idEngineering, revEngineering,
+                        nameEnEngineering, nameInEngineering, nameZhEngineering, nameRuEngineering, null, null);
                 content = new Engineering(message, optionEngineering);
                 break;
             case Permintaan.TYPE_HOUSEKEEPING:
+                String idHousekeeping = c.getAsJsonPrimitive("_id").getAsString();
+                String revHousekeeping = c.getAsJsonPrimitive("_rev").getAsString();
                 String nameEnHousekeeping = c.getAsJsonPrimitive("name_en").getAsString();
                 String nameInHousekeeping = c.getAsJsonPrimitive("name_in").getAsString();
                 String nameZhHousekeeping = c.getAsJsonPrimitive("name_zh").getAsString();
@@ -175,12 +186,14 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 String sectionIn = c.getAsJsonPrimitive("section_in").getAsString();
                 String sectionZh = c.getAsJsonPrimitive("section_zh").getAsString();
                 String sectionRu = c.getAsJsonPrimitive("section_ru").getAsString();
-                HousekeepingOption optionHousekeeping = new HousekeepingOption(
+                HousekeepingOption optionHousekeeping = new HousekeepingOption(idHousekeeping, revHousekeeping,
                         nameEnHousekeeping, nameInHousekeeping, nameZhHousekeeping, nameRuHousekeeping,
                         null, sectionEn, sectionIn, sectionZh, sectionRu, null);
                 content = new Housekeeping(message, optionHousekeeping);
                 break;
             case Permintaan.TYPE_MASSAGE:
+                String idMassage = c.getAsJsonPrimitive("_id").getAsString();
+                String revMassage = c.getAsJsonPrimitive("_rev").getAsString();
                 String nameEnMassage = c.getAsJsonPrimitive("name_en").getAsString();
                 String nameInMassage = c.getAsJsonPrimitive("name_in").getAsString();
                 String nameZhMassage = c.getAsJsonPrimitive("name_zh").getAsString();
@@ -191,8 +204,9 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 String descriptionRu = c.getAsJsonPrimitive("description_ru").getAsString();
                 Integer priceMassage = c.getAsJsonPrimitive("price").getAsInt();
                 Integer length = c.getAsJsonPrimitive("length").getAsInt();
-                MassageOption optionMassage = new MassageOption(nameEnMassage, nameInMassage, nameZhMassage, nameRuMassage,
-                        descriptionEn, descriptionIn, descriptionZh, descriptionRu, null, priceMassage, length, null);
+                MassageOption optionMassage = new MassageOption(idMassage, revMassage, nameEnMassage,
+                        nameInMassage, nameZhMassage, nameRuMassage, descriptionEn, descriptionIn,
+                        descriptionZh, descriptionRu, null, priceMassage, length, null);
                 content = new Massage(message, optionMassage);
                 break;
             case Permintaan.TYPE_TRANSPORT:
