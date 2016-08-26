@@ -5,10 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.SwipeDismissBehavior;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,24 +20,16 @@ import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
-import com.martabak.kamar.activity.guest.GuestPermintaanActivity;
-import com.martabak.kamar.activity.guest.SurveyArrayAdapter;
-import com.martabak.kamar.domain.Consumable;
 import com.martabak.kamar.domain.managers.RestaurantOrderManager;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.PermintaanServer;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import rx.Observer;
 

@@ -47,9 +47,9 @@ public  class StaffPermintaanFragment extends Fragment {
         List<String> states = Arrays.asList(
                 Permintaan.STATE_NEW,
                 Permintaan.STATE_INPROGRESS,
-                Permintaan.STATE_INDELIVERY,
-                Permintaan.STATE_COMPLETED,
-                Permintaan.STATE_CANCELLED
+                //Permintaan.STATE_INDELIVERY,
+                Permintaan.STATE_COMPLETED
+                //Permintaan.STATE_CANCELLED
         );
         HashMap<String, List<String>> stateToPermintaanIds = new HashMap<>(); //mapping of states to a list of permintaan strings
         HashMap<String, Permintaan> permintaanIdToPermintaan = new HashMap<>(); //mapping of permintaan strings to their permintaans
@@ -60,9 +60,9 @@ public  class StaffPermintaanFragment extends Fragment {
         // Set up headers (states)
         List<String> new_permintaan = new ArrayList<>();
         List<String> inprogress_permintaan = new ArrayList<>();
-        List<String> indelivery_permintaan = new ArrayList<>();
+        //List<String> indelivery_permintaan = new ArrayList<>();
         List<String> completed_permintaan = new ArrayList<>();
-        List<String> cancelled_permintaan = new ArrayList<>();
+        //List<String> cancelled_permintaan = new ArrayList<>();
 
         String subUserType = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("subUserType", "none");
         Log.v("subUserType", subUserType);
@@ -78,14 +78,14 @@ public  class StaffPermintaanFragment extends Fragment {
                     case Permintaan.STATE_INPROGRESS:
                         inprogress_permintaan.add(permintaan._id);
                         break;
-                    case Permintaan.STATE_INDELIVERY:
-                        indelivery_permintaan.add(permintaan._id);
-                        break;
+                    //case Permintaan.STATE_INDELIVERY:
+                      //  indelivery_permintaan.add(permintaan._id);
+                        //break;
                     case Permintaan.STATE_COMPLETED:
                         completed_permintaan.add(permintaan._id);
                         break;
-                    case Permintaan.STATE_CANCELLED:
-                        cancelled_permintaan.add(permintaan._id);
+                    //case Permintaan.STATE_CANCELLED:
+                      //  cancelled_permintaan.add(permintaan._id);
                     default:
                         Log.e(StaffPermintaanFragment.class.getCanonicalName(), "Unknown state for " + permintaan);
                 }
@@ -94,9 +94,9 @@ public  class StaffPermintaanFragment extends Fragment {
 
         stateToPermintaanIds.put(states.get(0), new_permintaan); // Header, Child data
         stateToPermintaanIds.put(states.get(1), inprogress_permintaan);
-        stateToPermintaanIds.put(states.get(2), indelivery_permintaan);
-        stateToPermintaanIds.put(states.get(3), completed_permintaan);
-        stateToPermintaanIds.put(states.get(4), cancelled_permintaan);
+        //stateToPermintaanIds.put(states.get(2), indelivery_permintaan);
+        stateToPermintaanIds.put(states.get(2), completed_permintaan);
+        //stateToPermintaanIds.put(states.get(4), cancelled_permintaan);
 
         // create expandable list
         listAdapter = new StaffExpandableListAdapter(this.getActivity(), states, stateToPermintaanIds, permintaanIdToPermintaan);
@@ -116,9 +116,9 @@ public  class StaffPermintaanFragment extends Fragment {
                 .getPermintaansOfState(
                         Permintaan.STATE_NEW,
                         Permintaan.STATE_INPROGRESS,
-                        Permintaan.STATE_INDELIVERY,
-                        Permintaan.STATE_COMPLETED,
-                        Permintaan.STATE_CANCELLED)
+                        //Permintaan.STATE_INDELIVERY,
+                        Permintaan.STATE_COMPLETED)
+                        //Permintaan.STATE_CANCELLED)
                 .subscribe(new Observer<Permintaan>() {
             List<Permintaan> permintaans = new ArrayList<>();
 

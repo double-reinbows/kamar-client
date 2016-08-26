@@ -3,14 +3,21 @@ package com.martabak.kamar.domain.managers;
 import android.content.Context;
 import android.util.Log;
 
+import com.martabak.kamar.domain.options.EngineeringOption;
+import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.math.operators.OperatorMinMax;
+import rx.observables.GroupedObservable;
 
 /**
  * Manages permintaan related server calls to provide a higher level abstraction above the server.
@@ -38,14 +45,15 @@ public class PermintaanManager {
     }
 
     /**
-     * Get the state of an ongoing or previous request, if it exists.
+     * Get the state of an ongoing or previous request, if it exists. Combine all requests of that
+     * type to a single status by using the most recent permintaan.
      * Note that #onError will be triggered on the {@link Observable} returned if no requests
      * exist for the given type.
      * @param c The context.
      * @param type The permintaan type.
      * @return The permintaan state.
      */
-    private Observable<String> getStatusOf(Context c, final String type) {
+    private Observable<String> getMostRecentStatusOf(Context c, final String type) {
         return OperatorMinMax.max(PermintaanServer.getInstance(c).getPermintaansForGuest(getGuestId(c))
                 // Filter by type of permintaan
                 .filter(new Func1<Permintaan, Boolean>() {
@@ -69,31 +77,79 @@ public class PermintaanManager {
     }
 
     /**
+     * Similarly to {@link #getMostRecentStatusOf}, but for discriminate by option as well as type.
+     * Gets all permintaan states for a particular type, grouping by their option ID and taking the
+     * most latest permintaan for that type and option.
+     * Note that #onError will be triggered on the {@link Observable} returned if no requests
+     * exist for the given type.
+     * @param c The context.
+     * @param type The permintaan type.
+     * @return A mapping from option ID -> latest permintaan state.
+     */
+    private Observable<Map<String, String>> getStatusesByTypeOf(Context c, final String type) {
+        Log.d(PermintaanManager.class.getCanonicalName(), "getStatusesByTypeOf");
+        return PermintaanServer.getInstance(c).getPermintaansForGuest(getGuestId(c))
+                // Filter by type of permintaan
+                .filter(new Func1<Permintaan, Boolean>() {
+                    @Override public Boolean call(Permintaan permintaan) {
+                        return permintaan.type.equals(type);
+                    }
+                })
+                .toList()
+                .map(new Func1<List<Permintaan>, Map<String, Permintaan>>() {
+                    @Override public Map<String, Permintaan> call(List<Permintaan> ps) {
+                        Map<String, Permintaan> latestPs = new HashMap<>();
+                        for (Permintaan p : ps) {
+                            EngineeringOption o = ((Engineering)p.content).option;
+                            if (!latestPs.containsKey(o._id)) {
+                                latestPs.put(o._id, p);
+                            } else {
+                                Permintaan otherP = latestPs.get(o._id);
+                                if (p.created.compareTo(otherP.created) > 0) {
+                                    latestPs.put(o._id, p);
+                                }
+                            }
+                        }
+                        return latestPs;
+                    }
+                })
+                .map(new Func1<Map<String, Permintaan>, Map<String, String>>() {
+                    @Override public Map<String, String> call(Map<String, Permintaan> latestPs) {
+                        Map<String, String> statuses = new HashMap<>();
+                        for (String optionId : latestPs.keySet()) {
+                            statuses.put(optionId, latestPs.get(optionId).state);
+                        }
+                        return statuses;
+                    }
+                });
+    }
+
+    /**
      * @return The state of the most recent massage permintaan.
      */
     public Observable<String> getMassageStatus(Context c) {
-        return getStatusOf(c, Permintaan.TYPE_MASSAGE);
+        return getMostRecentStatusOf(c, Permintaan.TYPE_MASSAGE);
     }
 
     /**
      * @return The state of the most recent housekeeping permintaan.
      */
     public Observable<String> getHousekeepingStatus(Context c) {
-        return getStatusOf(c, Permintaan.TYPE_HOUSEKEEPING);
+        return getMostRecentStatusOf(c, Permintaan.TYPE_HOUSEKEEPING);
     }
 
     /**
-     * @return The state of the most recent engineering permintaan.
+     * @return The state of all possible engineering option permintaans.
      */
-    public Observable<String> getEngineeringStatus(Context c) {
-        return getStatusOf(c, Permintaan.TYPE_ENGINEERING);
+    public Observable<Map<String, String>> getEngineeringStatuses(Context c) {
+        return getStatusesByTypeOf(c, Permintaan.TYPE_ENGINEERING);
     }
 
     /**
      * @return The state of the most recent laundry permintaan.
      */
     public Observable<String> getLaundryStatus(Context c) {
-        return getStatusOf(c, Permintaan.TYPE_LAUNDRY);
+        return getMostRecentStatusOf(c, Permintaan.TYPE_LAUNDRY);
     }
 
 }

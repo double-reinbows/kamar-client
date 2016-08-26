@@ -36,7 +36,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -46,7 +45,12 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar">
+            <!--intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter-->
+        </activity>
         <activity
             android:name=".activity.guest.GuestHomeActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -71,7 +75,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.guest.SurveyActivity"
+            android:name=".activity.survey.SurveyActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/survey_label"
             android:screenOrientation="landscape"
@@ -97,6 +101,12 @@
         <activity android:name=".activity.restaurant.RestaurantConfirmationActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/restaurant_confirmation_label"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.guest.HousekeepingActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/housekeeping_label"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity

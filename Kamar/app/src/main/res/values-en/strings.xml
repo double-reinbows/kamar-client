@@ -52,6 +52,7 @@
     <string name="permintaan_status_is_now">Status is now</string>
     <string name="permintaan_order_sent">Order Sent</string>
     <string name="permintaan_order_received">Order Received</string>
+    <string name="permintaan_assign_person">Please enter staff person\'s name</string>
 
     <!-- Chat -->
     <string name="title_chat_list">Chats</string>
@@ -92,6 +93,7 @@
 
     <!-- Guest -->
     <string name="please_wait">Please wait 10-20 minutes for a staff member to arrive at your room</string>
+    <string name="existing_request">A request of that type already exists</string>
 
     <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>
@@ -110,6 +112,7 @@
         <item>120</item>
     </string-array>
 
+    <string name="housekeeping_label">Housekeeping</string>
     <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>
     <string name="housekeeping_result">Housekeeping request sent</string>

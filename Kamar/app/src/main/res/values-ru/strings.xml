@@ -87,6 +87,7 @@
 
     <!-- Guest -->
     <string name="please_wait">Please wait 10-20 minutes for a staff member to arrive at your room</string>
+    <string name="existing_request">A request of that type already exists</string>
 
     <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>

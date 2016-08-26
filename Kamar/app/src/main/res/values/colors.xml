@@ -10,6 +10,10 @@
     <color name="darkRed">#AC0D13</color>
     <color name="lightRed">#DE4646</color>
     <color name="whiteTransparent">#96ffffff</color>
+
     <color name="colorChatInputBackground">#FFFFFF</color>
     <color name="colorChatSelected">#606060</color>
+
+    <color name="permintaanRed">#ff0000</color>
+    <color name="permintaanGreen">#00ff00</color>
 </resources>

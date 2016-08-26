@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Massage;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -35,12 +36,16 @@ import rx.Observer;
 public class MassageActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
+    private View sentImageView;
+    private View processedImageView;
     private List<MassageOption> massageOptions;
+    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_massage);
+        // START GENERIC LAYOUT STUFF
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -58,23 +63,48 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
         // END GENERIC LAYOUT STUFF
 
+        // Get the options
         recyclerView = (RecyclerView)findViewById(R.id.massage_list);
         massageOptions = new ArrayList<>();
         final MassageRecyclerViewAdapter recyclerViewAdapter = new MassageRecyclerViewAdapter(massageOptions);
         recyclerView.setAdapter(recyclerViewAdapter);
-
         StaffServer.getInstance(this).getMassageOptions().subscribe(new Observer<List<MassageOption>>() {
             @Override public void onCompleted() {
-                Log.d(MassageActivity.class.getCanonicalName(), "onCompleted");
+                Log.d(MassageActivity.class.getCanonicalName(), "getMassageOptions#onCompleted");
                 recyclerViewAdapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
-                Log.d(MassageActivity.class.getCanonicalName(), "onError", e);
+                Log.d(MassageActivity.class.getCanonicalName(), "getMassageOptions#onError", e);
                 e.printStackTrace();
             }
             @Override public void onNext(final List<MassageOption> options) {
                 Log.d(MassageActivity.class.getCanonicalName(), options.size() + " massage options found");
                 massageOptions.addAll(options);
+            }
+        });
+
+        // Get the status
+        status = Permintaan.STATE_COMPLETED;
+        sentImageView = findViewById(R.id.sent_image);
+        processedImageView = findViewById(R.id.processed_image);
+        PermintaanManager.getInstance().getMassageStatus(getBaseContext()).subscribe(new Observer<String>() {
+            @Override public void onCompleted() {
+                Log.d(MassageActivity.class.getCanonicalName(), "getMassageStatus#onCompleted");
+            }
+            @Override public void onError(Throwable e) {
+                Log.d(MassageActivity.class.getCanonicalName(), "getMassageStatus#onError", e);
+                e.printStackTrace();
+            }
+            @Override public void onNext(final String status) {
+                Log.d(MassageActivity.class.getCanonicalName(), "Massage status is " + status);
+                MassageActivity.this.status = status;
+                switch (status) {
+                    case Permintaan.STATE_INPROGRESS:
+                        processedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                    case Permintaan.STATE_NEW:
+                        sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                        break;
+                }
             }
         });
     }
@@ -86,6 +116,16 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
      */
     @Override
     public void onClick(final View view) {
+        switch (status) {
+            case Permintaan.STATE_INPROGRESS:
+            case Permintaan.STATE_NEW:
+                Toast.makeText(
+                        MassageActivity.this.getApplicationContext(),
+                        R.string.existing_request,
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+        }
         int itemPosition = recyclerView.getChildLayoutPosition(view);
         final MassageOption item = massageOptions.get(itemPosition);
         new AlertDialog.Builder(this)
@@ -110,11 +150,21 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
                             @Override
                             public void onCompleted() {
                                 Log.d(MassageActivity.class.getCanonicalName(), "On completed");
-                                Toast.makeText(
-                                        MassageActivity.this.getApplicationContext(),
-                                        R.string.massage_result,
-                                        Toast.LENGTH_SHORT
-                                ).show();
+                                if (success) {
+                                    Toast.makeText(
+                                            MassageActivity.this.getApplicationContext(),
+                                            R.string.massage_result,
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                    status = Permintaan.STATE_NEW;
+                                    sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                                } else {
+                                    Toast.makeText(
+                                            MassageActivity.this.getApplicationContext(),
+                                            R.string.something_went_wrong,
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                }
                             }
                             @Override
                             public void onError(Throwable e) {
