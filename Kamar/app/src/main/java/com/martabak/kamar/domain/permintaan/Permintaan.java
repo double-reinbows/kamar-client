@@ -57,11 +57,6 @@ public class Permintaan<T extends Content> extends Model {
      */
     public static final String TYPE_TRANSPORT = "TRANSPORT";
     /**
-     * The LAUNDRY type string.
-     */
-    public static final String TYPE_LAUNDRY = "TRANSPORT";
-
-    /**
      * The NEW state string. A.k.a. SENT.
      */
     public static final String STATE_NEW = "NEW";

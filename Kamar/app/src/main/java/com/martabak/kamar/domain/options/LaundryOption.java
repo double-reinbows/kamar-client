@@ -48,7 +48,7 @@ public class LaundryOption extends Option {
      * E.g. http://theserver:5984/219310931202313/image.jpg.
      */
     public String getImageUrl() {
-        return StaffServer.getBaseUrl() + "/massage_option/" + this._id + "/" + this.attachmentName;
+        return StaffServer.getBaseUrl() + "/laundry_option/" + this._id + "/" + this.attachmentName;
     }
 }
 

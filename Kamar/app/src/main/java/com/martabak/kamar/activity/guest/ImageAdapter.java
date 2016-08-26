@@ -49,7 +49,7 @@ public class ImageAdapter extends BaseAdapter {
             "EVENT",
             "TELL US",
             Permintaan.TYPE_CHECKOUT,
-            "CHAT"
+            Permintaan.TYPE_LAUNDRY
     };
 
     private Context mContext;
