@@ -7,21 +7,26 @@ import java.util.List;
 /**
  * Created by adarsh on 21/08/16.
  */
-public class Laundry extends Content {
+public class LaundryOrder extends Content {
 
-    public final List<OrderItem> items;
+    public final List<LaundryOrderItem> items;
+
+    public final List<String> instructions;
 
     @SerializedName("total_price") public final Integer totalPrice;
 
-    public Laundry() {
+    public LaundryOrder() {
         super();
         this.items = null;
+        this.instructions = null;
         this.totalPrice = null;
     }
 
-    public Laundry(String message, List<OrderItem> items, int totalPrice) {
+    public LaundryOrder(String message, List<LaundryOrderItem> items, List<String> instructions,
+                        int totalPrice) {
         super(message);
         this.items = items;
+        this.instructions = instructions;
         this.totalPrice = totalPrice;
     }
 

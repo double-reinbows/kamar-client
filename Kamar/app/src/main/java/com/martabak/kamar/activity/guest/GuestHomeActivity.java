@@ -29,7 +29,7 @@ import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.activity.survey.SurveyActivity;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.User;
-import com.martabak.kamar.domain.permintaan.Laundry;
+import com.martabak.kamar.domain.permintaan.LaundryOrder;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.activity.staff.CheckGuestInFragment;

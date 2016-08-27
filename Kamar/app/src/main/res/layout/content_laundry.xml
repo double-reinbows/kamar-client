@@ -15,7 +15,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="wrap_content"
         android:id="@+id/laundry_recycleview"
         android:scrollbars="vertical"
         android:fadeScrollbars="false"
@@ -23,19 +23,45 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="right">
-        <Button
-            android:id="@+id/laundry_submit"
-            android:text="@string/submit"
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/redbutton"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"
-            android:gravity="center" />
+            android:orientation="vertical"
+            android:layout_gravity="left">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_ironing"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/on_hanger"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/folded"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="right">
+            <Button
+                android:id="@+id/laundry_submit"
+                android:text="@string/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/redbutton"
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:gravity="center" />
+        </LinearLayout>
+
     </LinearLayout>
+
 
 
 </LinearLayout>

@@ -2,11 +2,13 @@ package com.martabak.kamar.activity.laundry;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -55,6 +57,8 @@ public class LaundryActivity extends AppCompatActivity  {
         laundryOptions = new ArrayList<>();
         final LaundryRecyclerViewAdapter recyclerViewAdapter = new LaundryRecyclerViewAdapter(laundryOptions);
         recyclerView.setAdapter(recyclerViewAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         StaffServer.getInstance(this).getLaundryOptions().subscribe(new Observer<List<LaundryOption>>() {
             @Override public void onCompleted() {
@@ -102,15 +106,35 @@ public class LaundryActivity extends AppCompatActivity  {
                     .placeholder(R.drawable.loading_batik)
                     .error(R.drawable.error)
                     .into(holder.imageView);
+            Log.v(holder.item.getName(), LaundryActivity.this.toString());
+
             holder.nameView.setText(holder.item.getName());
 
             if (holder.item.laundryPrice != null) {
-                holder.laundryRadioButton.setText(holder.item.laundryPrice);
+                holder.laundryRadioButton.setText(holder.item.laundryPrice.toString());
+                holder.laundryRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            holder.itemPriceTotal.setText(holder.laundryRadioButton.getText());
+                        }
+                    }
+                });
+
             }
 
             if (holder.item.pressingPrice != null) {
-                holder.pressingRadioButton.setText(holder.item.pressingPrice);
+                holder.pressingRadioButton.setText(holder.item.pressingPrice.toString());
+                holder.pressingRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            holder.itemPriceTotal.setText(holder.pressingRadioButton.getText());
+                        }
+                    }
+                });
             }
+
         }
 
         @Override
@@ -125,6 +149,7 @@ public class LaundryActivity extends AppCompatActivity  {
             public final TextView nameView;
             public final RadioButton laundryRadioButton;
             public final RadioButton pressingRadioButton;
+            public final TextView itemPriceTotal;
 
             public ViewHolder(View view) {
                 super(view);
@@ -133,7 +158,11 @@ public class LaundryActivity extends AppCompatActivity  {
                 nameView = (TextView) view.findViewById(R.id.laundry_option_text);
                 laundryRadioButton = (RadioButton) view.findViewById(R.id.laundry_price_option);
                 pressingRadioButton = (RadioButton) view.findViewById(R.id.pressing_price_option);
+                itemPriceTotal = (TextView) view.findViewById(R.id.laundry_item_price_total);
             }
+
+
+
 
             @Override
             public String toString() {
