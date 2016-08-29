@@ -22,12 +22,14 @@ import com.martabak.kamar.activity.chat.GuestChatActivity;
 import com.martabak.kamar.activity.chat.GuestChatService;
 import com.martabak.kamar.activity.engineering.EngineeringActivity;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
+import com.martabak.kamar.activity.laundry.LaundryActivity;
 import com.martabak.kamar.activity.massage.MassageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.activity.survey.SurveyActivity;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.User;
+import com.martabak.kamar.domain.permintaan.LaundryOrder;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.activity.staff.CheckGuestInFragment;
@@ -369,6 +371,8 @@ public class GuestHomeActivity extends AppCompatActivity implements
                 break;
             case Permintaan.TYPE_CHAT:
                 startActivity(new Intent(this, GuestChatActivity.class));
+             case Permintaan.TYPE_LAUNDRY:
+                 startActivity(new Intent(this, LaundryActivity.class));
             default:
                 break;
         }

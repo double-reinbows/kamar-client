@@ -160,4 +160,8 @@
 
     <string name="guest_welcome_title">Welcome!</string>
 
+    <!-- Laundry special instructions -->
+    <string name="no_ironing">No Ironing</string>
+    <string name="on_hanger">On Hanger</string>
+    <string name="folded">Folded</string>
 </resources>

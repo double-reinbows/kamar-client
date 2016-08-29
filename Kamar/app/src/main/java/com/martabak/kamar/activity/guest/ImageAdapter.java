@@ -49,6 +49,7 @@ public class ImageAdapter extends BaseAdapter {
             "EVENT",
             Permintaan.TYPE_SURVEY,
             Permintaan.TYPE_CHECKOUT,
+            Permintaan.TYPE_LAUNDRY,
             Permintaan.TYPE_CHAT
     };
 

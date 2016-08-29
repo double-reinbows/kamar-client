@@ -2,7 +2,8 @@ package com.martabak.kamar.activity.guest;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -115,8 +116,8 @@ public class HousekeepingActivity extends AppCompatActivity implements
         //getIntent().putExtras(args);
         f.setArguments(args);
         Log.d("beforeView", findViewById(R.id.hk_fragment_container).toString());
-        getFragmentManager().beginTransaction().replace(R.id.hk_fragment_container, f).
-                addToBackStack(null).commit();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.hk_fragment_container, f);
+        ft.commit();
 
         Log.d("afterView", findViewById(R.id.hk_fragment_container).toString());
     }
@@ -145,13 +146,7 @@ public class HousekeepingActivity extends AppCompatActivity implements
             RecyclerView recyclerView2 = (RecyclerView) view.findViewById(R.id.housekeeping_list2);
             RecyclerView.LayoutManager parentManager = ((HousekeepingActivity)getActivity()).recyclerView.getLayoutManager();
 
-            String layoutManagerType = null;
-            if (parentManager != null) {
-                mLayoutManager = parentManager;
-            } else {
-                mLayoutManager = new LinearLayoutManager(getActivity());
-            }
-
+            mLayoutManager = new LinearLayoutManager(this.getContext());
 
             //Log.v("Layoutmanager", layoutManagerType.toString());
             recyclerView2.setLayoutManager(mLayoutManager);
@@ -166,7 +161,6 @@ public class HousekeepingActivity extends AppCompatActivity implements
             final HousekeepingOptionAdapter recyclerViewAdapter2 =
                     new HousekeepingOptionAdapter(hkOptionDict, section);
             recyclerView2.setAdapter(recyclerViewAdapter2);
-
             return view;
         }
 
