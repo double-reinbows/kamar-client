@@ -15,7 +15,7 @@ import com.martabak.kamar.domain.SurveyQuestion;
 import java.util.List;
 
 /**
- * Created by rei on 25/08/16.
+ *
  */
 public class SurveyRecyclerAdapter
         extends RecyclerView.Adapter<SurveyRecyclerAdapter.ViewHolder> {

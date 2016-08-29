@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
- * sequence.
+ * A pager adapter that creates a fragment for each survey section.
+ * Each fragment creates a recycler view.
  */
 class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
 
@@ -41,6 +41,7 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
 
         args.putString("currSection", sections.get(position));
         args.putSerializable("dict", secToQuestions);
+        //args.putLi
         ScreenSlidePageFragment f = new ScreenSlidePageFragment();
         f.setArguments(args);
         return f;
