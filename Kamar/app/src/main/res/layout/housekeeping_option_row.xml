@@ -15,5 +15,16 @@
         android:textColor="@color/black"
         android:maxLines="2"
         android:scrollHorizontally="false"/>
+    <ImageView
+        android:id="@+id/start_fragment"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/restaurant_plus"/>
+    <Spinner
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:id="@+id/hk_spinner"
+        android:layout_toLeftOf="@id/start_fragment"/>
 
 </RelativeLayout>

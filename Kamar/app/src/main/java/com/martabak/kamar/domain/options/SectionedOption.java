@@ -1,6 +1,10 @@
 package com.martabak.kamar.domain.options;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
+
+import java.util.Locale;
 
 /**
  * A Housekeeping {@link SectionedOption}.
@@ -54,6 +58,24 @@ public abstract class SectionedOption extends Option {
         this.sectionIn = sectionIn;
         this.sectionZh = sectionZh;
         this.sectionRu = sectionRu;
+    }
+
+    /**
+     * @return The description in the appropriate language.
+     */
+    public String getSection() {
+        if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage())) {
+            return this.sectionEn;
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("in").getLanguage())) {
+            return this.sectionIn;
+        } else if (Locale.getDefault().getLanguage().equals(Locale.CHINESE.getLanguage())) {
+            return this.sectionZh;
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("ru").getLanguage())) {
+            return this.sectionRu;
+        } else {
+            Log.e(MassageOption.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
+            return this.sectionEn;
+        }
     }
 
 }

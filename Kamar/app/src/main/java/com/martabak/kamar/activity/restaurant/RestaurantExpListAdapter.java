@@ -10,20 +10,14 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jakewharton.picasso.OkHttp3Downloader;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Consumable;
-import com.martabak.kamar.service.AuthorizationInterceptor;
 import com.martabak.kamar.service.Server;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-
-class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
+class RestaurantExpListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> subsections; //header text
@@ -35,11 +29,11 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, Integer> idToQuantity;
     private TextView subtotalText;
 
-    public RestaurantExpandableListAdapter(Context context, List<String> subsections,
-                                            HashMap<String, List<String>> subsectionToIds,
-                                            HashMap<String, Consumable> idToConsumable,
-                                            HashMap<String, Integer> idToQuantity,
-                                            TextView subtotalText) {
+    public RestaurantExpListAdapter(Context context, List<String> subsections,
+                                    HashMap<String, List<String>> subsectionToIds,
+                                    HashMap<String, Consumable> idToConsumable,
+                                    HashMap<String, Integer> idToQuantity,
+                                    TextView subtotalText) {
         this.context = context;
         this.subsections = subsections;
         this.subsectionToIds = subsectionToIds;
@@ -122,7 +116,7 @@ class RestaurantExpandableListAdapter extends BaseExpandableListAdapter {
 
         //Set up item image1
         ImageView itemImg = (ImageView) convertView.findViewById(R.id.item_img);
-        Log.d(RestaurantExpandableListAdapter.class.getCanonicalName(), "Loading image " + currConsumable.getImageUrl() + " into " + itemImg);
+        Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "Loading image " + currConsumable.getImageUrl() + " into " + itemImg);
         Server.picasso(context)
                 .load(currConsumable.getImageUrl())
                 .placeholder(R.drawable.loading_batik)

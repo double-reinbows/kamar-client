@@ -22,6 +22,7 @@ import com.martabak.kamar.activity.chat.GuestChatActivity;
 import com.martabak.kamar.activity.chat.GuestChatService;
 import com.martabak.kamar.activity.engineering.EngineeringActivity;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
+import com.martabak.kamar.activity.housekeeping.HousekeepingActivity;
 import com.martabak.kamar.activity.laundry.LaundryActivity;
 import com.martabak.kamar.activity.massage.MassageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;

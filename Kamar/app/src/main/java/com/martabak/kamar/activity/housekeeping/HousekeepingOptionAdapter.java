@@ -1,11 +1,14 @@
-package com.martabak.kamar.activity.guest;
+package com.martabak.kamar.activity.housekeeping;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
@@ -14,7 +17,6 @@ import com.martabak.kamar.domain.options.HousekeepingOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class HousekeepingOptionAdapter
         extends RecyclerView.Adapter<HousekeepingOptionAdapter.ViewHolder> {
@@ -22,25 +24,19 @@ public class HousekeepingOptionAdapter
     protected int selectedPos = -1;
 
     private final List<HousekeepingOption> housekeepingOptions;
-    private HashMap<HousekeepingOption, Integer> hkOptionDict;
-    private String section;
+    private HashMap<String, Integer> idToQuantity;
+    private Fragment fragment;
 
-    public HousekeepingOptionAdapter(HashMap<HousekeepingOption, Integer> items, String section) {
-        this.housekeepingOptions = new ArrayList<HousekeepingOption>(items.keySet());
-        Log.v("DICK", housekeepingOptions.get(0).getName());
-        Log.v("DICK", housekeepingOptions.get(1).getName());
-        this.hkOptionDict = items;
-        this.section = section;
-        Log.v("SECTION", section);
-
+    public HousekeepingOptionAdapter(List<HousekeepingOption> hkOptions, HashMap<String, Integer> items, Fragment fragment) {
+        this.housekeepingOptions = hkOptions;
+        this.idToQuantity = items;
+        this.fragment = fragment;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.housekeeping_option_row, parent, false);
-        //view.setOnClickListener(HousekeepingActivity.this);
-        Log.v("vagina", "vagina");
         return new ViewHolder(view);
     }
 
@@ -48,25 +44,47 @@ public class HousekeepingOptionAdapter
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.itemView.setSelected(selectedPos == position);
 
-        if (housekeepingOptions.get(position).sectionEn.equals(section)) {
-            holder.item = housekeepingOptions.get(position);
-            Log.v("added option", holder.item.getName());
-            holder.nameView.setText(holder.item.getName());
-        }
+
         holder.item = housekeepingOptions.get(position);
         holder.nameView.setText(housekeepingOptions.get(position).getName());
-        Log.v("current_option", housekeepingOptions.get(position).getName());
-        Log.v("current_item", holder.item.getName());
-        /*holder.item = hkOptionDict.keySet().;
-        for (HousekeepingOption hk : hkOptionDict.keySet()) {
-            Log.v("hk",hk.getName());
-            if (hk.sectionEn.equals(section)) {
-                holder.item = hk;
-                holder.nameView.setText(hk.getName());
-                Log.v("options", hk.getName());
-            }
+        //Log.v("current_option", housekeepingOptions.get(position).getName());
+        //Log.v("current_item", holder.item.getName());
+
+        //create list of options in the spinner
+        final List<String> spinnerText = new ArrayList<>();
+        for (Integer i=0; i<=holder.item.max; i++) {
+            spinnerText.add(i.toString());
         }
+        ArrayAdapter adapter = new ArrayAdapter(fragment.getContext(),
+                R.layout.support_simple_spinner_dropdown_item, spinnerText);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        holder.spinner.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        /*
+        holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //TODO: do shit
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 */
+
+        holder.submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //int itemPosition = holder.getAdapterPosition();
+                String id = holder.item._id;
+                int i = Integer.parseInt(spinnerText.get((int) holder.spinner.getSelectedItemId()));
+                idToQuantity.put(id, i);
+                Log.v("ZZZ", idToQuantity.get(holder.item._id).toString());
+            }
+        });
+
 
 
         //Log.d(HousekeepingOptionAdapter.class.getCanonicalName(), "onBindViewHolder " + holder.item.getName());
@@ -80,32 +98,27 @@ public class HousekeepingOptionAdapter
         }
         holder.descriptionView.setText(holder.item.getDescription());
         */
-        //holder.nameView.setText(hkOptionDict.get(position).getName());
+        //holder.nameView.setText(idToQuantity.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
         return housekeepingOptions.size();
-        //Log.v("Sizesz", String.valueOf(housekeepingOptions.size()));
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public HousekeepingOption item;
         public final View rootView;
-        public final ImageView imageView;
         public final TextView nameView;
-        public final TextView lengthView;
-        public final TextView priceView;
-        public final TextView descriptionView;
+        public final ImageView submitButton;
+        public final Spinner spinner;
 
         public ViewHolder(View view) {
             super(view);
             rootView = view;
-            imageView = (ImageView) view.findViewById(R.id.massage_image);
             nameView = (TextView) view.findViewById(R.id.hk_name);
-            lengthView = (TextView) view.findViewById(R.id.massage_length);
-            priceView = (TextView) view.findViewById(R.id.massage_price);
-            descriptionView = (TextView) view.findViewById(R.id.massage_description);
+            submitButton = (ImageView) view.findViewById(R.id.start_fragment);
+            spinner = (Spinner) view.findViewById(R.id.hk_spinner);
         }
 
         @Override

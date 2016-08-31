@@ -116,6 +116,7 @@
     <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>
     <string name="housekeeping_result">Housekeeping request sent</string>
+    <string name="confirm_housekeeping">Please confirm this order</string>
 
     <string name="bellboy_message">Are you sure you want a bellboy?</string>
     <string name="bellboy_edittext">Input bellboy details</string>
