@@ -290,6 +290,4 @@ public class RestaurantActivity extends AppCompatActivity {
             createExpandableList(consumables, view);
         }
     }
-
-
 }

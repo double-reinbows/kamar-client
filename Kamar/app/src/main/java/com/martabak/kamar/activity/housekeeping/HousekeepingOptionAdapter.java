@@ -1,6 +1,6 @@
 package com.martabak.kamar.activity.housekeeping;
 
-import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,12 +25,15 @@ public class HousekeepingOptionAdapter
 
     private final List<HousekeepingOption> housekeepingOptions;
     private HashMap<String, Integer> idToQuantity;
-    private Fragment fragment;
+    private Context context;
+    private View.OnClickListener submitButtonListener;
 
-    public HousekeepingOptionAdapter(List<HousekeepingOption> hkOptions, HashMap<String, Integer> items, Fragment fragment) {
+    public HousekeepingOptionAdapter(List<HousekeepingOption> hkOptions, HashMap<String, Integer> items,
+                                     Context context, View.OnClickListener submitButtonListener) {
         this.housekeepingOptions = hkOptions;
         this.idToQuantity = items;
-        this.fragment = fragment;
+        this.context = context;
+        this.submitButtonListener = submitButtonListener;
     }
 
     @Override
@@ -47,15 +50,13 @@ public class HousekeepingOptionAdapter
 
         holder.item = housekeepingOptions.get(position);
         holder.nameView.setText(housekeepingOptions.get(position).getName());
-        //Log.v("current_option", housekeepingOptions.get(position).getName());
-        //Log.v("current_item", holder.item.getName());
 
         //create list of options in the spinner
         final List<String> spinnerText = new ArrayList<>();
         for (Integer i=0; i<=holder.item.max; i++) {
             spinnerText.add(i.toString());
         }
-        ArrayAdapter adapter = new ArrayAdapter(fragment.getContext(),
+        ArrayAdapter adapter = new ArrayAdapter(context,
                 R.layout.support_simple_spinner_dropdown_item, spinnerText);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         holder.spinner.setAdapter(adapter);
@@ -74,31 +75,8 @@ public class HousekeepingOptionAdapter
         });
 */
 
-        holder.submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //int itemPosition = holder.getAdapterPosition();
-                String id = holder.item._id;
-                int i = Integer.parseInt(spinnerText.get((int) holder.spinner.getSelectedItemId()));
-                idToQuantity.put(id, i);
-                Log.v("ZZZ", idToQuantity.get(holder.item._id).toString());
-            }
-        });
-
-
-
-        //Log.d(HousekeepingOptionAdapter.class.getCanonicalName(), "onBindViewHolder " + holder.item.getName());
-        /* TODO image view
-        holder.nameView.setText(holder.item.getName());
-        if (holder.item.length != null) {
-            holder.lengthView.setText(holder.item.length.toHousekeepingOption() + " mins");
-        }
-        if (holder.item.price != null) {
-            holder.priceView.setText("Rp. " + holder.item.price.toHousekeepingOption());
-        }
-        holder.descriptionView.setText(holder.item.getDescription());
-        */
-        //holder.nameView.setText(idToQuantity.get(position).getName());
+        holder.submitButton.setOnClickListener(submitButtonListener);
+        Log.v("BBB", holder.toString());
     }
 
     @Override
@@ -107,6 +85,7 @@ public class HousekeepingOptionAdapter
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         public HousekeepingOption item;
         public final View rootView;
         public final TextView nameView;
@@ -126,4 +105,7 @@ public class HousekeepingOptionAdapter
             return super.toString() + " " + nameView.getText();
         }
     }
+
+    public Spinner getSpinner(ViewHolder holder ) {
+        return holder.spinner; }
 }

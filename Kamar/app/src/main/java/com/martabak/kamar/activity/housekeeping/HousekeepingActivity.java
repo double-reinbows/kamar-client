@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,7 @@ import java.util.List;
 import rx.Observer;
 
 /**
- * This activity generates the list of massage options and allows the guest to request one.
+ * This activity generates the list of housekeeping sections.
  */
 public class HousekeepingActivity extends AppCompatActivity implements
     View.OnClickListener {
@@ -139,6 +140,9 @@ public class HousekeepingActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * This fragment generates the list of housekeeping options.
+     */
     public static class HousekeepingFragment extends Fragment implements
     View.OnClickListener {
 
@@ -151,7 +155,7 @@ public class HousekeepingActivity extends AppCompatActivity implements
                                  Bundle savedInstanceState) {
 
             View view = inflater.inflate(R.layout.fragment_housekeeping, container, false);
-            optionRecyclerView = (RecyclerView) view.findViewById(R.id.housekeeping_list2);
+            optionRecyclerView = (RecyclerView) view.findViewById(R.id.hk_option_recycler);
             List<HousekeepingOption> hkOptions = HousekeepingManager.getInstance().getOptions();
             ArrayList<HousekeepingOption> temp = new ArrayList<>();
             HashMap<String, Integer> idToQuantity = HousekeepingManager.getInstance().getOrder();
@@ -172,14 +176,15 @@ public class HousekeepingActivity extends AppCompatActivity implements
                 }
             }
             final HousekeepingOptionAdapter hkOptionRecyclerAdapter =
-                    new HousekeepingOptionAdapter(temp, idToQuantity, this);
+                    new HousekeepingOptionAdapter(temp, idToQuantity, this.getContext(), this);
             optionRecyclerView.setAdapter(hkOptionRecyclerAdapter);
             return view;
         }
 
         public void onClick(final View view) {
-            int itemPosition = optionRecyclerView.getChildLayoutPosition(view);
-            final HousekeepingOption option = HousekeepingManager.getInstance().getOptions().get(itemPosition);
+            final HousekeepingOptionAdapter.ViewHolder holder =
+                    (HousekeepingOptionAdapter.ViewHolder)optionRecyclerView.getChildViewHolder((View)view.getParent());
+            final HousekeepingOption option = holder.item;
 
             new AlertDialog.Builder(getContext())
                     .setTitle(option.getName())
@@ -195,10 +200,12 @@ public class HousekeepingActivity extends AppCompatActivity implements
                                     .getString("guestId", "none");
                             String state = Permintaan.STATE_NEW;
                             Date currentDate = Calendar.getInstance().getTime();
-                            Integer amount = HousekeepingManager.getInstance().getOrder().get(option._id);
+                            final Integer quantity = Integer.parseInt(holder.spinner.getSelectedItem().toString());
+
+                            //Create the Housekeeping permintaan
                             PermintaanServer.getInstance(getActivity()).createPermintaan(
                                     new Permintaan(owner, type, roomNumber, guestId, state, currentDate, null, null,
-                                            new Housekeeping("", amount, option))
+                                            new Housekeeping("", quantity, option))
                             ).subscribe(new Observer<Permintaan>() {
                                 boolean success;
                                 @Override
@@ -210,8 +217,11 @@ public class HousekeepingActivity extends AppCompatActivity implements
                                                 R.string.massage_result,
                                                 Toast.LENGTH_SHORT
                                         ).show();
-                                        String status = Permintaan.STATE_NEW;
-                                        //sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+
+                                        //get, modify, then set the order dictionary in the Manager
+                                        HashMap idToQuantity = HousekeepingManager.getInstance().getOrder();
+                                        idToQuantity.put(option._id, quantity);
+                                        HousekeepingManager.getInstance().setOrder(idToQuantity);
                                     } else {
                                         Toast.makeText(
                                                 getActivity().getApplicationContext(),

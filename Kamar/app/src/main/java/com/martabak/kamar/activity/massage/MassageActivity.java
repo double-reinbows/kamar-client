@@ -126,6 +126,7 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
                 ).show();
                 return;
         }
+        Log.d(MassageActivity.class.getCanonicalName(), "Selected recycler row: " + view.toString());
         int itemPosition = recyclerView.getChildLayoutPosition(view);
         final MassageOption item = massageOptions.get(itemPosition);
         new AlertDialog.Builder(this)
