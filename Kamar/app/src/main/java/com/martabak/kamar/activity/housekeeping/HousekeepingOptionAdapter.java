@@ -60,6 +60,7 @@ public class HousekeepingOptionAdapter
                 R.layout.support_simple_spinner_dropdown_item, spinnerText);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         holder.spinner.setAdapter(adapter);
+
         adapter.notifyDataSetChanged();
         /*
         holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
@@ -264,12 +265,16 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     contentString += "\nDeparting in: "+transportOrder.departingIn+
                                     "\nDestination: "+transportOrder.destination+
                                     "\nNumber of passengers: "+transportOrder.passengers;
+                } else if (currPermintaan.content.getType().equals((Permintaan.TYPE_HOUSEKEEPING))) {
+                    Housekeeping hkOrder = (Housekeeping) currPermintaan.content;
+                    contentString += "\nOrder: "+hkOrder.option.nameEn+
+                                    "\nQuantity: "+hkOrder.quantity;
                 }
 
                 builder
                         .setTitle(currPermintaan.type + " ORDER DETAILS")
                         .setMessage("Room No. "+currPermintaan.roomNumber+"\n"+
-                                "Guest's name: "+currPermintaan.guestId+"\n"+
+                                "Guest's id: "+currPermintaan.guestId+"\n"+
                                 "State: "+currPermintaan.state+"\n"+
                                 "Message: "+currPermintaan.content.message+"\n"+
                                 "Order lodged at: "+simpleCreated+"\n"+

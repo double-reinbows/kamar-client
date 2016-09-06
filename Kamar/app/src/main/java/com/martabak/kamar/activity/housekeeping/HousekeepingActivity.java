@@ -71,28 +71,25 @@ public class HousekeepingActivity extends AppCompatActivity implements
         sectionRecyclerView.setLayoutManager(mLayoutManager);
 
         housekeepingSections = HousekeepingManager.getInstance().getSections();
-        if (housekeepingSections == null) {
-            housekeepingSections = new ArrayList<>();
-        }
         final HousekeepingSectionAdapter sectionRecyclerAdapter = new HousekeepingSectionAdapter(this, housekeepingSections);
         sectionRecyclerView.setAdapter(sectionRecyclerAdapter);
 
-        hkOptions = HousekeepingManager.getInstance().getOptions();
-        if (hkOptions == null) {
+        if (housekeepingSections == null) {
+            housekeepingSections = new ArrayList<>();
             StaffServer.getInstance(this).getHousekeepingOptions().subscribe(new Observer<List<HousekeepingOption>>() {
                 @Override
                 public void onCompleted() {
                     Log.d(HousekeepingActivity.class.getCanonicalName(), "onCompleted");
                     idToQuantity = HousekeepingManager.getInstance().getOrder();
-                    //order dict has not been initialized
+                    //order dict has not been initialized which should always be the case
                     if (idToQuantity == null) {
                         idToQuantity = new HashMap<>();
                         setupSectionsOrder();
                         HousekeepingManager.getInstance().setOrder(idToQuantity);
                         HousekeepingManager.getInstance().setSections(housekeepingSections);
+                        HousekeepingManager.getInstance().setHkOptions(hkOptions);
+                        sectionRecyclerAdapter.notifyDataSetChanged();
                     }
-                    HousekeepingManager.getInstance().setHkOptions(hkOptions);
-                    sectionRecyclerAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -108,8 +105,10 @@ public class HousekeepingActivity extends AppCompatActivity implements
                 }
             });
         } else {
+            hkOptions = HousekeepingManager.getInstance().getOptions();
             idToQuantity = HousekeepingManager.getInstance().getOrder();
         }
+
     }
 
     /**
@@ -194,7 +193,7 @@ public class HousekeepingActivity extends AppCompatActivity implements
                         public void onClick(DialogInterface dialog, int whichButton) {
                             String owner = Permintaan.OWNER_FRONTDESK;
                             String type = Permintaan.TYPE_HOUSEKEEPING;
-                            String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                            String roomNumber = getActivity().getSharedPreferences("userSetting s", getActivity().MODE_PRIVATE)
                                     .getString("roomNumber", "none");
                             String guestId = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                                     .getString("guestId", "none");
