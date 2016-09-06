@@ -1,10 +1,9 @@
 package com.martabak.kamar.domain.permintaan;
 
-import com.martabak.kamar.domain.options.HousekeepingOption;
-
 /**
  * Housekeeping content type of a {@link Permintaan}.
  */
+<<<<<<< HEAD
 public class Housekeeping extends Content {
 
     /**
@@ -29,4 +28,12 @@ public class Housekeeping extends Content {
     }
 
     public String getType() { return Permintaan.TYPE_HOUSEKEEPING; }
+=======
+public class Housekeeping extends OptionedContent {
+
+    public String getType() {
+        return Permintaan.TYPE_HOUSEKEEPING;
+    }
+
+>>>>>>> develop
 }
