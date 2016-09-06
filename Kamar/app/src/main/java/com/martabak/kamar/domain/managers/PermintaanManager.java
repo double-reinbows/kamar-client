@@ -3,8 +3,10 @@ package com.martabak.kamar.domain.managers;
 import android.content.Context;
 import android.util.Log;
 
+import com.martabak.kamar.domain.Model;
 import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.permintaan.Engineering;
+import com.martabak.kamar.domain.permintaan.OptionedContent;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 
@@ -100,7 +102,7 @@ public class PermintaanManager {
                     @Override public Map<String, Permintaan> call(List<Permintaan> ps) {
                         Map<String, Permintaan> latestPs = new HashMap<>();
                         for (Permintaan p : ps) {
-                            EngineeringOption o = ((Engineering)p.content).option;
+                            Model o = ((OptionedContent)p.content).option;
                             if (!latestPs.containsKey(o._id)) {
                                 latestPs.put(o._id, p);
                             } else {
