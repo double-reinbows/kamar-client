@@ -139,6 +139,13 @@ public class PermintaanManager {
     }
 
     /**
+     * @return The state of all possible housekeeping option permintaans.
+     */
+    public Observable<Map<String, String>> getHousekeepingStatuses(Context c) {
+        return getStatusesByTypeOf(c, Permintaan.TYPE_ENGINEERING);
+    }
+
+    /**
      * @return The state of all possible engineering option permintaans.
      */
     public Observable<Map<String, String>> getEngineeringStatuses(Context c) {
