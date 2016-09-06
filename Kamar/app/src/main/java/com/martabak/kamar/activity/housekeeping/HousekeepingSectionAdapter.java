@@ -62,6 +62,9 @@ public class HousekeepingSectionAdapter
 
     @Override
     public int getItemCount() {
+        if (housekeepingSections == null) {
+            return 0;
+        }
         return housekeepingSections.size();
     }
 

@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.housekeeping;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.HousekeepingOption;
 import com.martabak.kamar.domain.managers.HousekeepingManager;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
@@ -30,6 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observer;
 
@@ -43,7 +46,8 @@ public class HousekeepingActivity extends AppCompatActivity implements
     private List<String> housekeepingSections;
     private List<HousekeepingOption> hkOptions;
     private HashMap<String, Integer> idToQuantity;
-    public RecyclerView.LayoutManager mLayoutManager;
+//    public RecyclerView.LayoutManager mLayoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +71,16 @@ public class HousekeepingActivity extends AppCompatActivity implements
         // END GENERIC LAYOUT STUFF
 
         sectionRecyclerView = (RecyclerView)findViewById(R.id.housekeeping_list);
-        mLayoutManager = new LinearLayoutManager(this);
-        sectionRecyclerView.setLayoutManager(mLayoutManager);
+//        mLayoutManager = new LinearLayoutManager(this);
+//        sectionRecyclerView.setLayoutManager(mLayoutManager);
 
         housekeepingSections = HousekeepingManager.getInstance().getSections();
-        final HousekeepingSectionAdapter sectionRecyclerAdapter = new HousekeepingSectionAdapter(this, housekeepingSections);
-        sectionRecyclerView.setAdapter(sectionRecyclerAdapter);
+
 
         if (housekeepingSections == null) {
             housekeepingSections = new ArrayList<>();
+            final HousekeepingSectionAdapter sectionRecyclerAdapter = new HousekeepingSectionAdapter(this, housekeepingSections);
+            sectionRecyclerView.setAdapter(sectionRecyclerAdapter);
             StaffServer.getInstance(this).getHousekeepingOptions().subscribe(new Observer<List<HousekeepingOption>>() {
                 @Override
                 public void onCompleted() {
@@ -89,6 +94,7 @@ public class HousekeepingActivity extends AppCompatActivity implements
                         HousekeepingManager.getInstance().setSections(housekeepingSections);
                         HousekeepingManager.getInstance().setHkOptions(hkOptions);
                         sectionRecyclerAdapter.notifyDataSetChanged();
+
                     }
                 }
 
@@ -107,6 +113,8 @@ public class HousekeepingActivity extends AppCompatActivity implements
         } else {
             hkOptions = HousekeepingManager.getInstance().getOptions();
             idToQuantity = HousekeepingManager.getInstance().getOrder();
+            final HousekeepingSectionAdapter sectionRecyclerAdapter = new HousekeepingSectionAdapter(this, housekeepingSections);
+            sectionRecyclerView.setAdapter(sectionRecyclerAdapter);
         }
 
     }
@@ -145,8 +153,9 @@ public class HousekeepingActivity extends AppCompatActivity implements
     public static class HousekeepingFragment extends Fragment implements
     View.OnClickListener {
 
-        protected RecyclerView.LayoutManager mLayoutManager;
+//        protected RecyclerView.LayoutManager mLayoutManager;
         private RecyclerView optionRecyclerView;
+        private Map<String, String> idToStatus;
 
         public HousekeepingFragment() {}
 
@@ -158,10 +167,26 @@ public class HousekeepingActivity extends AppCompatActivity implements
             List<HousekeepingOption> hkOptions = HousekeepingManager.getInstance().getOptions();
             ArrayList<HousekeepingOption> temp = new ArrayList<>();
             HashMap<String, Integer> idToQuantity = HousekeepingManager.getInstance().getOrder();
+            // Get the statuses,
+            PermintaanManager.getInstance().getHousekeepingStatuses(getContext()).subscribe(new Observer<Map<String, String>>() {
+                @Override public void onCompleted() {
+                    Log.d(HousekeepingActivity.class.getCanonicalName(), "getHousekeepingStatuses#onCompleted");
+//                    recyclerViewAdapter.notifyDataSetChanged();
+                    Log.v("AAA", idToStatus.toString());
+                }
+                @Override public void onError(Throwable e) {
+                    Log.d(HousekeepingActivity.class.getCanonicalName(), "getHousekeepingStatuses#onError", e);
+                    e.printStackTrace();
+                }
+                @Override public void onNext(final Map<String, String> statuses) {
+                    Log.d(HousekeepingActivity.class.getCanonicalName(), "Fetching statuses of size " + statuses.size());
+                    idToStatus = new HashMap<>();
+                    idToStatus = statuses;
+                }
+            });
+//            mLayoutManager = new LinearLayoutManager(this.getContext());
 
-            mLayoutManager = new LinearLayoutManager(this.getContext());
-
-            optionRecyclerView.setLayoutManager(mLayoutManager);
+//            optionRecyclerView.setLayoutManager(mLayoutManager);
             //Retrieve target section from bundle
             String section = null;
             Bundle args = getArguments();
