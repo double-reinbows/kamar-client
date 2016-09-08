@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.housekeeping;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,10 +14,13 @@ import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.options.HousekeepingOption;
+import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.Server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HousekeepingOptionAdapter
         extends RecyclerView.Adapter<HousekeepingOptionAdapter.ViewHolder> {
@@ -26,14 +30,17 @@ public class HousekeepingOptionAdapter
     private final List<HousekeepingOption> housekeepingOptions;
     private HashMap<String, Integer> idToQuantity;
     private Context context;
+    private Map<String, String> statuses;
     private View.OnClickListener submitButtonListener;
 
     public HousekeepingOptionAdapter(List<HousekeepingOption> hkOptions, HashMap<String, Integer> items,
-                                     Context context, View.OnClickListener submitButtonListener) {
+                                     Context context, View.OnClickListener submitButtonListener,
+                                     Map<String, String> statuses) {
         this.housekeepingOptions = hkOptions;
         this.idToQuantity = items;
         this.context = context;
         this.submitButtonListener = submitButtonListener;
+        this.statuses = statuses;
     }
 
     @Override
@@ -46,10 +53,14 @@ public class HousekeepingOptionAdapter
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.itemView.setSelected(selectedPos == position);
-
-
         holder.item = housekeepingOptions.get(position);
         holder.nameView.setText(housekeepingOptions.get(position).getName());
+        Log.v("AAA", holder.item.getImageUrl());
+        Server.picasso(context)
+            .load(holder.item.getImageUrl())
+            .placeholder(R.drawable.loading_batik)
+            .error(R.drawable.error)
+            .into(holder.imgView);
 
         //create list of options in the spinner
         final List<String> spinnerText = new ArrayList<>();
@@ -60,24 +71,21 @@ public class HousekeepingOptionAdapter
                 R.layout.support_simple_spinner_dropdown_item, spinnerText);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         holder.spinner.setAdapter(adapter);
-
         adapter.notifyDataSetChanged();
-        /*
-        holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //TODO: do shit
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+        String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_COMPLETED;
+        Log.d(HousekeepingActivity.class.getCanonicalName(), "Status for engineering " + holder.item.getName() + " is " + state);
+        switch (state) {
+            case Permintaan.STATE_INPROGRESS:
+                holder.processedImageView.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+            case Permintaan.STATE_NEW:
+                holder.sentImageView.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+                holder.submitButton.setColorFilter(Color.argb(150,200,200,200));
+                break;
+            case Permintaan.STATE_COMPLETED:
+                holder.submitButton.setOnClickListener(submitButtonListener);
+        }
 
-            }
-        });
-*/
-
-        holder.submitButton.setOnClickListener(submitButtonListener);
-        Log.v("BBB", holder.toString());
     }
 
     @Override
@@ -92,13 +100,19 @@ public class HousekeepingOptionAdapter
         public final TextView nameView;
         public final ImageView submitButton;
         public final Spinner spinner;
+        public final View sentImageView;
+        public final View processedImageView;
+        public final ImageView imgView;
 
         public ViewHolder(View view) {
             super(view);
             rootView = view;
             nameView = (TextView) view.findViewById(R.id.hk_name);
-            submitButton = (ImageView) view.findViewById(R.id.start_fragment);
+            submitButton = (ImageView) view.findViewById(R.id.hk_submit);
             spinner = (Spinner) view.findViewById(R.id.hk_spinner);
+            sentImageView = view.findViewById(R.id.sent_image);
+            processedImageView = view.findViewById(R.id.processed_image);
+            imgView = (ImageView) view.findViewById(R.id.hk_img);
         }
 
         @Override
@@ -106,7 +120,4 @@ public class HousekeepingOptionAdapter
             return super.toString() + " " + nameView.getText();
         }
     }
-
-    public Spinner getSpinner(ViewHolder holder ) {
-        return holder.spinner; }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
@@ -16,15 +16,29 @@
         android:maxLines="2"
         android:scrollHorizontally="false"/>
     <ImageView
-        android:id="@+id/start_fragment"
+        android:id="@+id/hk_submit"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/hk_spinner"
         android:src="@drawable/restaurant_plus"/>
     <Spinner
-        android:layout_width="300dp"
+        android:layout_width="100dp"
         android:layout_height="50dp"
         android:id="@+id/hk_spinner"
-        android:layout_toLeftOf="@id/start_fragment"/>
+        android:layout_toRightOf="@id/hk_name"/>
+    <ImageView
+        android:id="@+id/hk_img"
+        android:layout_width="450dp"
+        android:layout_height="125dp"
+        android:layout_toLeftOf="@+id/hk_status"/>
+    <LinearLayout
+        android:id="@+id/hk_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true">
+            <include layout="@layout/permintaan_status"/>
+    </LinearLayout>
+
+
 
 </RelativeLayout>

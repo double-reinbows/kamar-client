@@ -5,14 +5,21 @@ import com.martabak.kamar.domain.options.EngineeringOption;
 /**
  * Engineering content type of a {@link Permintaan}.
  */
-public class Engineering extends OptionedContent {
+public class Engineering extends Content {
+
+    /**
+     * The engineering option.
+     */
+    public final EngineeringOption option;
 
     public Engineering() {
         super();
+        this.option = null;
     }
 
     public Engineering(String message, EngineeringOption option) {
-        super(message, option);
+        super(message);
+        this.option = option;
     }
 
     public String getType() {

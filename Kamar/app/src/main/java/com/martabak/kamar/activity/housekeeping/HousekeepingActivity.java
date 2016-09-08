@@ -156,6 +156,7 @@ public class HousekeepingActivity extends AppCompatActivity implements
 //        protected RecyclerView.LayoutManager mLayoutManager;
         private RecyclerView optionRecyclerView;
         private Map<String, String> idToStatus;
+        private HousekeepingOptionAdapter hkOptionRecyclerAdapter;
 
         public HousekeepingFragment() {}
 
@@ -164,15 +165,17 @@ public class HousekeepingActivity extends AppCompatActivity implements
 
             View view = inflater.inflate(R.layout.fragment_housekeeping, container, false);
             optionRecyclerView = (RecyclerView) view.findViewById(R.id.hk_option_recycler);
-            List<HousekeepingOption> hkOptions = HousekeepingManager.getInstance().getOptions();
-            ArrayList<HousekeepingOption> temp = new ArrayList<>();
-            HashMap<String, Integer> idToQuantity = HousekeepingManager.getInstance().getOrder();
+            final ArrayList<HousekeepingOption> temp = buildOptions();
+            final HashMap<String, Integer> idToQuantity = HousekeepingManager.getInstance().getOrder();
+            idToStatus = new HashMap<>();
+
             // Get the statuses,
             PermintaanManager.getInstance().getHousekeepingStatuses(getContext()).subscribe(new Observer<Map<String, String>>() {
                 @Override public void onCompleted() {
                     Log.d(HousekeepingActivity.class.getCanonicalName(), "getHousekeepingStatuses#onCompleted");
-//                    recyclerViewAdapter.notifyDataSetChanged();
-                    Log.v("AAA", idToStatus.toString());
+                    hkOptionRecyclerAdapter = new HousekeepingOptionAdapter(temp, idToQuantity,
+                            HousekeepingFragment.this.getContext(), HousekeepingFragment.this, idToStatus);
+                    optionRecyclerView.setAdapter(hkOptionRecyclerAdapter);
                 }
                 @Override public void onError(Throwable e) {
                     Log.d(HousekeepingActivity.class.getCanonicalName(), "getHousekeepingStatuses#onError", e);
@@ -180,28 +183,11 @@ public class HousekeepingActivity extends AppCompatActivity implements
                 }
                 @Override public void onNext(final Map<String, String> statuses) {
                     Log.d(HousekeepingActivity.class.getCanonicalName(), "Fetching statuses of size " + statuses.size());
-                    idToStatus = new HashMap<>();
                     idToStatus = statuses;
                 }
             });
-//            mLayoutManager = new LinearLayoutManager(this.getContext());
 
-//            optionRecyclerView.setLayoutManager(mLayoutManager);
-            //Retrieve target section from bundle
-            String section = null;
-            Bundle args = getArguments();
-            if (args != null) {
-                section = args.getString("section");
-            }
-            //create new list of options in the correct section
-            for (HousekeepingOption hk : hkOptions) {
-                if (hk.getSection().equals(section)) {
-                    temp.add(hk);
-                }
-            }
-            final HousekeepingOptionAdapter hkOptionRecyclerAdapter =
-                    new HousekeepingOptionAdapter(temp, idToQuantity, this.getContext(), this);
-            optionRecyclerView.setAdapter(hkOptionRecyclerAdapter);
+
             return view;
         }
 
@@ -210,68 +196,101 @@ public class HousekeepingActivity extends AppCompatActivity implements
                     (HousekeepingOptionAdapter.ViewHolder)optionRecyclerView.getChildViewHolder((View)view.getParent());
             final HousekeepingOption option = holder.item;
 
-            new AlertDialog.Builder(getContext())
-                    .setTitle(option.getName())
-                    .setMessage(R.string.confirm_housekeeping)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            String owner = Permintaan.OWNER_FRONTDESK;
-                            String type = Permintaan.TYPE_HOUSEKEEPING;
-                            String roomNumber = getActivity().getSharedPreferences("userSetting s", getActivity().MODE_PRIVATE)
-                                    .getString("roomNumber", "none");
-                            String guestId = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                                    .getString("guestId", "none");
-                            String state = Permintaan.STATE_NEW;
-                            Date currentDate = Calendar.getInstance().getTime();
-                            final Integer quantity = Integer.parseInt(holder.spinner.getSelectedItem().toString());
+            if (holder.spinner.getSelectedItem().toString().equals("0")) {
+                 new AlertDialog.Builder(getContext())
+                         .setTitle(option.getName())
+                         .setMessage(R.string.housekeeping_zero_order)
+                 .show();
+            //Guest chose quantity > 0
+            } else {
+                new AlertDialog.Builder(getContext())
+                        .setTitle(option.getName())
+                        .setMessage(R.string.housekeeping_confirm)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                String owner = Permintaan.OWNER_FRONTDESK;
+                                String type = Permintaan.TYPE_HOUSEKEEPING;
+                                String roomNumber = getActivity().getSharedPreferences("userSetting s", getActivity().MODE_PRIVATE)
+                                        .getString("roomNumber", "none");
+                                String guestId = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                                        .getString("guestId", "none");
+                                String state = Permintaan.STATE_NEW;
+                                Date currentDate = Calendar.getInstance().getTime();
+                                final Integer quantity = Integer.parseInt(holder.spinner.getSelectedItem().toString());
 
-                            //Create the Housekeeping permintaan
-                            PermintaanServer.getInstance(getActivity()).createPermintaan(
-                                    new Permintaan(owner, type, roomNumber, guestId, state, currentDate, null, null,
-                                            new Housekeeping("", quantity, option))
-                            ).subscribe(new Observer<Permintaan>() {
-                                boolean success;
-                                @Override
-                                public void onCompleted() {
-                                    Log.d(HousekeepingActivity.class.getCanonicalName(), "On completed");
-                                    if (success) {
-                                        Toast.makeText(
-                                                getActivity().getApplicationContext(),
-                                                R.string.massage_result,
-                                                Toast.LENGTH_SHORT
-                                        ).show();
+                                //Create the Housekeeping permintaan
+                                PermintaanServer.getInstance(getActivity()).createPermintaan(
+                                        new Permintaan(owner, type, roomNumber, guestId, state, currentDate, null, null,
+                                                new Housekeeping("", quantity, option))
+                                ).subscribe(new Observer<Permintaan>() {
+                                    boolean success;
 
-                                        //get, modify, then set the order dictionary in the Manager
-                                        HashMap idToQuantity = HousekeepingManager.getInstance().getOrder();
-                                        idToQuantity.put(option._id, quantity);
-                                        HousekeepingManager.getInstance().setOrder(idToQuantity);
-                                    } else {
-                                        Toast.makeText(
-                                                getActivity().getApplicationContext(),
-                                                R.string.something_went_wrong,
-                                                Toast.LENGTH_SHORT
-                                        ).show();
+                                    @Override
+                                    public void onCompleted() {
+                                        Log.d(HousekeepingActivity.class.getCanonicalName(), "On completed");
+                                        if (success) {
+                                            Toast.makeText(
+                                                    getActivity().getApplicationContext(),
+                                                    R.string.massage_result,
+                                                    Toast.LENGTH_SHORT
+                                            ).show();
+
+                                            //get, modify, then set the order dictionary in the Manager
+                                            HashMap idToQuantity = HousekeepingManager.getInstance().getOrder();
+                                            idToQuantity.put(option._id, quantity);
+                                            HousekeepingManager.getInstance().setOrder(idToQuantity);
+                                            idToStatus.put(option._id, Permintaan.STATE_NEW);
+                                            hkOptionRecyclerAdapter.notifyDataSetChanged();
+                                        } else {
+                                            Toast.makeText(
+                                                    getActivity().getApplicationContext(),
+                                                    R.string.something_went_wrong,
+                                                    Toast.LENGTH_SHORT
+                                            ).show();
+                                        }
                                     }
-                                }
-                                @Override
-                                public void onError(Throwable e) {
-                                    Log.d(HousekeepingActivity.class.getCanonicalName(), "On error");
-                                    e.printStackTrace();
-                                    success = false;
-                                }
-                                @Override
-                                public void onNext(Permintaan permintaan) {
-                                    Log.d(HousekeepingActivity.class.getCanonicalName(), "On next");
-                                    if (permintaan != null) {
-                                        success = true;
-                                    } else {
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.d(HousekeepingActivity.class.getCanonicalName(), "On error");
+                                        e.printStackTrace();
                                         success = false;
                                     }
-                                }
-                            });
-                        }})
-                    .setNegativeButton(android.R.string.no, null).show();
+
+                                    @Override
+                                    public void onNext(Permintaan permintaan) {
+                                        Log.d(HousekeepingActivity.class.getCanonicalName(), "On next");
+                                        if (permintaan != null) {
+                                            success = true;
+                                        } else {
+                                            success = false;
+                                        }
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                .show();
+            }
+        }
+        //returns a list of options in the chosen section
+        public ArrayList<HousekeepingOption> buildOptions() {
+            Bundle args = getArguments();
+            String section = null;
+            if (args != null) {
+                section = args.getString("section");
+            }
+            List<HousekeepingOption> hkOptions = HousekeepingManager.getInstance().getOptions();
+            ArrayList<HousekeepingOption> temp = new ArrayList<>();
+            for (HousekeepingOption hk : hkOptions) {
+                if (hk.getSection().equals(section)) {
+                    temp.add(hk);
+                }
+            }
+            return temp;
         }
     }
+
+
 }

@@ -124,9 +124,9 @@
     <string name="survey_label">Survey</string>
     <string name="survey_submit_button">Submit</string>
 
-    <string name="massage_label">Massage</string>
-    <string name="massage_message">Are you sure you want to book this massage?</string>
-    <string name="massage_result">Massage request sent</string>
+    <string name="massage_label">Pijat</string>
+    <string name="massage_message">Apakah Anda yakin ingin memesan pijat ini?</string>
+    <string name="massage_result">Pesanan pijat dikirimkan</string>
 
     <string name="restaurant_label">Menu</string>
     <string name="restaurant_success"> Successfully placed your order!</string>
@@ -157,4 +157,20 @@
     <string name="no_ironing">No Ironing</string>
     <string name="on_hanger">On Hanger</string>
     <string name="folded">Folded</string>
+    <string name="housekeeping_confirm">Pastikan pesan ini</string>
+    <string name="housekeeping_label">Pembenehan</string>
+    <string name="housekeeping_zero_order">Silakan pilih jumlah valid</string>
+    <string name="logout">Logout</string>
+    <string name="nav_drawer_about">TENTANG KAMI</string>
+    <string name="nav_drawer_change_language">GANTI BAHASA</string>
+    <string name="nav_drawer_home">HOME</string>
+    <string name="permintaan_assign_person">Masukkan nama staf seseorang</string>
+    <string name="permintaan_title">Requests</string>
+    <string name="restaurant_back_button">Back</string>
+    <string name="restaurant_confirm_input">Comments...</string>
+    <string name="restaurant_confirmation_dialog_desc">For updates on your order\'s current progress,\n please click the My Requests button \n         located in our Home Page.</string>
+    <string name="restaurant_confirmation_dialog_title">Terima kasih atas pesanan Anda</string>
+    <string name="restaurant_submit_button">Confirm Order</string>
+    <string name="welcome_message">Welcome Message</string>
+    <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
 </resources>
