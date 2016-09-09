@@ -40,19 +40,10 @@
             android:src="@drawable/ic_next" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/survey_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_down_arrow" />
-
-        <android.support.design.widget.FloatingActionButton
             android:id="@+id/survey_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_next" />
+            android:layout_margin="@dimen/fab_margin" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

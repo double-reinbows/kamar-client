@@ -493,8 +493,8 @@ public class YiannisTestActivity extends AppCompatActivity {
         final List<SurveyAnswer> surveyAnswers = new ArrayList<SurveyAnswer>();
         final List<SurveyQuestion> surveyQuestions = new ArrayList<>();
 
-        surveyAnswers.add(new SurveyAnswer("46abbef316832bf8648f4473a207efca", "what ya think?", 3, null));
-        surveyAnswers.add(new SurveyAnswer("46abbef316832bf8648f4473a207f26b", "suck mah dick?", 2, "pool is crap"));
+        surveyAnswers.add(new SurveyAnswer("46abbef316832bf8648f4473a207efca", "About our rooms...","what ya think?", 3));
+        surveyAnswers.add(new SurveyAnswer("46abbef316832bf8648f4473a207f26b", "About our cafe...", "suck mah dick?", 2));
 
         final SurveyAnswers surveyAnswer = new SurveyAnswers("GUEST_ID", surveyAnswers);
             SurveyServer.getInstance(this).createSurveyAnswers(surveyAnswer)

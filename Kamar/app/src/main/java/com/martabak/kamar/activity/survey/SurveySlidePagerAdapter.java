@@ -1,7 +1,8 @@
 package com.martabak.kamar.activity.survey;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -11,12 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.SurveyAnswer;
 import com.martabak.kamar.domain.SurveyAnswers;
 import com.martabak.kamar.domain.SurveyQuestion;
+import com.martabak.kamar.domain.managers.SurveyManager;
 import com.martabak.kamar.service.SurveyServer;
 
 import java.util.ArrayList;
@@ -31,28 +35,30 @@ import rx.Observer;
  */
 class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
 
-    private ArrayList<String> sections;
-    private HashMap<String, ArrayList<SurveyQuestion>> secToQuestions;
+    private List<String> sections;
+    private HashMap<String, SurveyQuestion> idToQuestion;
+    private HashMap<String, List<String>> sectionMappings;
     private HashMap<String, Integer> idToRating;
 
-    public SurveySlidePagerAdapter(FragmentManager fm, ArrayList<String> s,
-                                   HashMap<String, ArrayList<SurveyQuestion>> sToQ,
-                                   HashMap<String, Integer> idToRating) {
+    public SurveySlidePagerAdapter(FragmentManager fm) {
         super(fm);
-        this.sections = s;
-        this.secToQuestions = sToQ;
-        this.idToRating = idToRating;
+//        this.sections = s;
+        this.idToQuestion = SurveyManager.getInstance().getQuestions();
+        this.sectionMappings = SurveyManager.getInstance().getMappings();
+//        this.secToQuestions = sToQ;
+        this.idToRating = SurveyManager.getInstance().getRatings();
+        this.sections = new ArrayList<>();
     }
 
     @Override
     public Fragment getItem(int position) {
-        //TODO: set up the fragment (page)
         Bundle args = new Bundle();
-        //args.putString("currSection", sections.get(position));
-
-        args.putString("currSection", sections.get(position));
-        args.putSerializable("dict", secToQuestions);
-        args.putSerializable("ratings", idToRating);
+        args.putBoolean("flag", Boolean.FALSE);
+        SurveyManager.getInstance().setCurrSection(sections.get(position));
+        if (position == getCount()-1) {//set "last slide" flag
+            args.putBoolean("flag", Boolean.TRUE);
+            SurveyManager.getInstance().setFlag(Boolean.TRUE);
+        }
         ScreenSlidePageFragment f = new ScreenSlidePageFragment();
         f.setArguments(args);
         return f;
@@ -61,42 +67,109 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         //returns no. of sections
+        if (sections.size() == 0) {
+            sections.addAll(sectionMappings.keySet());
+        }
+//                Log.v("ZZZZ", sections.toString());
         return sections.size();
     }
 
-    public static class ScreenSlidePageFragment extends Fragment {
+    public static class ScreenSlidePageFragment extends Fragment implements RadioGroup.OnCheckedChangeListener {
         public ScreenSlidePageFragment() {};
+        private RecyclerView recyclerView;
+        private HashMap<String, Integer> idToRating;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             final String currSection;
-            final HashMap<String, ArrayList<SurveyQuestion>> secToQuestions;
-            HashMap<String, Integer> idToRating;
+            final HashMap<String, List<String>> sectionMappings;
+            final HashMap<String, SurveyQuestion> questions;
+            final Boolean flag;
             Bundle args = getArguments();
             if (args != null) {
-                currSection = args.getString("currSection");
-                secToQuestions = (HashMap)args.getSerializable("dict");
-                idToRating = (HashMap)args.getSerializable("ratings");
+                sectionMappings = SurveyManager.getInstance().getMappings();
+                idToRating = SurveyManager.getInstance().getRatings();
+                questions = SurveyManager.getInstance().getQuestions();
+                flag = args.getBoolean("flag");
+                currSection = SurveyManager.getInstance().getCurrSection();
+//                flag = SurveyManager.getInstance().getFlag();
             } else {
                 return null;
             }
             ViewGroup rootView = (ViewGroup) inflater.inflate(
                     R.layout.survey_fragment_slide, container, false);
-//            TextView questionText = (TextView) rootView.findViewById(R.id.survey_row_text);
-            RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.survey_list);
-//            Log.v("DDD", currSection);
-//            Log.v("ZZZ", secToQuestions.get("room").get(0).getQuestion());
-//
+            recyclerView = (RecyclerView)rootView.findViewById(R.id.survey_list);
             TextView test = (TextView)rootView.findViewById(R.id.survey_section_text);
             test.setText(currSection);
-//            test.setText(secToQuestions.get(currSection).get(0).getQuestion());
-
-            SurveyRecyclerAdapter recyclerAdapter = new SurveyRecyclerAdapter(secToQuestions.get(currSection));
+            List<SurveyQuestion> questionList = new ArrayList<>();
+            for (String id : sectionMappings.get(currSection)) {
+                questionList.add(questions.get(id));
+            }
+            SurveyRecyclerAdapter recyclerAdapter = new SurveyRecyclerAdapter(questionList, ScreenSlidePageFragment.this);
             recyclerView.setAdapter(recyclerAdapter);
 
+            ImageView submitButton = (ImageView)rootView.findViewById(R.id.survey_submit);
+            if (flag) {//last slide
+                submitButton.setAlpha(0.9f);
+                submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    HashMap<String, SurveyQuestion> questions = SurveyManager.getInstance().getQuestions();
+                    List<SurveyAnswer> list = new ArrayList<>();
+                    for (String id : questions.keySet()) {
+                        SurveyQuestion q = questions.get(id);
+                        SurveyAnswer answer = new SurveyAnswer(q._id, q.sectionEn, q.questionEn, idToRating.get(q._id));
+                        list.add(answer);
+                    }
+                    String guestID = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("guestId", "none");
+                    SurveyAnswers answers = new SurveyAnswers(guestID, list);
+                    SurveyServer.getInstance(ScreenSlidePageFragment.this.getContext()).createSurveyAnswers(answers)
+                            .subscribe(new Observer<Boolean>() {
+                                @Override
+                                public void onCompleted() {
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Log.d(SurveySlidePagerAdapter.class.getCanonicalName(), "getSurveyQuestions() On error");
+                                    e.printStackTrace();
+                                }
+
+                                @Override
+                                public void onNext(Boolean result) {
+                                    if (result) {
+                                        Log.v("WWW", "answers created");
+                                    }
+                                }
+
+                            });
+                    }
+                });
+            }
 
             return rootView;
+        }
+
+        public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+            final SurveyRecyclerAdapter.ViewHolder holder =
+                    (SurveyRecyclerAdapter.ViewHolder)recyclerView.getChildViewHolder((View)radioGroup.getParent());
+            final SurveyQuestion question = holder.item;
+
+            RadioButton checkedRadioButton = (RadioButton)radioGroup.findViewById(checkedId);
+            // This puts the value (true/false) into the variable
+            boolean isChecked = checkedRadioButton.isChecked();
+            // If the radio button that has changed in check state is now checked...
+            if (isChecked) {
+                Integer i = Integer.parseInt(checkedRadioButton.getTag().toString());
+                idToRating.put(question._id, i);
+            }
+        }
+
+        public void unGray(){
+            Log.v("CUNT", ScreenSlidePageFragment.this.getView().toString());
+            ImageView submitButton = (ImageView)this.getView().findViewById(R.id.survey_submit);
+            submitButton.setColorFilter(Color.argb(150,200,200,200));
         }
     }
 
