@@ -17,9 +17,7 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.EngineeringOption;
-import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Engineering;
-import com.martabak.kamar.domain.permintaan.Massage;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 import com.martabak.kamar.service.Server;
@@ -29,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +40,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
     private RecyclerView recyclerView;
     private List<EngineeringOption> engOptions;
     private Map<String, String> statuses; // Maps engineering option ID -> request status
+    private EngineeringRecyclerViewAdapter recyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +63,14 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                 .getString("roomNumber", "none");
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
         // END GENERIC LAYOUT STUFF
-
         // Get the options
         recyclerView = (RecyclerView)findViewById(R.id.massage_list);
         engOptions = new ArrayList<>();
-        final EngineeringRecyclerViewAdapter recyclerViewAdapter = new EngineeringRecyclerViewAdapter(engOptions);
-        recyclerView.setAdapter(recyclerViewAdapter);
         StaffServer.getInstance(this).getEngineeringOptions().subscribe(new Observer<List<EngineeringOption>>() {
             @Override public void onCompleted() {
                 Log.d(EngineeringActivity.class.getCanonicalName(), "onCompleted");
-                recyclerViewAdapter.notifyDataSetChanged();
+                Log.v("ABG", engOptions.toString());
+                getStatuses();
             }
             @Override public void onError(Throwable e) {
                 Log.d(EngineeringActivity.class.getCanonicalName(), "onError", e);
@@ -86,17 +82,22 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        // Get the statuses
+
+    }
+
+    // Get the statuses
+    public void getStatuses() {
         PermintaanManager.getInstance().getEngineeringStatuses(getBaseContext()).subscribe(new Observer<Map<String, String>>() {
             @Override public void onCompleted() {
                 Log.d(EngineeringActivity.class.getCanonicalName(), "getEngineeringStatuses#onCompleted");
-                recyclerViewAdapter.notifyDataSetChanged();
+                recyclerViewAdapter = new EngineeringRecyclerViewAdapter(engOptions);
+                recyclerView.setAdapter(recyclerViewAdapter);
             }
             @Override public void onError(Throwable e) {
                 Log.d(EngineeringActivity.class.getCanonicalName(), "getEngineeringStatuses#onError", e);
                 e.printStackTrace();
             }
-            @Override public void onNext(final Map<String, String> statuses) {
+            @Override public void onNext(Map<String, String> statuses) {
                 Log.d(EngineeringActivity.class.getCanonicalName(), "Fetching statuses of size " + statuses.size());
                 EngineeringActivity.this.statuses = statuses;
             }
