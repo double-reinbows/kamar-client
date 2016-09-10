@@ -22,31 +22,27 @@ public class ImageAdapter extends BaseAdapter {
      * References to our images.
      */
     private static final Integer[] IMAGES = {
-            R.drawable.ic_myrequests,
+            R.drawable.ic_events,
             R.drawable.ic_restaurant,
             R.drawable.ic_housekeeping,
-            R.drawable.ic_housekeeping,
+            R.drawable.ic_laundry,
+            R.drawable.ic_engineering,
+            R.drawable.ic_massage,
             R.drawable.ic_bellboy,
-            R.drawable.ic_maintenance,
-            R.drawable.ic_transport,
-            R.drawable.ic_bellboy,
-            R.drawable.ic_chat,
-            R.drawable.ic_checkout,
-            R.drawable.ic_chat
+            R.drawable.ic_comments
     };
 
     /**
      * Text descriptions.
      */
     private static final String[] TEXT = {
-            "MY REQUESTS",
+            "EVENTS",
             Permintaan.TYPE_RESTAURANT,
-            Permintaan.TYPE_MASSAGE,
             Permintaan.TYPE_HOUSEKEEPING,
+            Permintaan.TYPE_LAUNDRY,
             Permintaan.TYPE_BELLBOY,
             Permintaan.TYPE_ENGINEERING,
             Permintaan.TYPE_TRANSPORT,
-            "EVENT",
             Permintaan.TYPE_SURVEY,
             Permintaan.TYPE_CHECKOUT,
             Permintaan.TYPE_LAUNDRY,
