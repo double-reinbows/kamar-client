@@ -3,7 +3,6 @@
     <string name="language_russian">Russian</string>
     <string name="language_zh">Chinese</string>
     <string name="bellboy_label">Porter</string>
-    <string name="event_label">Events</string>
     <string name="checkout_label">Checkout</string>
     <string name="laundry_label">Laundry</string>
     <string name="chat_label">Chat</string>

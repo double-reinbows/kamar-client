@@ -95,7 +95,7 @@
     <string name="please_wait">Please wait 10-20 minutes for a staff member to arrive at your room</string>
     <string name="existing_request">A request of that type already exists</string>
 
-    <string name="transport_label">Transport</string>
+    <string name="transport_label">TRANSPORT</string>
     <string name="transport_passengers">Passengers</string>
     <string name="transport_departing_in">Departing in</string>
     <string name="transport_minutes">minutes</string>
@@ -112,7 +112,7 @@
         <item>120</item>
     </string-array>
 
-    <string name="housekeeping_label">Housekeeping</string>
+    <string name="housekeeping_label">HOUSEKEEPING</string>
     <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>
     <string name="housekeeping_result">Housekeeping request sent</string>
@@ -124,7 +124,7 @@
     <string name="bellboy_result">Bellboy request sent</string>
     <string name="report_to_frontdesk">Please report to front desk</string>
 
-    <string name="engineering_label">Engineering</string>
+    <string name="engineering_label">ENGINEERING</string>
     <string name="engineering_message">Are you sure you want to request engineering?</string>
     <string name="engineering_result">Maintenance request sent</string>
 
@@ -132,14 +132,14 @@
     <string name="tellus_edittext">Leave your feedback here</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
 
-    <string name="survey_label">Survey</string>
+    <string name="survey_label">COMMENTS</string>
     <string name="survey_submit_button">Submit</string>
 
-    <string name="massage_label">Massage</string>
+    <string name="massage_label">MASSAGE</string>
     <string name="massage_message">Are you sure you want to book this massage?</string>
     <string name="massage_result">Massage request sent</string>
 
-    <string name="restaurant_label">Menu</string>
+    <string name="restaurant_label">RESTAURANT</string>
     <string name="restaurant_success"> Successfully placed your order!</string>
     <string name="restaurant_error"> Error in placing your order!</string>
 
@@ -178,12 +178,13 @@
     <string name="no_ironing">No Ironing</string>
     <string name="on_hanger">On Hanger</string>
     <string name="folded">Folded</string>
-    <string name="laundry_result">Laundry request sent!</string>
+    <string name="laundry_result">Laundry Request sent!</string>
+    <string name="zero">0</string>
     <string name="language_russian">Russian</string>
     <string name="language_zh">Chinese</string>
-    <string name="bellboy_label">Porter</string>
+    <string name="bellboy_label">PORTER</string>
     <string name="chat_label">Chat</string>
     <string name="checkout_label">Checkout</string>
-    <string name="event_label">Events</string>
-    <string name="laundry_label">Laundry</string>
+    <string name="event_label">EVENTS</string>
+    <string name="laundry_label">LAUNDRY</string>
 </resources>

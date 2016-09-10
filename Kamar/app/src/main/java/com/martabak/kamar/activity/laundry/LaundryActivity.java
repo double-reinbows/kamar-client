@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.laundry;
 
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -147,11 +148,8 @@ public class LaundryActivity extends AppCompatActivity  {
 
                 TextView laundryTextView = (TextView) findViewById(R.id.laundry_total_price);
 
-                int totalPrice = 0;
-                if (!laundryTextView.getText().toString().equals(""))
-                {
-                    totalPrice = Integer.parseInt(laundryTextView.getText().toString());
-                }
+                int totalPrice = Integer.parseInt(laundryTextView.getText().toString());
+
 
                 if (laundryOrderItems.size() > 0)
                 {
@@ -269,7 +267,6 @@ public class LaundryActivity extends AppCompatActivity  {
 
             final TextView laundryTextView = (TextView) mParentView.findViewById(R.id.laundry_total_price);
 
-
             holder.quantityText.setText(String.valueOf(minQuantity));
 
             //add  button
@@ -282,7 +279,37 @@ public class LaundryActivity extends AppCompatActivity  {
                     {
                         holder.laundryCheckButton.setEnabled(true);
                         holder.pressingCheckButton.setEnabled(true);
+
                     }
+
+                    Integer prevItemTotal = 0;
+                    if (!holder.itemPriceTotal.getText().toString().equals(""))
+                    {
+                        prevItemTotal = Integer.parseInt(holder.itemPriceTotal.getText().toString());
+                    }
+
+
+                    int laundryPrice = 0;
+                    int pressingPrice = 0;
+                    if (holder.laundryCheckButton.isChecked())
+                    {
+                        laundryPrice = Integer.parseInt(holder.laundryCheckButton.getText().toString());
+                    }
+                    if (holder.pressingCheckButton.isChecked())
+                    {
+                        pressingPrice = Integer.parseInt(holder.pressingCheckButton.getText().toString());
+                    }
+
+                    Integer newItemTotal = calculateItemPrice(laundryPrice, pressingPrice, newQuantity);
+                    holder.itemPriceTotal.setText(
+                            String.valueOf(calculateItemPrice(laundryPrice, pressingPrice, newQuantity)));
+
+                    Integer difference = newItemTotal - prevItemTotal;
+
+                    //add the new price total to the tally
+                    Integer currentTotal = Integer.parseInt(laundryTextView.getText().toString()) + difference;
+                    laundryTextView.setText(String.valueOf(currentTotal));
+
                 }
             });
 
@@ -299,6 +326,30 @@ public class LaundryActivity extends AppCompatActivity  {
                     {
                         holder.laundryCheckButton.setEnabled(false);
                         holder.pressingCheckButton.setEnabled(false);
+                    }
+                    int laundryPrice = 0;
+                    int pressingPrice = 0;
+
+                    if (newQuantity >= 0) {
+                        Integer prevItemTotal = Integer.parseInt(holder.itemPriceTotal.getText().toString());
+
+                        if (holder.laundryCheckButton.isChecked()) {
+                            laundryPrice = Integer.parseInt(holder.laundryCheckButton.getText().toString());
+                        }
+                        if (holder.pressingCheckButton.isChecked()) {
+                            pressingPrice = Integer.parseInt(holder.pressingCheckButton.getText().toString());
+                        }
+
+
+                        Integer newItemTotal = calculateItemPrice(laundryPrice, pressingPrice, newQuantity);
+
+                        holder.itemPriceTotal.setText(
+                                String.valueOf(newItemTotal));
+                        Integer difference = prevItemTotal - newItemTotal;
+
+                        //subtract the new price total to the tally
+                        Integer currentTotal = Integer.parseInt(laundryTextView.getText().toString()) - difference;
+                        laundryTextView.setText(String.valueOf(currentTotal));
                     }
                 }
             });
@@ -320,42 +371,46 @@ public class LaundryActivity extends AppCompatActivity  {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
-                            int currentPrice;
-                            if (holder.itemPriceTotal.getText().toString().equals(""))
-                            {
-                                currentPrice = Integer.parseInt(holder.laundryCheckButton.getText().toString());
-                            }
-                            else
-                            {
-                                currentPrice = Integer.parseInt(holder.itemPriceTotal.getText().toString())
-                                                + Integer.parseInt(holder.laundryCheckButton.getText().toString());
 
+                            int pressingPrice = 0;
+                            int laundryPrice = Integer.parseInt(holder.laundryCheckButton.getText().toString());
+                            Integer newQuantity = Integer.parseInt(holder.quantityText.getText().toString());
+
+                            if (holder.pressingCheckButton.isChecked())
+                            {
+                                pressingPrice = Integer.parseInt(holder.pressingCheckButton.getText().toString());
                             }
-                            int tempTotalPrice = 0;
-                            if (!laundryTextView.getText().toString().equals("")) {
-                                tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
-                            }
+                            int currentPrice = calculateItemPrice(laundryPrice, pressingPrice, newQuantity);
+
+                            int tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
+
                             int newTotalPrice = tempTotalPrice + currentPrice;
                             holder.itemPriceTotal.setText(String.valueOf(currentPrice));
                             laundryTextView.setText(String.valueOf(newTotalPrice));
                         }
                         else
                         {
-                            int currentPrice;
-                            if (holder.itemPriceTotal.getText().toString().equals(""))
+                            int pressingPrice = 0;
+                            int laundryPrice = 0;
+                            Integer newQuantity = Integer.parseInt(holder.quantityText.getText().toString());
+
+                            if (holder.pressingCheckButton.isChecked())
                             {
-                                currentPrice = 0;
+                                pressingPrice = Integer.parseInt(holder.pressingCheckButton.getText().toString());
                             }
-                            else
+
+
+                            Integer prevPrice = 0;
+                            if (!holder.itemPriceTotal.getText().toString().equals(""))
                             {
-                                currentPrice = Integer.parseInt(holder.itemPriceTotal.getText().toString())
-                                        - Integer.parseInt(holder.laundryCheckButton.getText().toString());
+                                prevPrice = Integer.parseInt(holder.itemPriceTotal.getText().toString());
                             }
-                            int tempTotalPrice = 0;
-                            if (!laundryTextView.getText().toString().equals("")) {
-                                tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
-                            }
-                            int newTotalPrice = tempTotalPrice - currentPrice;
+
+                            int currentPrice = calculateItemPrice(laundryPrice, pressingPrice, newQuantity);
+
+                            int tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
+
+                            int newTotalPrice = tempTotalPrice - (prevPrice - currentPrice);
                             holder.itemPriceTotal.setText(String.valueOf(currentPrice));
                             laundryTextView.setText(String.valueOf(newTotalPrice));
                         }
@@ -369,48 +424,58 @@ public class LaundryActivity extends AppCompatActivity  {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
-                            int currentPrice;
-                            if (holder.itemPriceTotal.getText().toString().equals(""))
+                            int pressingPrice = Integer.parseInt(holder.pressingCheckButton.getText().toString());
+                            int laundryPrice = 0;
+                            Integer newQuantity = Integer.parseInt(holder.quantityText.getText().toString());
+
+                            if (holder.laundryCheckButton.isChecked())
                             {
-                                currentPrice = Integer.parseInt(holder.pressingCheckButton.getText().toString());
+                                laundryPrice = Integer.parseInt(holder.laundryCheckButton.getText().toString());
                             }
-                            else
-                            {
-                                currentPrice = Integer.parseInt(holder.itemPriceTotal.getText().toString())
-                                        + Integer.parseInt(holder.pressingCheckButton.getText().toString());
-                            }
-                            int tempTotalPrice = 0;
-                            if (!laundryTextView.getText().toString().equals("")) {
-                                tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
-                            }
+                            int currentPrice = calculateItemPrice(laundryPrice, pressingPrice, newQuantity);
+
+                            int tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
+
                             int newTotalPrice = tempTotalPrice + currentPrice;
                             holder.itemPriceTotal.setText(String.valueOf(currentPrice));
                             laundryTextView.setText(String.valueOf(newTotalPrice));
                         }
                         else
                         {
-                            int currentPrice;
-                            if (holder.itemPriceTotal.getText().toString().equals(""))
+                            int pressingPrice = 0;
+                            int laundryPrice = 0;
+                            Integer newQuantity = Integer.parseInt(holder.quantityText.getText().toString());
+
+                            if (holder.laundryCheckButton.isChecked())
                             {
-                                currentPrice = 0;
+                                laundryPrice = Integer.parseInt(holder.laundryCheckButton.getText().toString());
                             }
-                            else
+
+                            Integer prevPrice = 0;
+                            if (!holder.itemPriceTotal.getText().toString().equals(""))
                             {
-                                currentPrice = Integer.parseInt(holder.itemPriceTotal.getText().toString())
-                                        - Integer.parseInt(holder.pressingCheckButton.getText().toString());
+                                prevPrice = Integer.parseInt(holder.itemPriceTotal.getText().toString());
                             }
-                            int tempTotalPrice = 0;
-                            if (!laundryTextView.getText().toString().equals("")) {
-                                tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
-                            }
-                            int newTotalPrice = tempTotalPrice - currentPrice;
+
+                            int currentPrice = calculateItemPrice(laundryPrice, pressingPrice, newQuantity);
+
+                            int tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
+
+                            int newTotalPrice = tempTotalPrice - (prevPrice - currentPrice);
                             holder.itemPriceTotal.setText(String.valueOf(currentPrice));
-                            laundryTextView.setText(newTotalPrice);
+                            laundryTextView.setText(String.valueOf(newTotalPrice));
                         }
                     }
                 });
             }
 
+        }
+
+        private int calculateItemPrice(int laundryPrice, int pressingPrice, int quantity)
+        /*Calculate price for each individual item*/
+        {
+            int totalItemPrice = (laundryPrice + pressingPrice) * quantity;
+            return totalItemPrice;
         }
 
         @Override

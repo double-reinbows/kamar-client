@@ -23,35 +23,28 @@ public class GuestHomeAdapter extends BaseAdapter {
      * References to our images.
      */
     private static final Integer[] IMAGES = {
-            R.drawable.ic_myrequests,
+            R.drawable.ic_events,
             R.drawable.ic_restaurant,
             R.drawable.ic_housekeeping,
-            R.drawable.ic_housekeeping,
+            R.drawable.ic_laundry,
+            R.drawable.ic_engineering,
+            R.drawable.ic_massage,
             R.drawable.ic_bellboy,
-            R.drawable.ic_maintenance,
-            R.drawable.ic_transport,
-            R.drawable.ic_bellboy,
-            R.drawable.ic_chat,
-            R.drawable.ic_checkout,
-            R.drawable.ic_chat
+            R.drawable.ic_comments
     };
 
     /**
      * Text descriptions.
      */
     private static final String[] TEXT = {
-            "MY REQUESTS",
-            App.getContext().getResources().getString(R.string.restaurant_label),
-            App.getContext().getResources().getString(R.string.massage_label),
-            App.getContext().getResources().getString(R.string.housekeeping_label),
-            App.getContext().getResources().getString(R.string.bellboy_label),
-            App.getContext().getResources().getString(R.string.engineering_label),
-            App.getContext().getResources().getString(R.string.transport_label),
             App.getContext().getResources().getString(R.string.event_label),
-            App.getContext().getResources().getString(R.string.survey_label),
-            App.getContext().getResources().getString(R.string.checkout_label),
+            App.getContext().getResources().getString(R.string.restaurant_label),
+            App.getContext().getResources().getString(R.string.housekeeping_label),
             App.getContext().getResources().getString(R.string.laundry_label),
-            App.getContext().getResources().getString(R.string.chat_label)
+            App.getContext().getResources().getString(R.string.engineering_label),
+            App.getContext().getResources().getString(R.string.massage_label),
+            App.getContext().getResources().getString(R.string.bellboy_label),
+            App.getContext().getResources().getString(R.string.survey_label)
     };
 
     private Context mContext;
