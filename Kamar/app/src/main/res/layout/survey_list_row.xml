@@ -33,38 +33,32 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/survey_row_text"
         android:orientation="horizontal">
-
         <RadioButton
             android:id="@+id/smiley1"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="RadioButton1"
-            android:background="@drawable/ic_housekeeping"
+            android:background="@drawable/survey_very_sad"
             android:button="@android:color/transparent"
             android:tag="1"/>
         <RadioButton
             android:id="@+id/smiley2"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="RadioButton2"
             android:tag="2"/>
         <RadioButton
             android:id="@+id/smiley3"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="RadioButton3"
             android:tag="3"/>
         <RadioButton
             android:id="@+id/smiley4"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="RadioButton4"
             android:tag="4"/>
         <RadioButton
             android:id="@+id/smiley5"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="RadioButton5"
             android:tag="5"/>
     </RadioGroup>
 
