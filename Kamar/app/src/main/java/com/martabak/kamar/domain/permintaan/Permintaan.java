@@ -57,9 +57,14 @@ public class Permintaan<T extends Content> extends Model {
      */
     public static final String TYPE_TRANSPORT = "TRANSPORT";
     /**
+     * The EVENT type string.
+     */
+    public static final String TYPE_EVENT = "EVENTS";
+
+    /**
      * The SURVEY type string.
      */
-    public static final String TYPE_SURVEY = "GUEST COMMENTS";
+    public static final String TYPE_SURVEY = "COMMENTS";
     /**
      * The CHAT type string.
      */

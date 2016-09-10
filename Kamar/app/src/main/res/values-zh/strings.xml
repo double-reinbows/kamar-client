@@ -25,7 +25,7 @@
     <!-- Home -->
     <string name="language_english">English</string>
     <string name="language_bahasa">Bahasa Indonesia</string>
-    <string name="language_set_to">Language set to English</string>
+    <string name="language_set_to">語言設置為俄語</string>
     <string name="user_set_to">User set to</string>
     <string name="guest">Guest</string>
     <string name="staff">Staff</string>
@@ -130,7 +130,7 @@
     <string name="massage_message">你確定要預訂按摩？</string>
     <string name="massage_result">按摩預約請求 </string>
 
-    <string name="restaurant_label">Menu</string>
+    <string name="restaurant_label">餐厅</string>
     <string name="restaurant_success"> Successfully placed your order!</string>
     <string name="restaurant_error"> Error in placing your order!</string>
 
@@ -176,4 +176,12 @@
     <string name="permintaan_assign_person">Please enter staff person\'s name</string>
     <string name="promo_img_select">Promotional Image</string>
     <string name="logout_change_room_number">Change room no.</string>
+    <string name="language_russian">Russian</string>
+    <string name="language_zh">Chinese</string>
+    <string name="bellboy_label">搬运工</string>
+    <string name="chat_label">交谈</string>
+    <string name="checkout_label">酒店结账 </string>
+    <string name="event_label">活动</string>
+    <string name="laundry_label">洗衣店</string>
+    <string name="laundry_result">洗衣顺序发送</string>
 </resources>

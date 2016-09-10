@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.guest;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 /**
  * Image adapter to show the permintaan image types in guest home.
  */
-public class ImageAdapter extends BaseAdapter {
+public class GuestHomeAdapter extends BaseAdapter {
 
     /**
      * References to our images.
@@ -36,22 +37,19 @@ public class ImageAdapter extends BaseAdapter {
      * Text descriptions.
      */
     private static final String[] TEXT = {
-            "EVENTS",
-            Permintaan.TYPE_RESTAURANT,
-            Permintaan.TYPE_HOUSEKEEPING,
-            Permintaan.TYPE_LAUNDRY,
-            Permintaan.TYPE_BELLBOY,
-            Permintaan.TYPE_ENGINEERING,
-            Permintaan.TYPE_TRANSPORT,
-            Permintaan.TYPE_SURVEY,
-            Permintaan.TYPE_CHECKOUT,
-            Permintaan.TYPE_LAUNDRY,
-            Permintaan.TYPE_CHAT
+            App.getContext().getResources().getString(R.string.event_label),
+            App.getContext().getResources().getString(R.string.restaurant_label),
+            App.getContext().getResources().getString(R.string.housekeeping_label),
+            App.getContext().getResources().getString(R.string.laundry_label),
+            App.getContext().getResources().getString(R.string.engineering_label),
+            App.getContext().getResources().getString(R.string.massage_label),
+            App.getContext().getResources().getString(R.string.bellboy_label),
+            App.getContext().getResources().getString(R.string.survey_label)
     };
 
     private Context mContext;
 
-    public ImageAdapter(Context c) {
+    public GuestHomeAdapter(Context c) {
         mContext = c;
     }
 

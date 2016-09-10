@@ -17,16 +17,10 @@ import com.martabak.kamar.domain.Guest;
 import java.util.Locale;
 
 /**
- * Created by adarsh on 10/08/16.
+ * Duplicate of SelectLanguageActivity because this is a fragment instead of activity.
+ * Does not have the welcome/promoImg code either
  */
 public class SelectLanguageFragment extends Fragment {
-
-
-    private String option;
-    private TextView roomNumberTextView;
-    private String welcomeMessage;
-    private Guest guest;
-
 
     public SelectLanguageFragment() {
     }
@@ -45,6 +39,8 @@ public class SelectLanguageFragment extends Fragment {
 
         final ImageButton englishButton = (ImageButton) view.findViewById(R.id.language_english);
         final ImageButton indonesianButton = (ImageButton) view.findViewById(R.id.language_bahasa);
+        final ImageButton russianButton = (ImageButton) view.findViewById(R.id.language_russian);
+        final ImageButton zhButton = (ImageButton) view.findViewById(R.id.language_zh);
 
 
         if (englishButton != null) {
@@ -83,6 +79,40 @@ public class SelectLanguageFragment extends Fragment {
             });
         }
 
+        if (russianButton != null) {
+            russianButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setLocale("ru");
+
+                    Toast.makeText(
+                            getActivity(),
+                            getString(R.string.language_set_to),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.guest_container, GuestHomeFragment.newInstance())
+                            .commit();
+                }
+            });
+        }
+        if (zhButton != null) {
+            zhButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setLocale("zh");
+
+                    Toast.makeText(
+                            getActivity(),
+                            getString(R.string.language_set_to),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.guest_container, GuestHomeFragment.newInstance())
+                            .commit();
+                }
+            });
+        }
         return view;
 
     }

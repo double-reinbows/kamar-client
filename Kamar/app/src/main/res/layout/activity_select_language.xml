@@ -39,5 +39,29 @@
             android:contentDescription="@string/language_bahasa"
             android:id="@+id/language_bahasa" />
 
+        <ImageButton
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_russian"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="100dp"
+            android:padding="0dp"
+            android:contentDescription="@string/language_russian"
+            android:id="@+id/language_russian" />
+
+        <ImageButton
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_chinese"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="100dp"
+            android:padding="0dp"
+            android:contentDescription="@string/language_zh"
+            android:id="@+id/language_zh" />
+
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

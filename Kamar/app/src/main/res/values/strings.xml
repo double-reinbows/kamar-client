@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language_russian">Russian</string>
+    <string name="language_zh">Chinese</string>
+    <string name="bellboy_label">Porter</string>
+    <string name="checkout_label">Checkout</string>
+    <string name="laundry_label">Laundry</string>
+    <string name="chat_label">Chat</string>
+    <string name="laundry_result">Laundry request sent!</string>
+</resources>

@@ -337,46 +337,37 @@ public class GuestHomeActivity extends AppCompatActivity implements
      public void onIconClick(String option) {
 
          guestSelectedOption = option;
-         switch(option) {
-            case "MY REQUESTS":
-                startActivity(new Intent(this, GuestPermintaanActivity.class));
-                break;
-            case Permintaan.TYPE_RESTAURANT:
-                startActivity(new Intent(this, RestaurantActivity.class));
-                break;
-             case Permintaan.TYPE_MASSAGE:
-                 startActivity(new Intent(this, MassageActivity.class));
-                 break;
-            case Permintaan.TYPE_TRANSPORT:
-                startActivity(new Intent(this, TransportActivity.class));
-                break;
-            case Permintaan.TYPE_HOUSEKEEPING:
-                //new HousekeepingDialogFragment().show(getFragmentManager(), "housekeeping");
-                startActivity(new Intent(this, HousekeepingActivity.class));
-                break;
-            case Permintaan.TYPE_BELLBOY:
-                new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
-                break;
-            case Permintaan.TYPE_ENGINEERING:
-                startActivity(new Intent(this, EngineeringActivity.class));
-                break;
-            case Permintaan.TYPE_SURVEY:
-                startActivity(new Intent(this, SurveyActivity.class));
-                //new TellUsDialogFragment().show(getFragmentManager(), "tellus");
-                break;
-            case Permintaan.TYPE_CHECKOUT:
-                new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
-                break;
-             case "EVENTS":
-                startActivity(new Intent(this, GuestEventActivity.class));
-                break;
-            case Permintaan.TYPE_CHAT:
-                startActivity(new Intent(this, GuestChatActivity.class));
-             case Permintaan.TYPE_LAUNDRY:
-                 startActivity(new Intent(this, LaundryActivity.class));
-            default:
-                break;
-        }
+         if (option.equals("MY REQUESTS")) {
+             startActivity(new Intent(this, GuestPermintaanActivity.class));
+
+         } else if (option.equals(getString(R.string.restaurant_label))) {
+             startActivity(new Intent(this, RestaurantActivity.class));
+
+         } else if (option.equals(getString(R.string.massage_label))) {
+             startActivity(new Intent(this, MassageActivity.class));
+
+         } else if (option.equals(getString(R.string.housekeeping_label))) {//new HousekeepingDialogFragment().show(getFragmentManager(), "housekeeping");
+             startActivity(new Intent(this, HousekeepingActivity.class));
+
+         } else if (option.equals(getString(R.string.bellboy_label))) {
+             new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
+
+         } else if (option.equals(getString(R.string.engineering_label))) {
+             startActivity(new Intent(this, EngineeringActivity.class));
+
+         } else if (option.equals(getString(R.string.survey_label))) {
+             startActivity(new Intent(this, SurveyActivity.class));
+             //new TellUsDialogFragment().show(getFragmentManager(), "tellus");
+
+         /*} else if (option.equals(Permintaan.TYPE_CHECKOUT)) {
+             new BellboyDialogFragment().show(getFragmentManager(), "bellboy");*/
+
+         } else if (option.equals(getString(R.string.event_label))) {
+             startActivity(new Intent(this, GuestEventActivity.class));
+
+         } else if (option.equals(getString(R.string.laundry_label))) {
+             startActivity(new Intent(this, LaundryActivity.class));
+         }
 
      }
 
@@ -397,7 +388,8 @@ public class GuestHomeActivity extends AppCompatActivity implements
                     Toast.LENGTH_LONG
             ).show();
             roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
-
+            startActivity(new Intent(this, SelectLanguageActivity.class));
+            finish();
             //String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
             //      .getString("guestId", "none");
 
