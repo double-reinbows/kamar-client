@@ -3,42 +3,16 @@ package com.martabak.kamar.activity.guest;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.activity.chat.GuestChatActivity;
-import com.martabak.kamar.activity.chat.GuestChatService;
-import com.martabak.kamar.activity.chat.StaffChatFragment;
-import com.martabak.kamar.activity.home.SelectLanguageActivity;
-import com.martabak.kamar.activity.restaurant.RestaurantActivity;
-import com.martabak.kamar.activity.staff.CheckGuestInFragment;
-import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.domain.Guest;
-import com.martabak.kamar.domain.User;
-import com.martabak.kamar.domain.permintaan.Permintaan;
-import com.martabak.kamar.service.GuestServer;
-
-import java.util.Calendar;
-import java.util.Date;
-
-import rx.Observer;
 
 /**
  * Created by adarsh on 10/08/16.
@@ -68,7 +42,7 @@ public class GuestHomeFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_guest_home, container, false);
-        final ImageAdapter imgAdapter = new ImageAdapter(this.getActivity());
+        final GuestHomeAdapter guestHomeAdapter = new GuestHomeAdapter(this.getActivity());
         final GridView gridView = (GridView) view.findViewById(R.id.guestgridview);
         //View passwordIconView = findViewById(R.id.passwordChangeIcon);
         View logoutView = view.findViewById(R.id.logoutIcon);
@@ -92,14 +66,14 @@ public class GuestHomeFragment extends Fragment {
 
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);**/
-        gridView.setAdapter(imgAdapter);
+        gridView.setAdapter(guestHomeAdapter);
 
         // display feature text on each item click
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // perform action for each individual feature
-                option = imgAdapter.getItem(position).toString();
+                option = guestHomeAdapter.getItem(position).toString();
                 guestHomeIconListener.onIconClick(option);
             }
         });

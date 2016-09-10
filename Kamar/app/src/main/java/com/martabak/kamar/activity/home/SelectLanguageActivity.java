@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -26,12 +27,15 @@ import java.util.Locale;
 
 import rx.Observer;
 
-
+/**
+ * Presents 4 language option buttons: English, Bahasa, Russian and ZH.
+ * If there is a guest checked into the tablet's assigned room number then a welcome message +
+ * promo image will display.
+ */
 public class SelectLanguageActivity extends AppCompatActivity {
 
     private String welcomeMessage;
     private String promoImgId;
-    Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,8 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
         final ImageButton englishButton = (ImageButton) findViewById(R.id.language_english);
         final ImageButton indonesianButton = (ImageButton) findViewById(R.id.language_bahasa);
+        final ImageButton russianButton = (ImageButton) findViewById(R.id.language_russian);
+        final ImageButton zhButton = (ImageButton) findViewById(R.id.language_zh);
 
         final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
@@ -91,6 +97,56 @@ public class SelectLanguageActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG
                     ).show();
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Indonesian");
+
+                    //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    //if there is a guest checked in...
+                    if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
+                            getString("guestId", "none")).equals("none")) {
+                        PromoWelcomeDialog();
+                    } else { //skip welcome + promo dialog
+                        startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
+                        finish();
+                    }
+                }
+            });
+        }
+        if (russianButton != null) {
+            russianButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setLocale("ru");
+
+                    Toast.makeText(
+                            SelectLanguageActivity.this,
+                            getString(R.string.language_set_to),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Russian");
+
+                    //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    //if there is a guest checked in...
+                    if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
+                            getString("guestId", "none")).equals("none")) {
+                        PromoWelcomeDialog();
+                    } else { //skip welcome + promo dialog
+                        startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
+                        finish();
+                    }
+                }
+            });
+        }
+        if (zhButton != null) {
+            zhButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setLocale("zh");
+
+                    Toast.makeText(
+                            SelectLanguageActivity.this,
+                            getString(R.string.language_set_to),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Chinese");
 
                     //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
                     //if there is a guest checked in...
@@ -221,5 +277,4 @@ public class SelectLanguageActivity extends AppCompatActivity {
             }
         });
     }
-
 }

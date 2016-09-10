@@ -397,7 +397,8 @@ public class GuestHomeActivity extends AppCompatActivity implements
                     Toast.LENGTH_LONG
             ).show();
             roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
-
+            startActivity(new Intent(this, SelectLanguageActivity.class));
+            finish();
             //String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
             //      .getString("guestId", "none");
 

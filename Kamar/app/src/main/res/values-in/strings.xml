@@ -128,7 +128,7 @@
     <string name="massage_message">Apakah Anda yakin ingin memesan pijat ini?</string>
     <string name="massage_result">Pesanan pijat dikirimkan</string>
 
-    <string name="restaurant_label">Menu</string>
+    <string name="restaurant_label">Makanan</string>
     <string name="restaurant_success"> Successfully placed your order!</string>
     <string name="restaurant_error"> Error in placing your order!</string>
 
@@ -173,4 +173,12 @@
     <string name="restaurant_submit_button">Confirm Order</string>
     <string name="welcome_message">Welcome Message</string>
     <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
+    <string name="language_russian">Russian</string>
+    <string name="language_zh">Chinese</string>
+    <string name="bellboy_label">Portir</string>
+    <string name="chat_label">Chat</string>
+    <string name="checkout_label">Checkout</string>
+    <string name="event_label">Perihal</string>
+    <string name="laundry_label">Cucian</string>
+    <string name="laundry_result">Pesan laundry dikirim!</string>
 </resources>

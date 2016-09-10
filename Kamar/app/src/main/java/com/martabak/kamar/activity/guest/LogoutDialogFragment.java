@@ -66,7 +66,7 @@ public class LogoutDialogFragment extends DialogFragment {
     }
 
     /**
-     * Send the password to login as a staff, and logout as a guest.
+     * Send the password to login as a staff (does NOT logout the guest).
      * @param password The password string.
      */
     private void sendLogoutRequest(String password) {
