@@ -30,16 +30,19 @@
             android:orientation="vertical"
             android:layout_gravity="left">
             <RadioButton
+                android:id="@+id/no_ironing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no_ironing"/>
 
             <RadioButton
+                android:id="@+id/on_hanger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/on_hanger"/>
 
             <RadioButton
+                android:id="@+id/folded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/folded"/>
@@ -49,6 +52,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="right">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/laundry_total_price"/>
+
             <Button
                 android:id="@+id/laundry_submit"
                 android:text="@string/submit"

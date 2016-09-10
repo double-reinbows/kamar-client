@@ -11,22 +11,18 @@ public class LaundryOrder extends Content {
 
     public final List<LaundryOrderItem> items;
 
-    public final List<String> instructions;
 
     @SerializedName("total_price") public final Integer totalPrice;
 
     public LaundryOrder() {
         super();
         this.items = null;
-        this.instructions = null;
         this.totalPrice = null;
     }
 
-    public LaundryOrder(String message, List<LaundryOrderItem> items, List<String> instructions,
-                        int totalPrice) {
+    public LaundryOrder(String message, List<LaundryOrderItem> items, int totalPrice) {
         super(message);
         this.items = items;
-        this.instructions = instructions;
         this.totalPrice = totalPrice;
     }
 
