@@ -89,7 +89,7 @@
     <!-- Guest Nav drawer -->
     <string name="nav_drawer_home">HOME</string>
     <string name="nav_drawer_change_language">CHANGE LANGUAGE</string>
-    <string name="nav_drawer_about">ABOUT</string>
+    <string name="nav_drawer_about">ABOUT US</string>
 
     <!-- Guest -->
     <string name="please_wait">Please wait 10-20 minutes for a staff member to arrive at your room</string>
@@ -116,6 +116,8 @@
     <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>
     <string name="housekeeping_result">Housekeeping request sent</string>
+    <string name="housekeeping_confirm">Please confirm this order</string>
+    <string name="housekeeping_zero_order">Please choose a valid quantity!</string>
 
     <string name="bellboy_message">Are you sure you want a bellboy?</string>
     <string name="bellboy_edittext">Input bellboy details</string>

@@ -1,9 +1,5 @@
-package com.martabak.kamar.activity.guest;
+package com.martabak.kamar.activity.housekeeping;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,6 +62,9 @@ public class HousekeepingSectionAdapter
 
     @Override
     public int getItemCount() {
+        if (housekeepingSections == null) {
+            return 0;
+        }
         return housekeepingSections.size();
     }
 

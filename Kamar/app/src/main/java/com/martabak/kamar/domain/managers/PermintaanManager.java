@@ -4,7 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.martabak.kamar.domain.options.EngineeringOption;
+import com.martabak.kamar.domain.options.HousekeepingOption;
 import com.martabak.kamar.domain.permintaan.Engineering;
+import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 
@@ -55,13 +57,13 @@ public class PermintaanManager {
      */
     private Observable<String> getMostRecentStatusOf(Context c, final String type) {
         return OperatorMinMax.max(PermintaanServer.getInstance(c).getPermintaansForGuest(getGuestId(c))
-                // Filter by type of permintaan
-                .filter(new Func1<Permintaan, Boolean>() {
-                    @Override
-                    public Boolean call(Permintaan permintaan) {
-                        return permintaan.type.equals(type);
-                    }
-                })
+                        // Filter by type of permintaan
+                        .filter(new Func1<Permintaan, Boolean>() {
+                            @Override
+                            public Boolean call(Permintaan permintaan) {
+                                return permintaan.type.equals(type);
+                            }
+                        })
                 // Get the latest permintaan by date
                 , new Comparator<Permintaan>() {
                     @Override public int compare(Permintaan lhs, Permintaan rhs) {
@@ -134,8 +136,44 @@ public class PermintaanManager {
     /**
      * @return The state of the most recent housekeeping permintaan.
      */
-    public Observable<String> getHousekeepingStatus(Context c) {
-        return getMostRecentStatusOf(c, Permintaan.TYPE_HOUSEKEEPING);
+    public Observable<Map<String, String>> getHousekeepingStatuses(Context c) {
+//        return null; //getMostRecentStatusOf(c, Permintaan.TYPE_HOUSEKEEPING);
+        final String type = Permintaan.TYPE_HOUSEKEEPING;
+        Log.d(PermintaanManager.class.getCanonicalName(), "getStatusesByTypeOf");
+        return PermintaanServer.getInstance(c).getPermintaansForGuest(getGuestId(c))
+                // Filter by type of permintaan
+                .filter(new Func1<Permintaan, Boolean>() {
+                    @Override public Boolean call(Permintaan permintaan) {
+                        return permintaan.type.equals(type);
+                    }
+                })
+                .toList()
+                .map(new Func1<List<Permintaan>, Map<String, Permintaan>>() {
+                    @Override public Map<String, Permintaan> call(List<Permintaan> ps) {
+                        Map<String, Permintaan> latestPs = new HashMap<>();
+                        for (Permintaan p : ps) {
+                            HousekeepingOption o = ((Housekeeping)p.content).option;
+                            if (!latestPs.containsKey(o._id)) {
+                                latestPs.put(o._id, p);
+                            } else {
+                                Permintaan otherP = latestPs.get(o._id);
+                                if (p.created.compareTo(otherP.created) > 0) {
+                                    latestPs.put(o._id, p);
+                                }
+                            }
+                        }
+                        return latestPs;
+                    }
+                })
+                .map(new Func1<Map<String, Permintaan>, Map<String, String>>() {
+                    @Override public Map<String, String> call(Map<String, Permintaan> latestPs) {
+                        Map<String, String> statuses = new HashMap<>();
+                        for (String optionId : latestPs.keySet()) {
+                            statuses.put(optionId, latestPs.get(optionId).state);
+                        }
+                        return statuses;
+                    }
+                });
     }
 
     /**

@@ -121,6 +121,8 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content.addProperty("section_in", housekeeping.option.sectionIn);
                 content.addProperty("section_zh", housekeeping.option.sectionZh);
                 content.addProperty("section_ru", housekeeping.option.sectionRu);
+                content.addProperty("max", housekeeping.option.max);
+                content.addProperty("quantity", housekeeping.quantity);
                 break;
             case Permintaan.TYPE_ENGINEERING:
                 Engineering engineering = (Engineering)src.content;
@@ -210,10 +212,12 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 String sectionIn = c.getAsJsonPrimitive("section_in").getAsString();
                 String sectionZh = c.getAsJsonPrimitive("section_zh").getAsString();
                 String sectionRu = c.getAsJsonPrimitive("section_ru").getAsString();
+                Integer max = c.getAsJsonPrimitive("max").getAsInt();
+                Integer quantityHousekeeping = c.getAsJsonPrimitive("quantity").getAsInt();
                 HousekeepingOption optionHousekeeping = new HousekeepingOption(idHousekeeping, revHousekeeping,
                         nameEnHousekeeping, nameInHousekeeping, nameZhHousekeeping, nameRuHousekeeping,
-                        null, sectionEn, sectionIn, sectionZh, sectionRu, null);
-                content = new Housekeeping(message, optionHousekeeping);
+                        null, sectionEn, sectionIn, sectionZh, sectionRu, null, max);
+                content = new Housekeeping(message, quantityHousekeeping, optionHousekeeping);
                 break;
             case Permintaan.TYPE_MASSAGE:
                 String idMassage = c.getAsJsonPrimitive("_id").getAsString();
@@ -243,10 +247,10 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 List<OrderItem> restaurantItems = new ArrayList<>();
                 for (int i = 0; i < c.getAsJsonArray("items").size(); i++) {
                     JsonObject item = (JsonObject)c.getAsJsonArray("items").get(i);
-                    Integer quantity = item.getAsJsonPrimitive("quantity").getAsInt();
+                    Integer quantityRestaurant = item.getAsJsonPrimitive("quantity").getAsInt();
                     Integer priceRestaurant = item.getAsJsonPrimitive("price").getAsInt();
                     String name = item.getAsJsonPrimitive("name").getAsString();
-                    restaurantItems.add(new OrderItem(quantity, name, priceRestaurant));
+                    restaurantItems.add(new OrderItem(quantityRestaurant, name, priceRestaurant));
                 }
                 Integer totalRestaurantPrice = c.getAsJsonPrimitive("total_price").getAsInt();
                 content = new RestaurantOrder(message, restaurantItems, totalRestaurantPrice);

@@ -20,4 +20,12 @@
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/survey_list_row" />
 
+    <ImageView
+        android:id="@+id/survey_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_next"
+        android:alpha="0"/>
+
 </LinearLayout>

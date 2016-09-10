@@ -64,16 +64,17 @@ public  class StaffPermintaanFragment extends Fragment {
         List<String> completed_permintaan = new ArrayList<>();
         //List<String> cancelled_permintaan = new ArrayList<>();
 
-        String subUserType = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("subUserType", "none");
-        Log.v("subUserType", subUserType);
+//        String subUserType = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("subUserType", "none");
+//        Log.v("subUserType", subUserType);
 
         // Set up child data
         for (Permintaan permintaan : permintaans) {
-            if (subUserType.equals(permintaan.owner)) {
+//            if (subUserType.equals(permintaan.owner)) {
                 permintaanIdToPermintaan.put(permintaan._id, permintaan);
                 switch (permintaan.state) {
                     case Permintaan.STATE_NEW:
                         new_permintaan.add(permintaan._id);
+                        Log.v("ZGH", new_permintaan.toString());
                         break;
                     case Permintaan.STATE_INPROGRESS:
                         inprogress_permintaan.add(permintaan._id);
@@ -89,7 +90,7 @@ public  class StaffPermintaanFragment extends Fragment {
                     default:
                         Log.e(StaffPermintaanFragment.class.getCanonicalName(), "Unknown state for " + permintaan);
                 }
-            }
+//            }
         }
 
         stateToPermintaanIds.put(states.get(0), new_permintaan); // Header, Child data

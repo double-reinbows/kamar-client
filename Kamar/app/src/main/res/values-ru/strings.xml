@@ -79,7 +79,7 @@
 
     <!-- Nav drawer -->
     <string name="nav_drawer_requests">REQUESTS</string>
-    <string name="nav_drawer_chat">CHAT</string>
+    <string name="nav_drawer_chat">ЧАТ</string>
     <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
     <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
     <string name="nav_drawer_staff_hours">STAFF HOURS</string>
@@ -126,9 +126,9 @@
     <string name="survey_label">Survey</string>
     <string name="survey_submit_button">Submit</string>
 
-    <string name="massage_label">Massage</string>
-    <string name="massage_message">Are you sure you want to book this massage?</string>
-    <string name="massage_result">Massage request sent</string>
+    <string name="massage_label">Массаж</string>
+    <string name="massage_message">Вы уверены, что хотите заказать этот массаж ?</string>
+    <string name="massage_result">бронирование Массаж просил</string>
 
     <string name="restaurant_label">Menu</string>
     <string name="restaurant_success"> Successfully placed your order!</string>
@@ -141,7 +141,7 @@
     <string name="restaurant_back_button">Back</string>
     <string name="restaurant_confirm_input">Comments...</string>
     <string name="restaurant_confirmation_label">Restaurant Confirmation</string>
-    <string name="restaurant_confirmation_dialog_title">Thank you for your order.</string>
+    <string name="restaurant_confirmation_dialog_title">Спасибо за ваш заказ.</string>
     <string name="restaurant_confirmation_dialog_desc">
         For updates on your order\'s current progress,\n please click the My Requests button \n
         located in our Home Page.
@@ -155,7 +155,7 @@
     <string name="room_number_changed">Room number changed</string>
     <string name="room_number_password">Input password</string>
     <string name="room_number_result">Room number changed</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Выйти</string>
     <string name="logout_result">Logged out of guest</string>
 
     <string name="guest_welcome_title">Welcome!</string>
@@ -164,4 +164,16 @@
     <string name="no_ironing">No Ironing</string>
     <string name="on_hanger">On Hanger</string>
     <string name="folded">Folded</string>
+    <string name="housekeeping_confirm">Пожалуйста, подтвердите этот заказ</string>
+    <string name="housekeeping_label">домоводство</string>
+    <string name="housekeeping_zero_order">Пожалуйста, выберите допустимое количество</string>
+    <string name="logout_change_room_number">Change room no.</string>
+    <string name="logout_reset_tablet">Reset tablet</string>
+    <string name="logout_options">Пожалуйста, выберите один из следующих вариантов ...</string>
+    <string name="logout_staff">Staff mode</string>
+    <string name="nav_drawer_about">О НАС</string>
+    <string name="nav_drawer_change_language">ИЗМЕНИТЬ ЯЗЫК</string>
+    <string name="nav_drawer_home">HOMEPAGE</string>
+    <string name="permintaan_assign_person">Please enter staff person\'s name</string>
+    <string name="promo_img_select">Promotional Image</string>
 </resources>

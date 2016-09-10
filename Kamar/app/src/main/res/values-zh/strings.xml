@@ -126,9 +126,9 @@
     <string name="survey_label">Survey</string>
     <string name="survey_submit_button">Submit</string>
 
-    <string name="massage_label">Massage</string>
-    <string name="massage_message">Are you sure you want to book this massage?</string>
-    <string name="massage_result">Massage request sent</string>
+    <string name="massage_label">按摩</string>
+    <string name="massage_message">你確定要預訂按摩？</string>
+    <string name="massage_result">按摩預約請求 </string>
 
     <string name="restaurant_label">Menu</string>
     <string name="restaurant_success"> Successfully placed your order!</string>
@@ -141,7 +141,7 @@
     <string name="restaurant_back_button">Back</string>
     <string name="restaurant_confirm_input">Comments...</string>
     <string name="restaurant_confirmation_label">Restaurant Confirmation</string>
-    <string name="restaurant_confirmation_dialog_title">Thank you for your order.</string>
+    <string name="restaurant_confirmation_dialog_title">謝謝您的訂單。</string>
     <string name="restaurant_confirmation_dialog_desc">
         For updates on your order\'s current progress,\n please click the My Requests button \n
         located in our Home Page.
@@ -155,7 +155,7 @@
     <string name="room_number_changed">Room number changed</string>
     <string name="room_number_password">Input password</string>
     <string name="room_number_result">Room number changed</string>
-    <string name="logout">Logout</string>
+    <string name="logout">登出</string>
     <string name="logout_result">Logged out of guest</string>
 
     <string name="guest_welcome_title">Welcome!</string>
@@ -164,4 +164,16 @@
     <string name="no_ironing">No Ironing</string>
     <string name="on_hanger">On Hanger</string>
     <string name="folded">Folded</string>
+    <string name="housekeeping_confirm">請確認訂單</string>
+    <string name="housekeeping_label">家政</string>
+    <string name="housekeeping_zero_order">請選擇一個有效的量</string>
+    <string name="logout_reset_tablet">Reset tablet</string>
+    <string name="logout_options">請選擇下列選項之一......</string>
+    <string name="logout_staff">Staff mode</string>
+    <string name="nav_drawer_about">關於我們</string>
+    <string name="nav_drawer_change_language">改變語言</string>
+    <string name="nav_drawer_home">主頁</string>
+    <string name="permintaan_assign_person">Please enter staff person\'s name</string>
+    <string name="promo_img_select">Promotional Image</string>
+    <string name="logout_change_room_number">Change room no.</string>
 </resources>

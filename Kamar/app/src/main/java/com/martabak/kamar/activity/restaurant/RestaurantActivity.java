@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -43,7 +42,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private List<Consumable> beverages;
     private List<Consumable> desserts;
 
-    RestaurantExpandableListAdapter listAdapter;
+    RestaurantExpListAdapter listAdapter;
     private TextView subtotalText;
     private Boolean dessertFlag = false;
 
@@ -212,7 +211,7 @@ public class RestaurantActivity extends AppCompatActivity {
         //FloatingActionButton subtotalButton = (FloatingActionButton) findViewById(R.id.restaurant_subtotal_button);
 
         //set up restaurant expandable list adapter
-        listAdapter = new RestaurantExpandableListAdapter(this, subsections, subsectionToIds,
+        listAdapter = new RestaurantExpListAdapter(this, subsections, subsectionToIds,
                 idToConsumable, idToQuantity, subtotalText);
 
         //set list adapter onto view
@@ -291,6 +290,4 @@ public class RestaurantActivity extends AppCompatActivity {
             createExpandableList(consumables, view);
         }
     }
-
-
 }

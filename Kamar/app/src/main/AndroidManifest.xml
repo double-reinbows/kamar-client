@@ -103,8 +103,7 @@
             android:label="@string/restaurant_confirmation_label"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".activity.guest.HousekeepingActivity"
+        <activity android:name=".activity.housekeeping.HousekeepingActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/housekeeping_label"
             android:screenOrientation="landscape"

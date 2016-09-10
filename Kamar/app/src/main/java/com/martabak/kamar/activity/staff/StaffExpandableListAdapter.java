@@ -4,14 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -28,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
@@ -209,7 +207,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     public void onClick(DialogInterface dialog, int which) {
                         String assignee = textInput.getText().toString();
                         final Permintaan currPermintaan = getChild(groupPosition, childPosition);
-                        doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, 0, assignee);
+                        doGetAndUpdatePermintaan(currPermintaan._id, 0, assignee);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -267,17 +265,21 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     contentString += "\nDeparting in: "+transportOrder.departingIn+
                                     "\nDestination: "+transportOrder.destination+
                                     "\nNumber of passengers: "+transportOrder.passengers;
+                } else if (currPermintaan.content.getType().equals((Permintaan.TYPE_HOUSEKEEPING))) {
+                    Housekeeping hkOrder = (Housekeeping) currPermintaan.content;
+                    contentString += "\nOrder: "+hkOrder.option.nameEn+
+                                    "\nQuantity: "+hkOrder.quantity;
                 }
 
                 builder
                         .setTitle(currPermintaan.type + " ORDER DETAILS")
                         .setMessage("Room No. "+currPermintaan.roomNumber+"\n"+
-                                "Guest's name: "+currPermintaan.guestId+"\n"+
+                                "Guest's id: "+currPermintaan.guestId+"\n"+
                                 "State: "+currPermintaan.state+"\n"+
                                 "Message: "+currPermintaan.content.message+"\n"+
                                 "Order lodged at: "+simpleCreated+"\n"+
                                 "Last Status change at "+simpleUpdated+"\n"+
-                                "Time since latest Status change: "+lastStateChange/60+" minutes ago\n"+
+                                "Time since latest status change: "+lastStateChange/60+" minutes ago\n"+
                                 "Assignee: "+currPermintaan.assignee+
                                 "\nContent: "+contentString)
                         .setCancelable(true)
@@ -307,7 +309,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 //                                Permintaan currPermintaan = getChild(groupPosition, childPosition);
                                 Log.v("id", currPermintaan._id);
 
-                                doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, 1, null);
+                                doGetAndUpdatePermintaan(currPermintaan._id, 1, null);
 /*
                                 //Get the list of permintaans in the next state
                                 List<String> nextPermintaans = stateToPermIds.get(states.get(groupPosition + 1));
@@ -356,7 +358,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
 //                                Permintaan currPermintaan = getChild(groupPosition, childPosition);
 
-                                doGetAndUpdatePermintaan(currPermintaan._id, groupPosition, -1, null);
+                                doGetAndUpdatePermintaan(currPermintaan._id, -1, null);
 /*
                                 //Get the list of permintaans in the current & previous state
                                 List<String> currPermintaans = stateToPermIds.get(states.get(groupPosition));
@@ -422,8 +424,8 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         return state;
     }
 
-    private void doGetAndUpdatePermintaan(final String _id, final int groupPosition, final int increment,
-                                            final String assignee) {
+    private void doGetAndUpdatePermintaan(final String _id, final int increment,
+                                          final String assignee) {
         Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "Doing get permintaan of state");
 
         final String currState = idToPermintaan.get(_id).state;
@@ -439,7 +441,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
             public void onCompleted() {
                 Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "completed getpermintaan, now updating");
                 String updatedAssignee = null;
-                if (assignee.equals(null)) {
+                if (assignee == null) {
                     updatedAssignee = tempPermintaan.assignee;
                 } else {
                     Log.v("Assignee", assignee);
