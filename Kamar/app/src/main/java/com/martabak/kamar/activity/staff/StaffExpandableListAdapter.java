@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -74,7 +75,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        Permintaan p = getChild(groupPosition, childPosition);
+        final Permintaan currPermintaan = getChild(groupPosition, childPosition);
 
         LayoutInflater infalInflater = (LayoutInflater) this.context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -83,14 +84,14 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
         //Set main text
         TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
-        String simpleCreated = new SimpleDateFormat("hh:mm a").format(p.created);
-        final String childText = p.type+" ~~~ Room No. "+p.roomNumber+" ~~~ Ordered @ "+simpleCreated;
+        String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.created);
+        final String childText = currPermintaan.type+" ~~~ Room No. "+currPermintaan.roomNumber+" ~~~ Ordered @ "+simpleCreated;
         txtListChild.setText(childText);
 
         //Set up grey filter
-//        ColorMatrix matrix = new ColorMatrix();
-//        matrix.setSaturation(0);  //0 means grayscale
-//        ColorMatrixColorFilter cf = new ColorMatrixColorFilter(matrix);
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);  //0 means grayscale
+        ColorMatrixColorFilter cf = new ColorMatrixColorFilter(matrix);
 
         //Initialize the ImageViews (buttons)
         assignPermintaanButton =(ImageView) convertView.findViewById(R.id.assign_permintaan_button);
@@ -118,7 +119,6 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String assignee = textInput.getText().toString();
-                        final Permintaan currPermintaan = getChild(groupPosition, childPosition);
                         doGetAndUpdatePermintaan(currPermintaan._id, 0, assignee);
                     }
                 });
@@ -128,9 +128,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         dialog.cancel();
                     }
                 });
-
                 builder.show();
-
             }
         });
 
@@ -140,8 +138,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         infoPermintaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v("infoPermintaan", String.valueOf(groupPosition)+" "+String.valueOf(childPosition));
-                final Permintaan currPermintaan = getChild(groupPosition, childPosition);
+
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 WindowManager manager = (WindowManager) context.getSystemService(Activity.WINDOW_SERVICE);
                 manager.getDefaultDisplay().getMetrics(displayMetrics);
@@ -166,7 +163,6 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     simpleUpdated = "never";
                     lastStateChange = 0;
                 }
-//                RestaurantOrder restoOrder = null;
                 String contentString = "";
                 String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.created);
                 if (currPermintaan.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
@@ -184,6 +180,8 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     Housekeeping hkOrder = (Housekeeping) currPermintaan.content;
                     contentString += "\nOrder: "+hkOrder.option.nameEn+
                                     "\nQuantity: "+hkOrder.quantity;
+                } else if (currPermintaan.content.getType().equals((Permintaan.TYPE_ENGINEERING))) {
+                    Log.v("DICK",currPermintaan.toString());
                 }
 
                 builder
@@ -203,18 +201,17 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 alertDialog.show();
                 alertDialog.getWindow().setLayout(width, (height-100));
             }
-
         });
 
         /**
          * Move a permintaan to the next state
          */
-        if (p.isCancellable()) {
+        if (currPermintaan.isCancellable()) {
             progressPermintaanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.v("progressPermintaan", String.valueOf(groupPosition)+" "+String.valueOf(childPosition));
-                    final Permintaan currPermintaan = getChild(groupPosition, childPosition);
+//                    final Permintaan currPermintaan = getChild(groupPosition, childPosition);
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
                     builder.setCancelable(false);
@@ -254,19 +251,19 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
             });
         } else {
-//            progressPermintaanButton.setColorFilter(cf);
-//            progressPermintaanButton.setAlpha(128);   // 128 = 0.5
+            progressPermintaanButton.setColorFilter(cf);
+            progressPermintaanButton.setAlpha(0.5f);   // 128 = 0.5
         }
 
         /**
          * Move a permintaan to a previous state
          */
-        if (p.isRegressable()) {
+        if (currPermintaan.isRegressable()) {
             regressPermintaanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.v("regressPermintaan", String.valueOf(groupPosition)+" "+String.valueOf(childPosition));
-                    final Permintaan currPermintaan = getChild(groupPosition, childPosition);
+//                    final Permintaan currPermintaan = getChild(groupPosition, childPosition);
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_regress_confirmation));
                     builder.setCancelable(false);
@@ -275,18 +272,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         public void onClick(DialogInterface dialog, int which) {
                             //Check permintaan can be regressed
                             if (currPermintaan.isRegressable()) {
-
-//                                Permintaan currPermintaan = getChild(groupPosition, childPosition);
-
                                 doGetAndUpdatePermintaan(currPermintaan._id, -1, null);
-/*
-                                //Get the list of permintaans in the current & previous state
-                                List<String> currPermintaans = stateToPermIds.get(states.get(groupPosition));
-                                List<String> prevPermintaans = stateToPermIds.get(states.get(groupPosition - 1));
-                                //Add child to the previous state and remove from current state
-                                prevPermintaans.add(currPermintaan._id);
-                                currPermintaans.remove(currPermintaan._id);
-                                */
                             } else {
                                 //TODO tell user they cannot regress
                             }
@@ -305,8 +291,8 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
             });
         } else {
-//            regressPermintaanButton.setColorFilter(cf);
-//            regressPermintaanButton.setAlpha(128);   // 128 = 0.5
+            regressPermintaanButton.setColorFilter(cf);
+            regressPermintaanButton.setAlpha(0.5f);
         }
 
         return convertView;
