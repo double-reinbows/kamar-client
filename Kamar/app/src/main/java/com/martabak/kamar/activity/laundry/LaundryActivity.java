@@ -322,7 +322,7 @@ public class LaundryActivity extends AppCompatActivity  {
                     {
                         holder.quantityText.setText(newQuantity.toString());
                     }
-                    else if (newQuantity == minQuantity)
+                    if (newQuantity == minQuantity)
                     {
                         holder.laundryCheckButton.setEnabled(false);
                         holder.pressingCheckButton.setEnabled(false);

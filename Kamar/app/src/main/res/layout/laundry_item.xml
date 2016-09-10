@@ -15,12 +15,17 @@
             android:layout_height="40dp"
             android:background="@drawable/restaurant_minus" />
 
-
         <TextView
             android:id="@+id/quantity_text"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@color/permintaanRed"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_toStartOf="@+id/add_button"
+            android:textColor="@color/guestTextColor"/>
 
         <ImageButton
             android:id="@+id/add_button"
@@ -37,27 +42,31 @@
         android:layout_height="100dp" />
     <TextView
         android:id="@+id/laundry_option_text"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:textColor="@color/darkRed"
         android:textAlignment="center"
-        android:textSize="20sp"/>
+        android:textSize="22sp"/>
 
     <CheckBox
         style="@android:style/Widget.CompoundButton.RadioButton"
         android:id="@+id/laundry_price_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="22sp"
         android:enabled="false"/>
     <CheckBox
         style="@android:style/Widget.CompoundButton.RadioButton"
         android:id="@+id/pressing_price_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="22sp"
         android:enabled="false"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/laundry_item_price_total"/>
+        android:id="@+id/laundry_item_price_total"
+        android:layout_marginLeft="50dp"
+        android:layout_width="100dp"
+        android:textSize="22sp"
+        android:layout_height="wrap_content" />
 </LinearLayout>

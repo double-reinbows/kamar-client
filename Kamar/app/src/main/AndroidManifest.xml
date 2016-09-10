@@ -130,7 +130,7 @@
         <activity
             android:name=".activity.laundry.LaundryActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/restaurant_label"
+            android:label="@string/laundry_label"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

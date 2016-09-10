@@ -22,8 +22,9 @@
                                                 tools:listitem="@layout/massage_list_row" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:divider="?android:attr/dividerVertical"
             android:orientation="horizontal"
             android:showDividers="none">
@@ -31,7 +32,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="22sp"
+                android:paddingRight="20dp"
                 android:text="@string/please_wait"/>
 
             <include layout="@layout/permintaan_status"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:background="@color/whiteTransparent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.laundry.LaundryActivity"
     tools:showIn="@layout/activity_laundry">
@@ -21,40 +22,45 @@
         android:fadeScrollbars="false"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="650dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_gravity="left">
+            android:gravity="left">
             <RadioButton
                 android:id="@+id/no_ironing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_ironing"/>
+                android:text="@string/no_ironing"
+                android:textSize="22sp"/>
 
             <RadioButton
                 android:id="@+id/on_hanger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/on_hanger"/>
+                android:text="@string/on_hanger"
+                android:textSize="22sp"/>
 
             <RadioButton
                 android:id="@+id/folded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/folded"/>
+                android:text="@string/folded"
+                android:textSize="22sp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_gravity="right">
+            android:gravity="right">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/zero"
+                android:textSize="20dp"
                 android:id="@+id/laundry_total_price"/>
 
             <Button
@@ -72,4 +78,4 @@
 
 
 
-</LinearLayout>
+</RelativeLayout>

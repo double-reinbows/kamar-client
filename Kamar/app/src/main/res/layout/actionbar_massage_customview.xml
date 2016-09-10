@@ -39,22 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:id="@+id/toolbar_roomnumber"/>
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabMode="fixed"
-                app:tabGravity="fill"
-                app:tabMaxWidth="0dp"
-                app:tabTextAppearance="@style/RestoCustomTabStyle"/>
 
-            <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="net.voidynullness.android.tabitytabs.TabLayoutActivity">
-            </android.support.v4.view.ViewPager>
         </android.support.v7.widget.Toolbar>
     </LinearLayout>
 

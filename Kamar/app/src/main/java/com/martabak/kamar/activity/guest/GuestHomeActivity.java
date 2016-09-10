@@ -131,33 +131,29 @@ public class GuestHomeActivity extends AppCompatActivity implements
     public void onDialogPositiveClick(DialogFragment dialog, Boolean success) {
         dialog.dismiss();
         if (success) {
-            switch(guestSelectedOption) {
-                case Permintaan.TYPE_HOUSEKEEPING:
-                    Toast.makeText(
-                            this,
-                            getString(R.string.housekeeping_result),
-                            Toast.LENGTH_LONG
-                    ).show();
-                    break;
-                case Permintaan.TYPE_BELLBOY:
-                    Toast.makeText(
-                            this,
-                            getString(R.string.bellboy_result),
-                            Toast.LENGTH_LONG
-                    ).show();
-                    break;
-                case "TELL US":
-                    Toast.makeText(
-                            this,
-                            getString(R.string.tellus_result),
-                            Toast.LENGTH_LONG
-                    ).show();
-                    break;
-                case Permintaan.TYPE_CHECKOUT:
-                    startCheckout(getString(R.string.bellboy_result));
-                    break;
-                default:
-                    break;
+            if (guestSelectedOption.equals(Permintaan.TYPE_HOUSEKEEPING)) {
+                Toast.makeText(
+                        this,
+                        getString(R.string.housekeeping_result),
+                        Toast.LENGTH_LONG
+                ).show();
+
+            } else if (guestSelectedOption.equals(getString(R.string.bellboy_label))) {
+                Toast.makeText(
+                        this,
+                        getString(R.string.bellboy_result),
+                        Toast.LENGTH_LONG
+                ).show();
+
+            } else if (guestSelectedOption.equals("TELL US")) {
+                Toast.makeText(
+                        this,
+                        getString(R.string.tellus_result),
+                        Toast.LENGTH_LONG
+                ).show();
+
+            } else if (guestSelectedOption.equals(Permintaan.TYPE_CHECKOUT)) {
+                startCheckout(getString(R.string.bellboy_result));
             }
         }
         else {
@@ -167,8 +163,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
                     Toast.LENGTH_LONG
             ).show();
         }
-
-
     }
 
     /**
