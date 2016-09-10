@@ -29,6 +29,9 @@ import android.widget.TextView;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
+import com.martabak.kamar.domain.permintaan.LaundryOrder;
+import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
+import com.martabak.kamar.domain.permintaan.Massage;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
@@ -138,7 +141,6 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         infoPermintaanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 WindowManager manager = (WindowManager) context.getSystemService(Activity.WINDOW_SERVICE);
                 manager.getDefaultDisplay().getMetrics(displayMetrics);
@@ -158,7 +160,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 long lastStateChange;
                 if (currPermintaan.updated != null) {
                     simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
-                    lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime())/1000;
+                    lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime()) / 1000;
                 } else {
                     simpleUpdated = "never";
                     lastStateChange = 0;
@@ -167,32 +169,42 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.created);
                 if (currPermintaan.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
                     RestaurantOrder restoOrder = (RestaurantOrder) currPermintaan.content;
-                    for (OrderItem o:restoOrder.items) {
-                        contentString += "\n"+o.quantity+" "+o.name+" Rp. "+o.price;
+                    for (OrderItem o : restoOrder.items) {
+                        contentString += "\n" + o.quantity + " " + o.name + " Rp. " + o.price;
                     }
-                    contentString += " \nTotal: Rp. "+ restoOrder.totalPrice;
+                    contentString += " \nTotal: Rp. " + restoOrder.totalPrice;
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_TRANSPORT)) {
                     Transport transportOrder = (Transport) currPermintaan.content;
-                    contentString += "\nDeparting in: "+transportOrder.departingIn+
-                                    "\nDestination: "+transportOrder.destination+
-                                    "\nNumber of passengers: "+transportOrder.passengers;
-                } else if (currPermintaan.content.getType().equals((Permintaan.TYPE_HOUSEKEEPING))) {
+                    contentString += "\nDeparting in: " + transportOrder.departingIn +
+                            "\nDestination: " + transportOrder.destination +
+                            "\nNumber of passengers: " + transportOrder.passengers;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_HOUSEKEEPING)) {
                     Housekeeping hkOrder = (Housekeeping) currPermintaan.content;
-                    contentString += "\nOrder: "+hkOrder.option.nameEn+
-                                    "\nQuantity: "+hkOrder.quantity;
-                } else if (currPermintaan.content.getType().equals((Permintaan.TYPE_ENGINEERING))) {
-                    Log.v("DICK",currPermintaan.toString());
+                    contentString += "\nOrder: " + hkOrder.option.nameEn +
+                            "\nQuantity: " + hkOrder.quantity;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_LAUNDRY)) {
+                    LaundryOrder laundryOrder = (LaundryOrder) currPermintaan.content;
+                    for (LaundryOrderItem l : laundryOrder.items) {
+                        contentString += "\n"+l.option.nameEn+": "+l.quantity+"\n";
+                    }
+                    contentString += laundryOrder.message;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_ENGINEERING)) {
+//                    Log.v("DICK",currPermintaan.toString());
+                    Engineering engOrder = (Engineering) currPermintaan.content;
+                    contentString += "\nOrder: "+engOrder.option.nameEn;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_MASSAGE)) {
+                    Massage massageOrder = (Massage)currPermintaan.content;
+                    contentString += "\nOrder: "+massageOrder.option.nameEn;
                 }
 
                 builder
                         .setTitle(currPermintaan.type + " ORDER DETAILS")
                         .setMessage("Room No. "+currPermintaan.roomNumber+"\n"+
-                                "Guest's id: "+currPermintaan.guestId+"\n"+
                                 "State: "+currPermintaan.state+"\n"+
                                 "Message: "+currPermintaan.content.message+"\n"+
                                 "Order lodged at: "+simpleCreated+"\n"+
                                 "Last Status change at "+simpleUpdated+"\n"+
-                                "Time since latest status change: "+lastStateChange/60+" minutes ago\n"+
+                                "Time since last status change: "+lastStateChange/60+" minutes ago\n"+
                                 "Assignee: "+currPermintaan.assignee+
                                 "\nContent: "+contentString)
                         .setCancelable(true)

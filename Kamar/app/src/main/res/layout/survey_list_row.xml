@@ -44,21 +44,29 @@
             android:id="@+id/smiley2"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@drawable/survey_sad"
+            android:button="@android:color/transparent"
             android:tag="2"/>
         <RadioButton
             android:id="@+id/smiley3"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@drawable/survey_neutral"
+            android:button="@android:color/transparent"
             android:tag="3"/>
         <RadioButton
             android:id="@+id/smiley4"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@drawable/survey_happy"
+            android:button="@android:color/transparent"
             android:tag="4"/>
         <RadioButton
             android:id="@+id/smiley5"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@drawable/survey_very_happy"
+            android:button="@android:color/transparent"
             android:tag="5"/>
     </RadioGroup>
 

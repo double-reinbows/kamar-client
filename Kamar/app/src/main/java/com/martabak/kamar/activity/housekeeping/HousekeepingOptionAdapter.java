@@ -55,7 +55,27 @@ public class HousekeepingOptionAdapter
         holder.itemView.setSelected(selectedPos == position);
         holder.item = housekeepingOptions.get(position);
         holder.nameView.setText(housekeepingOptions.get(position).getName());
-        Log.v("AAA", holder.item.getImageUrl());
+//        holder.nameView.post(new Runnable() {
+//            @Override
+//            public void run() {
+////                Log.v("Child info", "child: "+currConsumable.name+" no. of lines: "+Integer.toString(txtListChild.getLineCount()));
+//                if (holder.nameView.count) {//if 2 lines used for item name
+//                    //reduce item name padding
+//                    txtListChild.setPadding(txtListChild.getPaddingLeft(),
+//                            txtListChild.getPaddingTop(),
+//                            txtListChild.getPaddingRight(),
+//                            20);
+//                } /*else {
+//                    //set item name padding to default
+//                    txtListChild.setPadding(txtListChild.getPaddingLeft(),
+//                            txtListChild.getPaddingTop(),
+//                            txtListChild.getPaddingRight(),
+//                            90);
+//
+////                    quantity.margin
+//                }*/
+//            }
+//        });
         Server.picasso(context)
             .load(holder.item.getImageUrl())
             .placeholder(R.drawable.loading_batik)

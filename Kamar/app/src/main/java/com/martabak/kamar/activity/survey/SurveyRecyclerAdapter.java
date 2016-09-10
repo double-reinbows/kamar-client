@@ -37,16 +37,6 @@ public class SurveyRecyclerAdapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.survey_list_row, parent, false);
-//        final ViewHolder holder = new ViewHolder(view);
-//
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int itemPosition = holder.getAdapterPosition();
-//                Log.v("Clicked on: ",mValues.get(itemPosition).getQuestion());
-//            }
-//        });
-//        return holder;
         return new ViewHolder(view);
     }
 
