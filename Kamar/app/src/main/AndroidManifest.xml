@@ -10,8 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:largeHeap="true"
-        android:theme="@style/KamarAppTheme"
-        android:name=".activity.guest.App">
+        android:theme="@style/KamarAppTheme">
 
 
         <service android:name=".activity.chat.GuestChatService" />

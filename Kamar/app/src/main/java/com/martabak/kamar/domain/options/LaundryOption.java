@@ -47,7 +47,7 @@ public class LaundryOption extends Option {
      * @return The URL of the image of this option.
      */
     public String getImageUrl() {
-        return StaffServer.getBaseUrl()  +  "/laundry_option/" + this._id + "/" + this.attachmentName + ".jpg";
+        return StaffServer.getBaseUrl()  +  "/laundry_option/" + this._id + "/" + this.attachmentName;
     }
 }
 

@@ -13,16 +13,19 @@ import android.widget.TextView;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
- * Image adapter to show the permintaan image types in guest home.
+ * guest home adapter to show the permintaan images and texts in guest home.
  */
 public class GuestHomeAdapter extends BaseAdapter {
 
     /**
      * References to our images.
      */
-    private static final Integer[] IMAGES = {
+    private  final Integer[] IMAGES = {
             R.drawable.ic_events,
             R.drawable.ic_restaurant,
             R.drawable.ic_housekeeping,
@@ -36,21 +39,23 @@ public class GuestHomeAdapter extends BaseAdapter {
     /**
      * Text descriptions.
      */
-    private static final String[] TEXT = {
-            App.getContext().getResources().getString(R.string.event_label),
-            App.getContext().getResources().getString(R.string.restaurant_label),
-            App.getContext().getResources().getString(R.string.housekeeping_label),
-            App.getContext().getResources().getString(R.string.laundry_label),
-            App.getContext().getResources().getString(R.string.engineering_label),
-            App.getContext().getResources().getString(R.string.massage_label),
-            App.getContext().getResources().getString(R.string.bellboy_label),
-            App.getContext().getResources().getString(R.string.survey_label)
-    };
-
     private Context mContext;
+
+    private List<String> TEXT = new ArrayList<String>();
+
 
     public GuestHomeAdapter(Context c) {
         mContext = c;
+        //adding all the text here
+        TEXT.add(mContext.getResources().getString(R.string.event_label));
+        TEXT.add(mContext.getResources().getString(R.string.restaurant_label));
+        TEXT.add(mContext.getResources().getString(R.string.housekeeping_label));
+        TEXT.add(mContext.getResources().getString(R.string.laundry_label));
+        TEXT.add(mContext.getResources().getString(R.string.engineering_label));
+        TEXT.add(mContext.getResources().getString(R.string.massage_label));
+        TEXT.add(mContext.getResources().getString(R.string.bellboy_label));
+        TEXT.add(mContext.getResources().getString(R.string.survey_label));
+
     }
 
     public int getCount() {
@@ -58,7 +63,7 @@ public class GuestHomeAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return TEXT[position];
+        return TEXT.get(position);
     }
 
     public long getItemId(int position) {
@@ -86,7 +91,7 @@ public class GuestHomeAdapter extends BaseAdapter {
         imageView = (ImageView) grid.findViewById(R.id.grid_image);
         textView = (TextView) grid.findViewById(R.id.grid_text);
         grid.setLayoutParams(new GridView.LayoutParams(280, 250));
-        textView.setText(TEXT[position]);
+        textView.setText(TEXT.get(position));
         imageView.setImageResource(IMAGES[position]);
 
         //grid.setPadding(8, 8, 8, 8);

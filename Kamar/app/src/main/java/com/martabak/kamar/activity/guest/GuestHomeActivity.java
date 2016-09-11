@@ -331,6 +331,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
      public void onIconClick(String option) {
 
          guestSelectedOption = option;
+         Log.v("GUEST SELECTED OPTION", option);
          if (option.equals("MY REQUESTS")) {
              startActivity(new Intent(this, GuestPermintaanActivity.class));
 
@@ -340,7 +341,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
          } else if (option.equals(getString(R.string.massage_label))) {
              startActivity(new Intent(this, MassageActivity.class));
 
-         } else if (option.equals(getString(R.string.housekeeping_label))) {//new HousekeepingDialogFragment().show(getFragmentManager(), "housekeeping");
+         } else if (option.equals(getString(R.string.housekeeping_label))) {
              startActivity(new Intent(this, HousekeepingActivity.class));
 
          } else if (option.equals(getString(R.string.bellboy_label))) {
