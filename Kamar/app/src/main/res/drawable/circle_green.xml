@@ -3,6 +3,6 @@
         android:innerRadius="0dp"
         android:shape="oval"
         android:useLevel="false" >
-<solid android:color="@android:color/transparent" />
+<solid android:color="@color/permintaanGreen" />
 <stroke android:width="10dp" android:color="@color/permintaanGreen" />
 </shape>

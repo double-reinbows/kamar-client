@@ -3,41 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/hk_img"
+        android:layout_width="225dp"
+        android:layout_height="125dp"
+        android:layout_alignParentStart="true"/>
     <TextView
         android:id="@+id/hk_name"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="45dp"
-        android:layout_alignParentStart="true"
+        android:layout_toRightOf="@+id/hk_img"
         android:textSize="23sp"
         android:ellipsize="none"
         android:textColor="@color/black"
         android:maxLines="2"
         android:scrollHorizontally="false"/>
-    <ImageView
-        android:id="@+id/hk_submit"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_toRightOf="@+id/hk_spinner"
-        android:src="@drawable/restaurant_plus"/>
-    <Spinner
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:id="@+id/hk_spinner"
-        android:layout_toRightOf="@id/hk_name"/>
-    <ImageView
-        android:id="@+id/hk_img"
-        android:layout_width="450dp"
-        android:layout_height="125dp"
-        android:layout_toLeftOf="@+id/hk_status"/>
     <LinearLayout
         android:id="@+id/hk_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true">
+        android:layout_toRightOf="@+id/hk_name">
             <include layout="@layout/permintaan_status"/>
     </LinearLayout>
+    <Spinner
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:id="@+id/hk_spinner"
+        android:layout_toRightOf="@+id/hk_status"/>
+    <ImageView
+        android:id="@+id/hk_submit"
+        android:layout_width="200dp"
+        android:layout_height="65dp"
+        android:layout_toRightOf="@+id/hk_spinner"
+        android:src="@drawable/button_submit"/>
 
 
 

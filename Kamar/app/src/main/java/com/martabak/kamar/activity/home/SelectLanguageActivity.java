@@ -65,7 +65,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     setLocale("en");
-
+                    Log.v("LOCALE",Locale.getDefault().getLanguage());
                     Toast.makeText(
                             SelectLanguageActivity.this,
                             getString(R.string.language_set_to),
@@ -90,7 +90,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     setLocale("in");
-
+                    Log.v("LOCALE",Locale.getDefault().getLanguage());
                     Toast.makeText(
                             SelectLanguageActivity.this,
                             getString(R.string.language_set_to),
@@ -115,7 +115,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     setLocale("ru");
-
+                    Log.v("LOCALE",Locale.getDefault().getLanguage());
                     Toast.makeText(
                             SelectLanguageActivity.this,
                             getString(R.string.language_set_to),
@@ -140,7 +140,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     setLocale("zh");
-
+                    Log.v("LOCALE",Locale.getDefault().getLanguage());
                     Toast.makeText(
                             SelectLanguageActivity.this,
                             getString(R.string.language_set_to),
