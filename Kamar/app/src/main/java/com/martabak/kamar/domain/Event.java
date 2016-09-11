@@ -46,6 +46,11 @@ public class Event extends Model {
      */
     @SerializedName("end_date") public final Date endDate;
 
+    /**
+     * The name of the image attachment.
+     */
+    @SerializedName("attachment_name") public final String attachmentName;
+
 
     public Event() {
         this.name = null;
@@ -55,10 +60,11 @@ public class Event extends Model {
         this.type = null;
         this.startDate = null;
         this.endDate = null;
+        this.attachmentName = null;
     }
 
     public Event(String name, String descriptionEn, String descriptionIn, String descriptionZh, String type,
-                 Date startDate, Date endDate) {
+                 Date startDate, Date endDate, String attachmentName) {
         super(null, null);
         this.name = name;
         this.descriptionEn = descriptionEn;
@@ -67,10 +73,11 @@ public class Event extends Model {
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.attachmentName = attachmentName;
     }
 
     public Event(String _id, String _rev, String name, String descriptionEn, String descriptionIn,
-                 String descriptionZh, String type, Date startDate, Date endDate) {
+                 String descriptionZh, String type, Date startDate, Date endDate, String attachmentName) {
         super(_id, _rev);
         this.name = name;
         this.descriptionEn = descriptionEn;
@@ -79,6 +86,7 @@ public class Event extends Model {
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.attachmentName = attachmentName;
     }
 
     /**
@@ -86,7 +94,7 @@ public class Event extends Model {
      * E.g. http://theserver:5984/219310931202313/image.jpg.
      */
     public String getImageUrl() {
-        return EventServer.getBaseUrl() + "/event/" + this._id + "/";
+        return EventServer.getBaseUrl() + "/event/" + this._id + "/" + this.attachmentName;
     }
 
 }

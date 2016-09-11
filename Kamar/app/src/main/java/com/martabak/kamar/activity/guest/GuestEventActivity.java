@@ -148,7 +148,7 @@ public class GuestEventActivity extends AppCompatActivity {
                     public void onNext(Event result) {
                         Log.d(GuestEventActivity.class.getCanonicalName(), "getEvent On next");
                         if (result != null) {
-                            imageUrls.add(result.getImageUrl() + result.name + ".jpg");
+                            imageUrls.add(result.getImageUrl());
                             Log.d("Promo Image: ", result.name);
 
                         }
