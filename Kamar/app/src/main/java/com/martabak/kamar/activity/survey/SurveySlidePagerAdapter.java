@@ -31,7 +31,7 @@ import rx.Observer;
 
 /**
  * A pager adapter that creates a fragment for each survey section.
- * Each fragment creates a recycler view.
+ * Each fragment contains a recycler view.
  */
 class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
 
@@ -42,10 +42,8 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
 
     public SurveySlidePagerAdapter(FragmentManager fm) {
         super(fm);
-//        this.sections = s;
         this.idToQuestion = SurveyManager.getInstance().getQuestions();
         this.sectionMappings = SurveyManager.getInstance().getMappings();
-//        this.secToQuestions = sToQ;
         this.idToRating = SurveyManager.getInstance().getRatings();
         this.sections = new ArrayList<>();
     }
@@ -54,7 +52,9 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Bundle args = new Bundle();
         args.putBoolean("flag", Boolean.FALSE);
-        SurveyManager.getInstance().setCurrSection(sections.get(position));
+        Log.v("SECTIONS", sections.toString());
+        //for some reason this doesn't work: SurveyManager.getInstance().setCurrSection(sections.get(position));
+        args.putString("currSection", sections.get(position));
         if (position == getCount()-1) {//set "last slide" flag
             args.putBoolean("flag", Boolean.TRUE);
             SurveyManager.getInstance().setFlag(Boolean.TRUE);
@@ -70,7 +70,6 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
         if (sections.size() == 0) {
             sections.addAll(sectionMappings.keySet());
         }
-//                Log.v("ZZZZ", sections.toString());
         return sections.size();
     }
 
@@ -92,7 +91,8 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                 idToRating = SurveyManager.getInstance().getRatings();
                 questions = SurveyManager.getInstance().getQuestions();
                 flag = args.getBoolean("flag");
-                currSection = SurveyManager.getInstance().getCurrSection();
+                currSection = args.getString("currSection");
+//                currSection = SurveyManager.getInstance().getCurrSection();
 //                flag = SurveyManager.getInstance().getFlag();
             } else {
                 return null;
@@ -115,7 +115,6 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                 submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    HashMap<String, SurveyQuestion> questions = SurveyManager.getInstance().getQuestions();
                     List<SurveyAnswer> list = new ArrayList<>();
                     for (String id : questions.keySet()) {
                         SurveyQuestion q = questions.get(id);
@@ -129,20 +128,17 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                                 @Override
                                 public void onCompleted() {
                                 }
-
                                 @Override
                                 public void onError(Throwable e) {
                                     Log.d(SurveySlidePagerAdapter.class.getCanonicalName(), "getSurveyQuestions() On error");
                                     e.printStackTrace();
                                 }
-
                                 @Override
                                 public void onNext(Boolean result) {
                                     if (result) {
                                         Log.v("WWW", "answers created");
                                     }
                                 }
-
                             });
                     }
                 });
@@ -164,12 +160,6 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                 Integer i = Integer.parseInt(checkedRadioButton.getTag().toString());
                 idToRating.put(question._id, i);
             }
-        }
-
-        public void unGray(){
-            Log.v("CUNT", ScreenSlidePageFragment.this.getView().toString());
-            ImageView submitButton = (ImageView)this.getView().findViewById(R.id.survey_submit);
-            submitButton.setColorFilter(Color.argb(150,200,200,200));
         }
     }
 
