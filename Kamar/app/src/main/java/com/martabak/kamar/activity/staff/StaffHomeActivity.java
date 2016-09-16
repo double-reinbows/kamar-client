@@ -78,15 +78,12 @@ public class StaffHomeActivity extends AppCompatActivity {
         super.onStop();
     }
 
+
+    /*
+     * On Back pressed don't exit the activity
+     */
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+    public void onBackPressed() {}
 
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override
