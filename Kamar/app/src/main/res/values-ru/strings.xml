@@ -184,4 +184,5 @@
     <string name="event_label">Мероприятия</string>
     <string name="laundry_label">Прачечная</string>
     <string name="laundry_result">заказ Прачечная отправлено</string>
+    <string name="zero">0</string>
 </resources>

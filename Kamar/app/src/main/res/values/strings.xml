@@ -7,4 +7,5 @@
     <string name="laundry_label">Laundry</string>
     <string name="chat_label">Chat</string>
     <string name="laundry_result">Laundry request sent!</string>
+    <string name="room_number_not_found">Sorry, I can\'t find your room number. Please notify a staff member</string>
 </resources>

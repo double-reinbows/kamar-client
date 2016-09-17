@@ -196,11 +196,23 @@ public class HousekeepingActivity extends AppCompatActivity implements
                     (HousekeepingOptionAdapter.ViewHolder)optionRecyclerView.getChildViewHolder((View)view.getParent());
             final HousekeepingOption option = holder.item;
 
-            if (holder.spinner.getSelectedItem().toString().equals("0")) {
+            if (idToStatus.containsKey(option._id)) { //pre-existing request
+                switch (idToStatus.get(option._id)) {
+                    case Permintaan.STATE_INPROGRESS:
+                    case Permintaan.STATE_NEW:
+                        Toast.makeText(
+                                getActivity().getApplicationContext(),
+                                R.string.existing_request,
+                                Toast.LENGTH_SHORT
+                        ).show();
+                        return;
+                }
+            } else if (holder.spinner.getSelectedItem().toString().equals("0")) {//quantity = 0
                  new AlertDialog.Builder(getContext())
                          .setTitle(option.getName())
                          .setMessage(R.string.housekeeping_zero_order)
                  .show();
+                return;
             //Guest chose quantity > 0
             } else {
                 new AlertDialog.Builder(getContext())
@@ -211,8 +223,15 @@ public class HousekeepingActivity extends AppCompatActivity implements
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 String owner = Permintaan.OWNER_FRONTDESK;
                                 String type = Permintaan.TYPE_HOUSEKEEPING;
-                                String roomNumber = getActivity().getSharedPreferences("userSetting s", getActivity().MODE_PRIVATE)
+                                String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                                         .getString("roomNumber", "none");
+                                if (roomNumber == "none") {
+                                    new AlertDialog.Builder(getContext())
+                                            .setTitle(option.getName())
+                                            .setMessage(R.string.room_number_not_found)
+                                            .show();
+                                    return;
+                                }
                                 String guestId = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                                         .getString("guestId", "none");
                                 String state = Permintaan.STATE_NEW;
@@ -274,7 +293,9 @@ public class HousekeepingActivity extends AppCompatActivity implements
                 .show();
             }
         }
-        //returns a list of options in the chosen section
+        /*
+         * Returns a list of options in the chosen section
+         */
         public ArrayList<HousekeepingOption> buildOptions() {
             Bundle args = getArguments();
             String section = null;
