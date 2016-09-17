@@ -184,4 +184,5 @@
     <string name="event_label">活动</string>
     <string name="laundry_label">洗衣店</string>
     <string name="laundry_result">洗衣顺序发送</string>
+    <string name="zero">0</string>
 </resources>

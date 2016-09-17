@@ -181,4 +181,5 @@
     <string name="event_label">Perihal</string>
     <string name="laundry_label">Cucian</string>
     <string name="laundry_result">Pesan laundry dikirim!</string>
+    <string name="zero">0</string>
 </resources>

@@ -94,7 +94,7 @@ public class HousekeepingOptionAdapter
         adapter.notifyDataSetChanged();
 
         String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_COMPLETED;
-        Log.d(HousekeepingActivity.class.getCanonicalName(), "Status for engineering " + holder.item.getName() + " is " + state);
+        Log.d(HousekeepingActivity.class.getCanonicalName(), "Status for housekeeping " + holder.item.getName() + " is " + state);
         switch (state) {
             case Permintaan.STATE_INPROGRESS:
                 holder.processedImageView.setBackground(context.getResources().getDrawable(R.drawable.circle_green));

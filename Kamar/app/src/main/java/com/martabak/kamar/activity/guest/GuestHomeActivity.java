@@ -232,17 +232,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
                         public void onClick(DialogInterface dialog, int which) {
                             Log.v("App Action", "Resetting tablet");
                             checkGuestOutByRoomNumber(roomNumber);
-                            getSharedPreferences("userSettings", MODE_PRIVATE)
-                                    .edit()
-                                    .putString("guestId", "none")
-                                    .commit();
-                            Toast.makeText(
-                                    GuestHomeActivity.this,
-                                    getString(R.string.logout_result),
-                                    Toast.LENGTH_LONG
-                            ).show();
-                            Intent intent = new Intent(GuestHomeActivity.this, SelectLanguageActivity.class);
-                            startActivity(intent);
                         }
                     })
                     .create().show();
@@ -265,9 +254,9 @@ public class GuestHomeActivity extends AppCompatActivity implements
     }
 
     /**
-     * Get the guest currently checked in to the room number.
+     * Gets the guest currently checked in to the room number
+     * and then goes to checkGuestOut().
      * @param roomNumber The room number.
-     * @return The guest.
      */
     private void checkGuestOutByRoomNumber(final String roomNumber) {
         //final Guest guest = null;
@@ -292,15 +281,13 @@ public class GuestHomeActivity extends AppCompatActivity implements
     }
 
     /**
-     * Check the guest out.
+     * Checks the guest out.
      */
     private void checkGuestOut(Guest guest) {
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
-        //getGuestInRoomNumber(roomNumber); //get Guest from
         Guest updatedGuest;
-        //Log.v("roomNo", roomNumber);
-        Log.v("Guest", guest._rev);
+        Log.v("Guest", guest._id);
         updatedGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
                 guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
                 guest.roomNumber, guest.promoImgId);
@@ -309,9 +296,15 @@ public class GuestHomeActivity extends AppCompatActivity implements
                     @Override public void onCompleted() {
                         //rooms.notifyDataSetChanged();
                         Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On completed");
-                        /*getSharedPreferences("userSettings", MODE_PRIVATE)
-                                .edit().putString("roomNumber", "none")
-                                .commit();*/
+                        getSharedPreferences("userSettings", MODE_PRIVATE).edit().
+                                putString("guestId", "none").commit();
+                        Toast.makeText(
+                                GuestHomeActivity.this,
+                                getString(R.string.logout_result),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        Intent intent = new Intent(GuestHomeActivity.this, SelectLanguageActivity.class);
+                        startActivity(intent);
                         }
                     @Override public void onError(Throwable e) {
                         Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On error");
@@ -379,21 +372,21 @@ public class GuestHomeActivity extends AppCompatActivity implements
     public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, boolean success, String reason) {
         if (success) {
             dialog.dismiss();
-            getSharedPreferences("userSettings", MODE_PRIVATE)
-                    .edit().putString("roomNumber", roomNumber)
-                    .commit();
+            SharedPreferences sp = getSharedPreferences("userSettings", MODE_PRIVATE);
+            sp.edit().putString("roomNumber", roomNumber).commit();
+            sp.edit().putString("guestId", "none").commit();
             Toast.makeText(
                     GuestHomeActivity.this,
                     getString(R.string.room_number_changed),
                     Toast.LENGTH_LONG
             ).show();
-            roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
+            //roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
             startActivity(new Intent(this, SelectLanguageActivity.class));
             finish();
             //String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
             //      .getString("guestId", "none");
 
-            setGuestId(roomNumber);
+            //setGuestId(roomNumber);
 
         } else {
             Toast.makeText(

@@ -54,11 +54,10 @@ public class SelectLanguageActivity extends AppCompatActivity {
         final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
 
-        setGuestId(roomNumber);
 
-        String guestId = getSharedPreferences("userSettings", MODE_PRIVATE).
-                getString("guestId", "none");
-        Log.v("guestId Shared Pref", guestId);
+//        String guestId = getSharedPreferences("userSettings", MODE_PRIVATE).
+//                getString("guestId", "none");
+//        Log.v("guestId Shared Pref", guestId);
 
         if (englishButton != null) {
             englishButton.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +72,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     ).show();
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to English");
 
-                    //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    setGuestId(roomNumber);
                     //if there is a guest checked in...
                     if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
                             getString("guestId", "none")).equals("none")) {
@@ -98,7 +97,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     ).show();
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Indonesian");
 
-                    //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    setGuestId(roomNumber);
                     //if there is a guest checked in...
                     if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
                             getString("guestId", "none")).equals("none")) {
@@ -123,7 +122,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     ).show();
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Russian");
 
-                    //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    setGuestId(roomNumber);
                     //if there is a guest checked in...
                     if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
                             getString("guestId", "none")).equals("none")) {
@@ -148,7 +147,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     ).show();
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Chinese");
 
-                    //startActivity(new Intent(SelectLanguageActivity.this, SelectUserTypeActivity.class));
+                    setGuestId(roomNumber);
                     //if there is a guest checked in...
                     if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
                             getString("guestId", "none")).equals("none")) {
