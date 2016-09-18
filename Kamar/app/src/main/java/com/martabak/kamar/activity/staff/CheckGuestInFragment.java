@@ -1,6 +1,5 @@
 package com.martabak.kamar.activity.staff;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,8 +44,6 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
     private EditText editLastName;
     private EditText editEmail;
     private EditText editPhoneNumber;
-    //private Date checkOutDate;
-    //private EditText editDateCheckOut;
     private Spinner spinnerRoomNumber;
     private EditText editWelcomeMessage;
     private Spinner spinnerPromoImg;
@@ -73,37 +69,13 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         editPhoneNumber = (EditText) view.findViewById(R.id.guest_phone);
         editEmail = (EditText) view.findViewById(R.id.guest_email);
         spinnerRoomNumber = (Spinner) view.findViewById(R.id.guest_spinner);
-        //editDateCheckOut = (EditText) view.findViewById(R.id.guest_date_check_out);
         editWelcomeMessage = (EditText) view.findViewById(R.id.guest_welcome_message);
         spinnerPromoImg = (Spinner) view.findViewById(R.id.promo_img_spinner);
         editFirstName.addTextChangedListener(this);
         editLastName.addTextChangedListener(this);
         editPhoneNumber.addTextChangedListener(this);
         promoImages = null;
-        //editDateCheckOut.addTextChangedListener(this);
-/*
-        DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
-            @Override public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                checkOutDate = newDate.getTime();
-                editDateCheckOut.setText(newDate.getTime().toString());
-                validate();
-            }
-        };
-        Calendar newCalendar = Calendar.getInstance();
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this.getActivity(),
-                dateListener,
-                newCalendar.get(Calendar.YEAR),
-                newCalendar.get(Calendar.MONTH),
-                newCalendar.get(Calendar.DAY_OF_MONTH));
-        editDateCheckOut.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                datePickerDialog.show();
-            }
-        });
-*/
+
         final List<String> roomNumbers = getRoomNumbersWithoutGuests();
         ArrayAdapter roomNumAdapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
@@ -115,8 +87,6 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         spinnerRoomNumber.setOnItemSelectedListener(this);
 
         final List<String> promoImageNames = getPromoImages();
-
-
         ArrayAdapter promImgAdapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, promoImageNames);
         promoImageNames.add(0, getString(R.string.promo_img_select));
@@ -136,18 +106,12 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                 String phoneNumber = editPhoneNumber.getText().toString();
                 String email = editEmail.getText().toString();
                 String roomNumber = roomNumbers.get((int)spinnerRoomNumber.getSelectedItemId()).toString();
-                Log.v("selectedRoomNo", roomNumber);
-                Integer selectedPromoId = (int)spinnerPromoImg.getSelectedItemId();
-                Log.v("selectedPromoImg", selectedPromoId.toString());
+                Log.v(CheckGuestInFragment.class.getCanonicalName(), "Selected room number " + roomNumber);
                 String welcome = editWelcomeMessage.getText().toString();
-                if (selectedPromoId == 0) { //No promo image selected, set it to null
-                    sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber,
-                            null, welcome, null);
-                } else {
-                    String promoImgId = promoImages.get(selectedPromoId - 1)._id;
-                    sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber,
-                            null, welcome, promoImgId);
-                }
+                Integer selectedPromoId = (int)spinnerPromoImg.getSelectedItemId();
+                Log.v(CheckGuestInFragment.class.getCanonicalName(), "Selected promo image with ID " + selectedPromoId.toString());
+                String promoImgId = selectedPromoId != 0 ? promoImages.get(selectedPromoId - 1)._id : null;
+                sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber, null, welcome, promoImgId);
             }
         });
         return view;
@@ -197,15 +161,6 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
             invalid = true;
             editPhoneNumber.setError(getString(R.string.required));
         }
-        /*
-        if (editDateCheckOut.getText().toString().trim().equalsIgnoreCase("")) {
-            Log.d(CheckGuestInFragment.class.getCanonicalName(), "Check out date field empty");
-            invalid = true;
-            editDateCheckOut.setError(getString(R.string.required));
-        } else {
-            editDateCheckOut.setError(null);
-        }
-*/
         if ((int)spinnerRoomNumber.getSelectedItemId() <= 0) {
             Log.d(CheckGuestInFragment.class.getCanonicalName(), "Valid room number required");
             invalid = true;
@@ -223,7 +178,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
      * @return A list of room number strings without guests currently checked in.
      */
     private List<String> getRoomNumbersWithoutGuests() {
-        final List<String> roomStrings = new ArrayList<String>();
+        final List<String> roomStrings = new ArrayList<>();
         GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithoutGuests()
                 .subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
@@ -256,12 +211,13 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                         e.printStackTrace();
                     }
                     @Override public void onNext(List<Event> result) {
+                        Log.v(CheckGuestInFragment.class.getCanonicalName(), "getPromoImages() onNext");
                         for (Event event : result) {
-                            Log.v("EVENT_name", event.name);
+                            Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + event.name);
                             promoImageNames[0].add(event.name);
                         }
-                        Log.v(CheckGuestInFragment.class.getCanonicalName(), "getPromoImages() onNext");
                         promoImages = result;
+                        Log.v(CheckGuestInFragment.class.getCanonicalName(), "Setting promoImages to " + promoImages + " with size " + promoImages.size());
                     }
                 });
         return promoImageNames[0];

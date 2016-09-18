@@ -27,7 +27,7 @@ public interface EventService {
     @GET("event/{id}")
     Observable<Event> getEvent(@Path("id") String id);
 
-    @GET("event/_all_docs?include_docs=true")
+    @GET("event/_all_docs?include_docs=true&descending=true&skip=1")
     Observable<AllResponse<Event>> getAllEvents();
 
     @GET("event/_design/event/_view/event")

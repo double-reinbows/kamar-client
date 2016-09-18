@@ -84,6 +84,34 @@ public class EventServer extends Server {
     }
 
     /**
+     * @return All event names in the database.
+     */
+    public Observable<List<String>> getAllEventNames() {
+        return service.getAllEvents()
+                .flatMap(new Func1<AllResponse<Event>, Observable<List<Event>>>() {
+                    @Override public Observable<List<Event>> call(AllResponse<Event> response) {
+                        List<Event> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<Event>.AllResult<Event> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+                        return Observable.just(toReturn);
+                    }
+                })
+                .map(new Func1<List<Event>, List<String>>() {
+                    @Override
+                    public List<String> call(List<Event> events) {
+                        List<String> names = new ArrayList<>();
+                        for (Event e : events) {
+                            names.add(e.name);
+                        }
+                        return names;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
      * @return Event based on the type of event, which should also be greater than today's date.
      * @param type The Event's type.
      */
