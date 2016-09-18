@@ -142,7 +142,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                         String state = Permintaan.STATE_NEW;
                         Date currentDate = Calendar.getInstance().getTime();
                         PermintaanServer.getInstance(EngineeringActivity.this).createPermintaan(
-                                new Permintaan(owner, type, roomNumber, guestId, state, currentDate, null, null,
+                                new Permintaan(owner, type, roomNumber, guestId, state, currentDate,
                                         new Engineering("", item))
                         ).subscribe(new Observer<Permintaan>() {
                             boolean success;

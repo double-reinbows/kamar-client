@@ -13,44 +13,44 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:textSize="17dp"
+        android:textSize="25dp"
         android:textColor="@color/guestTextColor" />
     <!--ImageView
         android:id="@+id/cancel_permintaan_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_toStartOf="@+id/info_permintaan_button"
         android:layout_centerVertical="true"
         android:src="@drawable/permintaan_cancel_button"
         android:focusable="false"/-->
     <ImageView
         android:id="@+id/assign_permintaan_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_toStartOf="@+id/info_permintaan_button"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_perm_identity_white_48dp"
         android:focusable="false"/>
     <ImageView
         android:id="@+id/info_permintaan_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_toStartOf="@+id/regress_permintaan_button"
         android:layout_centerVertical="true"
         android:src="@drawable/permintaan_info"
         android:focusable="false"/>
     <ImageView
         android:id="@+id/regress_permintaan_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_toStartOf="@+id/progress_permintaan_button"
         android:layout_centerVertical="true"
         android:src="@drawable/up_arrow"
         android:focusable="false"/>
     <ImageView
         android:id="@+id/progress_permintaan_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:src="@drawable/arrow_down_green"

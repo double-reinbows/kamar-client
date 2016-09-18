@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.laundry;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.domain.options.LaundryOption;
 import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -139,8 +141,10 @@ public class LaundryActivity extends AppCompatActivity  {
 
                     if ((laundryCheckButton.isChecked() || pressingCheckButton.isChecked()) && (quantity > 0))
                     {
+//                        laundryOption = setOptionPrices(laundryOption, laundryCheckButton, pressingCheckButton);
                         int itemPrice = Integer.parseInt(priceView.getText().toString());
-                        LaundryOrderItem laundryOrderItem = new LaundryOrderItem(quantity, itemPrice, laundryOption);
+                        LaundryOrderItem laundryOrderItem = new LaundryOrderItem(quantity, itemPrice,
+                                laundryCheckButton.isChecked(), pressingCheckButton.isChecked(), laundryOption);
 
                         laundryOrderItems.add(laundryOrderItem);
                     }
@@ -200,8 +204,6 @@ public class LaundryActivity extends AppCompatActivity  {
                     guestId,
                     state,
                     currentDate,
-                    null,
-                    null,
                     laundryOrder)
             ).subscribe(new Observer<Permintaan>() {
                 @Override public void onCompleted() {
@@ -211,7 +213,8 @@ public class LaundryActivity extends AppCompatActivity  {
                             R.string.laundry_result,
                             Toast.LENGTH_SHORT
                     ).show();
-                    //finish();
+                    startActivity(new Intent(getBaseContext(), GuestHomeActivity.class));
+                    finish();
                 }
                 @Override public void onError(Throwable e) {
                     Log.d(LaundryActivity.class.getCanonicalName(), "createPermintaan() On error");
@@ -520,7 +523,19 @@ public class LaundryActivity extends AppCompatActivity  {
         }
     }
 
-
+    private LaundryOption setOptionPrices(LaundryOption lOption, CheckBox laundry, CheckBox pressing) {
+        Integer newLaundryPrice = lOption.laundryPrice;
+        Integer newPressingPrice = lOption.pressingPrice;
+        if (!laundry.isChecked()) {
+            Log.v("DICK", "WAD");
+            newLaundryPrice = 0;
+        }
+        if (!pressing.isChecked()) {
+            newPressingPrice = 0;
+        }
+        return new LaundryOption(lOption.nameEn, lOption.nameIn, lOption.nameZh, lOption.nameRu,
+                newLaundryPrice, newPressingPrice, lOption.order,lOption.attachmentName);
+    }
 
 
 }

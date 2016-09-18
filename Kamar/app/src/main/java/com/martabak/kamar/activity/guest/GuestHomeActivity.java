@@ -61,7 +61,8 @@ public class GuestHomeActivity extends AppCompatActivity implements
         roomNumberTextView = (TextView) findViewById(R.id.toolbar_roomnumber);
         final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-        //setGuestId(roomNumber);
+        // set room number text
+        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
@@ -82,9 +83,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
 
         // Start any guest services.
         startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
-
-        // set room number text
-        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
     }
 /*
         // open the change room number as a fragment
@@ -253,23 +251,28 @@ public class GuestHomeActivity extends AppCompatActivity implements
      * @param roomNumber The room number.
      */
     private void checkGuestOutByRoomNumber(final String roomNumber) {
-        //final Guest guest = null;
         GuestServer.getInstance(getBaseContext()).getGuestInRoom(
                 roomNumber).subscribe(new Observer<Guest>() {
             Guest guest = null;
             @Override public void onCompleted() {
                 if (guest != null) {
                     checkGuestOut(guest);
+                } else {
+                    Toast.makeText(
+                            GuestHomeActivity.this,
+                            getString(R.string.guest_empty_room),
+                            Toast.LENGTH_LONG
+                    ).show();
                 }
-                //Log.d(CheckGuestInFragment.class.getCanonicalName(), "On completed");
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On completed");
             }
             @Override public void onError(Throwable e) {
-                //Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
             }
             @Override public void onNext(Guest result) {
                 guest = result;
-                //Log.d(CheckGuestInFragment.class.getCanonicalName(), "On next guest " + result);
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On next guest " + result);
             }
         });
     }
@@ -369,7 +372,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
             dialog.dismiss();
             SharedPreferences sp = getSharedPreferences("userSettings", MODE_PRIVATE);
             sp.edit().putString("roomNumber", roomNumber).commit();
-            sp.edit().putString("guestId", "none").commit();
+//            sp.edit().putString("guestId", "none").commit();
             Toast.makeText(
                     GuestHomeActivity.this,
                     getString(R.string.room_number_changed),
@@ -401,43 +404,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
         dialog.dismiss();
     }
 
-    /**
-     * Set guest id on shared preferences.
-     * @param roomNumber The room number.
-     */
-    private void setGuestId(final String roomNumber) {
-        GuestServer.getInstance(getBaseContext()).getGuestInRoom(
-                roomNumber).subscribe(new Observer<Guest>() {
-            @Override public void onCompleted() {
-                Log.d(GuestHomeActivity.class.getCanonicalName(), "Completed setting guest ID");
-            }
-            @Override public void onError(Throwable e) {
-                Log.d(GuestHomeActivity.class.getCanonicalName(), "On error");
-                e.printStackTrace();
-            }
-            @Override public void onNext(Guest result) {
-                // Store the guest id in shared preferences
-                SharedPreferences pref = getSharedPreferences("userSettings",
-                        MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-
-                Log.v(GuestHomeActivity.class.getCanonicalName(), "Room Number : " + roomNumber);
-                if (result == null) {
-                    editor.putString("guestId", "none");
-                }
-                else {
-                    editor.putString("guestId", result._id);
-                    welcomeMessage = result.welcomeMessage;
-                    Log.v(GuestHomeActivity.class
-                            .getCanonicalName(), "Setting guest ID to " + result._id);
-                }
-                Log.v(GuestHomeActivity.class.getCanonicalName(), "Guest ID " +
-                        getSharedPreferences("userSettings", MODE_PRIVATE)
-                                .getString("guestId", "none"));
-                editor.commit();
-            }
-        });
-    }
 
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override

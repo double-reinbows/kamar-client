@@ -144,7 +144,7 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
                         String state = Permintaan.STATE_NEW;
                         Date currentDate = Calendar.getInstance().getTime();
                         PermintaanServer.getInstance(MassageActivity.this).createPermintaan(
-                                new Permintaan(owner, type, roomNumber, guestId, state, currentDate, null, null,
+                                new Permintaan(owner, type, roomNumber, guestId, state, currentDate,
                                         new Massage("", item))
                         ).subscribe(new Observer<Permintaan>() {
                             boolean success;

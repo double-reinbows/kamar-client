@@ -11,7 +11,7 @@
     <string name="title_activity_transport">TransportActivity</string>
     <string name="title_activity_survey">SurveyActivity</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
-    <string name="welcome">Welcome</string>
+    <string name="welcome">欢迎</string>
     <string name="welcome_message">Welcome Message</string>
     <string name="upload">Upload</string>
     <string name="positive">Yes</string>
@@ -19,11 +19,11 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
-    <string name="something_went_wrong">Oops, something went wrong</string>
+    <string name="something_went_wrong">哎呀！出事了</string>
     <string name="required">Required</string>
 
     <!-- Home -->
-    <string name="language_english">English</string>
+    <string name="language_english">英语</string>
     <string name="language_bahasa">Bahasa Indonesia</string>
     <string name="language_set_to">語言設置為俄語</string>
     <string name="user_set_to">User set to</string>
@@ -86,8 +86,8 @@
     <string name="nav_drawer_logout">LOGOUT</string>
 
     <!-- Guest -->
-    <string name="please_wait">Please wait 10-20 minutes for a staff member to arrive at your room</string>
-    <string name="existing_request">A request of that type already exists</string>
+    <string name="please_wait">请等待10-20分钟，一名工作人员在你的房间到达</string>
+    <string name="existing_request">该类型的请求已经存在</string>
 
     <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>
@@ -106,24 +106,24 @@
         <item>120</item>
     </string-array>
 
-    <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
+    <string name="housekeeping_message">你确定你想使这个订单?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>
-    <string name="housekeeping_result">Housekeeping request sent</string>
+    <string name="housekeeping_result">家政服务请求发送</string>
 
-    <string name="bellboy_message">Are you sure you want a bellboy?</string>
+    <string name="bellboy_message">你确定你需要一个搬运工?</string>
     <string name="bellboy_edittext">Input bellboy details</string>
-    <string name="bellboy_result">Bellboy request sent</string>
+    <string name="bellboy_result">行李员请求已发送</string>
     <string name="report_to_frontdesk">Please report to front desk</string>
 
-    <string name="engineering_label">Engineering</string>
-    <string name="engineering_message">Are you sure you want to request engineering?</string>
-    <string name="engineering_result">Maintenance request sent</string>
+    <string name="engineering_label">保养</string>
+    <string name="engineering_message">你确定你想要求工程?</string>
+    <string name="engineering_result">维护请求发送</string>
 
     <string name="tellus_message">Tell us what you think</string>
     <string name="tellus_edittext">Leave your feedback here</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
 
-    <string name="survey_label">Survey</string>
+    <string name="survey_label">客户的反馈意见</string>
     <string name="survey_submit_button">Submit</string>
 
     <string name="massage_label">按摩</string>
@@ -131,20 +131,19 @@
     <string name="massage_result">按摩預約請求 </string>
 
     <string name="restaurant_label">餐厅</string>
-    <string name="restaurant_success"> Successfully placed your order!</string>
-    <string name="restaurant_error"> Error in placing your order!</string>
+    <string name="restaurant_success">成功下订单！</string>
+    <string name="restaurant_error">错误放置您的订单！</string>
 
-    <string name="restaurant_order_summary">Order Summary</string>
+    <string name="restaurant_order_summary">订单摘要</string>
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
-    <string name="restaurant_submit_button">Confirm Order</string>
+    <string name="restaurant_submit_button">确认订单</string>
     <string name="restaurant_back_button">Back</string>
     <string name="restaurant_confirm_input">Comments...</string>
-    <string name="restaurant_confirmation_label">Restaurant Confirmation</string>
+    <string name="restaurant_confirmation_label">餐厅确认</string>
     <string name="restaurant_confirmation_dialog_title">謝謝您的訂單。</string>
     <string name="restaurant_confirmation_dialog_desc">
-        For updates on your order\'s current progress,\n please click the My Requests button \n
-        located in our Home Page.
+        有关您的订单\'目前的最新进展， \n请点击我的要求按钮\n位于我们的主页
     </string>
 
     <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
@@ -155,15 +154,16 @@
     <string name="room_number_changed">Room number changed</string>
     <string name="room_number_password">Input password</string>
     <string name="room_number_result">Room number changed</string>
-    <string name="logout">登出</string>
+    <string name="logout">Enter password</string>
     <string name="logout_result">Logged out of guest</string>
 
-    <string name="guest_welcome_title">Welcome!</string>
+    <string name="guest_welcome_title">欢迎!</string>
 
     <!-- Laundry special instructions -->
-    <string name="no_ironing">No Ironing</string>
-    <string name="on_hanger">On Hanger</string>
-    <string name="folded">Folded</string>
+    <string name="no_ironing">不能熨</string>
+    <string name="on_hanger">在衣架</string>
+    <string name="folded">折叠</string>
+
     <string name="housekeeping_confirm">請確認訂單</string>
     <string name="housekeeping_label">家政</string>
     <string name="housekeeping_zero_order">請選擇一個有效的量</string>

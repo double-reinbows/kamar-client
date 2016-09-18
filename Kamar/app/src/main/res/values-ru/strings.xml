@@ -11,7 +11,7 @@
     <string name="title_activity_transport">TransportActivity</string>
     <string name="title_activity_survey">SurveyActivity</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
-    <string name="welcome">Welcome</string>
+    <string name="welcome">добро пожаловать</string>
     <string name="welcome_message">Welcome Message</string>
     <string name="upload">Upload</string>
     <string name="positive">Yes</string>
@@ -19,11 +19,11 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
-    <string name="something_went_wrong">Oops, something went wrong</string>
+    <string name="something_went_wrong">Упс! Что-то пошло не так</string>
     <string name="required">Required</string>
 
     <!-- Home -->
-    <string name="language_english">English</string>
+    <string name="language_english">английский язык</string>
     <string name="language_bahasa">Bahasa Indonesia</string>
     <string name="language_set_to">Язык задан русский</string>
     <string name="user_set_to">User set to</string>
@@ -86,8 +86,8 @@
     <string name="nav_drawer_logout">LOGOUT</string>
 
     <!-- Guest -->
-    <string name="please_wait">Please wait 10-20 minutes for a staff member to arrive at your room</string>
-    <string name="existing_request">A request of that type already exists</string>
+    <string name="please_wait">Пожалуйста, подождите 10-20 минут, штатный сотрудник , чтобы прибыть в комнате</string>
+    <string name="existing_request">Запрос этого типа уже существует</string>
 
     <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>
@@ -106,24 +106,24 @@
         <item>120</item>
     </string-array>
 
-    <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
+    <string name="housekeeping_message">Вы уверены, что хотите сделать этот заказ?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>
-    <string name="housekeeping_result">Housekeeping request sent</string>
+    <string name="housekeeping_result">Запрос Уборка номеров отправлено</string>
 
-    <string name="bellboy_message">Are you sure you want a bellboy?</string>
+    <string name="bellboy_message">Вы уверены, что хотите посыльного?</string>
     <string name="bellboy_edittext">Input bellboy details</string>
-    <string name="bellboy_result">Bellboy request sent</string>
+    <string name="bellboy_result">Запрос Bellboy отправлено</string>
     <string name="report_to_frontdesk">Please report to front desk</string>
 
-    <string name="engineering_label">Engineering</string>
-    <string name="engineering_message">Are you sure you want to request engineering?</string>
-    <string name="engineering_result">Maintenance request sent</string>
+    <string name="engineering_label">текущий ремонт</string>
+    <string name="engineering_message">Вы уверены, что вы хотите сделать запрос инжиниринг?</string>
+    <string name="engineering_result">Запрос Техническое обслуживание отправлено</string>
 
     <string name="tellus_message">Tell us what you think</string>
     <string name="tellus_edittext">Leave your feedback here</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
 
-    <string name="survey_label">Survey</string>
+    <string name="survey_label">Обратная связь с клиентами</string>
     <string name="survey_submit_button">Submit</string>
 
     <string name="massage_label">Массаж</string>
@@ -131,20 +131,20 @@
     <string name="massage_result">бронирование Массаж просил</string>
 
     <string name="restaurant_label">Ресторан</string>
-    <string name="restaurant_success"> Successfully placed your order!</string>
-    <string name="restaurant_error"> Error in placing your order!</string>
+    <string name="restaurant_success">Успешно разместили свой заказ!</string>
+    <string name="restaurant_error">Ошибка в размещении заказа!</string>
 
-    <string name="restaurant_order_summary">Order Summary</string>
+    <string name="restaurant_order_summary">итог заказа</string>
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
-    <string name="restaurant_submit_button">Confirm Order</string>
+    <string name="restaurant_submit_button">Подтвердите заказ</string>
     <string name="restaurant_back_button">Back</string>
     <string name="restaurant_confirm_input">Comments...</string>
-    <string name="restaurant_confirmation_label">Restaurant Confirmation</string>
+    <string name="restaurant_confirmation_label">Ресторан Подтверждение</string>
     <string name="restaurant_confirmation_dialog_title">Спасибо за ваш заказ.</string>
     <string name="restaurant_confirmation_dialog_desc">
-        For updates on your order\'s current progress,\n please click the My Requests button \n
-        located in our Home Page.
+       Для получения обновлений на текущем прогрессе порядка \'s , \n , пожалуйста, нажмите на кнопку My просит \n
+        расположенный в главной странице нашего сайта.
     </string>
 
     <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
@@ -155,15 +155,16 @@
     <string name="room_number_changed">Room number changed</string>
     <string name="room_number_password">Input password</string>
     <string name="room_number_result">Room number changed</string>
-    <string name="logout">Выйти</string>
+    <string name="logout">Enter password</string>
     <string name="logout_result">Logged out of guest</string>
 
-    <string name="guest_welcome_title">Welcome!</string>
+    <string name="guest_welcome_title">Добро пожаловать!</string>
 
     <!-- Laundry special instructions -->
-    <string name="no_ironing">No Ironing</string>
-    <string name="on_hanger">On Hanger</string>
-    <string name="folded">Folded</string>
+    <string name="no_ironing">Не гладить</string>
+    <string name="on_hanger">На вешалке</string>
+    <string name="folded">согнутый</string>
+
     <string name="housekeeping_confirm">Пожалуйста, подтвердите этот заказ</string>
     <string name="housekeeping_label">домоводство</string>
     <string name="housekeeping_zero_order">Пожалуйста, выберите допустимое количество</string>
@@ -176,8 +177,8 @@
     <string name="nav_drawer_home">HOMEPAGE</string>
     <string name="permintaan_assign_person">Please enter staff person\'s name</string>
     <string name="promo_img_select">Promotional Image</string>
-    <string name="language_russian">Russian</string>
-    <string name="language_zh">Chinese</string>
+    <string name="language_russian">русский язык</string>
+    <string name="language_zh">китайский язык</string>
     <string name="bellboy_label">Портье</string>
     <string name="chat_label">чат</string>
     <string name="checkout_label">отладка</string>

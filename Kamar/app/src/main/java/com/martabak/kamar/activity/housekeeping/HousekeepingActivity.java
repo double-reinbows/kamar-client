@@ -195,6 +195,9 @@ public class HousekeepingActivity extends AppCompatActivity implements
             final HousekeepingOptionAdapter.ViewHolder holder =
                     (HousekeepingOptionAdapter.ViewHolder)optionRecyclerView.getChildViewHolder((View)view.getParent());
             final HousekeepingOption option = holder.item;
+            String guestId = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                    .getString("guestId", "none");
+            Log.v("CUNT", guestId);
 
             if (idToStatus.containsKey(option._id)) { //pre-existing request
                 switch (idToStatus.get(option._id)) {
@@ -223,24 +226,22 @@ public class HousekeepingActivity extends AppCompatActivity implements
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 String owner = Permintaan.OWNER_FRONTDESK;
                                 String type = Permintaan.TYPE_HOUSEKEEPING;
-                                String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
-                                        .getString("roomNumber", "none");
-                                if (roomNumber == "none") {
-                                    new AlertDialog.Builder(getContext())
-                                            .setTitle(option.getName())
-                                            .setMessage(R.string.room_number_not_found)
-                                            .show();
-                                    return;
-                                }
                                 String guestId = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                                         .getString("guestId", "none");
-                                String state = Permintaan.STATE_NEW;
+                                if (guestId.equals("none")) {
+                                    new AlertDialog.Builder(getContext())
+                                            .setTitle(option.getName())
+                                            .setMessage(R.string.no_guest_in_room)
+                                            .show();
+                                    return;
+                                }                                String state = Permintaan.STATE_NEW;
                                 Date currentDate = Calendar.getInstance().getTime();
                                 final Integer quantity = Integer.parseInt(holder.spinner.getSelectedItem().toString());
-
+                                String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                                        .getString("roomNumber", "none");
                                 //Create the Housekeeping permintaan
                                 PermintaanServer.getInstance(getActivity()).createPermintaan(
-                                        new Permintaan(owner, type, roomNumber, guestId, state, currentDate, null, null,
+                                        new Permintaan(owner, type, roomNumber, guestId, state, currentDate,
                                                 new Housekeeping("", quantity, option))
                                 ).subscribe(new Observer<Permintaan>() {
                                     boolean success;

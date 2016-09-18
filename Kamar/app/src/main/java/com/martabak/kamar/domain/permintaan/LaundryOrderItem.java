@@ -15,9 +15,16 @@ public class LaundryOrderItem {
 
     public final Integer price;
 
-    public LaundryOrderItem(Integer quantity, Integer price, LaundryOption option) {
+    public final Boolean laundry;
+
+    public final Boolean pressing;
+
+    public LaundryOrderItem(Integer quantity, Integer price, Boolean laundry,
+                            Boolean pressing, LaundryOption option) {
         this.quantity = quantity;
         this.price = price;
+        this.laundry = laundry;
+        this.pressing = pressing;
         this.option = option;
     }
 }

@@ -1,6 +1,5 @@
 package com.martabak.kamar.activity.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -29,8 +28,9 @@ import rx.Observer;
 
 /**
  * Presents 4 language option buttons: English, Bahasa, Russian and ZH.
- * If there is a guest checked into the tablet's assigned room number then a welcome message +
- * promo image will display.
+ * Upon language selection, the room is checked for a guest and sets the guest's ID to
+ * SharedPreferences, otherwise it's set to "none"/
+ * If there is a guest, then a welcome + promo dialog will display.
  */
 public class SelectLanguageActivity extends AppCompatActivity {
 
@@ -51,13 +51,9 @@ public class SelectLanguageActivity extends AppCompatActivity {
         final ImageButton russianButton = (ImageButton) findViewById(R.id.language_russian);
         final ImageButton zhButton = (ImageButton) findViewById(R.id.language_zh);
 
+        //get the room number
         final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-
-
-//        String guestId = getSharedPreferences("userSettings", MODE_PRIVATE).
-//                getString("guestId", "none");
-//        Log.v("guestId Shared Pref", guestId);
 
         if (englishButton != null) {
             englishButton.setOnClickListener(new View.OnClickListener() {
@@ -73,14 +69,6 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to English");
 
                     setGuestId(roomNumber);
-                    //if there is a guest checked in...
-                    if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
-                            getString("guestId", "none")).equals("none")) {
-                        PromoWelcomeDialog();
-                    } else { //skip welcome + promo pop-up
-                        startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
-                        finish();
-                    }
                 }
             });
         }
@@ -98,14 +86,6 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Indonesian");
 
                     setGuestId(roomNumber);
-                    //if there is a guest checked in...
-                    if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
-                            getString("guestId", "none")).equals("none")) {
-                        PromoWelcomeDialog();
-                    } else { //skip welcome + promo dialog
-                        startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
-                        finish();
-                    }
                 }
             });
         }
@@ -123,14 +103,6 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Russian");
 
                     setGuestId(roomNumber);
-                    //if there is a guest checked in...
-                    if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
-                            getString("guestId", "none")).equals("none")) {
-                        PromoWelcomeDialog();
-                    } else { //skip welcome + promo dialog
-                        startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
-                        finish();
-                    }
                 }
             });
         }
@@ -148,14 +120,6 @@ public class SelectLanguageActivity extends AppCompatActivity {
                     Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Chinese");
 
                     setGuestId(roomNumber);
-                    //if there is a guest checked in...
-                    if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
-                            getString("guestId", "none")).equals("none")) {
-                        PromoWelcomeDialog();
-                    } else { //skip welcome + promo dialog
-                        startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
-                        finish();
-                    }
                 }
             });
         }
@@ -186,6 +150,14 @@ public class SelectLanguageActivity extends AppCompatActivity {
             @Override
             public void onCompleted() {
                 Log.d(SelectLanguageActivity.class.getCanonicalName(), "Completed setting guest ID");
+                //if there is a guest in the room then show promo + welcome msg
+                if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
+                        getString("guestId", "none")).equals("none")) {
+                    PromoWelcomeDialog();
+                } else { //skip welcome + promo dialog
+                    startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
+                    finish();
+                }
             }
 
             @Override
@@ -203,7 +175,6 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 Log.v(SelectLanguageActivity.class.getCanonicalName(), "Room Number : " + roomNumber);
                 if (result == null) {
                     editor.putString("guestId", "none");
-                    editor.putString("roomNumber", "none");
                 } else {
                     //set guestId in Shared Preferences
                     editor.putString("guestId", result._id);
@@ -235,12 +206,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
         //set up promo image
         ImageView promoImg = (ImageView) view.findViewById(R.id.guest_welcome_image);
         setPromoImg(promoImgId, promoImg);
-        /*Server.picasso(this)
-                .load(currConsumable.getImageUrl())
-                .placeholder(R.drawable.loading_batik)
-                .error(R.drawable.error)
-                .into(itemImg);
-*/
+
         //set up welcome text and show dialog
         final TextView textView = (TextView) view.findViewById(R.id.guest_welcome_text);
         textView.setText(welcomeMessage);
@@ -266,7 +232,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
             public void onNext(Event result) {
                 Log.d(SelectLanguageActivity.class.getCanonicalName(), "getEvent On next");
                 if (result._id.equals(promoImgId)) {
-                    String menuImgPath = result.getImageUrl()+result.name+".jpg";
+                    String menuImgPath = result.getImageUrl()+result.name;
                     Server.picasso(SelectLanguageActivity.this)
                             .load(menuImgPath)
                             .placeholder(R.drawable.loading_batik)

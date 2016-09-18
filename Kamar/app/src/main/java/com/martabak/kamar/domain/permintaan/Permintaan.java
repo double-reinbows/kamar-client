@@ -101,7 +101,7 @@ public class Permintaan<T extends Content> extends Model {
     /**
      * The set of regressable states.
      */
-    private static final Set<String> REGRESSABLE_STATES = new HashSet<>(Arrays.asList(STATE_INPROGRESS, STATE_INDELIVERY, STATE_COMPLETED));
+    private static final Set<String> REGRESSABLE_STATES = new HashSet<>(Arrays.asList(STATE_INPROGRESS, STATE_INDELIVERY));
 
     /**
      * The owner of the request. One of:
@@ -181,9 +181,11 @@ public class Permintaan<T extends Content> extends Model {
         this.updated = null;
         this.assignee = null;
     }
-
+    /**
+     * for creating new permintaans
+     */
     public Permintaan(String owner, String type, String roomNumber, String guestId, String state,
-                      Date created, Date updated, String assignee, T content) {
+                      Date created, T content) {
         super(null, null);
         this.owner = owner;
         this.type = type;
@@ -191,11 +193,14 @@ public class Permintaan<T extends Content> extends Model {
         this.guestId = guestId;
         this.state = state;
         this.created = created;
-        this.updated = updated;
-        this.assignee = assignee;
+        this.updated = null;
         this.content = content;
+        this.assignee = "none";
     }
 
+    /**
+     * For updating permintaans (make sure you get the latest _rev which changes immediately after
+     */
     public Permintaan(String _id, String _rev, String owner, String type, String roomNumber, String guestId, String state,
                       Date created, Date updated, String assignee, T content) {
         super(_id, _rev);

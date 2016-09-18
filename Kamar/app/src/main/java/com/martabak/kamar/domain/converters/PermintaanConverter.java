@@ -57,6 +57,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         j.addProperty("guest_id", src.guestId);
         j.addProperty("state", src.state);
         j.addProperty("created", dateFormat.format(src.created));
+        j.addProperty("assignee", src.assignee);
         if (src.updated != null) {
             j.addProperty("updated", dateFormat.format(src.updated));
         }
@@ -92,6 +93,8 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                     JsonObject orderItem = new JsonObject();
                     orderItem.addProperty("quantity", i.quantity);
                     orderItem.addProperty("price", i.price);
+                    orderItem.addProperty("laundry", i.laundry);
+                    orderItem.addProperty("pressing", i.pressing);
                     orderItem.addProperty("_id", i.option._id);
                     orderItem.addProperty("_rev", i.option._rev);
                     orderItem.addProperty("name_en", i.option.nameEn);
@@ -167,6 +170,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         String roomNumber = j.getAsJsonPrimitive("room_number").getAsString();
         String guestId = j.getAsJsonPrimitive("guest_id").getAsString();
         String state = j.getAsJsonPrimitive("state").getAsString();
+        String assignee = j.getAsJsonPrimitive("assignee").getAsString();
         Date created;
         try {
             created = dateFormat.parse(j.getAsJsonPrimitive("created").getAsString());
@@ -260,6 +264,8 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 List<LaundryOrderItem> laundryItems = new ArrayList<>();
                 for (int i = 0; i < c.getAsJsonArray("items").size(); i++) {
                     JsonObject item = (JsonObject)c.getAsJsonArray("items").get(i);
+                    Boolean laundry = item.getAsJsonPrimitive("laundry").getAsBoolean();
+                    Boolean pressing = item.getAsJsonPrimitive("pressing").getAsBoolean();
                     Integer quantity = item.getAsJsonPrimitive("quantity").getAsInt();
                     Integer price = item.getAsJsonPrimitive("price").getAsInt();
                     String idLaundry = item.getAsJsonPrimitive("_id").getAsString();
@@ -272,7 +278,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                     Integer pricePressing = item.getAsJsonPrimitive("pressing_price").getAsInt();
                     LaundryOption optionLaundry = new LaundryOption(idLaundry, revLaundry, nameEnLaundry,
                             nameInLaundry, nameZhLaundry, nameRuLaundry, priceLaundry, pricePressing, null, null);
-                    laundryItems.add(new LaundryOrderItem(quantity, price, optionLaundry));
+                    laundryItems.add(new LaundryOrderItem(quantity, price, laundry, pressing, optionLaundry));
                 }
                 Integer totalLaundryPrice = c.getAsJsonPrimitive("total_price").getAsInt();
                 content = new LaundryOrder(message, laundryItems, totalLaundryPrice);
@@ -281,6 +287,6 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 throw new JsonParseException("Unknown Permintaan content type.");
         }
 
-        return new Permintaan(_id, _rev, owner, ptype, roomNumber, guestId, state, created, updated, null, content);
+        return new Permintaan(_id, _rev, owner, ptype, roomNumber, guestId, state, created, updated, assignee, content);
     }
 }

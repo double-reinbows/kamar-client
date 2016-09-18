@@ -64,9 +64,6 @@ public  class StaffPermintaanFragment extends Fragment {
         List<String> completed_permintaan = new ArrayList<>();
         //List<String> cancelled_permintaan = new ArrayList<>();
 
-//        String subUserType = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("subUserType", "none");
-//        Log.v("subUserType", subUserType);
-
         // Set up child data
         for (Permintaan permintaan : permintaans) {
 //            if (subUserType.equals(permintaan.owner)) {

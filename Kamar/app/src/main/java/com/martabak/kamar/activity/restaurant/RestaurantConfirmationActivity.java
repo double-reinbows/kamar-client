@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -137,6 +138,16 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         restaurantConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //check there's a guest...
+                if (getSharedPreferences("userSettings", MODE_PRIVATE)
+                        .getString("guestId", "none").equals("none")) {
+                    Toast.makeText(
+                            RestaurantConfirmationActivity.this,
+                            getString(R.string.no_guest_in_room),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    return;
+                }
                 //restaurant submit
                 sendRestaurantRequest(restaurantOrder);
 
@@ -203,8 +214,6 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
                     guestId,
                     state,
                     currentDate,
-                    null,
-                    null,
                     restaurantOrder)
             ).subscribe(new Observer<Permintaan>() {
                 @Override public void onCompleted() {

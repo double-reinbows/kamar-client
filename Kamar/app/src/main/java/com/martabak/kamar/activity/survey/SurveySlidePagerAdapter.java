@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -115,6 +116,15 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                 submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    String guestId = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                            .getString("guestId", "none");
+                    if (guestId.equals("none")) {
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("Oh No!")
+                                .setMessage(R.string.no_guest_in_room)
+                                .show();
+                        return;
+                    }
                     List<SurveyAnswer> list = new ArrayList<>();
                     for (String id : questions.keySet()) {
                         SurveyQuestion q = questions.get(id);

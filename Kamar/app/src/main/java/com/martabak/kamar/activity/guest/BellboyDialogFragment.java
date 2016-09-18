@@ -86,8 +86,6 @@ public class BellboyDialogFragment extends DialogFragment {
                     guestId,
                     state,
                     currentDate,
-                    null,
-                    null,
                     bellboy)
             ).subscribe(new Observer<Permintaan>() {
                 @Override

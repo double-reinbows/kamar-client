@@ -22,7 +22,7 @@
     <string name="required">Required</string>
 
     <!-- Home -->
-    <string name="language_english">English</string>
+    <string name="language_english">Bahasa Inggris</string>
     <string name="language_bahasa">Bahasa Indonesia</string>
     <string name="language_set_to">Bahasa diatur ke Indonesia</string>
     <string name="user_set_to">User set to</string>
@@ -84,10 +84,11 @@
     <string name="nav_drawer_logout">LOGOUT</string>
 
     <!-- Guest -->
-    <string name="please_wait">Please wait 10-20 minutes for a staff member to arrive at your room</string>
-    <string name="existing_request">A request of that type already exists</string>
+    <string name="please_wait">Silakan tunggu 10-20 menit untuk anggota staf untuk tiba di kamar Anda</string>
+    <string name="existing_request">Permintaan dari jenis itu sudah ada</string>
 
     <string name="transport_label">Transport</string>
+
     <string name="transport_passengers">Passengers</string>
     <string name="transport_departing_in">Departing in</string>
     <string name="transport_minutes">minutes</string>
@@ -104,24 +105,24 @@
         <item>120</item>
     </string-array>
 
-    <string name="housekeeping_message">Are you sure you want a housekeeper?</string>
+    <string name="housekeeping_message">Apakah Anda yakin ingin membuat pesanan ini?</string>
     <string name="housekeeping_edittext">Input housekeeper details</string>
-    <string name="housekeeping_result">Housekeeping request sent</string>
+    <string name="housekeeping_result">Pesan telah dikirim</string>
 
-    <string name="bellboy_message">Are you sure you want a bellboy?</string>
+    <string name="bellboy_message">Yakin ingin pesan porter?</string>
     <string name="bellboy_edittext">Input bellboy details</string>
-    <string name="bellboy_result">Bellboy request sent</string>
+    <string name="bellboy_result">Pesanan porter telah dikirim</string>
     <string name="report_to_frontdesk">Please report to front desk</string>
 
-    <string name="engineering_label">Engineering</string>
-    <string name="engineering_message">Are you sure you want to request engineering?</string>
+    <string name="engineering_label">Pemeliharaan</string>
+    <string name="engineering_message">Apakah Anda yakin ingin meminta pemeliharaan?</string>
     <string name="engineering_result">Maintenance request sent</string>
 
     <string name="tellus_message">Tell us what you think</string>
     <string name="tellus_edittext">Leave your feedback here!</string>
     <string name="tellus_result">Thank you for leaving feedback</string>
 
-    <string name="survey_label">Survey</string>
+    <string name="survey_label">Komentar Tamu</string>
     <string name="survey_submit_button">Submit</string>
 
     <string name="massage_label">Pijat</string>
@@ -129,13 +130,13 @@
     <string name="massage_result">Pesanan pijat dikirimkan</string>
 
     <string name="restaurant_label">Makanan</string>
-    <string name="restaurant_success"> Successfully placed your order!</string>
-    <string name="restaurant_error"> Error in placing your order!</string>
+    <string name="restaurant_success">Berhasil menempatkan pesanan Anda!</string>
+    <string name="restaurant_error">Kesalahan dalam menempatkan pesanan Anda!</string>
 
-    <string name="restaurant_order_summary">Order Summary</string>
+    <string name="restaurant_order_summary">Ringkasan Rangka</string>
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
-    <string name="restaurant_confirmation_label">Restaurant Confirmation</string>
+    <string name="restaurant_confirmation_label">Konfirmasi Restaurant</string>
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>
@@ -151,16 +152,16 @@
     <string name="logout_staff">Staff mode</string>
     <string name="promo_img_select">Promotional Image</string>
 
-    <string name="guest_welcome_title">Welcome!</string>
+    <string name="guest_welcome_title">Selamat Datang!</string>
 
     <!-- Laundry special instructions -->
-    <string name="no_ironing">No Ironing</string>
-    <string name="on_hanger">On Hanger</string>
-    <string name="folded">Folded</string>
+    <string name="no_ironing">Jangan diseterika</string>
+    <string name="on_hanger">Digantung</string>
+    <string name="folded">Berlipat</string>
     <string name="housekeeping_confirm">Pastikan pesan ini</string>
     <string name="housekeeping_label">Pembenehan</string>
     <string name="housekeeping_zero_order">Silakan pilih jumlah valid</string>
-    <string name="logout">Logout</string>
+    <string name="logout">Enter password</string>
     <string name="nav_drawer_about">TENTANG KAMI</string>
     <string name="nav_drawer_change_language">GANTI BAHASA</string>
     <string name="nav_drawer_home">HOME</string>
@@ -168,13 +169,13 @@
     <string name="permintaan_title">Requests</string>
     <string name="restaurant_back_button">Back</string>
     <string name="restaurant_confirm_input">Comments...</string>
-    <string name="restaurant_confirmation_dialog_desc">For updates on your order\'s current progress,\n please click the My Requests button \n         located in our Home Page.</string>
+    <string name="restaurant_confirmation_dialog_desc">Untuk update tentang kemajuan saat ini agar \'s Anda ,\n klik Permintaan My tombol \nterletak di Halaman Depan kami</string>
     <string name="restaurant_confirmation_dialog_title">Terima kasih atas pesanan Anda</string>
-    <string name="restaurant_submit_button">Confirm Order</string>
+    <string name="restaurant_submit_button">Konfirmasi Pesan</string>
     <string name="welcome_message">Welcome Message</string>
     <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
-    <string name="language_russian">Russian</string>
-    <string name="language_zh">Chinese</string>
+    <string name="language_russian">俄语</string>
+    <string name="language_zh">中文</string>
     <string name="bellboy_label">Portir</string>
     <string name="chat_label">Chat</string>
     <string name="checkout_label">Checkout</string>
