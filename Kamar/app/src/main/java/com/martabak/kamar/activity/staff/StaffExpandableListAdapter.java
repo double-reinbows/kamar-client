@@ -232,7 +232,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         /**
          * Move a permintaan to the next state
          */
-        if (currPermintaan.isCancellable()) {
+        if (currPermintaan.isProgressable() && !currPermintaan.assignee.equals("none")) {
             progressPermintaanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -244,7 +244,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //Check permintaan can be progressed
-                            if (currPermintaan.isCancellable()) {
+                            if (currPermintaan.isProgressable()) {
                                 Log.v("id", currPermintaan._id);
 
                                 getAndUpdatePermintaan(currPermintaan._id, 1, null);

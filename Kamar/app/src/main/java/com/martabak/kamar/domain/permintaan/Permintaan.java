@@ -218,7 +218,7 @@ public class Permintaan<T extends Content> extends Model {
     /**
      * @return Whether or not this permintaan is cancellable.
      */
-    public boolean isCancellable() {
+    public boolean isProgressable() {
         return CANCELLABLE_STATES.contains(state);
     }
 
