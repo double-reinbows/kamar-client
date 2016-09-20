@@ -287,7 +287,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
         Log.v("Guest", guest._id);
         updatedGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
                 guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
-                guest.roomNumber, guest.promoImgId);
+                guest.welcomeMessage, guest.promoImgId);
         GuestServer.getInstance(GuestHomeActivity.this.getBaseContext()).updateGuest(updatedGuest)
                 .subscribe(new Observer<Boolean>() {
                     @Override public void onCompleted() {

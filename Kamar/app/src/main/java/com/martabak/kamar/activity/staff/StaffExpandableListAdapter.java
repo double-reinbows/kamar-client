@@ -26,8 +26,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.Staff;
 import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.LaundryOrder;
@@ -268,6 +270,14 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         } else {
             progressPermintaanButton.setColorFilter(cf);
             progressPermintaanButton.setAlpha(0.5f);   // 128 = 0.5
+            progressPermintaanButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Tolong periksa anda sudah menugaskan seseorang",
+                            Toast.LENGTH_LONG).show();
+                        }
+                    });
+
         }
 
         /**
