@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,25 +49,17 @@ public class GuestHomeFragment extends Fragment {
         View logoutView = view.findViewById(R.id.logoutIcon);
         guest = new Guest();
 
-        /** This is going to the guest home activity
-        roomNumberTextView = (TextView)view.findViewById(R.id.toolbar_roomnumber);
-        final String roomNumber = getActivity().getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", "none");
-        setGuestId(roomNumber);
 
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        // Start any guest services.
-        startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
-
-        // set room number text
-        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);**/
         gridView.setAdapter(guestHomeAdapter);
+
+        // update the text of the navigation menu items if language changed.
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            navigationView.getMenu().getItem(0).setTitle(R.string.nav_drawer_home);
+            navigationView.getMenu().getItem(0).setChecked(true);
+            navigationView.getMenu().getItem(1).setTitle(R.string.nav_drawer_change_language);
+            navigationView.getMenu().getItem(2).setTitle(R.string.nav_drawer_about);
+        }
 
         // display feature text on each item click
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

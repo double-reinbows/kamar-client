@@ -64,22 +64,23 @@ public class GuestHomeActivity extends AppCompatActivity implements
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
-        }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
+        }
+
+
+
         getFragmentManager().beginTransaction()
                 .add(R.id.guest_container, GuestHomeFragment.newInstance())
                 .addToBackStack(null)
                 .commit();
-        navigationView.getMenu().getItem(0).setChecked(true);
 
         // Start any guest services.
         startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
@@ -408,6 +409,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
+
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     getFragmentManager().beginTransaction()
