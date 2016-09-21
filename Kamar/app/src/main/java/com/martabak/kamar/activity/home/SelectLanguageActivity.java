@@ -232,7 +232,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
             public void onNext(Event result) {
                 Log.d(SelectLanguageActivity.class.getCanonicalName(), "getEvent On next");
                 if (result._id.equals(promoImgId)) {
-                    String menuImgPath = result.getImageUrl()+result.name;
+                    String menuImgPath = result.getImageUrl();
                     Server.picasso(SelectLanguageActivity.this)
                             .load(menuImgPath)
                             .placeholder(R.drawable.loading_batik)

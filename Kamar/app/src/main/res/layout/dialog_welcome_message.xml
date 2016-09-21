@@ -20,7 +20,6 @@
             android:id="@+id/guest_welcome_image"
             android:layout_width="match_parent"
             android:layout_height="250dp"/>
-            <!--android:src="@drawable/sugarangels" /-->
 
         <TextView
             android:id="@+id/guest_welcome_text"

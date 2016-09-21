@@ -101,12 +101,14 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
             ViewGroup rootView = (ViewGroup) inflater.inflate(
                     R.layout.survey_fragment_slide, container, false);
             recyclerView = (RecyclerView)rootView.findViewById(R.id.survey_list);
-            TextView test = (TextView)rootView.findViewById(R.id.survey_section_text);
-            test.setText(currSection);
+            TextView sectionText = (TextView)rootView.findViewById(R.id.survey_section_text);
+
             List<SurveyQuestion> questionList = new ArrayList<>();
+//            String lastId = null;
             for (String id : sectionMappings.get(currSection)) {
                 questionList.add(questions.get(id));
             }
+            sectionText.setText(questionList.get(0).getSection());
             SurveyRecyclerAdapter recyclerAdapter = new SurveyRecyclerAdapter(questionList, ScreenSlidePageFragment.this);
             recyclerView.setAdapter(recyclerAdapter);
 

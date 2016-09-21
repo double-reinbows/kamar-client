@@ -179,7 +179,7 @@
     <string name="language_russian">Russian</string>
     <string name="language_zh">Chinese</string>
     <string name="bellboy_label">搬运工</string>
-    <string name="chat_label">交谈</string>
+    <string name="chat_label">Chat</string>
     <string name="checkout_label">酒店结账 </string>
     <string name="event_label">活动</string>
     <string name="laundry_label">洗衣店</string>

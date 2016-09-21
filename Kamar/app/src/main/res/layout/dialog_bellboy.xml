@@ -22,11 +22,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/chat_grey" />
 
-        <EditText
-            android:id="@+id/bellboy_message_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/bellboy_edittext"/>
+
     </LinearLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

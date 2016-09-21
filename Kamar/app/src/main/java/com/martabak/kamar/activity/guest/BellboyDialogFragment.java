@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.permintaan.Bellboy;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
@@ -31,6 +32,7 @@ public class BellboyDialogFragment extends DialogFragment {
 
     private PermintaanDialogListener permintaanDialogListener;
     private Boolean success = false;
+    private String status;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -38,16 +40,35 @@ public class BellboyDialogFragment extends DialogFragment {
         final View view = layoutInflater.inflate(R.layout.dialog_bellboy, null);
         final Button confirmButton = (Button) view.findViewById(R.id.bellboy_confirm);
         final Button cancelButton = (Button) view.findViewById(R.id.bellboy_cancel);
+        status = null;
 
         final AlertDialog dialog= new AlertDialog.Builder(getActivity()).create();
+
+        PermintaanManager.getInstance().getBellboyStatus(getActivity()).subscribe(new Observer<String>() {
+            @Override
+            public void onCompleted() {
+            }
+            @Override
+            public void onError(Throwable e) {
+            }
+            @Override
+            public void onNext(String s) {
+                status = s;
+            }
+        });
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editBellboyMessage = (EditText)
-                        view.findViewById(R.id.bellboy_message_edit_text);
-                String bellboyMessage = editBellboyMessage.getText().toString();
-                sendBellboyRequest(bellboyMessage);
+                if (status == null || status.equals(Permintaan.STATE_COMPLETED)) {
+                    sendBellboyRequest("");
+                } else {
+                    Toast.makeText(
+                            BellboyDialogFragment.this.getActivity().getApplicationContext(),
+                            R.string.existing_request,
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
             }
         });
 

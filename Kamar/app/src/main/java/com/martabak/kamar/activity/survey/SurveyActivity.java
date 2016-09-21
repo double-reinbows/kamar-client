@@ -14,6 +14,7 @@ import com.martabak.kamar.service.SurveyServer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import rx.Observer;
 
@@ -32,6 +33,7 @@ public class SurveyActivity extends FragmentActivity {
 //    private List<String> sections;
 //    private HashMap<String, ArrayList<SurveyQuestion>> secToQuestions;
     private HashMap<String, List<String>> sectionMappings;
+//    private HashMap<SurveySection, List<String>> sections;
     private HashMap<String, SurveyQuestion> idToQuestion;
     private HashMap<String, Integer> idToRating;
 
@@ -69,6 +71,7 @@ public class SurveyActivity extends FragmentActivity {
                             for (SurveyQuestion sq : surveyQuestions) {
 //                                SurveyQuestion sq = surveyQuestions.get(i);
                                 String currSection = sq.getSection();
+//                                String currEnSection  = sq.sectionEn;
                                 idToRating.put(sq._id, 0);
                                 if (!sectionMappings.keySet().contains(currSection)) { //new section found
 //                                    sections.add(currSection);
@@ -80,7 +83,20 @@ public class SurveyActivity extends FragmentActivity {
                                     sql.add(sq._id);
                                     sectionMappings.put(currSection, sql);
                                 }
+////                                if (!sections.keySet())
+//                                for (SurveySection ss : sections.keySet()) {
+//                                    if (!ss.getSection().equals(currSection)) {
+//                                        List<String> ids = new ArrayList<>();
+//                                        ids.add(sq._id);
+//                                        sections.put(ss, ids);
+//                                    } else {
+//                                        List<String> ids = sections.get(ss);
+//                                        ids.add(sq._id);
+//                                        sections.put(ss, ids);
+//                                    }
+//                                }
                                 idToQuestion.put(sq._id, sq);
+//                                Log.v("CUNT", sections.toString());
                             }
 //                            SurveyManager.getInstance().setSections(sections);
                             SurveyManager.getInstance().setQuestions(idToQuestion);
@@ -123,7 +139,52 @@ public class SurveyActivity extends FragmentActivity {
         }
     }
 
+    private class SurveySection {
+        /**
+         * The name of the option's section, in English.
+         */
+        public final String sectionEn;
 
+        /**
+         * The name of the option's section, in Indonesian Bahasa.
+         */
+        public final String sectionIn;
+
+        /**
+         * The name of the option's section, in Chinese.
+         */
+        public final String sectionZh;
+
+        /**
+         * The name of the option's section, in Russian.
+         */
+        public final String sectionRu;
+
+        public SurveySection(SurveyQuestion sq) {
+            this.sectionEn = sq.sectionEn;
+            this.sectionIn = sq.sectionIn;
+            this.sectionZh = sq.sectionZh;
+            this.sectionRu = sq.sectionRu;
+        }
+
+        /**
+         * @return The description in the appropriate language.
+         */
+        public String getSection() {
+            if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage())) {
+                return this.sectionEn;
+            } else if (Locale.getDefault().getLanguage().equals(new Locale("in").getLanguage())) {
+                return this.sectionIn;
+            } else if (Locale.getDefault().getLanguage().equals(Locale.CHINESE.getLanguage())) {
+                return this.sectionZh;
+            } else if (Locale.getDefault().getLanguage().equals(new Locale("ru").getLanguage())) {
+                return this.sectionRu;
+            } else {
+                Log.e(SurveyActivity.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
+                return this.sectionEn;
+            }
+        }
+    }
 
 
 }

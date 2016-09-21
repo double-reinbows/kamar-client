@@ -134,6 +134,13 @@ public class PermintaanManager {
     }
 
     /**
+     * @return The state of the most recent massage permintaan.
+     */
+    public Observable<String> getBellboyStatus(Context c) {
+        return getMostRecentStatusOf(c, Permintaan.TYPE_BELLBOY);
+    }
+
+    /**
      * @return The state of the most recent housekeeping permintaan.
      */
     public Observable<Map<String, String>> getHousekeepingStatuses(Context c) {
