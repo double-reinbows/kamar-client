@@ -139,6 +139,14 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                                 .getString("roomNumber", "none");
                         String guestId = EngineeringActivity.this.getSharedPreferences("userSettings", EngineeringActivity.this.MODE_PRIVATE)
                                 .getString("guestId", "none");
+                        if (guestId.equals("none")) {
+                            Toast.makeText(
+                                    EngineeringActivity.this.getApplicationContext(),
+                                    R.string.no_guest_in_room,
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                            return;
+                        }
                         String state = Permintaan.STATE_NEW;
                         Date currentDate = Calendar.getInstance().getTime();
                         PermintaanServer.getInstance(EngineeringActivity.this).createPermintaan(

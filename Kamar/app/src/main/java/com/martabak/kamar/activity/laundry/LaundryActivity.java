@@ -234,6 +234,13 @@ public class LaundryActivity extends AppCompatActivity  {
             });
 
 
+        } else {
+            Toast.makeText(
+                    LaundryActivity.this.getApplicationContext(),
+                    R.string.no_guest_in_room,
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
         }
 
     }

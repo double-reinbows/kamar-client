@@ -28,16 +28,14 @@ public class HousekeepingOptionAdapter
     protected int selectedPos = -1;
 
     private final List<HousekeepingOption> housekeepingOptions;
-    private HashMap<String, Integer> idToQuantity;
     private Context context;
     private Map<String, String> statuses;
     private View.OnClickListener submitButtonListener;
 
-    public HousekeepingOptionAdapter(List<HousekeepingOption> hkOptions, HashMap<String, Integer> items,
+    public HousekeepingOptionAdapter(List<HousekeepingOption> hkOptions,
                                      Context context, View.OnClickListener submitButtonListener,
                                      Map<String, String> statuses) {
         this.housekeepingOptions = hkOptions;
-        this.idToQuantity = items;
         this.context = context;
         this.submitButtonListener = submitButtonListener;
         this.statuses = statuses;

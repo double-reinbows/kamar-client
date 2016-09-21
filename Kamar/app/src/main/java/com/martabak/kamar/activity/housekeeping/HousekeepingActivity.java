@@ -173,7 +173,7 @@ public class HousekeepingActivity extends AppCompatActivity implements
             PermintaanManager.getInstance().getHousekeepingStatuses(getContext()).subscribe(new Observer<Map<String, String>>() {
                 @Override public void onCompleted() {
                     Log.d(HousekeepingActivity.class.getCanonicalName(), "getHousekeepingStatuses#onCompleted");
-                    hkOptionRecyclerAdapter = new HousekeepingOptionAdapter(temp, idToQuantity,
+                    hkOptionRecyclerAdapter = new HousekeepingOptionAdapter(temp, 
                             HousekeepingFragment.this.getContext(), HousekeepingFragment.this, idToStatus);
                     optionRecyclerView.setAdapter(hkOptionRecyclerAdapter);
                 }

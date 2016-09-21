@@ -141,6 +141,14 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
                                 .getString("roomNumber", "none");
                         String guestId = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
                                 .getString("guestId", "none");
+                        if (guestId.equals("none")) {
+                            Toast.makeText(
+                                    MassageActivity.this.getApplicationContext(),
+                                    R.string.no_guest_in_room,
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                            return;
+                        }
                         String state = Permintaan.STATE_NEW;
                         Date currentDate = Calendar.getInstance().getTime();
                         PermintaanServer.getInstance(MassageActivity.this).createPermintaan(
