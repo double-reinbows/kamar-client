@@ -4,7 +4,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.SurveyQuestion;
@@ -18,7 +22,7 @@ import java.util.Locale;
 
 import rx.Observer;
 
-public class SurveyActivity extends FragmentActivity {
+public class SurveyActivity extends ActionBarActivity {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
@@ -28,6 +32,8 @@ public class SurveyActivity extends FragmentActivity {
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
      */
+
+
     private ViewPager viewPager;
 //    private final SurveySlidePagerAdapter pagerAdapter = null;
 //    private List<String> sections;
@@ -46,6 +52,19 @@ public class SurveyActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+
+        });
+
         // Instantiate a ViewPager and a PagerAdapter.
         viewPager = (ViewPager) findViewById(R.id.survey_pager);
 
