@@ -86,9 +86,9 @@ public class LaundryActivity extends AppCompatActivity  {
         recyclerView.setLayoutManager(layoutManager);
 
         //if the radio buttons are toggled, add it to the laundry instruction list here
-        final RadioButton noIroning = (RadioButton) findViewById(R.id.no_ironing);
-        final RadioButton onHanger = (RadioButton) findViewById(R.id.on_hanger);
-        final RadioButton folded = (RadioButton) findViewById(R.id.folded);
+        final CheckBox noIroning = (CheckBox) findViewById(R.id.no_ironing);
+        final CheckBox onHanger = (CheckBox) findViewById(R.id.on_hanger);
+        final CheckBox folded = (CheckBox) findViewById(R.id.folded);
 
         noIroning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -97,6 +97,10 @@ public class LaundryActivity extends AppCompatActivity  {
                 {
 
                     laundryInstructions.add(noIroning.getText().toString());
+                }
+                else if((!isChecked) && (laundryInstructions.contains(noIroning.getText().toString())))
+                {
+                    laundryInstructions.remove(noIroning.getText().toString());
                 }
             }
         });
@@ -108,6 +112,10 @@ public class LaundryActivity extends AppCompatActivity  {
                 {
                     laundryInstructions.add(onHanger.getText().toString());
                 }
+                else if((!isChecked) && (laundryInstructions.contains(onHanger.getText().toString())))
+                {
+                    laundryInstructions.remove(onHanger.getText().toString());
+                }
             }
         });
 
@@ -117,6 +125,10 @@ public class LaundryActivity extends AppCompatActivity  {
                 if (isChecked)
                 {
                     laundryInstructions.add(folded.getText().toString());
+                }
+                else if((!isChecked) && (laundryInstructions.contains(folded.getText().toString())))
+                {
+                    laundryInstructions.remove(folded.getText().toString());
                 }
             }
         });

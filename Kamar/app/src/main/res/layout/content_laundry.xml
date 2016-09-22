@@ -30,21 +30,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="left">
-            <RadioButton
+            <CheckBox
+                style="@android:style/Widget.CompoundButton.RadioButton"
                 android:id="@+id/no_ironing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no_ironing"
                 android:textSize="22sp"/>
 
-            <RadioButton
+            <CheckBox
+                style="@android:style/Widget.CompoundButton.RadioButton"
                 android:id="@+id/on_hanger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/on_hanger"
                 android:textSize="22sp"/>
 
-            <RadioButton
+            <CheckBox
+                style="@android:style/Widget.CompoundButton.RadioButton"
                 android:id="@+id/folded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
