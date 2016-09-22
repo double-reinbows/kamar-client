@@ -166,7 +166,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
                     }
                 });
 
-                new CountDownTimer(7000, 1000) {
+                new CountDownTimer(11000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
 
