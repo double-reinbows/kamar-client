@@ -87,7 +87,7 @@
     <string name="nav_drawer_logout">LOGOUT</string>
 
     <!-- Guest Nav drawer -->
-    <string name="nav_drawer_home">HOME</string>
+    <string name="nav_drawer_home">Homepage</string>
     <string name="nav_drawer_change_language">CHANGE LANGUAGE</string>
     <string name="nav_drawer_about">ABOUT US</string>
 
@@ -187,4 +187,7 @@
     <string name="event_label">EVENTS</string>
     <string name="laundry_label">LAUNDRY</string>
     <string name="bellboy_result">Porter request sent</string>
+    <string name="survey_previously_submitted">Sorry, but you can only submit feedback once!</string>
+    <string name="survey_thank_you">We really appreciate your comments and will ensure we use it to make your next stay with us even better!</string>
+    <string name="survey_thank_you_title">Thank you for your feedback!</string>
 </resources>

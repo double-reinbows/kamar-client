@@ -164,7 +164,7 @@
     <string name="logout">Enter password</string>
     <string name="nav_drawer_about">TENTANG KAMI</string>
     <string name="nav_drawer_change_language">GANTI BAHASA</string>
-    <string name="nav_drawer_home">HOME</string>
+    <string name="nav_drawer_home">Homepage</string>
     <string name="permintaan_assign_person">Masukkan nama staf seseorang</string>
     <string name="permintaan_title">Requests</string>
     <string name="restaurant_back_button">Back</string>
@@ -183,4 +183,6 @@
     <string name="laundry_label">Cucian</string>
     <string name="laundry_result">Pesan laundry dikirim!</string>
     <string name="zero">0</string>
+    <string name="survey_previously_submitted">Maaf, tapi Anda hanya dapat mengirimkan komentar sekali!</string>
+    <string name="survey_thank_you_title"> Terima kasih atas tanggapan Anda!</string>
 </resources>

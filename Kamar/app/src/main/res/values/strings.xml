@@ -10,4 +10,7 @@
     <string name="room_number_not_found">Sorry, I can\'t find your room number. Please notify a staff member</string>
     <string name="guest_empty_room">No guest inside this room</string>
     <string name="no_guest_in_room">Sorry, but you\'re not checked in!</string>
+    <string name="survey_previously_submitted">Sorry, but you can only submit feedback once!</string>
+    <string name="survey_thank_you_title">Thank you for your feedback!</string>
+    <string name="survey_thank_you">We really appreciate your comments and will ensure we use it to make your next stay with us even better!</string>
 </resources>

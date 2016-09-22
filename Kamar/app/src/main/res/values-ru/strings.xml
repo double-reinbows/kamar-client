@@ -174,7 +174,7 @@
     <string name="logout_staff">Staff mode</string>
     <string name="nav_drawer_about">О НАС</string>
     <string name="nav_drawer_change_language">ИЗМЕНИТЬ ЯЗЫК</string>
-    <string name="nav_drawer_home">HOMEPAGE</string>
+    <string name="nav_drawer_home">домашняя страничка</string>
     <string name="permintaan_assign_person">Please enter staff person\'s name</string>
     <string name="promo_img_select">Promotional Image</string>
     <string name="language_russian">русский язык</string>
@@ -186,4 +186,6 @@
     <string name="laundry_label">Прачечная</string>
     <string name="laundry_result">заказ Прачечная отправлено</string>
     <string name="zero">0</string>
+    <string name="survey_previously_submitted">Извините, но вы можете только представить обратную связь один раз!</string>
+    <string name="survey_thank_you_title">Спасибо за ваш отзыв!</string>
 </resources>

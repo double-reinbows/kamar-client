@@ -1,6 +1,8 @@
 package com.martabak.kamar.activity.survey;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.domain.SurveyAnswer;
 import com.martabak.kamar.domain.SurveyAnswers;
 import com.martabak.kamar.domain.SurveyQuestion;
@@ -58,7 +61,7 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
         args.putString("currSection", sections.get(position));
         if (position == getCount()-1) {//set "last slide" flag
             args.putBoolean("flag", Boolean.TRUE);
-            SurveyManager.getInstance().setFlag(Boolean.TRUE);
+//            SurveyManager.getInstance().setPrevSubmission(Boolean.TRUE);
         }
         ScreenSlidePageFragment f = new ScreenSlidePageFragment();
         f.setArguments(args);
@@ -94,7 +97,7 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                 flag = args.getBoolean("flag");
                 currSection = args.getString("currSection");
 //                currSection = SurveyManager.getInstance().getCurrSection();
-//                flag = SurveyManager.getInstance().getFlag();
+//                flag = SurveyManager.getInstance().getPrevSubmission();
             } else {
                 return null;
             }
@@ -104,7 +107,6 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
             TextView sectionText = (TextView)rootView.findViewById(R.id.survey_section_text);
 
             List<SurveyQuestion> questionList = new ArrayList<>();
-//            String lastId = null;
             for (String id : sectionMappings.get(currSection)) {
                 questionList.add(questions.get(id));
             }
@@ -126,6 +128,12 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                                 .setMessage(R.string.no_guest_in_room)
                                 .show();
                         return;
+                    } if (SurveyManager.getInstance().getPrevSubmission().equals(Boolean.TRUE)) {
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("Oh No!")
+                                .setMessage(R.string.survey_previously_submitted)
+                                .show();
+                        return;
                     }
                     List<SurveyAnswer> list = new ArrayList<>();
                     for (String id : questions.keySet()) {
@@ -139,6 +147,21 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                             .subscribe(new Observer<Boolean>() {
                                 @Override
                                 public void onCompleted() {
+                                    SurveyManager.getInstance().setPrevSubmission(Boolean.TRUE);
+                                    //new dialog
+                                    AlertDialog dialog = new AlertDialog.Builder(getContext())
+                                            .setTitle(R.string.survey_thank_you_title)
+                                            .setMessage(R.string.survey_thank_you)
+                                            .show();
+
+                                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss(DialogInterface dialogInterface) {
+                                            startActivity(new Intent(getActivity().getBaseContext(), GuestHomeActivity.class));
+                                            getActivity().finish();
+                                        }
+                                    });
+
                                 }
                                 @Override
                                 public void onError(Throwable e) {

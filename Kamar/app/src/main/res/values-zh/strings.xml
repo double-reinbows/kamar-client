@@ -185,4 +185,6 @@
     <string name="laundry_label">洗衣店</string>
     <string name="laundry_result">洗衣顺序发送</string>
     <string name="zero">0</string>
+    <string name="survey_previously_submitted">很抱歉，但你只能提交反馈一次！</string>
+    <string name="survey_thank_you_title">感谢您的反馈意见！</string>
 </resources>

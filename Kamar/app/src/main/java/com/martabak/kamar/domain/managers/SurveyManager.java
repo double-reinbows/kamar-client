@@ -1,7 +1,6 @@
 package com.martabak.kamar.domain.managers;
 
 import com.martabak.kamar.domain.SurveyQuestion;
-import com.martabak.kamar.domain.options.HousekeepingOption;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +21,9 @@ public class SurveyManager {
 
     private HashMap<String, List<String>> sectionMappings = null;
 
-    private Boolean flag = Boolean.FALSE;
 
-    private String currSection = null;
+    private Boolean prevSubmission = Boolean.FALSE;
+
 
     private SurveyManager() {}
 
@@ -50,9 +49,8 @@ public class SurveyManager {
      */
     public HashMap<String, List<String>> getMappings() { return sectionMappings; }
 
-    public Boolean getFlag() { return flag; }
+    public Boolean getPrevSubmission() { return prevSubmission; }
 
-    public String getCurrSection() { return currSection; }
 
     /**
      * Set the current restaurant order.
@@ -76,8 +74,7 @@ public class SurveyManager {
         this.sectionMappings = mappings;
     }
 
-    public void setFlag(Boolean flag) { this.flag = flag; }
+    public void setPrevSubmission(Boolean prevSubmission) { this.prevSubmission = prevSubmission; }
 
-    public void setCurrSection(String currSection) {this.currSection = currSection; }
 
 }
