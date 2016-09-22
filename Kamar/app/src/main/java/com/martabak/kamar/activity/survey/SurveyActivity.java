@@ -24,22 +24,12 @@ import rx.Observer;
 
 public class SurveyActivity extends ActionBarActivity {
     /**
-     * The number of pages (wizard steps) to show in this demo.
-     */
-    //private static final int NUM_PAGES = 5;
-
-    /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
      */
-
-
     private ViewPager viewPager;
-//    private final SurveySlidePagerAdapter pagerAdapter = null;
 //    private List<String> sections;
-//    private HashMap<String, ArrayList<SurveyQuestion>> secToQuestions;
     private HashMap<String, List<String>> sectionMappings;
-//    private HashMap<SurveySection, List<String>> sections;
     private HashMap<String, SurveyQuestion> idToQuestion;
     private HashMap<String, Integer> idToRating;
 
@@ -70,9 +60,6 @@ public class SurveyActivity extends ActionBarActivity {
 
 
         if (SurveyManager.getInstance().getQuestions() == null) {
-            Log.v("PQFS", "Pulling questions from server...");
-//            sections = new ArrayList<>();
-//            secToQuestions = new HashMap<>();
             idToRating = new HashMap<>();
             sectionMappings = new HashMap<>();
             idToQuestion = new HashMap<>();
@@ -82,42 +69,23 @@ public class SurveyActivity extends ActionBarActivity {
 
                         @Override
                         public void onCompleted() {
-//                            if (SurveyManager.getInstance().getQuestions() == null) {
-//                                SurveyManager.getInstance().setQuestions(idToQuestion);
-//                            }
                             Log.d(SurveyActivity.class.getCanonicalName(), String.valueOf(surveyQuestions.size()));
                             Log.d(SurveyActivity.class.getCanonicalName(), "getSurveyQuestions() On completed");
                             for (SurveyQuestion sq : surveyQuestions) {
-//                                SurveyQuestion sq = surveyQuestions.get(i);
                                 String currSection = sq.getSection();
-//                                String currEnSection  = sq.sectionEn;
                                 idToRating.put(sq._id, 0);
                                 if (!sectionMappings.keySet().contains(currSection)) { //new section found
-//                                    sections.add(currSection);
                                     List<String> ids = new ArrayList<>();
                                     ids.add(sq._id);
                                     sectionMappings.put(currSection, ids);
+//                                    sections.add(currSection);
                                 } else {
                                     List<String> sql = sectionMappings.get(currSection);
                                     sql.add(sq._id);
                                     sectionMappings.put(currSection, sql);
                                 }
-////                                if (!sections.keySet())
-//                                for (SurveySection ss : sections.keySet()) {
-//                                    if (!ss.getSection().equals(currSection)) {
-//                                        List<String> ids = new ArrayList<>();
-//                                        ids.add(sq._id);
-//                                        sections.put(ss, ids);
-//                                    } else {
-//                                        List<String> ids = sections.get(ss);
-//                                        ids.add(sq._id);
-//                                        sections.put(ss, ids);
-//                                    }
-//                                }
                                 idToQuestion.put(sq._id, sq);
-//                                Log.v("CUNT", sections.toString());
                             }
-//                            SurveyManager.getInstance().setSections(sections);
                             SurveyManager.getInstance().setQuestions(idToQuestion);
                             SurveyManager.getInstance().setRatings(idToRating);
                             SurveyManager.getInstance().setMapping(sectionMappings);
@@ -138,9 +106,6 @@ public class SurveyActivity extends ActionBarActivity {
                         }
                     });
         } else {
-//            List<SurveyQuestion> surveyQuestions = SurveyManager.getInstance().getQuestions();
-//            sections = SurveyManager.getInstance().getSections();
-//            idToRating = SurveyManager.getInstance().getRatings();
             pagerAdapter = new SurveySlidePagerAdapter(getSupportFragmentManager());
             viewPager.setAdapter(pagerAdapter);
         }

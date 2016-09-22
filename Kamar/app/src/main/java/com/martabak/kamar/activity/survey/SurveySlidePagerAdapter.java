@@ -40,15 +40,11 @@ import rx.Observer;
 class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
 
     private List<String> sections;
-    private HashMap<String, SurveyQuestion> idToQuestion;
     private HashMap<String, List<String>> sectionMappings;
-    private HashMap<String, Integer> idToRating;
 
     public SurveySlidePagerAdapter(FragmentManager fm) {
         super(fm);
-        this.idToQuestion = SurveyManager.getInstance().getQuestions();
         this.sectionMappings = SurveyManager.getInstance().getMappings();
-        this.idToRating = SurveyManager.getInstance().getRatings();
         this.sections = new ArrayList<>();
     }
 
@@ -57,11 +53,9 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
         Bundle args = new Bundle();
         args.putBoolean("flag", Boolean.FALSE);
         Log.v("SECTIONS", sections.toString());
-        //for some reason this doesn't work: SurveyManager.getInstance().setCurrSection(sections.get(position));
         args.putString("currSection", sections.get(position));
         if (position == getCount()-1) {//set "last slide" flag
             args.putBoolean("flag", Boolean.TRUE);
-//            SurveyManager.getInstance().setPrevSubmission(Boolean.TRUE);
         }
         ScreenSlidePageFragment f = new ScreenSlidePageFragment();
         f.setArguments(args);
@@ -73,6 +67,8 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
         //returns no. of sections
         if (sections.size() == 0) {
             sections.addAll(sectionMappings.keySet());
+//            sections.remove("Thank you for your time!");
+//            sections.add("Thank you for your time!");
         }
         return sections.size();
     }
@@ -96,8 +92,6 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                 questions = SurveyManager.getInstance().getQuestions();
                 flag = args.getBoolean("flag");
                 currSection = args.getString("currSection");
-//                currSection = SurveyManager.getInstance().getCurrSection();
-//                flag = SurveyManager.getInstance().getPrevSubmission();
             } else {
                 return null;
             }
