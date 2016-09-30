@@ -337,8 +337,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         final String updatedAssignee = setAssignee(assignee, currPermintaan);
         final String targetState = setTargetState(currPermintaan.state, increment);
 
-        PermintaanServer.getInstance(context).getPermintaansOfState(currPermintaan.state)
-                                                .subscribe(new Observer<Permintaan>() {
+        PermintaanServer.getInstance(context).getPermintaan(currPermintaan._id).subscribe(new Observer<Permintaan>() {
             String rev;
             @Override
             public void onCompleted() {
@@ -348,16 +347,15 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         currPermintaan.created, new Date(), updatedAssignee, currPermintaan.content);
                 updatePermintaanAndView(updatedPermintaan, currPermintaan.state);
             }
+
             @Override
             public void onError(Throwable e) {
-                Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On error");
-                }
+
+            }
+
             @Override
-            public void onNext(Permintaan result) {
-                Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "getPermintaansOfState() On next" + result._id +" "+ _id);
-                if (result._id.equals(_id)) { //found the right permintaan
-                    rev = result._rev;
-                }
+            public void onNext(Permintaan permintaan) {
+                rev = permintaan._rev;
             }
         });
     }
