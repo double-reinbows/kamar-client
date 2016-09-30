@@ -1,11 +1,9 @@
 package com.martabak.kamar.activity.survey;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -18,19 +16,17 @@ import com.martabak.kamar.service.SurveyServer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import rx.Observer;
 
-public class SurveyActivity extends ActionBarActivity {
+public class SurveyActivity extends AppCompatActivity {
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
      */
     private ViewPager viewPager;
-//    private List<String> sections;
-    private HashMap<String, List<String>> sectionMappings;
-    private HashMap<String, SurveyQuestion> idToQuestion;
+    private List<String> sections;
+    private HashMap<String, List<SurveyQuestion>> sectionMappings; //section to questions
     private HashMap<String, Integer> idToRating;
 
     /**
@@ -59,10 +55,10 @@ public class SurveyActivity extends ActionBarActivity {
         viewPager = (ViewPager) findViewById(R.id.survey_pager);
 
 
-        if (SurveyManager.getInstance().getQuestions() == null) {
+        if (SurveyManager.getInstance().getMappings() == null) {
+            sections = new ArrayList<>();
             idToRating = new HashMap<>();
             sectionMappings = new HashMap<>();
-            idToQuestion = new HashMap<>();
             SurveyServer.getInstance(this).getSurveyQuestions()
                     .subscribe(new Observer<List<SurveyQuestion>>() {
                         List<SurveyQuestion> surveyQuestions;
@@ -74,19 +70,18 @@ public class SurveyActivity extends ActionBarActivity {
                             for (SurveyQuestion sq : surveyQuestions) {
                                 String currSection = sq.getSection();
                                 idToRating.put(sq._id, 0);
-                                if (!sectionMappings.keySet().contains(currSection)) { //new section found
-                                    List<String> ids = new ArrayList<>();
-                                    ids.add(sq._id);
+                                if (!sections.contains(currSection)) { //new section found
+                                    List<SurveyQuestion> ids = new ArrayList<>();
+                                    ids.add(sq);
                                     sectionMappings.put(currSection, ids);
-//                                    sections.add(currSection);
+                                    sections.add(currSection);
                                 } else {
-                                    List<String> sql = sectionMappings.get(currSection);
-                                    sql.add(sq._id);
+                                    List<SurveyQuestion> sql = sectionMappings.get(currSection);
+                                    sql.add(sq);
                                     sectionMappings.put(currSection, sql);
                                 }
-                                idToQuestion.put(sq._id, sq);
                             }
-                            SurveyManager.getInstance().setQuestions(idToQuestion);
+                            SurveyManager.getInstance().setSections(sections);
                             SurveyManager.getInstance().setRatings(idToRating);
                             SurveyManager.getInstance().setMapping(sectionMappings);
                             pagerAdapter = new SurveySlidePagerAdapter(getSupportFragmentManager());
@@ -122,53 +117,4 @@ public class SurveyActivity extends ActionBarActivity {
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         }
     }
-
-    private class SurveySection {
-        /**
-         * The name of the option's section, in English.
-         */
-        public final String sectionEn;
-
-        /**
-         * The name of the option's section, in Indonesian Bahasa.
-         */
-        public final String sectionIn;
-
-        /**
-         * The name of the option's section, in Chinese.
-         */
-        public final String sectionZh;
-
-        /**
-         * The name of the option's section, in Russian.
-         */
-        public final String sectionRu;
-
-        public SurveySection(SurveyQuestion sq) {
-            this.sectionEn = sq.sectionEn;
-            this.sectionIn = sq.sectionIn;
-            this.sectionZh = sq.sectionZh;
-            this.sectionRu = sq.sectionRu;
-        }
-
-        /**
-         * @return The description in the appropriate language.
-         */
-        public String getSection() {
-            if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage())) {
-                return this.sectionEn;
-            } else if (Locale.getDefault().getLanguage().equals(new Locale("in").getLanguage())) {
-                return this.sectionIn;
-            } else if (Locale.getDefault().getLanguage().equals(Locale.CHINESE.getLanguage())) {
-                return this.sectionZh;
-            } else if (Locale.getDefault().getLanguage().equals(new Locale("ru").getLanguage())) {
-                return this.sectionRu;
-            } else {
-                Log.e(SurveyActivity.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
-                return this.sectionEn;
-            }
-        }
-    }
-
-
 }

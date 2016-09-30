@@ -3,7 +3,6 @@ package com.martabak.kamar.activity.survey;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,12 +39,12 @@ import rx.Observer;
 class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
 
     private List<String> sections;
-    private HashMap<String, List<String>> sectionMappings;
+    private HashMap<String, List<SurveyQuestion>> sectionMappings;
 
     public SurveySlidePagerAdapter(FragmentManager fm) {
         super(fm);
         this.sectionMappings = SurveyManager.getInstance().getMappings();
-        this.sections = new ArrayList<>();
+        this.sections = SurveyManager.getInstance().getSections();
     }
 
     @Override
@@ -64,12 +63,6 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        //returns no. of sections
-        if (sections.size() == 0) {
-            sections.addAll(sectionMappings.keySet());
-//            sections.remove("Thank you for your time!");
-//            sections.add("Thank you for your time!");
-        }
         return sections.size();
     }
 
@@ -82,14 +75,12 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             final String currSection;
-            final HashMap<String, List<String>> sectionMappings;
-            final HashMap<String, SurveyQuestion> questions;
+            final HashMap<String, List<SurveyQuestion>> sectionMappings;
             final Boolean flag;
             Bundle args = getArguments();
             if (args != null) {
                 sectionMappings = SurveyManager.getInstance().getMappings();
                 idToRating = SurveyManager.getInstance().getRatings();
-                questions = SurveyManager.getInstance().getQuestions();
                 flag = args.getBoolean("flag");
                 currSection = args.getString("currSection");
             } else {
@@ -100,10 +91,7 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
             recyclerView = (RecyclerView)rootView.findViewById(R.id.survey_list);
             TextView sectionText = (TextView)rootView.findViewById(R.id.survey_section_text);
 
-            List<SurveyQuestion> questionList = new ArrayList<>();
-            for (String id : sectionMappings.get(currSection)) {
-                questionList.add(questions.get(id));
-            }
+            List<SurveyQuestion> questionList = sectionMappings.get(currSection);
             sectionText.setText(questionList.get(0).getSection());
             SurveyRecyclerAdapter recyclerAdapter = new SurveyRecyclerAdapter(questionList, ScreenSlidePageFragment.this);
             recyclerView.setAdapter(recyclerAdapter);
@@ -130,10 +118,11 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                         return;
                     }
                     List<SurveyAnswer> list = new ArrayList<>();
-                    for (String id : questions.keySet()) {
-                        SurveyQuestion q = questions.get(id);
-                        SurveyAnswer answer = new SurveyAnswer(q._id, q.sectionEn, q.questionEn, idToRating.get(q._id));
-                        list.add(answer);
+                    for (String section : sectionMappings.keySet()) {//double for loop to go thru all questions
+                        for (SurveyQuestion q : sectionMappings.get(section)) {
+                            SurveyAnswer answer = new SurveyAnswer(q._id, q.sectionEn, q.questionEn, idToRating.get(q._id));
+                            list.add(answer);
+                        }
                     }
                     String guestID = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("guestId", "none");
                     SurveyAnswers answers = new SurveyAnswers(guestID, list);
@@ -155,7 +144,6 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                                             getActivity().finish();
                                         }
                                     });
-
                                 }
                                 @Override
                                 public void onError(Throwable e) {

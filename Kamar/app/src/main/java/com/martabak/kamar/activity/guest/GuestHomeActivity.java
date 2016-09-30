@@ -283,9 +283,10 @@ public class GuestHomeActivity extends AppCompatActivity implements
      */
     private void checkGuestOut(Guest guest) {
         Calendar c = Calendar.getInstance();
+        c.add(Calendar.MINUTE, -1); //little hack here
         Date currentDate = c.getTime();
         Guest updatedGuest;
-        Log.v("Guest", guest._id);
+//        Log.v("Guest", guest._id);
         updatedGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
                 guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
                 guest.welcomeMessage, guest.promoImgId);
