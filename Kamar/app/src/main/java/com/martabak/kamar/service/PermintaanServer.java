@@ -3,12 +3,15 @@ package com.martabak.kamar.service;
 import android.content.Context;
 import android.util.Log;
 
+import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.PostResponse;
 import com.martabak.kamar.service.response.PutResponse;
 import com.martabak.kamar.service.response.ViewResponse;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import rx.Observable;
@@ -41,6 +44,7 @@ public class PermintaanServer extends Server {
 
     /**
      * Obtains singleton instance.
+     *
      * @return The singleton instance.
      */
     public static PermintaanServer getInstance(Context c) {
@@ -51,6 +55,7 @@ public class PermintaanServer extends Server {
 
     /**
      * Get a permintaan, given its id.
+     *
      * @param id The permintaan's id.
      * @return The permintaan.
      */
@@ -62,6 +67,7 @@ public class PermintaanServer extends Server {
 
     /**
      * Get all the permintaans for a guest.
+     *
      * @param guestId The guest's ID.
      * @return Observable on the guest's permintaans.
      */
@@ -83,7 +89,8 @@ public class PermintaanServer extends Server {
 
     /**
      * Get all the permintaans that match the states given.
-     * I.E. {@code getPermintaansOfState("NEW", "INPROGRESS")}
+     * e.g. {@code getPermintaansOfState("NEW", "INPROGRESS")}
+     *
      * @param states The states to match on.
      * @return Observable on the permintaans.
      */
@@ -109,13 +116,15 @@ public class PermintaanServer extends Server {
 
     /**
      * Create a new permintaan.
+     *
      * @param permintaan The permintaan model to be created.
      * @return The permintaan model that was added.
      */
     public Observable<Permintaan> createPermintaan(Permintaan permintaan) {
         return service.createPermintaan(permintaan)
                 .flatMap(new Func1<PostResponse, Observable<Permintaan>>() {
-                    @Override public Observable<Permintaan> call(PostResponse response) {
+                    @Override
+                    public Observable<Permintaan> call(PostResponse response) {
                         return service.getPermintaan(response.id);
                     }
                 })
@@ -125,13 +134,15 @@ public class PermintaanServer extends Server {
 
     /**
      * Update a permintaan.
+     *
      * @param permintaan The permintaan model to be created.
      * @return The permintaan model that was added.
      */
     public Observable<Boolean> updatePermintaan(Permintaan permintaan) {
         return service.updatePermintaan(permintaan._id, permintaan)
                 .map(new Func1<PutResponse, Boolean>() {
-                    @Override public Boolean call(PutResponse response) {
+                    @Override
+                    public Boolean call(PutResponse response) {
                         return response.ok;
                     }
                 })
@@ -139,4 +150,27 @@ public class PermintaanServer extends Server {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    /**
+     * Get all the permintaans between the 2 input times.
+     *
+     * @param start When you want to start getting permintaans.
+     * @param end   When you want to end getting permintaan
+     * @return Observable on the permintaans.
+     */
+    public Observable<List<Permintaan>> getPermintaansOfTime(Date start, Date end) {
+        return service.getPermintaansofTime(start, end)
+                .flatMap(new Func1<AllResponse<Permintaan>, Observable<List<Permintaan>>>() {
+                    @Override
+                    public Observable<List<Permintaan>> call(AllResponse<Permintaan> response) {
+                        List<Permintaan> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<Permintaan>.AllResult<Permintaan> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+                        return Observable.just(toReturn);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
 }
