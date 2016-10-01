@@ -37,6 +37,6 @@ public interface PermintaanService {
     Observable<PutResponse> updatePermintaan(@Path("id") String id, @Body Permintaan permintaan);
 
     @GET("permintaan/_design/permintaan/_view/time")
-    Observable<AllResponse<Permintaan>> getPermintaansofTime(@Query("key1") Date start, @Query("key2") Date end);
+    Observable<ViewResponse<Permintaan>> getPermintaansofTime(@Query("startKey") Date start, @Query("endKey") Date end);
 
 }

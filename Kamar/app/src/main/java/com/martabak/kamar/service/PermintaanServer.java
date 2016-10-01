@@ -151,26 +151,27 @@ public class PermintaanServer extends Server {
     }
 
     /**
-     * Get all the permintaans between the 2 input times.
+     * Get all the permintaans that were created at some point in time between the start and end
+     * dates provided.
      *
-     * @param start When you want to start getting permintaans.
-     * @param end   When you want to end getting permintaan
+     * @param start The start date.
+     * @param end The end date.
      * @return Observable on the permintaans.
      */
     public Observable<List<Permintaan>> getPermintaansOfTime(Date start, Date end) {
-        return service.getPermintaansofTime(start, end)
-                .flatMap(new Func1<AllResponse<Permintaan>, Observable<List<Permintaan>>>() {
+        return service.getPermintaansofTime(start , end)
+                .flatMap(new Func1<ViewResponse<Permintaan>, Observable<List<Permintaan>>>() {
                     @Override
-                    public Observable<List<Permintaan>> call(AllResponse<Permintaan> response) {
+                    public Observable<List<Permintaan>> call(ViewResponse<Permintaan> response) {
                         List<Permintaan> toReturn = new ArrayList<>(response.total_rows);
-                        for (AllResponse<Permintaan>.AllResult<Permintaan> i : response.rows) {
-                            toReturn.add(i.doc);
+                        for (ViewResponse<Permintaan>.ViewResult<Permintaan> i : response.rows) {
+                            toReturn.add(i.value);
                         }
                         return Observable.just(toReturn);
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-
     }
+
 }
