@@ -13,4 +13,6 @@
     <string name="survey_previously_submitted">Sorry, but you can only submit feedback once!</string>
     <string name="survey_thank_you_title">Thank you for your feedback!</string>
     <string name="survey_thank_you">We really appreciate your comments and will ensure we use it to make your next stay with us even better!</string>
+    <string name="edittext_hint">NOTES</string>
+    <string name="restaurant_edittext"><font size="12">NOTES</font></string>
 </resources>

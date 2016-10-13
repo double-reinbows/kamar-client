@@ -171,7 +171,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
                     lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime()) / 1000;
                 } else {
-                    simpleUpdated = "never";
+                    simpleUpdated = "tidak pernah dirubah";
                     lastStateChange = 0;
                 }
                 String contentString = "";
@@ -179,9 +179,10 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 if (currPermintaan.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
                     RestaurantOrder restoOrder = (RestaurantOrder) currPermintaan.content;
                     for (OrderItem o : restoOrder.items) {
-                        contentString += "<br>" + o.quantity + " " + o.name + " Rp. " + o.price;
+                        contentString += "<br>" + o.quantity + " " + o.name + " Rp. " + o.price+"<br>"+
+                        "<span style=\"font-weight:normal;\">Note: "+o.note+"</span>";
                     }
-                    contentString += " <br>Total: Rp. " + restoOrder.totalPrice;
+                    contentString += "<br><br>Total: Rp. " + restoOrder.totalPrice;
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_TRANSPORT)) {
                     Transport transportOrder = (Transport) currPermintaan.content;
                     contentString += "<br>Departing in: " + transportOrder.departingIn +
@@ -215,7 +216,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         .setTitle("KAMAR NOMOR "+currPermintaan.roomNumber+ "- PESANAN "+currPermintaan.type)
                         .setMessage(Html.fromHtml("State: "+currPermintaan.state+"<br>"+
                                 //"Message: "+currPermintaan.content.message+"<br>"+
-                                "Pesan masuk jam: "+simpleCreated+"<br>"+
+                                "Pesan masuk jam "+simpleCreated+"<br>"+
                                 "Waktu terakhir kali pesan dirubah: "+simpleUpdated+"<br>"+
                                 "Waktu sejak terakhir kali pesan diruabah: "+lastStateChange/60+" minutes ago<br>"+
                                 "Petugas: "+currPermintaan.assignee+

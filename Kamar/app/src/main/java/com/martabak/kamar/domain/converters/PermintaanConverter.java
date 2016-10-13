@@ -80,6 +80,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                     orderItem.addProperty("quantity", i.quantity);
                     orderItem.addProperty("name", i.name);
                     orderItem.addProperty("price", i.price);
+                    orderItem.addProperty("note", i.note);
                     jsonItems.add(orderItem);
                 }
                 content.add("items", jsonItems);
@@ -254,7 +255,8 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                     Integer quantityRestaurant = item.getAsJsonPrimitive("quantity").getAsInt();
                     Integer priceRestaurant = item.getAsJsonPrimitive("price").getAsInt();
                     String name = item.getAsJsonPrimitive("name").getAsString();
-                    restaurantItems.add(new OrderItem(quantityRestaurant, name, priceRestaurant));
+                    String note = item.getAsJsonPrimitive("note").getAsString();
+                    restaurantItems.add(new OrderItem(quantityRestaurant, name, priceRestaurant, note));
                 }
                 Integer totalRestaurantPrice = c.getAsJsonPrimitive("total_price").getAsInt();
                 content = new RestaurantOrder(message, restaurantItems, totalRestaurantPrice);

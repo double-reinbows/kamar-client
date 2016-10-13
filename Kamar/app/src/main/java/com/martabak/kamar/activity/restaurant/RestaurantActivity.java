@@ -37,6 +37,7 @@ public class RestaurantActivity extends AppCompatActivity {
     //quantity dictionary with consumable.name keys
     private HashMap<String, Integer> idToQuantity;
     private HashMap<String, Consumable> idToConsumable;
+    private HashMap<String, String> idToNote;
     //lists of sections
     private List<Consumable> food;
     private List<Consumable> beverages;
@@ -102,6 +103,7 @@ public class RestaurantActivity extends AppCompatActivity {
         //initialize constant variables
         idToQuantity = new HashMap<>();
         idToConsumable = new HashMap<>();
+        idToNote = new HashMap<>();
         food = new ArrayList<>();
         beverages = new ArrayList<>();
         desserts = new ArrayList<>();
@@ -195,30 +197,26 @@ public class RestaurantActivity extends AppCompatActivity {
             idToConsumable.put(consumable._id, consumable); //add _id:consumable
             if (!idToQuantity.containsKey(consumable._id)) {//if quantity hasn't been initialized
                 idToQuantity.put(consumable._id, 0); //initialize quantity
+                idToNote.put(consumable._id, ""); //initialize notes
             }
         }
         //Initialize subtotal
         if (!idToQuantity.containsKey("subtotal")) {
             idToQuantity.put("subtotal", 0);
-//            TextView subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
             subtotalText.setText("Rp. "+ idToQuantity.get("subtotal").toString());
         }
 
-        //set up subtotal text
-
-        //subtotalText.setBackgroundColor(0xFFac0d13);
-        //subtotalText.invalidate();
-        //FloatingActionButton subtotalButton = (FloatingActionButton) findViewById(R.id.restaurant_subtotal_button);
 
         //set up restaurant expandable list adapter
         listAdapter = new RestaurantExpListAdapter(this, subsections, subsectionToIds,
-                idToConsumable, idToQuantity, subtotalText);
+                idToConsumable, idToQuantity, idToNote, subtotalText);
 
         //set list adapter onto view
         view.setAdapter(listAdapter);
         if (dessertFlag.equals(true)) {
             view.expandGroup(0, true);
         }
+        view.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 
         //set listener for the button
         FloatingActionButton restaurantButton = (FloatingActionButton) findViewById(R.id.restaurant_add);
@@ -230,9 +228,10 @@ public class RestaurantActivity extends AppCompatActivity {
                 Iterator it = idToQuantity.entrySet().iterator();
                 while (it.hasNext()) {
                     HashMap.Entry pair = (HashMap.Entry) it.next();
+                    Log.v("CUNT", idToNote.toString());
                     if (((int)pair.getValue() > 0) && (pair.getKey().toString() != "subtotal")){
                         OrderItem orderItem = new OrderItem((int)pair.getValue(),idToConsumable.get(pair.getKey().toString()).name,
-                                idToConsumable.get(pair.getKey().toString()).price);
+                                idToConsumable.get(pair.getKey().toString()).price, idToNote.get(pair.getKey().toString()));
                         restaurantOrderItems.add(orderItem);
                     }
                 }
