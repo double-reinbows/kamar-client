@@ -473,15 +473,16 @@ public class YiannisTestActivity extends AppCompatActivity {
                 TextView textView = (TextView) findViewById(R.id.doSomethingText);
                 switch (result) {
                     case Permintaan.STATE_NEW:
-                        textView.setText("GREEN RED");
+                        textView.setText("GREEN RED RED");
                         break;
                     case Permintaan.STATE_INPROGRESS:
-                        textView.setText("GREEN GREEN");
+                        textView.setText("GREEN GREEN RED");
                         break;
                     case Permintaan.STATE_COMPLETED:
-                        textView.setText("RED RED");
+                        textView.setText("GREEN GREEN GREEN");
                         break;
                     default:
+                        textView.setText("RED RED RED");
                         break;
                 }
             }

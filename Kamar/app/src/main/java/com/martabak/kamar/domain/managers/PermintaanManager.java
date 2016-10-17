@@ -144,7 +144,6 @@ public class PermintaanManager {
      * @return The state of the most recent housekeeping permintaan.
      */
     public Observable<Map<String, String>> getHousekeepingStatuses(Context c) {
-//        return null; //getMostRecentStatusOf(c, Permintaan.TYPE_HOUSEKEEPING);
         final String type = Permintaan.TYPE_HOUSEKEEPING;
         Log.d(PermintaanManager.class.getCanonicalName(), "getStatusesByTypeOf");
         return PermintaanServer.getInstance(c).getPermintaansForGuest(getGuestId(c))

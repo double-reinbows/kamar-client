@@ -135,8 +135,6 @@ public class BellboyDialogFragment extends DialogFragment {
         }
     }
 
-
-
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         permintaanDialogListener = (PermintaanDialogListener) activity;
