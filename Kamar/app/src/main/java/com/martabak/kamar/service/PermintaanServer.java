@@ -158,15 +158,20 @@ public class PermintaanServer extends Server {
      * @param end The end date.
      * @return Observable on the permintaans.
      */
-    public Observable<List<Permintaan>> getPermintaansOfTime(Date start, Date end) {
+    public Observable<List<Permintaan>> getPermintaansOfTime(final Date start, final Date end) {
+//        Observable<ViewResponse<Permintaan>> output = service.getPermintaansofTime(start, end);
+
         return service.getPermintaansofTime(start , end)
+//        return output
                 .flatMap(new Func1<ViewResponse<Permintaan>, Observable<List<Permintaan>>>() {
                     @Override
                     public Observable<List<Permintaan>> call(ViewResponse<Permintaan> response) {
                         List<Permintaan> toReturn = new ArrayList<>(response.total_rows);
                         for (ViewResponse<Permintaan>.ViewResult<Permintaan> i : response.rows) {
-                            toReturn.add(i.value);
-                        }
+                            if (i.value.created.after(start) && i.value.created.before(end)) {
+                                toReturn.add(i.value);
+                            }
+                                                    }
                         return Observable.just(toReturn);
                     }
                 })
