@@ -1,7 +1,6 @@
 package com.martabak.kamar.activity.staff;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +13,8 @@ import com.martabak.kamar.service.PermintaanServer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -71,7 +72,6 @@ public  class StaffPermintaanFragment extends Fragment {
                 switch (permintaan.state) {
                     case Permintaan.STATE_NEW:
                         new_permintaan.add(permintaan._id);
-                        Log.v("ZGH", new_permintaan.toString());
                         break;
                     case Permintaan.STATE_INPROGRESS:
                         inprogress_permintaan.add(permintaan._id);
@@ -87,7 +87,6 @@ public  class StaffPermintaanFragment extends Fragment {
                     default:
                         Log.e(StaffPermintaanFragment.class.getCanonicalName(), "Unknown state for " + permintaan);
                 }
-//            }
         }
 
         stateToPermintaanIds.put(states.get(0), new_permintaan); // Header, Child data
@@ -104,35 +103,31 @@ public  class StaffPermintaanFragment extends Fragment {
     }
 
     /**
-     * Pulls the permintaans on the server based on specified states and, if successful,
-     * creates the expandable list.
+     * Pulls the permintaans on the server that are within 3 days in the past then
+     * creates an expandable list.
      */
     private void doGetPermintaansOfStateAndCreateExpList() {
         Log.d(StaffPermintaanFragment.class.getCanonicalName(), "Doing get permintaans of state");
 
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -3); //current day -3 days
         PermintaanServer.getInstance(getActivity())
-                .getPermintaansOfState(
-                        Permintaan.STATE_NEW,
-                        Permintaan.STATE_INPROGRESS,
-                        //Permintaan.STATE_INDELIVERY,
-                        Permintaan.STATE_COMPLETED)
-                        //Permintaan.STATE_CANCELLED)
-                .subscribe(new Observer<Permintaan>() {
+                .getPermintaansOfTime(new Date(c.getTimeInMillis()), new Date())
+                .subscribe(new Observer<List<Permintaan>>() {
             List<Permintaan> permintaans = new ArrayList<>();
-
-            @Override public void onCompleted() {
-                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On completed");
+            @Override
+            public void onCompleted() {
                 createExpandableList(getView(), permintaans);
             }
 
-            @Override public void onError(Throwable e) {
-                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On error");
-                e.printStackTrace();
+            @Override
+            public void onError(Throwable e) {
+
             }
 
-            @Override public void onNext(Permintaan result) {
-                Log.d(StaffPermintaanFragment.class.getCanonicalName(), "On next");
-                permintaans.add(result);
+            @Override
+            public void onNext(List<Permintaan> result) {
+                permintaans = result;
             }
         });
     }
