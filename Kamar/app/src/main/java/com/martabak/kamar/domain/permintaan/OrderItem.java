@@ -13,10 +13,12 @@ public class OrderItem {
 
     public final Integer price;
 
-    public OrderItem(Integer quantity, String name, Integer price) {
+    public final String note;
+
+    public OrderItem(Integer quantity, String name, Integer price, String note) {
         this.quantity = quantity;
         this.name = name;
         this.price = price;
-
+        this.note = note;
     }
 }

@@ -38,6 +38,7 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
     private RecyclerView recyclerView;
     private View sentImageView;
     private View processedImageView;
+    private View completedImageView;
     private List<MassageOption> massageOptions;
     private String status;
 
@@ -87,6 +88,7 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
         status = Permintaan.STATE_COMPLETED;
         sentImageView = findViewById(R.id.sent_image);
         processedImageView = findViewById(R.id.processed_image);
+        completedImageView = findViewById(R.id.completed_image);
         PermintaanManager.getInstance().getMassageStatus(getBaseContext()).subscribe(new Observer<String>() {
             @Override public void onCompleted() {
                 Log.d(MassageActivity.class.getCanonicalName(), "getMassageStatus#onCompleted");
@@ -99,6 +101,8 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
                 Log.d(MassageActivity.class.getCanonicalName(), "Massage status is " + status);
                 MassageActivity.this.status = status;
                 switch (status) {
+                    case Permintaan.STATE_COMPLETED:
+                        completedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
                     case Permintaan.STATE_INPROGRESS:
                         processedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
                     case Permintaan.STATE_NEW:

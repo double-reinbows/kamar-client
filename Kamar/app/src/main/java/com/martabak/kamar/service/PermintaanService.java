@@ -1,9 +1,12 @@
 package com.martabak.kamar.service;
 
 import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.PostResponse;
 import com.martabak.kamar.service.response.PutResponse;
 import com.martabak.kamar.service.response.ViewResponse;
+
+import java.util.Date;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -32,5 +35,8 @@ public interface PermintaanService {
 
     @PUT("permintaan/{id}")
     Observable<PutResponse> updatePermintaan(@Path("id") String id, @Body Permintaan permintaan);
+
+    @GET("permintaan/_design/permintaan/_view/time")
+    Observable<ViewResponse<Permintaan>> getPermintaansofTime(@Query("startKey") Date start, @Query("endKey") Date end);
 
 }

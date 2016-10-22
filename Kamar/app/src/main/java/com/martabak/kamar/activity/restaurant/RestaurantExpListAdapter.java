@@ -2,11 +2,16 @@ package com.martabak.kamar.activity.restaurant;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,12 +32,14 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, Consumable> idToConsumable;
     //quantity dictionary with consumable.name keys
     private HashMap<String, Integer> idToQuantity;
+    private HashMap<String, String> idToNote;
     private TextView subtotalText;
 
     public RestaurantExpListAdapter(Context context, List<String> subsections,
                                     HashMap<String, List<String>> subsectionToIds,
                                     HashMap<String, Consumable> idToConsumable,
                                     HashMap<String, Integer> idToQuantity,
+                                    HashMap<String, String> idToNote,
                                     TextView subtotalText) {
         this.context = context;
         this.subsections = subsections;
@@ -40,6 +47,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         this.idToConsumable = idToConsumable;
         this.idToQuantity = idToQuantity;
         this.subtotalText = subtotalText;
+        this.idToNote = idToNote;
     }
 
     @Override
@@ -76,6 +84,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
         txtListChild.setTypeface(customFont);
         txtListChild.setText(childText);
+        /*
         txtListChild.post(new Runnable() {
             @Override
             public void run() {
@@ -94,19 +103,12 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
                             90);
 
 //                    quantity.margin
-                }*/
+                }
             }
+
         });
+        */
 
-        //Set up info text
-        //if (context.getSharedPreferences("userSettings", MODE_PRIVATE).getString("locale", null).equals("english"));
-        String infoText = currConsumable.getDescription();
-        TextView infoView = (TextView)convertView.findViewById(R.id.item_info);
-        infoView.setText(infoText);
-
-        //Set up quantity text
-//        List<String> currConsumables = subsectionToIds.get(subsections.get(groupPosition));
-//        Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
 
 
         //Set up price text
@@ -127,15 +129,10 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
          * Implement the minus button
          */
         ImageView minusQuantityButton = (ImageView) convertView.findViewById(R.id.minus_button);
-        //minusQuantityButton.setBackgroundColor(0xFFac0d13);
-        //minusQuantityButton.invalidate();
-        //minusQuantityButton.setColorFilter(Color.argb(255, 255, 255, 255));
 
         minusQuantityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-//                List<String> currConsumables = subsectionToIds.get(subsections.get(groupPosition));
-//                Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
                 Integer currQuantity = idToQuantity.get(currConsumable._id);
                 if (currQuantity - 1 > -1) { //Stop user from setting to -1 quantity
                     //Minus 1 off the quantity
@@ -152,15 +149,10 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
          * Implement the plus button
          */
         ImageView plusQuantityButton = (ImageView) convertView.findViewById(R.id.plus_button);
-        //plusQuantityButton.setBackgroundColor(0xFFac0d13);
-        //plusQuantityButton.invalidate();
-        //plusQuantityButton.setColorFilter(Color.argb(255, 255, 255, 255));
 
         plusQuantityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-//                List<String> currConsumables = subsectionToIds.get(subsections.get(groupPosition));
-//                Consumable currConsumable = getChild(groupPosition, childPosition); //.get(currConsumables.get(childPosition));
                 Integer currQuantity = idToQuantity.get(currConsumable._id);
                 //Add 1 to the quantity
                 idToQuantity.put(currConsumable._id, (currQuantity + 1));
@@ -168,6 +160,51 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
                 idToQuantity.put("subtotal", idToQuantity.get("subtotal") + currConsumable.price);
                 subtotalText.setText("Rp. "+ idToQuantity.get("subtotal").toString()+" 000");
                 notifyDataSetChanged();
+            }
+        });
+
+        final EditText note = (EditText) convertView.findViewById(R.id.item_note);
+        note.setText(idToNote.get(currConsumable._id));
+/*
+        note.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    InputMethodManager in = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            Log.v("ABCS", note.getText().toString());
+                    idToNote.put(currConsumable._id, note.getText().toString());
+
+                    // NOTE: In the author's example, he uses an identifier
+                    // called searchBar. If setting this code on your EditText
+                    // then use v.getWindowToken() as a reference to your
+                    // EditText is passed into this callback as a TextView
+
+                    in.hideSoftInputFromWindow(v.getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                    // Must return true here to consume event
+                    return true;
+
+                }
+                return false;
+            }
+        });
+*/
+        note.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                idToNote.put(currConsumable._id, note.getText().toString());
+                Log.v("HERP", idToNote.toString());
             }
         });
 
@@ -206,7 +243,6 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.restaurant_subsection);
-        //lblListHeader.setTypeface(null, Typeface.BOLD);
         Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
         Typeface boldFont = Typeface.create(customFont, Typeface.BOLD);
         lblListHeader.setTypeface(boldFont);

@@ -1,20 +1,17 @@
 package com.martabak.kamar.activity.housekeeping;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +43,6 @@ public class HousekeepingActivity extends AppCompatActivity implements
     private List<String> housekeepingSections;
     private List<HousekeepingOption> hkOptions;
     private HashMap<String, Integer> idToQuantity;
-//    public RecyclerView.LayoutManager mLayoutManager;
 
 
     @Override
@@ -71,8 +67,6 @@ public class HousekeepingActivity extends AppCompatActivity implements
         // END GENERIC LAYOUT STUFF
 
         sectionRecyclerView = (RecyclerView)findViewById(R.id.housekeeping_list);
-//        mLayoutManager = new LinearLayoutManager(this);
-//        sectionRecyclerView.setLayoutManager(mLayoutManager);
 
         housekeepingSections = HousekeepingManager.getInstance().getSections();
 
@@ -125,7 +119,6 @@ public class HousekeepingActivity extends AppCompatActivity implements
     */
     @Override
     public void onClick(final View view) {
-
         int itemPosition = sectionRecyclerView.getChildLayoutPosition(view);
         final String selectedSection = housekeepingSections.get(itemPosition);
 
@@ -150,10 +143,7 @@ public class HousekeepingActivity extends AppCompatActivity implements
     /**
      * This fragment generates the list of housekeeping options.
      */
-    public static class HousekeepingFragment extends Fragment implements
-    View.OnClickListener {
-
-//        protected RecyclerView.LayoutManager mLayoutManager;
+    public static class HousekeepingFragment extends Fragment implements View.OnClickListener {
         private RecyclerView optionRecyclerView;
         private Map<String, String> idToStatus;
         private HousekeepingOptionAdapter hkOptionRecyclerAdapter;
@@ -197,7 +187,7 @@ public class HousekeepingActivity extends AppCompatActivity implements
             final HousekeepingOption option = holder.item;
             String guestId = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                     .getString("guestId", "none");
-            Log.v("CUNT", guestId);
+            Log.v(HousekeepingActivity.class.getCanonicalName(), guestId);
 
             if (idToStatus.containsKey(option._id)) { //pre-existing request
                 switch (idToStatus.get(option._id)) {

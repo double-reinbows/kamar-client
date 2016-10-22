@@ -225,6 +225,8 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
             String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_COMPLETED;
             Log.d(EngineeringActivity.class.getCanonicalName(), "Status for ic_engineering " + holder.item.getName() + " is " + state);
             switch (state) {
+                case Permintaan.STATE_COMPLETED:
+                    holder.completedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
                 case Permintaan.STATE_INPROGRESS:
                     holder.processedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
                 case Permintaan.STATE_NEW:
@@ -245,6 +247,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
             public final TextView nameView;
             public final View sentImageView;
             public final View processedImageView;
+            public final View completedImageView;
 
             public ViewHolder(View view) {
                 super(view);
@@ -253,6 +256,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                 nameView = (TextView) view.findViewById(R.id.engineering_name);
                 sentImageView = view.findViewById(R.id.sent_image);
                 processedImageView = view.findViewById(R.id.processed_image);
+                completedImageView = view.findViewById(R.id.completed_image);
             }
 
             @Override

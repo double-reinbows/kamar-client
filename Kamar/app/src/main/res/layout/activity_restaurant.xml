@@ -15,15 +15,6 @@
 
         <include layout="@layout/content_restaurant" />
 
-        <!--android.support.design.widget.FloatingActionButton
-            android:id="@+id/restaurant_subtotal_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:color/transparent"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="80dp"
-            app:fabSize="normal" /-->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="wrap_content"

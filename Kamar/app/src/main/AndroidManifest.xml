@@ -97,7 +97,8 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/restaurant_label"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".activity.restaurant.RestaurantConfirmationActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/restaurant_confirmation_label"

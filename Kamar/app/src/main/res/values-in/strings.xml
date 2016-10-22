@@ -50,6 +50,7 @@
     <string name="permintaan_status_is_now">Status is now</string>
     <string name="permintaan_order_sent">Order Sent</string>
     <string name="permintaan_order_received">Order Received</string>
+    <string name="permintaan_order_completed">Order Completed</string>
 
     <!-- Chat -->
     <string name="title_chat_list">Pesan</string>
@@ -185,4 +186,5 @@
     <string name="zero">0</string>
     <string name="survey_previously_submitted">Maaf, tapi Anda hanya dapat mengirimkan komentar sekali!</string>
     <string name="survey_thank_you_title"> Terima kasih atas tanggapan Anda!</string>
+    <string name="restaurant_edittext"><font size="12">CATATAN</font></string>
 </resources>
