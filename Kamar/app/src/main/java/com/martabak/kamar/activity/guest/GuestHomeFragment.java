@@ -49,7 +49,10 @@ public class GuestHomeFragment extends Fragment {
         View logoutView = view.findViewById(R.id.logoutIcon);
         guest = new Guest();
 
-
+        final String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                .getString("roomNumber", "none");
+        TextView roomTextView = (TextView) view.findViewById(R.id.room_number);
+        roomTextView.setText(roomNumber);
         gridView.setAdapter(guestHomeAdapter);
 
         // update the text of the navigation menu items if language changed.

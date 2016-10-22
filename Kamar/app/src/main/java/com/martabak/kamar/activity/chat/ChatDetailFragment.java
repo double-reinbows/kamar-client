@@ -144,8 +144,8 @@ public class ChatDetailFragment extends Fragment {
     private void readChatMessages() {
         for (ChatMessage message : mChatMessages) {
             if (message.read == null) { // If it's unread...and
-                if (message.fromGuest() && !mSender.equals(ChatMessage.SENDER_GUEST) // From guest and restaurant or front-desk are reading it...or
-                        || !message.fromGuest() && mSender.equals(ChatMessage.SENDER_GUEST)) { // From restaurant or front-desk and guest is reading it
+                if (message.fromGuest() && !mSender.equals(ChatMessage.SENDER_GUEST) // From guest and ic_restaurant or front-desk are reading it...or
+                        || !message.fromGuest() && mSender.equals(ChatMessage.SENDER_GUEST)) { // From ic_restaurant or front-desk and guest is reading it
                     // Then set the message to read
                     Log.d(ChatDetailFragment.class.getCanonicalName(), "Setting chat message " + message._id + " to read");
                     ChatServer.getInstance(getActivity()).setChatMessageToRead(message)

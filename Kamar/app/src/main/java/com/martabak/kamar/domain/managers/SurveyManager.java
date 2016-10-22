@@ -35,7 +35,7 @@ public class SurveyManager {
     }
 
     /**
-     * @return The current restaurant order, if it has been set.
+     * @return The current ic_restaurant order, if it has been set.
      */
     public HashMap<String, SurveyQuestion> getQuestions() {
         return questions;
@@ -53,22 +53,22 @@ public class SurveyManager {
 
 
     /**
-     * Set the current restaurant order.
-     * @param questions The current restaurant order.
+     * Set the current ic_restaurant order.
+     * @param questions The current ic_restaurant order.
      */
     public void setQuestions(HashMap<String, SurveyQuestion> questions) {
         this.questions = questions;
     }
     /**
-     * Set the current restaurant order.
-     * @param ratings The current restaurant order.
+     * Set the current ic_restaurant order.
+     * @param ratings The current ic_restaurant order.
      */
     public void setRatings(HashMap<String, Integer> ratings) {
         this.ratings = ratings;
     }
     /**
-     * Set the current restaurant order.
-     * @param mappings The current restaurant order.
+     * Set the current ic_restaurant order.
+     * @param mappings The current ic_restaurant order.
      */
     public void setMapping(HashMap<String, List<String>> mappings) {
         this.sectionMappings = mappings;

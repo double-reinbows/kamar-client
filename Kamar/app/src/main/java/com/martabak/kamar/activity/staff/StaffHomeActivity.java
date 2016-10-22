@@ -9,20 +9,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.activity.chat.ChatListActivity;
 import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.Server;
-
-import org.w3c.dom.Text;
 
 public class StaffHomeActivity extends AppCompatActivity {
 
@@ -47,7 +43,7 @@ public class StaffHomeActivity extends AppCompatActivity {
                     staffImage = R.drawable.hotel_information;
                     break;
                 case Permintaan.OWNER_RESTAURANT:
-                    staffImage = R.drawable.restaurant;
+                    staffImage = R.drawable.ic_restaurant;
                     break;
                 default:
                     staffImage = R.drawable.question_mark;

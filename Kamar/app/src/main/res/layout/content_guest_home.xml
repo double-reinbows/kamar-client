@@ -14,7 +14,7 @@
         android:id="@+id/guest_container"
         android:orientation="vertical"
         android:background="@drawable/wood_background_highres"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="40dp"
         tools:context=".activity.guest.GuestHomeActivity">
     </RelativeLayout>
 

@@ -4,6 +4,10 @@
     <color name="colorNavBarBackground">#FFFFFF</color>
     <color name="colorAccent">#E57373</color>
     <color name="colorButton">#AC0D13</color>
+    <color name="roomNumberBackground">#be142d</color>
+    <color name="guestHomeBackgroundColor">#FFFFFF</color>
+    <color name="guestHomeTextColor">#808184</color>
+
     <color name="guestTextColor">#FFFFFF</color>
     <color name="dialogConfirmationBackground">#b9ac0d13</color>
     <color name="black">#000000</color>
@@ -13,6 +17,7 @@
 
     <color name="colorChatInputBackground">#FFFFFF</color>
     <color name="colorChatSelected">#606060</color>
+
 
     <color name="permintaanRed">#ff0000</color>
     <color name="permintaanGreen">#00ff00</color>

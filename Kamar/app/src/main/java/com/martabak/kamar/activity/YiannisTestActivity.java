@@ -118,7 +118,7 @@ public class YiannisTestActivity extends AppCompatActivity {
     }
 
     private void doGetEngineeringOptions() {
-        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get engineering options");
+        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get ic_engineering options");
         StaffServer.getInstance(getBaseContext()).getEngineeringOptions().subscribe(new Observer<List<EngineeringOption>>() {
             @Override
             public void onCompleted() {

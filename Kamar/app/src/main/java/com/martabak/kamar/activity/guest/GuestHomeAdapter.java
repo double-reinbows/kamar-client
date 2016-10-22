@@ -90,7 +90,7 @@ public class GuestHomeAdapter extends BaseAdapter {
         //set image and text of each item in the grid
         imageView = (ImageView) grid.findViewById(R.id.grid_image);
         textView = (TextView) grid.findViewById(R.id.grid_text);
-        grid.setLayoutParams(new GridView.LayoutParams(280, 250));
+        //grid.setLayoutParams(new GridView.LayoutParams(250, 300));
         textView.setText(TEXT.get(position));
         imageView.setImageResource(IMAGES[position]);
 
