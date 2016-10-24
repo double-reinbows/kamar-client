@@ -86,7 +86,7 @@ public class RestaurantActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Beverages"));
         tabLayout.addTab(tabLayout.newTab().setText("Desserts"));
 
-        //set tab text
+        //set tab text's font
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
         int numTabs = vg.getChildCount();
         for (int j = 0; j < numTabs; j++) {

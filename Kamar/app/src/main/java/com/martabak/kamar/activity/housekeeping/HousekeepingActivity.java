@@ -2,6 +2,7 @@ package com.martabak.kamar.activity.housekeeping;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -36,13 +37,13 @@ import rx.Observer;
 /**
  * This activity generates the list of housekeeping sections.
  */
-public class HousekeepingActivity extends AppCompatActivity implements
-    View.OnClickListener {
+public class HousekeepingActivity extends AppCompatActivity {
 
     private RecyclerView sectionRecyclerView;
     private List<String> housekeepingSections;
     private List<HousekeepingOption> hkOptions;
     private HashMap<String, Integer> idToQuantity;
+    private TabLayout tabLayout;
 
 
     @Override
@@ -64,6 +65,7 @@ public class HousekeepingActivity extends AppCompatActivity implements
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         // END GENERIC LAYOUT STUFF
 
         sectionRecyclerView = (RecyclerView)findViewById(R.id.housekeeping_list);
@@ -73,8 +75,6 @@ public class HousekeepingActivity extends AppCompatActivity implements
 
         if (housekeepingSections == null) {
             housekeepingSections = new ArrayList<>();
-            final HousekeepingSectionAdapter sectionRecyclerAdapter = new HousekeepingSectionAdapter(this, housekeepingSections);
-            sectionRecyclerView.setAdapter(sectionRecyclerAdapter);
             StaffServer.getInstance(this).getHousekeepingOptions().subscribe(new Observer<List<HousekeepingOption>>() {
                 @Override
                 public void onCompleted() {
@@ -87,8 +87,12 @@ public class HousekeepingActivity extends AppCompatActivity implements
                         HousekeepingManager.getInstance().setOrder(idToQuantity);
                         HousekeepingManager.getInstance().setSections(housekeepingSections);
                         HousekeepingManager.getInstance().setHkOptions(hkOptions);
-                        sectionRecyclerAdapter.notifyDataSetChanged();
-
+                        //initialize tabs
+                        for (String section : housekeepingSections) {
+                            tabLayout.addTab(tabLayout.newTab().setText(section));
+                        }
+                        startHKFragment("Towels");
+                        setTabListener();
                     }
                 }
 
@@ -107,30 +111,45 @@ public class HousekeepingActivity extends AppCompatActivity implements
         } else {
             hkOptions = HousekeepingManager.getInstance().getOptions();
             idToQuantity = HousekeepingManager.getInstance().getOrder();
-            final HousekeepingSectionAdapter sectionRecyclerAdapter = new HousekeepingSectionAdapter(this, housekeepingSections);
-            sectionRecyclerView.setAdapter(sectionRecyclerAdapter);
+            //initialize tabs
+            for (String section : housekeepingSections) {
+                tabLayout.addTab(tabLayout.newTab().setText(section));
+            }
+            startHKFragment("Towels");
+            setTabListener();
         }
+
 
     }
 
-    /**
-     * Handle a click on a single HK section.
-     * Starts the fragment/next recycler list
-    */
-    @Override
-    public void onClick(final View view) {
-        int itemPosition = sectionRecyclerView.getChildLayoutPosition(view);
-        final String selectedSection = housekeepingSections.get(itemPosition);
-
+    public void setTabListener() {
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                String selectedTab = tab.getText().toString();
+                startHKFragment(selectedTab);
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                String selectedTab = tab.getText().toString();
+                startHKFragment(selectedTab);
+            }
+        });
+    }
+    public void startHKFragment(String selectedTab) {
         HousekeepingFragment f = new HousekeepingFragment();
         Bundle args = new Bundle();
-        args.putString("section", selectedSection);
+        args.putString("section", selectedTab);
         f.setArguments(args);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.hk_fragment_container, f);
         ft.commit();
-
     }
-
+    /**
+     * Sets up the list of sections and the quantity dictionary
+     */
     private void setupSectionsOrder() {
         for (HousekeepingOption hk : hkOptions) {
             if (!housekeepingSections.contains(hk.getSection())) {
