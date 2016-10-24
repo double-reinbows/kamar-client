@@ -171,7 +171,7 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates an exp list then sets the restaurant exp list onto it
+     * Creates an exp list then sets the ic_restaurant exp list onto it
      */
     protected void createExpandableList(List<Consumable> consumables, ExpandableListView view) {
         List<String> subsections; //list of subsections
@@ -207,7 +207,7 @@ public class RestaurantActivity extends AppCompatActivity {
         }
 
 
-        //set up restaurant expandable list adapter
+        //set up ic_restaurant expandable list adapter
         listAdapter = new RestaurantExpListAdapter(this, subsections, subsectionToIds,
                 idToConsumable, idToQuantity, idToNote, subtotalText);
 

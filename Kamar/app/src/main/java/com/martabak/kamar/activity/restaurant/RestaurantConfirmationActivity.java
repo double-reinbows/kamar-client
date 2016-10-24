@@ -81,7 +81,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
 
         Integer multiplyFactor = 1000;
 
-        // fill in each of the respective display lists based on the restaurant model manager
+        // fill in each of the respective display lists based on the ic_restaurant model manager
         RestaurantOrder tempRestaurantOrder = RestaurantOrderManager.getInstance().getOrder();
         restaurantOrderItems = tempRestaurantOrder.items;
 
@@ -148,7 +148,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
                     ).show();
                     return;
                 }
-                //restaurant submit
+                //ic_restaurant submit
                 sendRestaurantRequest(restaurantOrder);
 
                 //new dialog
@@ -184,14 +184,14 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         restaurantBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //restaurant back;
+                //ic_restaurant back;
                 finish();
             }
 
         });
     }
 
-    /*Send restaurant request*/
+    /*Send ic_restaurant request*/
     public void sendRestaurantRequest(RestaurantOrder restaurantOrder) {
 
         String owner = Permintaan.OWNER_RESTAURANT;

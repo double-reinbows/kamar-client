@@ -55,7 +55,7 @@ public class AuthorizationInterceptor implements Interceptor {
                         password = "frontdesk123";
                         break;
                     case "RESTAURANT":
-                        username = "restaurant";
+                        username = "ic_restaurant";
                         password = "restaurant123";
                         break;
                     default:

@@ -33,13 +33,13 @@ import java.util.Map;
 import rx.Observer;
 
 /**
- * This activity generates the list of engineering options and allows the guest to request one.
+ * This activity generates the list of ic_engineering options and allows the guest to request one.
  */
 public class EngineeringActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private List<EngineeringOption> engOptions;
-    private Map<String, String> statuses; // Maps engineering option ID -> request status
+    private Map<String, String> statuses; // Maps ic_engineering option ID -> request status
     private EngineeringRecyclerViewAdapter recyclerViewAdapter;
 
     @Override
@@ -77,7 +77,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                 e.printStackTrace();
             }
             @Override public void onNext(final List<EngineeringOption> options) {
-                Log.d(EngineeringActivity.class.getCanonicalName(), options.size() + " engineering options found");
+                Log.d(EngineeringActivity.class.getCanonicalName(), options.size() + " ic_engineering options found");
                 engOptions.addAll(options);
             }
         });
@@ -105,7 +105,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
     }
 
     /**
-     * Handle a click on a single engineering option.
+     * Handle a click on a single ic_engineering option.
      * Bring up a confirmation dialog.
      * @param view The view that was clicked on.
      */
@@ -223,7 +223,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                     .into(holder.imageView);
             holder.nameView.setText(holder.item.getName());
             String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_COMPLETED;
-            Log.d(EngineeringActivity.class.getCanonicalName(), "Status for engineering " + holder.item.getName() + " is " + state);
+            Log.d(EngineeringActivity.class.getCanonicalName(), "Status for ic_engineering " + holder.item.getName() + " is " + state);
             switch (state) {
                 case Permintaan.STATE_COMPLETED:
                     holder.completedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));

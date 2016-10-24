@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * The restaurant confirmation array adapter class is a recycler view to hold the items for the
- *  restaurant confirmation activity.
+ * The ic_restaurant confirmation array adapter class is a recycler view to hold the items for the
+ *  ic_restaurant confirmation activity.
  */
 public class RestaurantConfirmationArrayAdapter
         extends RecyclerView.Adapter<RestaurantConfirmationArrayAdapter.RestaurantConfirmationViewHolder> {

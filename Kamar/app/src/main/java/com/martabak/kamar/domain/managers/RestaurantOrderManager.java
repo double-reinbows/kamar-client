@@ -3,7 +3,7 @@ package com.martabak.kamar.domain.managers;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 
 /**
- * Keeps the restaurant order in memory to be passed from RestaurantActivity to
+ * Keeps the ic_restaurant order in memory to be passed from RestaurantActivity to
  * RestaurantConfirmationActivity.
  */
 public class RestaurantOrderManager {
@@ -22,15 +22,15 @@ public class RestaurantOrderManager {
     }
 
     /**
-     * @return The current restaurant order, if it has been set.
+     * @return The current ic_restaurant order, if it has been set.
      */
     public RestaurantOrder getOrder() {
         return order;
     }
 
     /**
-     * Set the current restaurant order.
-     * @param order The current restaurant order.
+     * Set the current ic_restaurant order.
+     * @param order The current ic_restaurant order.
      */
     public void setOrder(RestaurantOrder order) {
         this.order = order;

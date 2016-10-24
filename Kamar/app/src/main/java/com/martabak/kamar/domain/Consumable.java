@@ -9,7 +9,7 @@ import com.martabak.kamar.service.MenuService;
 import java.util.Locale;
 
 /**
- * A consumable item on a menu that a {@link Guest} can order from the restaurant.
+ * A consumable item on a menu that a {@link Guest} can order from the ic_restaurant.
  */
 public class Consumable extends Model {
 

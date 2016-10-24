@@ -116,7 +116,7 @@ public class StaffServer extends Server {
     }
 
     /**
-     * @return All the engineering options that are available.
+     * @return All the ic_engineering options that are available.
      */
     public Observable<List<EngineeringOption>> getEngineeringOptions() {
         return service.getEngineeringOptions()

@@ -8,7 +8,7 @@ import com.martabak.kamar.domain.options.EngineeringOption;
 public class Engineering extends Content {
 
     /**
-     * The engineering option.
+     * The ic_engineering option.
      */
     public final EngineeringOption option;
 

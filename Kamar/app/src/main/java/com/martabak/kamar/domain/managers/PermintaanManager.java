@@ -183,7 +183,7 @@ public class PermintaanManager {
     }
 
     /**
-     * @return The state of all possible engineering option permintaans.
+     * @return The state of all possible ic_engineering option permintaans.
      */
     public Observable<Map<String, String>> getEngineeringStatuses(Context c) {
         return getStatusesByTypeOf(c, Permintaan.TYPE_ENGINEERING);

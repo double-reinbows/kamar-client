@@ -31,7 +31,7 @@ public class HousekeepingManager {
     }
 
     /**
-     * @return The current restaurant order, if it has been set.
+     * @return The current ic_restaurant order, if it has been set.
      */
     public List<HousekeepingOption> getOptions() {
         return hkOptions;
@@ -46,22 +46,22 @@ public class HousekeepingManager {
     public List<String> getSections() { return sections; }
 
     /**
-     * Set the current restaurant order.
-     * @param options The current restaurant order.
+     * Set the current ic_restaurant order.
+     * @param options The current ic_restaurant order.
      */
     public void setHkOptions(List<HousekeepingOption> options) {
         this.hkOptions= options;
     }
     /**
-     * Set the current restaurant order.
-     * @param order The current restaurant order.
+     * Set the current ic_restaurant order.
+     * @param order The current ic_restaurant order.
      */
     public void setOrder(HashMap<String, Integer> order) {
         this.hkOrder = order;
     }
     /**
-     * Set the current restaurant order.
-     * @param sections The current restaurant order.
+     * Set the current ic_restaurant order.
+     * @param sections The current ic_restaurant order.
      */
     public void setSections(List<String> sections) {
         this.sections = sections;
