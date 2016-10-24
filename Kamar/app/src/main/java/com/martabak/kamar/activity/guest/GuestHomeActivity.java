@@ -57,12 +57,13 @@ public class GuestHomeActivity extends AppCompatActivity implements
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
         setSupportActionBar(toolbar);
-
+        /*
         roomNumberTextView = (TextView) findViewById(R.id.toolbar_roomnumber);
         final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         // set room number text
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
+        */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -74,8 +75,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
         }
-
-
 
         getFragmentManager().beginTransaction()
                 .add(R.id.guest_container, GuestHomeFragment.newInstance())
