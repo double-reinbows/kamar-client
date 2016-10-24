@@ -64,6 +64,9 @@ public class RestaurantActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
+        toolbarText.setText(getString(R.string.restaurant_label));
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,11 +76,9 @@ public class RestaurantActivity extends AppCompatActivity {
 
         });
 
-        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
-        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", "none");
+//        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
+//                .getString("roomNumber", "none");
         // set room number text
-        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
         Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
 
         //initialize tabs
@@ -180,7 +181,6 @@ public class RestaurantActivity extends AppCompatActivity {
 
         subsections = new ArrayList<>();
         subsectionToIds = new HashMap<>();
-        //idToConsumable = new HashMap<>();
 
         //iterate over the consumables for the current tab/section
         for (Consumable consumable : consumables) {

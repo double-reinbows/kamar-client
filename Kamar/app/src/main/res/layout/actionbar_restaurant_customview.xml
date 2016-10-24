@@ -11,54 +11,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@drawable/app_logo"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:background="@drawable/batikbackground"
-            />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:background="@color/colorNavBar">
+            android:background="@color/colorNavBar"
+            android:layout_marginBottom="5dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_gravity="center"
+                android:textSize="40dp"
                 android:id="@+id/toolbar_title"/>
-            <TextView
+
+            <ImageView
+                android:src="@drawable/ic_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:id="@+id/toolbar_roomnumber"/>
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabMode="fixed"
-                app:tabGravity="fill"
-                app:tabMaxWidth="0dp"
-                app:tabTextAppearance="@style/RestoCustomTabStyle"/>
+                android:id="@+id/chat_icon" />
 
-
-            <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="net.voidynullness.android.tabitytabs.TabLayoutActivity">
-
-            </android.support.v4.view.ViewPager>
         </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabBackground="@drawable/tab_color_selector"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabMaxWidth="0dp"
+            app:tabTextAppearance="@style/RestoTabTextAppearance"/>
+
     </LinearLayout>
 
 

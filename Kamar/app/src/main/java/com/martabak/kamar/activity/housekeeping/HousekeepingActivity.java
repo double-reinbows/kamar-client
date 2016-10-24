@@ -54,6 +54,9 @@ public class HousekeepingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
+        toolbarText.setText(getString(R.string.housekeeping_label));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,10 +64,8 @@ public class HousekeepingActivity extends AppCompatActivity {
             }
 
         });
-        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         // END GENERIC LAYOUT STUFF
 
@@ -261,7 +262,7 @@ public class HousekeepingActivity extends AppCompatActivity {
                                         if (success) {
                                             Toast.makeText(
                                                     getActivity().getApplicationContext(),
-                                                    R.string.massage_result,
+                                                    R.string.housekeeping_result,
                                                     Toast.LENGTH_SHORT
                                             ).show();
 
