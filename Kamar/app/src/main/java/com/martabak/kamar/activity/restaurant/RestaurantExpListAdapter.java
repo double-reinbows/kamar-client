@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.restaurant;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Editable;
@@ -9,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
@@ -166,13 +168,15 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         final EditText note = (EditText) convertView.findViewById(R.id.item_note);
         note.setText(idToNote.get(currConsumable._id));
 /*
+        final Activity parentActivity = (Activity)context;
+
         note.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
                 if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    InputMethodManager in = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                            Log.v("ABCS", note.getText().toString());
-                    idToNote.put(currConsumable._id, note.getText().toString());
+                    Log.v("SOMETHING", "something");
+                    InputMethodManager in = (InputMethodManager) parentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
                     // NOTE: In the author's example, he uses an identifier
                     // called searchBar. If setting this code on your EditText
@@ -181,6 +185,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
 
                     in.hideSoftInputFromWindow(v.getWindowToken(),
                             InputMethodManager.HIDE_NOT_ALWAYS);
+//                    userValidateEntry();
                     // Must return true here to consume event
                     return true;
 
@@ -189,6 +194,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
             }
         });
 */
+
         note.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -204,7 +210,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
             public void afterTextChanged(Editable s) {
                 // TODO Auto-generated method stub
                 idToNote.put(currConsumable._id, note.getText().toString());
-                Log.v("HERP", idToNote.toString());
+//                Log.v("HERP", idToNote.toString());
             }
         });
 

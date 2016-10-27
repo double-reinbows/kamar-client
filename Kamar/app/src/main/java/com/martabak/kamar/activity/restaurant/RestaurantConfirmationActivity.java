@@ -62,11 +62,11 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         });
 
 
-        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
+//        TextView roomNumberTextView = (TextView)findViewById(R.id.room_number);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         // set room number text
-        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
+//        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
 
         final RecyclerView rv = (RecyclerView) view.findViewById(R.id.restaurant_recycleview);
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));

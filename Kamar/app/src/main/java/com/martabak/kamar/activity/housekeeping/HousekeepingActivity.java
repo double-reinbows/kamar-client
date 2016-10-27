@@ -66,11 +66,12 @@ public class HousekeepingActivity extends AppCompatActivity {
         });
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TextView roomTextView = (TextView) findViewById(R.id.room_number);
+        roomTextView.setText(roomNumber);
         // END GENERIC LAYOUT STUFF
 
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         sectionRecyclerView = (RecyclerView)findViewById(R.id.housekeeping_list);
-
         housekeepingSections = HousekeepingManager.getInstance().getSections();
 
 
