@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +59,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         /*
         roomNumberTextView = (TextView) findViewById(R.id.toolbar_roomnumber);
         final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -75,6 +78,16 @@ public class GuestHomeActivity extends AppCompatActivity implements
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
         }
+
+        // chat icon click
+        ImageView chatIconView = (ImageView) findViewById(R.id.chat_icon);
+        chatIconView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), GuestChatActivity.class));
+            }
+        });
+
 
         getFragmentManager().beginTransaction()
                 .add(R.id.guest_container, GuestHomeFragment.newInstance())

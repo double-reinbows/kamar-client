@@ -64,17 +64,8 @@ public class LaundryActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-
-        });
-        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
 
         recyclerView = (RecyclerView)findViewById(R.id.laundry_recycleview);
         laundryOptions = new ArrayList<>();
