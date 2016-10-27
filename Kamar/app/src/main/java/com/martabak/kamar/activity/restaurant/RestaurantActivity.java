@@ -2,6 +2,7 @@ package com.martabak.kamar.activity.restaurant;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +66,9 @@ public class RestaurantActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
+        toolbarText.setText(getString(R.string.restaurant_label));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,13 +76,12 @@ public class RestaurantActivity extends AppCompatActivity {
             }
 
         });
-
-        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-        // set room number text
-        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
+        TextView roomTextView = (TextView) findViewById(R.id.room_number);
+        roomTextView.setText(roomNumber);
         Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
+        // END GENERIC LAYOUT STUFF
 
         //initialize tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -86,7 +89,7 @@ public class RestaurantActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Beverages"));
         tabLayout.addTab(tabLayout.newTab().setText("Desserts"));
 
-        //set tab text
+        //set tab text's font
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
         int numTabs = vg.getChildCount();
         for (int j = 0; j < numTabs; j++) {
@@ -180,7 +183,6 @@ public class RestaurantActivity extends AppCompatActivity {
 
         subsections = new ArrayList<>();
         subsectionToIds = new HashMap<>();
-        //idToConsumable = new HashMap<>();
 
         //iterate over the consumables for the current tab/section
         for (Consumable consumable : consumables) {
@@ -219,7 +221,7 @@ public class RestaurantActivity extends AppCompatActivity {
         view.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 
         //set listener for the button
-        FloatingActionButton restaurantButton = (FloatingActionButton) findViewById(R.id.restaurant_add);
+        ImageView restaurantButton = (ImageView) findViewById(R.id.restaurant_add);
         restaurantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,7 +230,7 @@ public class RestaurantActivity extends AppCompatActivity {
                 Iterator it = idToQuantity.entrySet().iterator();
                 while (it.hasNext()) {
                     HashMap.Entry pair = (HashMap.Entry) it.next();
-                    Log.v("CUNT", idToNote.toString());
+//                    Log.v("CUNT", idToNote.toString());
                     if (((int)pair.getValue() > 0) && (pair.getKey().toString() != "subtotal")){
                         OrderItem orderItem = new OrderItem((int)pair.getValue(),idToConsumable.get(pair.getKey().toString()).name,
                                 idToConsumable.get(pair.getKey().toString()).price, idToNote.get(pair.getKey().toString()));

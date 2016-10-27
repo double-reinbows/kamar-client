@@ -58,5 +58,8 @@
         android:layout_height="60dp"
         android:layout_toRightOf="@+id/item_img"
         android:layout_below="@+id/item_price"
-        android:hint="@string/restaurant_edittext"/>
+        android:hint="@string/restaurant_edittext"
+        android:background="@drawable/rounded_edittext"
+        android:imeOptions="actionDone"
+        android:singleLine="true"/>
 </RelativeLayout>

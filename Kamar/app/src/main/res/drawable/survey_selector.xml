@@ -4,4 +4,6 @@
     <item android:state_selected="true"
           android:drawable="@color/colorChatSelected" />
     <item android:drawable="@color/colorNavBar" />
+
+
 </selector>

@@ -12,8 +12,10 @@
     <color name="dialogConfirmationBackground">#b9ac0d13</color>
     <color name="black">#000000</color>
     <color name="darkRed">#AC0D13</color>
+    <color name="darkerRed">#7d090e</color>
     <color name="lightRed">#DE4646</color>
     <color name="whiteTransparent">#96ffffff</color>
+    <color name="pureWhite">#ffffff</color>
 
     <color name="colorChatInputBackground">#FFFFFF</color>
     <color name="colorChatSelected">#606060</color>
