@@ -5,12 +5,12 @@
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  android:fitsSystemWindows="true">
 
-    <include layout="@layout/actionbar_restaurant_customview"/>
+    <include layout="@layout/actionbar_nonrestaurant"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="70dp"
         android:divider="?android:attr/dividerHorizontal">
 
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"

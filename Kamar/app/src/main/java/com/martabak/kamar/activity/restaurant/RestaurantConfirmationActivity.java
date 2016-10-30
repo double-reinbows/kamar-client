@@ -46,7 +46,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         final View view = layoutInflater.inflate(R.layout.activity_restaurant_confirmation, null);
         setContentView(view);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Get the ActionBar here to configure the way it behaves.

@@ -57,7 +57,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_home);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         /*

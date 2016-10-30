@@ -5,7 +5,7 @@
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:fitsSystemWindows="true">
 
-    <include layout="@layout/actionbar_restaurant_customview"/>
+    <include layout="@layout/actionbar_nonrestaurant"/>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"

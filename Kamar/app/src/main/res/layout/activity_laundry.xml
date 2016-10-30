@@ -4,16 +4,19 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/actionbar_guestcustom_view"/>
+    <include layout="@layout/actionbar_nonrestaurant"/>
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/wood_background_highres"
+        android:layout_marginTop="70dp"
         tools:context="com.martabak.kamar.activity.laundry.LaundryActivity">
 
         <include layout="@layout/content_laundry" />
 
+        <include layout="@layout/bottom_bar"/>
+
     </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>

@@ -36,7 +36,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         doGetPermintaansOfStateAndCreateExpList();
 
         // Get the ActionBar here to configure the way it behaves.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
