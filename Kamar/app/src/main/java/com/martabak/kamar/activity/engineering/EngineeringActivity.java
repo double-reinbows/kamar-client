@@ -39,7 +39,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
 
     private RecyclerView recyclerView;
     private List<EngineeringOption> engOptions;
-    private Map<String, String> statuses; // Maps ic_engineering option ID -> request status
+    private Map<String, String> statuses; // Maps engineering option ID -> request status
     private EngineeringRecyclerViewAdapter recyclerViewAdapter;
 
     @Override
@@ -64,12 +64,12 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
         // END GENERIC LAYOUT STUFF
         // Get the options
-        recyclerView = (RecyclerView)findViewById(R.id.massage_list);
+        recyclerView = (RecyclerView)findViewById(R.id.engineering_list);
         engOptions = new ArrayList<>();
         StaffServer.getInstance(this).getEngineeringOptions().subscribe(new Observer<List<EngineeringOption>>() {
             @Override public void onCompleted() {
                 Log.d(EngineeringActivity.class.getCanonicalName(), "onCompleted");
-                Log.v("ABG", engOptions.toString());
+                Log.v(EngineeringActivity.class.getCanonicalName(), engOptions.toString());
                 getStatuses();
             }
             @Override public void onError(Throwable e) {
@@ -81,8 +81,6 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                 engOptions.addAll(options);
             }
         });
-
-
     }
 
     // Get the statuses
@@ -117,6 +115,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
         Log.d(EngineeringActivity.class.getCanonicalName(), "Statuses map is " + Arrays.toString(statuses.entrySet().toArray()));
         if (statuses.containsKey(item._id)) {
             switch (statuses.get(item._id)) {
+                case Permintaan.STATE_COMPLETED:
                 case Permintaan.STATE_INPROGRESS:
                 case Permintaan.STATE_NEW:
                     Toast.makeText(
@@ -222,7 +221,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                     .error(R.drawable.error)
                     .into(holder.imageView);
             holder.nameView.setText(holder.item.getName());
-            String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_COMPLETED;
+            String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_CANCELLED;
             Log.d(EngineeringActivity.class.getCanonicalName(), "Status for ic_engineering " + holder.item.getName() + " is " + state);
             switch (state) {
                 case Permintaan.STATE_COMPLETED:

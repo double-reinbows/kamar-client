@@ -85,7 +85,7 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         // Get the status
-        status = Permintaan.STATE_COMPLETED;
+        status = Permintaan.STATE_CANCELLED;
         sentImageView = findViewById(R.id.sent_image);
         processedImageView = findViewById(R.id.processed_image);
         completedImageView = findViewById(R.id.completed_image);

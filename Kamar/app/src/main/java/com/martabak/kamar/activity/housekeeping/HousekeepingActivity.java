@@ -45,7 +45,6 @@ public class HousekeepingActivity extends AppCompatActivity {
     private HashMap<String, Integer> idToQuantity;
     private TabLayout tabLayout;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +72,6 @@ public class HousekeepingActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         sectionRecyclerView = (RecyclerView)findViewById(R.id.housekeeping_list);
         housekeepingSections = HousekeepingManager.getInstance().getSections();
-
 
         if (housekeepingSections == null) {
             housekeepingSections = new ArrayList<>();
@@ -198,7 +196,6 @@ public class HousekeepingActivity extends AppCompatActivity {
                 }
             });
 
-
             return view;
         }
 
@@ -212,6 +209,7 @@ public class HousekeepingActivity extends AppCompatActivity {
 
             if (idToStatus.containsKey(option._id)) { //pre-existing request
                 switch (idToStatus.get(option._id)) {
+                    case Permintaan.STATE_COMPLETED:
                     case Permintaan.STATE_INPROGRESS:
                     case Permintaan.STATE_NEW:
                         Toast.makeText(

@@ -10,6 +10,7 @@ import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +71,18 @@ public class PermintaanManager {
                         return lhs.created.compareTo(rhs.created);
                     }
                 })
+                // Ignore any that weren't created today
+                .filter(new Func1<Permintaan, Boolean>() {
+                    @Override public Boolean call(Permintaan permintaan) {
+                        Calendar cal = Calendar.getInstance();
+                        int currYear = cal.get(Calendar.YEAR);
+                        int currDayOfYear = cal.get(Calendar.DAY_OF_YEAR);
+                        cal.setTime(permintaan.created);
+                        int permYear = cal.get(Calendar.YEAR);
+                        int permDayOfYear = cal.get(Calendar.DAY_OF_YEAR);
+                        return permYear == currYear && permDayOfYear == currDayOfYear;
+                    }
+                })
                 // Return its status
                 .map(new Func1<Permintaan, String>() {
                     @Override public String call(Permintaan permintaan) {
@@ -95,6 +108,18 @@ public class PermintaanManager {
                 .filter(new Func1<Permintaan, Boolean>() {
                     @Override public Boolean call(Permintaan permintaan) {
                         return permintaan.type.equals(type);
+                    }
+                })
+                // Ignore any that weren't created today
+                .filter(new Func1<Permintaan, Boolean>() {
+                    @Override public Boolean call(Permintaan permintaan) {
+                        Calendar cal = Calendar.getInstance();
+                        int currYear = cal.get(Calendar.YEAR);
+                        int currDayOfYear = cal.get(Calendar.DAY_OF_YEAR);
+                        cal.setTime(permintaan.created);
+                        int permYear = cal.get(Calendar.YEAR);
+                        int permDayOfYear = cal.get(Calendar.DAY_OF_YEAR);
+                        return permYear == currYear && permDayOfYear == currDayOfYear;
                     }
                 })
                 .toList()
@@ -151,6 +176,18 @@ public class PermintaanManager {
                 .filter(new Func1<Permintaan, Boolean>() {
                     @Override public Boolean call(Permintaan permintaan) {
                         return permintaan.type.equals(type);
+                    }
+                })
+                // Ignore any that weren't created today
+                .filter(new Func1<Permintaan, Boolean>() {
+                    @Override public Boolean call(Permintaan permintaan) {
+                        Calendar cal = Calendar.getInstance();
+                        int currYear = cal.get(Calendar.YEAR);
+                        int currDayOfYear = cal.get(Calendar.DAY_OF_YEAR);
+                        cal.setTime(permintaan.created);
+                        int permYear = cal.get(Calendar.YEAR);
+                        int permDayOfYear = cal.get(Calendar.DAY_OF_YEAR);
+                        return permYear == currYear && permDayOfYear == currDayOfYear;
                     }
                 })
                 .toList()
