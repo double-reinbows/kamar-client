@@ -6,17 +6,15 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.HousekeepingOption;
 import com.martabak.kamar.domain.managers.HousekeepingManager;
@@ -37,40 +35,26 @@ import rx.Observer;
 /**
  * This activity generates the list of housekeeping sections.
  */
-public class HousekeepingActivity extends AppCompatActivity {
+public class HousekeepingActivity extends AbstractGuestBarsActivity {
 
-    private RecyclerView sectionRecyclerView;
     private List<String> housekeepingSections;
     private List<HousekeepingOption> hkOptions;
     private HashMap<String, Integer> idToQuantity;
     private TabLayout tabLayout;
 
+    protected int getBaseLayout() {
+        return R.layout.activity_housekeeping;
+    }
+
+    protected String getToolbarLabel() {
+        return getString(R.string.housekeeping_label);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_housekeeping);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
-        toolbarText.setText(getString(R.string.housekeeping_label));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-
-        });
-        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", "none");
-        TextView roomTextView = (TextView) findViewById(R.id.room_number);
-        roomTextView.setText(roomNumber);
-        // END GENERIC LAYOUT STUFF
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        sectionRecyclerView = (RecyclerView)findViewById(R.id.housekeeping_list);
         housekeepingSections = HousekeepingManager.getInstance().getSections();
 
         if (housekeepingSections == null) {
@@ -118,8 +102,6 @@ public class HousekeepingActivity extends AppCompatActivity {
             startHKFragment("Towels");
             setTabListener();
         }
-
-
     }
 
     public void setTabListener() {
@@ -139,6 +121,7 @@ public class HousekeepingActivity extends AppCompatActivity {
             }
         });
     }
+
     public void startHKFragment(String selectedTab) {
         HousekeepingFragment f = new HousekeepingFragment();
         Bundle args = new Bundle();
@@ -147,6 +130,7 @@ public class HousekeepingActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.hk_fragment_container, f);
         ft.commit();
     }
+
     /**
      * Sets up the list of sections and the quantity dictionary
      */
@@ -175,7 +159,6 @@ public class HousekeepingActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.fragment_housekeeping, container, false);
             optionRecyclerView = (RecyclerView) view.findViewById(R.id.hk_option_recycler);
             final ArrayList<HousekeepingOption> temp = buildOptions();
-            final HashMap<String, Integer> idToQuantity = HousekeepingManager.getInstance().getOrder();
             idToStatus = new HashMap<>();
 
             // Get the statuses,
@@ -303,6 +286,7 @@ public class HousekeepingActivity extends AppCompatActivity {
                 .show();
             }
         }
+
         /*
          * Returns a list of options in the chosen section
          */
@@ -322,6 +306,5 @@ public class HousekeepingActivity extends AppCompatActivity {
             return temp;
         }
     }
-
 
 }

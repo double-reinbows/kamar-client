@@ -159,9 +159,4 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
         void onChangeRoomDialogNegativeClick(DialogFragment dialog);
     }
 
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        changeRoomDialogListener = (ChangeRoomDialogListener) activity;
-    }
-
 }
