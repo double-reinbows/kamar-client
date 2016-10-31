@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.domain.managers.RestaurantOrderManager;
 import com.martabak.kamar.domain.permintaan.OrderItem;
@@ -34,41 +35,23 @@ import java.util.List;
 
 import rx.Observer;
 
-public class RestaurantConfirmationActivity extends AppCompatActivity {
+public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
-    RestaurantOrder restaurantOrder;
-    Permintaan currentPermintaan;
+    private RestaurantOrder restaurantOrder;
+
+    protected int getBaseLayout() {
+        return R.layout.activity_restaurant_confirmation;
+    }
+
+    protected String getToolbarLabel() {
+        return getString(R.string.restaurant_confirmation_label);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LayoutInflater layoutInflater = getLayoutInflater();
-        final View view = layoutInflater.inflate(R.layout.activity_restaurant_confirmation, null);
-        setContentView(view);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Get the ActionBar here to configure the way it behaves.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-
-        });
-
-
-//        TextView roomNumberTextView = (TextView)findViewById(R.id.room_number);
-        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", "none");
-        // set room number text
-//        roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
-
-        final RecyclerView rv = (RecyclerView) view.findViewById(R.id.restaurant_recycleview);
+        final RecyclerView rv = (RecyclerView) findViewById(R.id.restaurant_recycleview);
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         final LinearLayoutManager llm = new LinearLayoutManager(getBaseContext());
         rv.setLayoutManager(llm);
@@ -77,14 +60,13 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         final List<String> restaurantSubPriceItems = new ArrayList<>();
         final List<String> restaurantQuantityItems = new ArrayList<>();
 
-        List<OrderItem> restaurantOrderItems = new ArrayList<>();
+        List<OrderItem> restaurantOrderItems;
 
         Integer multiplyFactor = 1000;
 
         // fill in each of the respective display lists based on the ic_restaurant model manager
         RestaurantOrder tempRestaurantOrder = RestaurantOrderManager.getInstance().getOrder();
         restaurantOrderItems = tempRestaurantOrder.items;
-
 
         for (OrderItem restaurantOrderItem : restaurantOrderItems)
         {
@@ -101,14 +83,14 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         }
 
         //sub price
-        TextView subPriceTextView = (TextView) view.findViewById(R.id.order_sub_total);
+        TextView subPriceTextView = (TextView)findViewById(R.id.order_sub_total);
         Integer subFinalPriceInteger = tempRestaurantOrder.totalPrice * multiplyFactor;
         String subFinalPrice = "Sub Total = Rp. "  + subFinalPriceInteger.toString();
         subPriceTextView.setText(subFinalPrice);
 
 
         //final price
-        TextView finalPriceTextView = (TextView) view.findViewById(R.id.order_total);
+        TextView finalPriceTextView = (TextView)findViewById(R.id.order_total);
         float taxPercentage = 10;
         float svcChargePercentage = 11;
 
@@ -122,7 +104,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         finalPriceTextView.setText(newFinalPrice);
 
         //comment here
-        TextView commentTextView = (TextView) view.findViewById(R.id.restaurant_confirm_input);
+        TextView commentTextView = (TextView)findViewById(R.id.restaurant_confirm_input);
 
         restaurantOrder = new RestaurantOrder(commentTextView.getText().toString(),restaurantOrderItems, finalPriceInteger);
 
@@ -134,7 +116,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         rv.setAdapter(restaurantConfirmationArrayAdapter);
 
         //confirmation
-        Button restaurantConfirmButton = (Button) view.findViewById(R.id.restaurant_confirm);
+        Button restaurantConfirmButton = (Button)findViewById(R.id.restaurant_confirm);
         restaurantConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,7 +162,7 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
         });
 
         //back
-        Button restaurantBackButton = (Button) view.findViewById(R.id.restaurant_back);
+        Button restaurantBackButton = (Button)findViewById(R.id.restaurant_back);
         restaurantBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,7 +175,6 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
 
     /*Send ic_restaurant request*/
     public void sendRestaurantRequest(RestaurantOrder restaurantOrder) {
-
         String owner = Permintaan.OWNER_RESTAURANT;
         String type = Permintaan.TYPE_RESTAURANT;
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -218,8 +199,6 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
             ).subscribe(new Observer<Permintaan>() {
                 @Override public void onCompleted() {
                     Log.d(RestaurantConfirmationActivity.class.getCanonicalName(), "createPermintaan() On completed");
-
-
                     //finish();
                 }
                 @Override public void onError(Throwable e) {
@@ -238,8 +217,6 @@ public class RestaurantConfirmationActivity extends AppCompatActivity {
                     }
                 }
             });
-
-
         }
 
     }
