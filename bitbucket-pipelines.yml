@@ -1,0 +1,10 @@
+image: uber/android-build-environment:latest # https://hub.docker.com/r/uber/android-build-environment/
+
+pipelines:
+  default:
+    - step:
+        script:
+          - echo y | android update sdk --filter "extra-android-m2repository" --no-ui -a # Grab the Android Support Repo which isn't included in the container
+          - cd Kamar/
+          - ./gradlew assembleDebug
+          

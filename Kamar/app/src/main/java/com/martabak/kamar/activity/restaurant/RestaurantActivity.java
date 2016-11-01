@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.domain.Consumable;
 import com.martabak.kamar.domain.managers.RestaurantOrderManager;
 import com.martabak.kamar.domain.permintaan.OrderItem;
@@ -34,7 +35,7 @@ import rx.Observer;
  * from. It pulls menu data from the server and then displays it in an interactive
  * menu.
  */
-public class RestaurantActivity extends AppCompatActivity {
+public class RestaurantActivity extends AbstractGuestBarsActivity {
 
     //quantity dictionary with consumable.name keys
     private HashMap<String, Integer> idToQuantity;
@@ -54,34 +55,19 @@ public class RestaurantActivity extends AppCompatActivity {
     private ExpandableListView bevExpListView;
     private ExpandableListView dessExpListView;
 
+    protected int getBaseLayout() {
+        return R.layout.activity_restaurant;
+    }
 
+    protected String getToolbarLabel() {
+        return getString(R.string.restaurant_label);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
-        toolbarText.setText(getString(R.string.restaurant_label));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-
-        });
-        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", "none");
-        TextView roomTextView = (TextView) findViewById(R.id.room_number);
-        roomTextView.setText(roomNumber);
         Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
-        // END GENERIC LAYOUT STUFF
 
         //initialize tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);

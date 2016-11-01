@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.domain.SurveyQuestion;
 import com.martabak.kamar.domain.managers.SurveyManager;
 import com.martabak.kamar.service.SurveyServer;
@@ -19,41 +20,28 @@ import java.util.List;
 
 import rx.Observer;
 
-public class SurveyActivity extends AppCompatActivity {
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
+public class SurveyActivity extends AbstractGuestBarsActivity {
+
     private ViewPager viewPager;
     private List<String> sections;
     private HashMap<String, List<SurveyQuestion>> sectionMappings; //section to questions
     private HashMap<String, Integer> idToRating;
-
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
     private PagerAdapter pagerAdapter;
+
+    protected int getBaseLayout() {
+        return R.layout.activity_survey;
+    }
+
+    protected String getToolbarLabel() {
+        return getString(R.string.survey_label);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_survey);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-
-        });
 
         // Instantiate a ViewPager and a PagerAdapter.
         viewPager = (ViewPager) findViewById(R.id.survey_pager);
-
 
         if (SurveyManager.getInstance().getMappings() == null) {
             sections = new ArrayList<>();
@@ -117,4 +105,5 @@ public class SurveyActivity extends AppCompatActivity {
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
         }
     }
+
 }

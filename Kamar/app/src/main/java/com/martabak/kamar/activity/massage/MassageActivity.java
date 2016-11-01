@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Massage;
@@ -33,7 +34,7 @@ import rx.Observer;
 /**
  * This activity generates the list of massage options and allows the guest to request one.
  */
-public class MassageActivity extends AppCompatActivity implements View.OnClickListener {
+public class MassageActivity extends AbstractGuestBarsActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private View sentImageView;
@@ -42,33 +43,28 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
     private List<MassageOption> massageOptions;
     private String status;
 
+    protected int getBaseLayout() {
+        return R.layout.activity_massage;
+    }
+
+    protected String getToolbarLabel() {
+        return getString(R.string.massage_label);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_massage);
-        // START GENERIC LAYOUT STUFF
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
 
-        });
-        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
-        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", "none");
-        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
-        // END GENERIC LAYOUT STUFF
+        loadOptions();
+        loadStatus();
+    }
 
-        // Get the options
+    private void loadOptions() {
         recyclerView = (RecyclerView)findViewById(R.id.massage_list);
         massageOptions = new ArrayList<>();
         final MassageRecyclerViewAdapter recyclerViewAdapter = new MassageRecyclerViewAdapter(massageOptions);
         recyclerView.setAdapter(recyclerViewAdapter);
+
         StaffServer.getInstance(this).getMassageOptions().subscribe(new Observer<List<MassageOption>>() {
             @Override public void onCompleted() {
                 Log.d(MassageActivity.class.getCanonicalName(), "getMassageOptions#onCompleted");
@@ -83,12 +79,14 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
                 massageOptions.addAll(options);
             }
         });
+    }
 
-        // Get the status
-        status = Permintaan.STATE_COMPLETED;
+    private void loadStatus() {
+        status = Permintaan.STATE_CANCELLED;
         sentImageView = findViewById(R.id.sent_image);
         processedImageView = findViewById(R.id.processed_image);
         completedImageView = findViewById(R.id.completed_image);
+
         PermintaanManager.getInstance().getMassageStatus(getBaseContext()).subscribe(new Observer<String>() {
             @Override public void onCompleted() {
                 Log.d(MassageActivity.class.getCanonicalName(), "getMassageStatus#onCompleted");
@@ -113,6 +111,16 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+    private boolean requestInProgress() {
+        switch (status) {
+            case Permintaan.STATE_INPROGRESS:
+            case Permintaan.STATE_NEW:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     /**
      * Handle a click on a single massage option.
      * Bring up a confirmation dialog.
@@ -120,16 +128,15 @@ public class MassageActivity extends AppCompatActivity implements View.OnClickLi
      */
     @Override
     public void onClick(final View view) {
-        switch (status) {
-            case Permintaan.STATE_INPROGRESS:
-            case Permintaan.STATE_NEW:
-                Toast.makeText(
-                        MassageActivity.this.getApplicationContext(),
-                        R.string.existing_request,
-                        Toast.LENGTH_SHORT
-                ).show();
-                return;
+        if (requestInProgress()) {
+            Toast.makeText(
+                    MassageActivity.this.getApplicationContext(),
+                    R.string.existing_request,
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
         }
+
         Log.d(MassageActivity.class.getCanonicalName(), "Selected recycler row: " + view.toString());
         int itemPosition = recyclerView.getChildLayoutPosition(view);
         final MassageOption item = massageOptions.get(itemPosition);

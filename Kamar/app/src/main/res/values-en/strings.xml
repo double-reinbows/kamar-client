@@ -56,8 +56,8 @@
     <string name="permintaan_assign_person">Please enter staff person\'s name</string>
 
     <!-- Chat -->
-    <string name="title_chat_list">Chats</string>
-    <string name="title_chat_detail">Chat</string>
+    <string name="title_chat_list">CHAT</string>
+    <string name="title_chat_detail">CHAT</string>
     <string name="chat_message_text">Type your message ...</string>
     <string name="chat_send_button">Send</string>
     <string name="chat_message_sent">Message sent</string>

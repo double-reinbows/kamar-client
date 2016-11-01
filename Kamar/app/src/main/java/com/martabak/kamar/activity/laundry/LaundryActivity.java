@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.domain.options.LaundryOption;
 import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
@@ -44,29 +45,28 @@ import java.util.zip.Inflater;
 import rx.Observer;
 
 /**
- * Created by adarsh on 21/08/16.
+ * Provides laundry options for the guest.
  */
-public class LaundryActivity extends AppCompatActivity  {
+public class LaundryActivity extends AbstractGuestBarsActivity {
 
     private RecyclerView recyclerView;
     private List<LaundryOption> laundryOptions;
     private List<LaundryOrderItem> laundryOrderItems;
     private List<String> laundryInstructions;
 
+    protected int getBaseLayout() {
+        return R.layout.activity_laundry;
+    }
+
+    protected String getToolbarLabel() {
+        return getString(R.string.laundry_label);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_laundry);
-
-        final View laundryView = this.findViewById(android.R.id.content);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", "none");
-
+        View laundryView = findViewById(android.R.id.content);
         recyclerView = (RecyclerView)findViewById(R.id.laundry_recycleview);
         laundryOptions = new ArrayList<>();
         laundryOrderItems = new ArrayList<>();

@@ -91,17 +91,20 @@ public class HousekeepingOptionAdapter
         holder.spinner.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_COMPLETED;
+        String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_CANCELLED;
         Log.d(HousekeepingActivity.class.getCanonicalName(), "Status for housekeeping " + holder.item.getName() + " is " + state);
         switch (state) {
+            case Permintaan.STATE_CANCELLED:
+                holder.submitButton.setOnClickListener(submitButtonListener);
+                break;
+            case Permintaan.STATE_COMPLETED:
+                holder.completedImageView.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
             case Permintaan.STATE_INPROGRESS:
                 holder.processedImageView.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
             case Permintaan.STATE_NEW:
                 holder.sentImageView.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
                 holder.submitButton.setColorFilter(Color.argb(150,200,200,200));
                 break;
-            case Permintaan.STATE_COMPLETED:
-                holder.submitButton.setOnClickListener(submitButtonListener);
         }
 
     }
@@ -120,6 +123,7 @@ public class HousekeepingOptionAdapter
         public final Spinner spinner;
         public final View sentImageView;
         public final View processedImageView;
+        public final View completedImageView;
         public final ImageView imgView;
 
         public ViewHolder(View view) {
@@ -130,6 +134,7 @@ public class HousekeepingOptionAdapter
             spinner = (Spinner) view.findViewById(R.id.hk_spinner);
             sentImageView = view.findViewById(R.id.sent_image);
             processedImageView = view.findViewById(R.id.processed_image);
+            completedImageView = view.findViewById(R.id.completed_image);
             imgView = (ImageView) view.findViewById(R.id.hk_img);
         }
 

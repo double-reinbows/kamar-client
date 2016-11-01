@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.permintaan.Engineering;
@@ -33,43 +34,37 @@ import java.util.Map;
 import rx.Observer;
 
 /**
- * This activity generates the list of ic_engineering options and allows the guest to request one.
+ * This activity generates the list of engineering options and allows the guest to request one.
  */
-public class EngineeringActivity extends AppCompatActivity implements View.OnClickListener {
+public class EngineeringActivity extends AbstractGuestBarsActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private List<EngineeringOption> engOptions;
-    private Map<String, String> statuses; // Maps ic_engineering option ID -> request status
+    private Map<String, String> statuses; // Maps engineering option ID -> request status
     private EngineeringRecyclerViewAdapter recyclerViewAdapter;
+
+    protected int getBaseLayout() {
+        return R.layout.activity_engineering;
+    }
+
+    protected String getToolbarLabel() {
+        return getString(R.string.engineering_label);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_engineering);
-        // BEGIN GENERIC LAYOUT STUFF
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
+        loadOptions();
+    }
 
-        });
-        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
-        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", "none");
-        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
-        // END GENERIC LAYOUT STUFF
-        // Get the options
-        recyclerView = (RecyclerView)findViewById(R.id.massage_list);
+    private void loadOptions() {
+        recyclerView = (RecyclerView)findViewById(R.id.engineering_list);
         engOptions = new ArrayList<>();
+
         StaffServer.getInstance(this).getEngineeringOptions().subscribe(new Observer<List<EngineeringOption>>() {
             @Override public void onCompleted() {
                 Log.d(EngineeringActivity.class.getCanonicalName(), "onCompleted");
-                Log.v("ABG", engOptions.toString());
+                Log.v(EngineeringActivity.class.getCanonicalName(), engOptions.toString());
                 getStatuses();
             }
             @Override public void onError(Throwable e) {
@@ -77,16 +72,13 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                 e.printStackTrace();
             }
             @Override public void onNext(final List<EngineeringOption> options) {
-                Log.d(EngineeringActivity.class.getCanonicalName(), options.size() + " ic_engineering options found");
+                Log.d(EngineeringActivity.class.getCanonicalName(), options.size() + " engineering options found");
                 engOptions.addAll(options);
             }
         });
-
-
     }
 
-    // Get the statuses
-    public void getStatuses() {
+    private void getStatuses() {
         PermintaanManager.getInstance().getEngineeringStatuses(getBaseContext()).subscribe(new Observer<Map<String, String>>() {
             @Override public void onCompleted() {
                 Log.d(EngineeringActivity.class.getCanonicalName(), "getEngineeringStatuses#onCompleted");
@@ -104,8 +96,19 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    private boolean requestInProgress(String optionId) {
+        switch (statuses.get(optionId)) {
+            case Permintaan.STATE_COMPLETED:
+            case Permintaan.STATE_INPROGRESS:
+            case Permintaan.STATE_NEW:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     /**
-     * Handle a click on a single ic_engineering option.
+     * Handle a click on a single engineering option.
      * Bring up a confirmation dialog.
      * @param view The view that was clicked on.
      */
@@ -115,18 +118,16 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
         final EngineeringOption item = engOptions.get(itemPosition);
         Log.d(EngineeringActivity.class.getCanonicalName(), "Selected " + item.getName() + " with ID " + item._id);
         Log.d(EngineeringActivity.class.getCanonicalName(), "Statuses map is " + Arrays.toString(statuses.entrySet().toArray()));
-        if (statuses.containsKey(item._id)) {
-            switch (statuses.get(item._id)) {
-                case Permintaan.STATE_INPROGRESS:
-                case Permintaan.STATE_NEW:
-                    Toast.makeText(
-                            EngineeringActivity.this.getApplicationContext(),
-                            R.string.existing_request,
-                            Toast.LENGTH_SHORT
-                    ).show();
-                    return;
-            }
+
+        if (requestInProgress(item._id)) {
+            Toast.makeText(
+                    EngineeringActivity.this.getApplicationContext(),
+                    R.string.existing_request,
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
         }
+
         new AlertDialog.Builder(this)
                 .setTitle(item.getName())
                 .setMessage(R.string.engineering_message)
@@ -222,7 +223,7 @@ public class EngineeringActivity extends AppCompatActivity implements View.OnCli
                     .error(R.drawable.error)
                     .into(holder.imageView);
             holder.nameView.setText(holder.item.getName());
-            String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_COMPLETED;
+            String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_CANCELLED;
             Log.d(EngineeringActivity.class.getCanonicalName(), "Status for ic_engineering " + holder.item.getName() + " is " + state);
             switch (state) {
                 case Permintaan.STATE_COMPLETED:

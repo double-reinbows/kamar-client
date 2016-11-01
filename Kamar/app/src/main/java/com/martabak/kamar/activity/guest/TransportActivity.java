@@ -40,7 +40,7 @@ public class TransportActivity extends AppCompatActivity implements TextWatcher 
         setContentView(R.layout.activity_transport);
 
         // Get the ActionBar here to configure the way it behaves.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.guest_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

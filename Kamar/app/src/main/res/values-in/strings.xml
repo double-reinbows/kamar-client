@@ -53,8 +53,8 @@
     <string name="permintaan_order_completed">Order Completed</string>
 
     <!-- Chat -->
-    <string name="title_chat_list">Pesan</string>
-    <string name="title_chat_detail">Pesan</string>
+    <string name="title_chat_list">PESAN</string>
+    <string name="title_chat_detail">PESAN</string>
     <string name="chat_message_text">ketik pesan anda ...</string>
     <string name="chat_send_button">Kirim</string>
     <string name="chat_message_sent">Pesan terkirim</string>

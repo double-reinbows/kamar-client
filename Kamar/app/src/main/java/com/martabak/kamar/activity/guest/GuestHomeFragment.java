@@ -36,12 +36,9 @@ public class GuestHomeFragment extends Fragment {
         return new GuestHomeFragment();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         View view = inflater.inflate(R.layout.fragment_guest_home, container, false);
         final GuestHomeAdapter guestHomeAdapter = new GuestHomeAdapter(this.getActivity());
         final GridView gridView = (GridView) view.findViewById(R.id.guestgridview);
@@ -147,17 +144,13 @@ public class GuestHomeFragment extends Fragment {
     }
     */
 
-
-
     public interface GuestHomeIconListener {
         void onIconClick(String option);
     }
-
 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         guestHomeIconListener = (GuestHomeIconListener) activity;
     }
-
 
 }
