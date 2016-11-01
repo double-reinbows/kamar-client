@@ -38,7 +38,7 @@
             android:id="@+id/guestgridview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:columnWidth="250dp"
+            android:columnWidth="300dp"
             android:numColumns="auto_fit"
             android:stretchMode="columnWidth"
             android:gravity="center" />
