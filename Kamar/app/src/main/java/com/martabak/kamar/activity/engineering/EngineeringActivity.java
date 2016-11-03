@@ -97,14 +97,15 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
     }
 
     private boolean requestInProgress(String optionId) {
-        switch (statuses.get(optionId)) {
-            case Permintaan.STATE_COMPLETED:
-            case Permintaan.STATE_INPROGRESS:
-            case Permintaan.STATE_NEW:
-                return true;
-            default:
-                return false;
+        if (statuses.containsKey(optionId)) {
+            switch (statuses.get(optionId)) {
+                case Permintaan.STATE_COMPLETED:
+                case Permintaan.STATE_INPROGRESS:
+                case Permintaan.STATE_NEW:
+                    return true;
+            }
         }
+        return false;
     }
 
     /**
