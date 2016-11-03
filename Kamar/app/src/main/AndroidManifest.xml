@@ -116,7 +116,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.guest.GuestEventActivity"
+            android:name=".activity.event.GuestEventActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/restaurant_label"
             android:screenOrientation="landscape"

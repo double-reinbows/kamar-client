@@ -27,6 +27,8 @@ import rx.Observer;
  */
 public  class StaffPermintaanFragment extends Fragment {
 
+    public final static int PERMINTAAN_WINDOW = -3; //in days, MUST be -ve
+
     public StaffPermintaanFragment() {
     }
 
@@ -48,9 +50,7 @@ public  class StaffPermintaanFragment extends Fragment {
         List<String> states = Arrays.asList(
                 Permintaan.STATE_NEW,
                 Permintaan.STATE_INPROGRESS,
-                //Permintaan.STATE_INDELIVERY,
                 Permintaan.STATE_COMPLETED
-                //Permintaan.STATE_CANCELLED
         );
         HashMap<String, List<String>> stateToPermintaanIds = new HashMap<>(); //mapping of states to a list of permintaan strings
         HashMap<String, Permintaan> permintaanIdToPermintaan = new HashMap<>(); //mapping of permintaan strings to their permintaans
@@ -61,39 +61,34 @@ public  class StaffPermintaanFragment extends Fragment {
         // Set up headers (states)
         List<String> new_permintaan = new ArrayList<>();
         List<String> inprogress_permintaan = new ArrayList<>();
-        //List<String> indelivery_permintaan = new ArrayList<>();
         List<String> completed_permintaan = new ArrayList<>();
-        //List<String> cancelled_permintaan = new ArrayList<>();
 
         // Set up child data
         for (Permintaan permintaan : permintaans) {
-//            if (subUserType.equals(permintaan.owner)) {
-                permintaanIdToPermintaan.put(permintaan._id, permintaan);
-                switch (permintaan.state) {
-                    case Permintaan.STATE_NEW:
-                        new_permintaan.add(permintaan._id);
-                        break;
-                    case Permintaan.STATE_INPROGRESS:
-                        inprogress_permintaan.add(permintaan._id);
-                        break;
-                    //case Permintaan.STATE_INDELIVERY:
-                      //  indelivery_permintaan.add(permintaan._id);
-                        //break;
-                    case Permintaan.STATE_COMPLETED:
-                        completed_permintaan.add(permintaan._id);
-                        break;
-                    //case Permintaan.STATE_CANCELLED:
-                      //  cancelled_permintaan.add(permintaan._id);
-                    default:
-                        Log.e(StaffPermintaanFragment.class.getCanonicalName(), "Unknown state for " + permintaan);
-                }
+            permintaanIdToPermintaan.put(permintaan._id, permintaan);
+            switch (permintaan.state) {
+                case Permintaan.STATE_NEW:
+                    new_permintaan.add(permintaan._id);
+                    break;
+                case Permintaan.STATE_INPROGRESS:
+                    inprogress_permintaan.add(permintaan._id);
+                    break;
+                //case Permintaan.STATE_INDELIVERY:
+                  //  indelivery_permintaan.add(permintaan._id);
+                    //break;
+                case Permintaan.STATE_COMPLETED:
+                    completed_permintaan.add(permintaan._id);
+                    break;
+                //case Permintaan.STATE_CANCELLED:
+                  //  cancelled_permintaan.add(permintaan._id);
+                default:
+                    Log.e(StaffPermintaanFragment.class.getCanonicalName(), "Unknown state for " + permintaan);
+            }
         }
 
         stateToPermintaanIds.put(states.get(0), new_permintaan); // Header, Child data
         stateToPermintaanIds.put(states.get(1), inprogress_permintaan);
-        //stateToPermintaanIds.put(states.get(2), indelivery_permintaan);
         stateToPermintaanIds.put(states.get(2), completed_permintaan);
-        //stateToPermintaanIds.put(states.get(4), cancelled_permintaan);
 
         // create expandable list
         listAdapter = new StaffExpandableListAdapter(this.getActivity(), states, stateToPermintaanIds, permintaanIdToPermintaan);
@@ -110,7 +105,7 @@ public  class StaffPermintaanFragment extends Fragment {
         Log.d(StaffPermintaanFragment.class.getCanonicalName(), "Doing get permintaans of state");
 
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, -3); //current day -3 days
+        c.add(Calendar.DATE, PERMINTAAN_WINDOW); //current day -3 days
         PermintaanServer.getInstance(getActivity())
                 .getPermintaansOfTime(new Date(c.getTimeInMillis()), new Date())
                 .subscribe(new Observer<List<Permintaan>>() {
@@ -124,7 +119,6 @@ public  class StaffPermintaanFragment extends Fragment {
             public void onError(Throwable e) {
 
             }
-
             @Override
             public void onNext(List<Permintaan> result) {
                 permintaans = result;
