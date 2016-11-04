@@ -28,12 +28,13 @@ public class SurveyActivity extends AbstractGuestBarsActivity {
     private HashMap<String, Integer> idToRating;
     private PagerAdapter pagerAdapter;
 
-    protected int getBaseLayout() {
-        return R.layout.activity_survey;
-    }
-
-    protected String getToolbarLabel() {
-        return getString(R.string.survey_label);
+    protected Options getOptions() {
+        return new Options()
+                .withBaseLayout(R.layout.activity_survey)
+                .withToolbarLabel(getString(R.string.survey_label))
+                .showTabLayout(false)
+                .showLogoutIcon(false)
+                .enableChatIcon(true);
     }
 
     @Override

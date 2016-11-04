@@ -41,11 +41,14 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
     private RestaurantOrder restaurantOrder;
 
-    protected int getBaseLayout() {
-        return R.layout.activity_restaurant_confirmation;
-    }
-    protected String getToolbarLabel() {
-        return getString(R.string.restaurant_confirmation_label);
+
+    protected Options getOptions() {
+        return new Options()
+                .withBaseLayout(R.layout.activity_restaurant_confirmation)
+                .withToolbarLabel(getString(R.string.restaurant_confirmation_label))
+                .showTabLayout(false)
+                .showLogoutIcon(false)
+                .enableChatIcon(true);
     }
 
     @Override

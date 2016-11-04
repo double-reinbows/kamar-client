@@ -43,12 +43,13 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
     private List<MassageOption> massageOptions;
     private String status;
 
-    protected int getBaseLayout() {
-        return R.layout.activity_massage;
-    }
-
-    protected String getToolbarLabel() {
-        return getString(R.string.massage_label);
+    protected Options getOptions() {
+        return new Options()
+                .withBaseLayout(R.layout.activity_massage)
+                .withToolbarLabel(getString(R.string.massage_label))
+                .showTabLayout(false)
+                .showLogoutIcon(false)
+                .enableChatIcon(true);
     }
 
     @Override

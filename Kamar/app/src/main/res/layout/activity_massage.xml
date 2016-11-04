@@ -5,7 +5,7 @@
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  android:fitsSystemWindows="true">
 
-    <include layout="@layout/actionbar_nonrestaurant"/>
+    <include layout="@layout/actionbar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
 
         </LinearLayout>
 
-        <include layout="@layout/bottom_bar"/>
+        <include layout="@layout/bottombar"/>
 
     </RelativeLayout>
 

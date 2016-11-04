@@ -54,12 +54,13 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
     private List<LaundryOrderItem> laundryOrderItems;
     private List<String> laundryInstructions;
 
-    protected int getBaseLayout() {
-        return R.layout.activity_laundry;
-    }
-
-    protected String getToolbarLabel() {
-        return getString(R.string.laundry_label);
+    protected Options getOptions() {
+        return new Options()
+                .withBaseLayout(R.layout.activity_laundry)
+                .withToolbarLabel(getString(R.string.laundry_label))
+                .showTabLayout(false)
+                .showLogoutIcon(false)
+                .enableChatIcon(true);
     }
 
     @Override

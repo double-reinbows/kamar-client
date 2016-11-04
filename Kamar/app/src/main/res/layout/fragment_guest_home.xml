@@ -62,6 +62,6 @@
     <!--
     </LinearLayout> -->
 
-    <include layout="@layout/bottom_bar"/>
+    <include layout="@layout/bottombar"/>
 
 </RelativeLayout>

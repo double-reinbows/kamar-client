@@ -43,12 +43,13 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
     private Map<String, String> statuses; // Maps engineering option ID -> request status
     private EngineeringRecyclerViewAdapter recyclerViewAdapter;
 
-    protected int getBaseLayout() {
-        return R.layout.activity_engineering;
-    }
-
-    protected String getToolbarLabel() {
-        return getString(R.string.engineering_label);
+    protected Options getOptions() {
+        return new Options()
+                .withBaseLayout(R.layout.activity_engineering)
+                .withToolbarLabel(getString(R.string.engineering_label))
+                .showTabLayout(false)
+                .showLogoutIcon(false)
+                .enableChatIcon(true);
     }
 
     @Override
@@ -97,14 +98,15 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
     }
 
     private boolean requestInProgress(String optionId) {
-        switch (statuses.get(optionId)) {
-            case Permintaan.STATE_COMPLETED:
-            case Permintaan.STATE_INPROGRESS:
-            case Permintaan.STATE_NEW:
-                return true;
-            default:
-                return false;
+        if (statuses.containsKey(optionId)) {
+            switch (statuses.get(optionId)) {
+                case Permintaan.STATE_COMPLETED:
+                case Permintaan.STATE_INPROGRESS:
+                case Permintaan.STATE_NEW:
+                    return true;
+            }
         }
+        return false;
     }
 
     /**
