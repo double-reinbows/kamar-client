@@ -150,10 +150,9 @@
     <string name="restaurant_back_button">Back</string>
     <string name="restaurant_confirm_input">Comments...</string>
     <string name="restaurant_confirmation_label">CONFIRMATION</string>
-    <string name="restaurant_confirmation_dialog_title">Thank you for your order.</string>
+    <string name="restaurant_confirmation_dialog_title">THANK YOU FOR YOUR ORDER</string>
     <string name="restaurant_confirmation_dialog_desc">
-        For updates on your order\'s current progress,\n please click the My Requests button \n
-        located in our Home Page.
+        PLEASE WAIT 10-20 MINUTES FOR YOUR ORDER TO ARRIVE AT YOUR ROOM
     </string>
 
     <string name="checkout_request">CHECK OUT ORDER DETAILS</string>

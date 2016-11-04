@@ -170,8 +170,8 @@
     <string name="permintaan_title">Requests</string>
     <string name="restaurant_back_button">Back</string>
     <string name="restaurant_confirm_input">Comments...</string>
-    <string name="restaurant_confirmation_dialog_desc">Untuk update tentang kemajuan saat ini agar \'s Anda ,\n klik Permintaan My tombol \nterletak di Halaman Depan kami</string>
-    <string name="restaurant_confirmation_dialog_title">Terima kasih atas pesanan Anda</string>
+    <string name="restaurant_confirmation_dialog_desc">MOHON TUNGGU 10-20 MENIT UNTUK PESANAN ANDA TIBA DI KAMAR ANDA</string>
+    <string name="restaurant_confirmation_dialog_title">TERIMA KASIH ATAS PESANAN ANDA</string>
     <string name="restaurant_submit_button">Konfirmasi Pesan</string>
     <string name="welcome_message">Welcome Message</string>
     <string name="checkout_request">CHECK OUT ORDER DETAILS</string>

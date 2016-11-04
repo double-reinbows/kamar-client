@@ -161,7 +161,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
                         finish();
                     }
                 });
-
+/*
                 new CountDownTimer(11000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
@@ -172,6 +172,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
                         dialog.dismiss();
                     }
                 }.start();
+                */
             }
         });
 
