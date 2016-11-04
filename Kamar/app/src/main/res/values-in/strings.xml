@@ -137,7 +137,7 @@
     <string name="restaurant_order_summary">Ringkasan Rangka</string>
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
-    <string name="restaurant_confirmation_label">Konfirmasi Restaurant</string>
+    <string name="restaurant_confirmation_label">KONFIRMASI</string>
 
     <string name="room_select">Please select a room</string>
     <string name="room_number">Room Number</string>
@@ -187,4 +187,7 @@
     <string name="survey_previously_submitted">Maaf, tapi Anda hanya dapat mengirimkan komentar sekali!</string>
     <string name="survey_thank_you_title"> Terima kasih atas tanggapan Anda!</string>
     <string name="restaurant_edittext"><font size="12">CATATAN</font></string>
+    <string name="quantity">Kuantitas</string>
+    <string name="add_more_items"> + TAMBAH LEBIH</string>
+    <string name="restaurant_confirmation_price_text">Total dengan PAJAK</string>
 </resources>

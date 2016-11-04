@@ -58,7 +58,6 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     protected int getBaseLayout() {
         return R.layout.activity_restaurant;
     }
-
     protected String getToolbarLabel() {
         return getString(R.string.restaurant_label);
     }
@@ -207,12 +206,13 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         view.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 
         //set listener for the button
-        ImageView restaurantButton = (ImageView) findViewById(R.id.restaurant_add);
+        final ImageView restaurantButton = (ImageView) findViewById(R.id.restaurant_add);
         restaurantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // only add the ones that are greater than 0
                 List<OrderItem> restaurantOrderItems = new ArrayList<>();
+                List<String> restaurantImgUrls = new ArrayList<>();
                 Iterator it = idToQuantity.entrySet().iterator();
                 while (it.hasNext()) {
                     HashMap.Entry pair = (HashMap.Entry) it.next();
@@ -221,13 +221,15 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                         OrderItem orderItem = new OrderItem((int)pair.getValue(),idToConsumable.get(pair.getKey().toString()).name,
                                 idToConsumable.get(pair.getKey().toString()).price, idToNote.get(pair.getKey().toString()));
                         restaurantOrderItems.add(orderItem);
+                        restaurantImgUrls.add(idToConsumable.get(pair.getKey().toString()).getImageUrl());
                     }
                 }
-                if (restaurantOrderItems.size() > 0) { //if user added food
 
+                if (restaurantOrderItems.size() > 0) { //if user added food
                     RestaurantOrder restaurantOrder = new RestaurantOrder("",restaurantOrderItems, idToQuantity.get("subtotal"));
                     RestaurantOrderManager restaurantOrderManager = RestaurantOrderManager.getInstance();
                     restaurantOrderManager.setOrder(restaurantOrder);
+                    restaurantOrderManager.setUrls(restaurantImgUrls);
 
                     Intent intent = new Intent(getBaseContext(), RestaurantConfirmationActivity.class);
                     startActivity(intent);

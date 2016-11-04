@@ -149,7 +149,7 @@
     <string name="restaurant_submit_button">Confirm Order</string>
     <string name="restaurant_back_button">Back</string>
     <string name="restaurant_confirm_input">Comments...</string>
-    <string name="restaurant_confirmation_label">Restaurant Confirmation</string>
+    <string name="restaurant_confirmation_label">CONFIRMATION</string>
     <string name="restaurant_confirmation_dialog_title">Thank you for your order.</string>
     <string name="restaurant_confirmation_dialog_desc">
         For updates on your order\'s current progress,\n please click the My Requests button \n
@@ -192,4 +192,7 @@
     <string name="survey_thank_you">We really appreciate your comments and will ensure we use it to make your next stay with us even better!</string>
     <string name="survey_thank_you_title">Thank you for your feedback!</string>
     <string name="restaurant_edittext"><font size="12">NOTES</font></string>
+    <string name="quantity">Quantity</string>
+    <string name="add_more_items">+ ADD MORE ITEMS</string>
+    <string name="restaurant_confirmation_price_text">Total with TAX</string>
 </resources>

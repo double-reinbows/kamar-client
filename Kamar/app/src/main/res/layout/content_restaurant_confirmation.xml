@@ -2,95 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/wood_background_highres"
-    android:gravity="center_horizontal"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.restaurant.RestaurantConfirmationActivity"
     tools:showIn="@layout/activity_restaurant_confirmation">
 
-    <LinearLayout
-        android:layout_width="900dp"
-        android:layout_height="500dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:background="@color/colorNavBarBackground">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/restaurant_order_summary"
-            android:textSize="25sp"
-            android:layout_gravity="center"
-            android:id="@+id/order_summary" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/restaurant_summary_red_line"
-            />
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="match_parent"
             android:id="@+id/restaurant_recycleview">
         </android.support.v7.widget.RecyclerView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:layout_gravity="center"
-            android:id="@+id/order_sub_total" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:layout_gravity="center"
-            android:id="@+id/order_total" />
+    </RelativeLayout>
 
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:id="@+id/restaurant_confirm_input"
-            android:hint="@string/restaurant_confirm_input"
-            android:inputType="text" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/restaurant_back"
-                android:text="@string/restaurant_back_button"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:backgroundTint="@color/colorNavBar"
-                android:textColor="@color/colorNavBarBackground"
-                android:layout_gravity="bottom|left" />
-
-            <Button
-                android:id="@+id/restaurant_confirm"
-                android:text="@string/restaurant_submit_button"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorNavBar"
-                android:textColor="@color/colorNavBarBackground"
-                android:layout_marginLeft="100dp"
-                android:layout_gravity="bottom|right" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:id="@+id/order_add_more"
+        android:layout_gravity="bottom"
+        android:background="@color/roomNumberBackground"
+        android:textColor="@color/guestTextColor"/>
 
 </LinearLayout>

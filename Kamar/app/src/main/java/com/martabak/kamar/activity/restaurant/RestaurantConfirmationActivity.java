@@ -28,6 +28,8 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.PermintaanServer;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,7 +44,6 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
     protected int getBaseLayout() {
         return R.layout.activity_restaurant_confirmation;
     }
-
     protected String getToolbarLabel() {
         return getString(R.string.restaurant_confirmation_label);
     }
@@ -59,6 +60,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         final List<String> restaurantTextItems = new ArrayList<>();
         final List<String> restaurantSubPriceItems = new ArrayList<>();
         final List<String> restaurantQuantityItems = new ArrayList<>();
+        final List<String> restaurantNoteItems = new ArrayList<>();
 
         List<OrderItem> restaurantOrderItems;
 
@@ -73,6 +75,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
             Integer subPrice = restaurantOrderItem.price * restaurantOrderItem.quantity;
             restaurantTextItems.add(restaurantOrderItem.name);
             restaurantQuantityItems.add(restaurantOrderItem.quantity.toString());
+            restaurantNoteItems.add(restaurantOrderItem.note);
 
 
             Integer newSubPriceInteger = subPrice * multiplyFactor;
@@ -83,11 +86,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         }
 
         //sub price
-        TextView subPriceTextView = (TextView)findViewById(R.id.order_sub_total);
         Integer subFinalPriceInteger = tempRestaurantOrder.totalPrice * multiplyFactor;
-        String subFinalPrice = "Sub Total = Rp. "  + subFinalPriceInteger.toString();
-        subPriceTextView.setText(subFinalPrice);
-
 
         //final price
         TextView finalPriceTextView = (TextView)findViewById(R.id.order_total);
@@ -99,20 +98,32 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         float finalPriceFloat = subFinalPriceInteger.floatValue() + tax + svcCharge;
 
         Integer finalPriceInteger = (int)finalPriceFloat;
-        String newFinalPrice = "Total (inc. tax and service) = Rp. "  + finalPriceInteger.toString();
+        String newFinalPrice = finalPriceInteger.toString();
+        //final price's pretext
+        TextView finalPriceText = (TextView)findViewById(R.id.order_total_text);
+        finalPriceText.setText(getString(R.string.restaurant_confirmation_price_text));
 
-        finalPriceTextView.setText(newFinalPrice);
+        finalPriceTextView.setText("Rp. "+newFinalPrice);
 
-        //comment here
-        TextView commentTextView = (TextView)findViewById(R.id.restaurant_confirm_input);
+        //+ Add More Items
+        TextView addMoreText = (TextView)findViewById(R.id.order_add_more);
+        addMoreText.setText(getString(R.string.add_more_items));
+        addMoreText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //return to RestaurantActivity
+                finish();
+            }
+        });
 
-        restaurantOrder = new RestaurantOrder(commentTextView.getText().toString(),restaurantOrderItems, finalPriceInteger);
+        //TODO: remove RestaurantOrder's comment (1st variable)
+        restaurantOrder = new RestaurantOrder("",restaurantOrderItems, finalPriceInteger);
 
         final Activity activity = this;
 
         final RestaurantConfirmationArrayAdapter restaurantConfirmationArrayAdapter = new
-                RestaurantConfirmationArrayAdapter(restaurantTextItems, restaurantSubPriceItems,
-                restaurantQuantityItems);
+                RestaurantConfirmationArrayAdapter(this, restaurantTextItems, restaurantSubPriceItems,
+                restaurantQuantityItems, restaurantNoteItems, RestaurantOrderManager.getInstance().getUrls());
         rv.setAdapter(restaurantConfirmationArrayAdapter);
 
         //confirmation
@@ -161,16 +172,6 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
             }
         });
 
-        //back
-        Button restaurantBackButton = (Button)findViewById(R.id.restaurant_back);
-        restaurantBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //ic_restaurant back;
-                finish();
-            }
-
-        });
     }
 
     /*Send ic_restaurant request*/

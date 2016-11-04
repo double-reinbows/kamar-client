@@ -4,16 +4,64 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/actionbar_nonrestaurant"/>
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
-        tools:context="com.martabak.kamar.activity.restaurant.RestaurantConfirmationActivity">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/content_restaurant_confirmation" />
+        <include layout="@layout/actionbar_nonrestaurant"
+            android:id="@+id/actionbar"/>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="520dp"
+            android:layout_below="@+id/actionbar"
+            tools:context="com.martabak.kamar.activity.restaurant.RestaurantConfirmationActivity">
+
+            <include layout="@layout/content_restaurant_confirmation" />
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity"
+            android:layout_marginBottom="50dp"> <!--must equal height of bottom_bar.xml-->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/colorNavBar"
+                android:layout_above="@+id/order_total_text"
+                android:layout_marginBottom="3dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_alignParentStart="true"
+                android:id="@+id/order_total_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/order_total_text"
+                android:id="@+id/order_total" />
+
+            <Button
+                android:id="@+id/restaurant_confirm"
+                android:text="@string/restaurant_submit_button"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorNavBar"
+                android:background="@color/colorNavBarBackground"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
 
         <include layout="@layout/bottom_bar"/>
 
