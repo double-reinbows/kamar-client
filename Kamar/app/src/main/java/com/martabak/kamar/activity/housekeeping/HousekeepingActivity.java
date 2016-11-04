@@ -42,12 +42,13 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
     private HashMap<String, Integer> idToQuantity;
     private TabLayout tabLayout;
 
-    protected int getBaseLayout() {
-        return R.layout.activity_housekeeping;
-    }
-
-    protected String getToolbarLabel() {
-        return getString(R.string.housekeeping_label);
+    protected Options getOptions() {
+        return new Options()
+                .withBaseLayout(R.layout.activity_housekeeping)
+                .withToolbarLabel(getString(R.string.housekeeping_label))
+                .showTabLayout(true)
+                .showLogoutIcon(false)
+                .enableChatIcon(true);
     }
 
     @Override

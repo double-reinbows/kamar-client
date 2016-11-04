@@ -55,12 +55,13 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     private ExpandableListView bevExpListView;
     private ExpandableListView dessExpListView;
 
-    protected int getBaseLayout() {
-        return R.layout.activity_restaurant;
-    }
-
-    protected String getToolbarLabel() {
-        return getString(R.string.restaurant_label);
+    protected Options getOptions() {
+        return new Options()
+                .withBaseLayout(R.layout.activity_restaurant)
+                .withToolbarLabel(getString(R.string.restaurant_label))
+                .showTabLayout(true)
+                .showLogoutIcon(false)
+                .enableChatIcon(true);
     }
 
     @Override

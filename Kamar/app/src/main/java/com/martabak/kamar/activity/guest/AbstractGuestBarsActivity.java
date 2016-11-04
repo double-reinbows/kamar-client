@@ -15,7 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,19 +53,48 @@ public abstract class AbstractGuestBarsActivity extends AppCompatActivity implem
         LogoutDialogFragment.LogoutDialogListener,
         ChangeRoomNumberDialogFragment.ChangeRoomDialogListener {
 
-    protected abstract int getBaseLayout();
+    protected abstract Options getOptions();
 
-    protected abstract String getToolbarLabel();
+    public class Options {
+        private int baseLayout;
+        private String toolbarLabel;
+        private boolean showTabLayout;
+        private boolean showLogoutIcon;
+        private boolean enableChatIcon;
+
+        public Options withBaseLayout(int baseLayout) {
+            this.baseLayout = baseLayout;
+            return this;
+        }
+        public Options withToolbarLabel(String toolbarLabel) {
+            this.toolbarLabel = toolbarLabel;
+            return this;
+        }
+        public Options showTabLayout(boolean showTabLayout) {
+            this.showTabLayout = showTabLayout;
+            return this;
+        }
+        public Options showLogoutIcon(boolean showLogoutIcon) {
+            this.showLogoutIcon = showLogoutIcon;
+            return this;
+        }
+        public Options enableChatIcon(boolean enableChatIcon) {
+            this.enableChatIcon = enableChatIcon;
+            return this;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getBaseLayout());
-        setupToolbar(getToolbarLabel());
-        setupBottomBar();
+        setContentView(getOptions().baseLayout);
+
+        setupToolbar(getOptions().toolbarLabel, getOptions().enableChatIcon);
+        setupBottomBar(getOptions().showLogoutIcon);
+        setupTabLayout(getOptions().showTabLayout);
     }
 
-    private void setupToolbar(String label) {
+    private void setupToolbar(String label, boolean enableChatIcon) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,29 +109,47 @@ public abstract class AbstractGuestBarsActivity extends AppCompatActivity implem
             }
 
         });
-        ImageView chatIconView = (ImageView) findViewById(R.id.chat_icon);
-        chatIconView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), GuestChatActivity.class));
-            }
-        });
+
+        if (enableChatIcon) {
+            ImageView chatIconView = (ImageView) findViewById(R.id.chat_icon);
+            chatIconView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(v.getContext(), GuestChatActivity.class));
+                    }
+            });
+        }
     }
 
-    private void setupBottomBar() {
+    private void setupBottomBar(boolean showLogoutIcon) {
+        LinearLayout bottomBarLinearLayout = (LinearLayout) findViewById(R.id.bottombar_linearlayout);
+
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         TextView roomTextView = (TextView) findViewById(R.id.room_number);
         roomTextView.setText(roomNumber);
+
         View logoutView = findViewById(R.id.logoutIcon);
-        if (logoutView != null) {
-            logoutView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DialogFragment logoutDialogFragment = new LogoutDialogFragment();
-                    logoutDialogFragment.show(getFragmentManager(), "logout");
-                }
-            });
+        if (showLogoutIcon) {
+            if (logoutView != null) {
+                logoutView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogFragment logoutDialogFragment = new LogoutDialogFragment();
+                        logoutDialogFragment.show(getFragmentManager(), "logout");
+                    }
+                });
+            }
+        } else {
+            bottomBarLinearLayout.removeView(logoutView);
+        }
+    }
+
+    private void setupTabLayout(boolean useTabLayout) {
+        if (!useTabLayout) {
+            LinearLayout actionBarLinearLayout = (LinearLayout) findViewById(R.id.actionbar_linearlayout);
+            View tabView = findViewById(R.id.tabs);
+            actionBarLinearLayout.removeView(tabView);
         }
     }
 

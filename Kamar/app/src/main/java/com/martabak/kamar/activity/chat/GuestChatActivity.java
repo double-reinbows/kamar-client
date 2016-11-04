@@ -12,6 +12,15 @@ import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
  */
 public class GuestChatActivity extends AbstractGuestBarsActivity {
 
+    protected Options getOptions() {
+        return new Options()
+                .withBaseLayout(R.layout.activity_guest_chat)
+                .withToolbarLabel(getString(R.string.title_chat_detail))
+                .showTabLayout(false)
+                .showLogoutIcon(false)
+                .enableChatIcon(false);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,14 +33,6 @@ public class GuestChatActivity extends AbstractGuestBarsActivity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.chat_detail_container, fragment)
                 .commit();
-    }
-
-    protected int getBaseLayout() {
-        return R.layout.activity_guest_chat;
-    }
-
-    protected String getToolbarLabel() {
-        return getString(R.string.title_chat_detail);
     }
 
     private String getGuestId() {
