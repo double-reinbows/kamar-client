@@ -48,9 +48,9 @@
     <string name="permintaan_regress_confirmation">Apakah anda tentu ingin mundurkan pesan ini?</string>
     <string name="permintaan_cancel_confirmation">Apakah anda tentu ingin batal pesan ini?</string>
     <string name="permintaan_status_is_now">Status is now</string>
-    <string name="permintaan_order_sent">Order Sent</string>
-    <string name="permintaan_order_received">Order Received</string>
-    <string name="permintaan_order_completed">Order Completed</string>
+    <string name="permintaan_order_sent">Agar Dikirim</string>
+    <string name="permintaan_order_received">Agar Diproses</string>
+    <string name="permintaan_order_completed">Agar Selesai</string>
 
     <!-- Chat -->
     <string name="title_chat_list">PESAN</string>

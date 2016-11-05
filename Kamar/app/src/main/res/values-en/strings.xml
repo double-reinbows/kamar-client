@@ -51,7 +51,7 @@
     <string name="permintaan_cancel_confirmation">Are you sure you want to cancel this request?</string>
     <string name="permintaan_status_is_now">Status is now</string>
     <string name="permintaan_order_sent">Order Sent</string>
-    <string name="permintaan_order_received">Order Received</string>
+    <string name="permintaan_order_received">Order Processed</string>
     <string name="permintaan_order_completed">Order Completed</string>
     <string name="permintaan_assign_person">Please enter staff person\'s name</string>
 

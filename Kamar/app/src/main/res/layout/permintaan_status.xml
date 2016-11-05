@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:divider="?android:attr/dividerVertical"
     android:orientation="horizontal"
     android:showDividers="none"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/permintaan_order_sent_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:divider="?android:attr/dividerVertical"
-        android:orientation="vertical"
-        android:showDividers="none">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/permintaan_order_sent"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/permintaan_order_received"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/permintaan_order_completed"/>
-    </LinearLayout>
-    <LinearLayout
+        android:layout_marginRight="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/permintaan_order_sent"
+        android:layout_alignParentStart="true"/>
+    <TextView
+        android:id="@+id/permintaan_order_received_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:divider="?android:attr/dividerVertical"
-        android:orientation="vertical"
-        android:showDividers="none">
-        <View android:id="@+id/sent_image"
-              android:layout_width="35dp"
-              android:layout_height="35dp"
-              android:background="@drawable/circle_red"/> <!-- set bg to @drawable/circle_green here when needed -->
-        <View android:id="@+id/processed_image"
-              android:layout_width="35dp"
-              android:layout_height="35dp"
-              android:background="@drawable/circle_red"/> <!-- set bg to @drawable/circle_green here when needed -->
-        <View android:id="@+id/completed_image"
-              android:layout_width="35dp"
-              android:layout_height="35dp"
-              android:background="@drawable/circle_red"/> <!-- set bg to @drawable/circle_green here when needed -->
-    </LinearLayout>
-</LinearLayout>
+        android:layout_marginRight="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/permintaan_order_received"
+        android:layout_toRightOf="@+id/sent_image"/>
+    <TextView
+        android:id="@+id/permintaan_order_completed_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/permintaan_order_completed"
+        android:layout_toRightOf="@+id/processed_image"/>
+
+    <View android:id="@+id/sent_image"
+          android:layout_width="25dp"
+          android:layout_height="25dp"
+        android:layout_marginRight="5dp"
+          android:layout_toRightOf="@+id/permintaan_order_sent_text"
+          android:background="@drawable/circle_red" /> <!-- set bg to @drawable/circle_green here when needed -->
+    <View android:id="@+id/processed_image"
+          android:layout_width="25dp"
+          android:layout_height="25dp"
+        android:layout_marginRight="5dp"
+          android:layout_toRightOf="@+id/permintaan_order_received_text"
+          android:background="@drawable/circle_red"/> <!-- set bg to @drawable/circle_green here when needed -->
+    <View android:id="@+id/completed_image"
+          android:layout_width="25dp"
+          android:layout_height="25dp"
+          android:layout_toRightOf="@+id/permintaan_order_completed_text"
+          android:background="@drawable/circle_red"/> <!-- set bg to @drawable/circle_green here when needed -->
+
+</RelativeLayout>

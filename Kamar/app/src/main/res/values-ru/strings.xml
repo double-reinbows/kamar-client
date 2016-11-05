@@ -50,9 +50,9 @@
     <string name="permintaan_regress_confirmation">Are you sure you want to regress this request?</string>
     <string name="permintaan_cancel_confirmation">Are you sure you want to cancel this request?</string>
     <string name="permintaan_status_is_now">Status is now</string>
-    <string name="permintaan_order_sent">Order Sent</string>
-    <string name="permintaan_order_received">Order Received</string>
-    <string name="permintaan_order_completed">Order Completed</string>
+    <string name="permintaan_order_sent">Заказать Sent</string>
+    <string name="permintaan_order_received">Заказ обрабатывал</string>
+    <string name="permintaan_order_completed">Заказ Завершенный</string>
 
     <!-- Chat -->
     <string name="title_chat_list">CHAT</string>
