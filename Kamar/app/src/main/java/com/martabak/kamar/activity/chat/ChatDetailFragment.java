@@ -1,12 +1,12 @@
 package com.martabak.kamar.activity.chat;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +14,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.domain.chat.GuestChat;
-import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.ChatServer;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -107,7 +107,7 @@ public class ChatDetailFragment extends Fragment {
             Button sendButton = (Button) rootView.findViewById(R.id.chat_send_button);
             sendButton.setOnClickListener(new MessageSender(messageEditText, mGuestId, mSender));
         } else {
-            Log.d(ChatDetailFragment.class.getCanonicalName(), "mGuestId is null");
+            Log.e(ChatDetailFragment.class.getCanonicalName(), "mGuestId is null");
         }
 
         return rootView;
@@ -123,8 +123,8 @@ public class ChatDetailFragment extends Fragment {
         ChatServer.getInstance(getActivity()).getGuestChat(mGuestId).subscribe(new Observer<GuestChat>() {
             @Override public void onCompleted() {
                 Log.d(ChatDetailFragment.class.getCanonicalName(), "getGuestChat#onCompleted");
-                mRecyclerViewAdapter.notifyDataSetChanged();
                 readChatMessages();
+                mRecyclerViewAdapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
                 Log.d(ChatDetailFragment.class.getCanonicalName(), "getGuestChat#onError", e);
@@ -144,9 +144,8 @@ public class ChatDetailFragment extends Fragment {
     private void readChatMessages() {
         for (ChatMessage message : mChatMessages) {
             if (message.read == null) { // If it's unread...and
-                if (message.fromGuest() && !mSender.equals(ChatMessage.SENDER_GUEST) // From guest and ic_restaurant or front-desk are reading it...or
-                        || !message.fromGuest() && mSender.equals(ChatMessage.SENDER_GUEST)) { // From ic_restaurant or front-desk and guest is reading it
-                    // Then set the message to read
+                if (message.fromGuest() ^ mSender.equals(ChatMessage.SENDER_GUEST)) { // from guest and read by staff or vice-versa
+                    // then set the message to read.
                     Log.d(ChatDetailFragment.class.getCanonicalName(), "Setting chat message " + message._id + " to read");
                     ChatServer.getInstance(getActivity()).setChatMessageToRead(message)
                             .subscribe(new Observer<Boolean>() {
@@ -167,6 +166,9 @@ public class ChatDetailFragment extends Fragment {
     public class MessageRecyclerViewAdapter
             extends RecyclerView.Adapter<MessageRecyclerViewAdapter.ViewHolder> {
 
+        private static final String DATE_PATTERN = "d MMM H.m";
+        private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_PATTERN);
+
         private final List<ChatMessage> mValues;
 
         public MessageRecyclerViewAdapter(List<ChatMessage> items) {
@@ -182,23 +184,28 @@ public class ChatDetailFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-            holder.mFromView.setText(mValues.get(position).from);
-            holder.mSentTimeView.setText(mValues.get(position).sent.toString());
-            holder.mMessageView.setText(mValues.get(position).message);
-            if (mValues.get(position).read == null) { // If the message has been sent but not read
+            ChatMessage msg = mValues.get(position);
+            holder.mItem = msg;
+            holder.mFromView.setText(msg.from);
+            holder.mSentTimeView.setText(DATE_FORMAT.format(msg.sent));
+            holder.mMessageView.setText(msg.message);
+
+            if (msg.read == null) { // If the message has been sent but not read
                 holder.mIconView.setImageResource(R.drawable.checkmark_grey);
             } else { // If the message has been sent and read
                 holder.mIconView.setImageResource(R.drawable.checkmark_green);
             }
 
-            //set the background row colors here
-            if (position % 2 == 1) {
-                holder.mView.setBackgroundColor(Color.LTGRAY);
-            } else {
-                holder.mView.setBackgroundColor(Color.WHITE);
-            }
+            if (msg.fromGuest()) {
+                holder.mLinearLayout.setBackgroundResource(R.drawable.chat_msg_bg_red);
 
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)holder.mLinearLayout.getLayoutParams();
+                layoutParams.gravity = Gravity.END;
+                holder.mLinearLayout.setLayoutParams(layoutParams);
+//                holder.mLinearLayout.setGravity(Gravity.END);
+            } else {
+                holder.mLinearLayout.setBackgroundResource(R.drawable.chat_msg_bg_blue);
+            }
         }
 
         @Override
@@ -208,6 +215,7 @@ public class ChatDetailFragment extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
+            public final LinearLayout mLinearLayout;
             public final TextView mFromView;
             public final TextView mSentTimeView;
             public final ImageView mIconView;
@@ -217,6 +225,7 @@ public class ChatDetailFragment extends Fragment {
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
+                mLinearLayout = (LinearLayout) view.findViewById(R.id.chat_message_layout);
                 mFromView = (TextView) view.findViewById(R.id.chat_message_from);
                 mSentTimeView = (TextView) view.findViewById(R.id.chat_message_sent_time);
                 mIconView = (ImageView) view.findViewById(R.id.chat_message_icon);

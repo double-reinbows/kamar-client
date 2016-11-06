@@ -22,27 +22,19 @@ import java.util.List;
 import rx.Observer;
 
 /**
- * Created by adarsh on 3/07/16.
+ * Staff chat fragment loaded by {@link com.martabak.kamar.activity.staff.StaffHomeActivity}.
  */
-public class StaffChatFragment extends Fragment{
+public class StaffChatFragment extends Fragment {
 
     /**
-     * @return A new instance of fragment StaffChatFragment
+     * @return A new instance of fragment StaffChatFragment.
      */
     public static StaffChatFragment newInstance() {
         return new StaffChatFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_chat_list, container, false);
 
         RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.chat_list);
@@ -140,4 +132,5 @@ public class StaffChatFragment extends Fragment{
         SharedPreferences prefs = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE);
         return prefs.getString("userSubType", ChatMessage.SENDER_FRONTDESK);
     }
+
 }

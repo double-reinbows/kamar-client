@@ -14,10 +14,11 @@
                     tools:context=".activity.chat.GuestChatActivity">
 
         <FrameLayout android:id="@+id/chat_detail_container"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            xmlns:android="http://schemas.android.com/apk/res/android" />
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_marginBottom="50dp"/> <!--must equal height of bottom_bar.xml-->
 
         <include layout="@layout/bottombar"/>
 

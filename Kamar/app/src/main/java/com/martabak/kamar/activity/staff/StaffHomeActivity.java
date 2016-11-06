@@ -74,7 +74,6 @@ public class StaffHomeActivity extends AppCompatActivity {
         super.onStop();
     }
 
-
     /*
      * On Back pressed don't exit the activity
      */
@@ -91,7 +90,7 @@ public class StaffHomeActivity extends AppCompatActivity {
                             .replace(R.id.staff_container, StaffPermintaanFragment.newInstance()).commit();
                     break;
                 case R.id.nav_chat:
-                    Log.v(StaffHomeActivity.class.toString(), "Going to chat activity for staff");
+                    Log.v(StaffHomeActivity.class.toString(), "Going to staff chat fragment");
                     getFragmentManager().beginTransaction()
                             .replace(R.id.staff_container, StaffChatFragment.newInstance())
                             .commit();
