@@ -74,6 +74,7 @@
     <string name="guest_room_number">Set Room Number</string>
     <string name="guest_checkout">Check Out Guest</string>
     <string name="guest_checkin">GUEST INFORMATION</string>
+    <string name="guest_checkout_name">Guest Name</string>
     <string name="guest_checkout_message">Guest has been checked out</string>
     <string name="guest_checkout_submit_button">Check Out</string>
     <string name="guest_checkin_message">Guest has been checked in</string>
