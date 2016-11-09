@@ -1,7 +1,6 @@
 <resources>
 
     <!-- Base application theme. -->
-
     <style name="KamarAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorNavBarBackground</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -39,6 +38,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="spinnerDropDownItemStyle">@style/spinnerDropDownItemStyle</item>
     </style>
 
     <style name="GuestAlertDialogTheme">
@@ -75,5 +75,12 @@
         <item name="android:textColor">@color/pureWhite</item>
     </style>
 
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">@color/textHint</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
+    </style>
 
 </resources>

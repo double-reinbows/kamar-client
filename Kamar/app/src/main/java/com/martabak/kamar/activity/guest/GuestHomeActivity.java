@@ -219,14 +219,11 @@ public class GuestHomeActivity extends AppCompatActivity implements
                     .setNeutralButton(getString(R.string.logout_staff), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
+                            stopGuestServices();
                             SharedPreferences.Editor editor = getSharedPreferences("userSettings", MODE_PRIVATE)
                                     .edit();
                             editor.putString("subUserType", User.TYPE_STAFF_FRONTDESK)
                                     .commit();
-
-                            //Log.v(SelectUserTypeActivity.class.getCanonicalName(), "userType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none"));
-                            //Log.v(SelectUserTypeActivity.class.getCanonicalName(), "subUserType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
-
                             startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
                             finish();
                         }
@@ -235,6 +232,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Log.v("App Action", "Resetting tablet");
+                            stopGuestServices();
                             checkGuestOutByRoomNumber(roomNumber);
                         }
                     })
@@ -293,18 +291,19 @@ public class GuestHomeActivity extends AppCompatActivity implements
      * Checks the guest out.
      */
     private void checkGuestOut(Guest guest) {
+        stopGuestServices();
+
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.MINUTE, -1); //little hack here
+        c.add(Calendar.MINUTE, -1); //little hack here to ensure checkout time is in the past
         Date currentDate = c.getTime();
         Guest updatedGuest;
-//        Log.v("Guest", guest._id);
         updatedGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
                 guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
                 guest.welcomeMessage, guest.promoImgId);
+
         GuestServer.getInstance(GuestHomeActivity.this.getBaseContext()).updateGuest(updatedGuest)
                 .subscribe(new Observer<Boolean>() {
                     @Override public void onCompleted() {
-                        //rooms.notifyDataSetChanged();
                         Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On completed");
                         getSharedPreferences("userSettings", MODE_PRIVATE).edit().
                                 putString("guestId", "none").commit();
@@ -315,7 +314,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
                         ).show();
                         Intent intent = new Intent(GuestHomeActivity.this, SelectLanguageActivity.class);
                         startActivity(intent);
-                        }
+                    }
                     @Override public void onError(Throwable e) {
                         Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On error");
                         e.printStackTrace();
@@ -325,7 +324,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
                         Log.v(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On next " + result);
                         if (result) {
                             Toast.makeText(GuestHomeActivity.this, getString(R.string.guest_checkout_message), Toast.LENGTH_LONG).show();
-                            //startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
                         } else {
                             Toast.makeText(GuestHomeActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                         }
@@ -338,37 +336,28 @@ public class GuestHomeActivity extends AppCompatActivity implements
      */
      @Override
      public void onIconClick(String option) {
-
          guestSelectedOption = option;
-         Log.v("GUEST SELECTED OPTION", option);
+         Log.v(GuestHomeActivity.class.getCanonicalName(), "GUEST SELECTED OPTION: " + option);
+
          if (option.equals("MY REQUESTS")) {
              startActivity(new Intent(this, GuestPermintaanActivity.class));
-
          } else if (option.equals(getString(R.string.restaurant_label))) {
              startActivity(new Intent(this, RestaurantActivity.class));
-
          } else if (option.equals(getString(R.string.massage_label))) {
              startActivity(new Intent(this, MassageActivity.class));
-
          } else if (option.equals(getString(R.string.housekeeping_label))) {
              startActivity(new Intent(this, HousekeepingActivity.class));
-
          } else if (option.equals(getString(R.string.bellboy_label))) {
              new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
-
          } else if (option.equals(getString(R.string.engineering_label))) {
              startActivity(new Intent(this, EngineeringActivity.class));
-
          } else if (option.equals(getString(R.string.survey_label))) {
              startActivity(new Intent(this, SurveyActivity.class));
              //new TellUsDialogFragment().show(getFragmentManager(), "tellus");
-
          /*} else if (option.equals(Permintaan.TYPE_CHECKOUT)) {
              new BellboyDialogFragment().show(getFragmentManager(), "bellboy");*/
-
          } else if (option.equals(getString(R.string.event_label))) {
              startActivity(new Intent(this, GuestEventActivity.class));
-
          } else if (option.equals(getString(R.string.laundry_label))) {
              startActivity(new Intent(this, LaundryActivity.class));
          }
@@ -383,9 +372,9 @@ public class GuestHomeActivity extends AppCompatActivity implements
     public void onChangeRoomDialogPositiveClick(DialogFragment dialog, String roomNumber, boolean success, String reason) {
         if (success) {
             dialog.dismiss();
+            stopGuestServices();
             SharedPreferences sp = getSharedPreferences("userSettings", MODE_PRIVATE);
             sp.edit().putString("roomNumber", roomNumber).commit();
-//            sp.edit().putString("guestId", "none").commit();
             Toast.makeText(
                     GuestHomeActivity.this,
                     getString(R.string.room_number_changed),
@@ -416,7 +405,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
     public void onChangeRoomDialogNegativeClick(DialogFragment dialog) {
         dialog.dismiss();
     }
-
 
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override

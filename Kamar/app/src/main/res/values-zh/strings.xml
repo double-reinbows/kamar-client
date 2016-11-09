@@ -72,7 +72,8 @@
     <string name="guest_date_check_out">Date Check Out</string>
     <string name="guest_room_number">Set Room Number</string>
     <string name="guest_checkout">Check Out Guest</string>
-    <string name="guest_checkin">Check In Guest</string>
+    <string name="guest_checkin">GUEST INFORMATION</string>
+    <string name="guest_checkout_name">Guest Name</string>
     <string name="guest_checkout_message">Guest has been checked out</string>
     <string name="guest_checkout_submit_button">Check Out</string>
     <string name="guest_checkin_message">Guest has been checked in</string>
@@ -149,7 +150,7 @@
 
     <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
 
-    <string name="room_select">Please select a room</string>
+    <string name="room_select">Room Number</string>
     <string name="room_number">Room Number</string>
     <string name="room_number_change">Change Room Number</string>
     <string name="room_number_changed">Room number changed</string>

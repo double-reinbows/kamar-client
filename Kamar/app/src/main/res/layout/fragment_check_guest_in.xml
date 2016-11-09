@@ -11,130 +11,107 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/guest_checkin"
-        android:textColor="@color/darkRed"
-        android:textSize="40dp"/>
+        android:textSize="40dp"
+        android:textColor="@color/black"/>
 
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:id="@+id/tableLayout">
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dip"
-                android:textColor="@color/darkRed"
-                android:text="@string/guest_first_name"
-                android:textSize="25dp"/>
+        <TableRow
+            android:padding="4dp">
             <EditText
-                android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textSize="16sp"
+                android:layout_width="800dp"
+                android:layout_height="40dp"
+                android:background="@drawable/text_view_border"
                 android:inputType="textCapSentences"
-                android:id="@+id/guest_first_name" />
+                android:id="@+id/guest_first_name"
+                android:hint="@string/guest_first_name"/>
         </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dip"
-                android:textColor="@color/darkRed"
-                android:text="@string/guest_last_name"
-                android:textSize="25dp"/>
+        <TableRow
+            android:padding="4dp">
             <EditText
-                android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textSize="16sp"
+                android:layout_width="800dp"
+                android:layout_height="40dp"
+                android:background="@drawable/text_view_border"
                 android:inputType="textCapSentences"
-                android:id="@+id/guest_last_name"/>
+                android:id="@+id/guest_last_name"
+                android:hint="@string/guest_last_name"/>
         </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dip"
-                android:textColor="@color/darkRed"
-                android:text="@string/guest_email"
-                android:textSize="25dp"/>
+        <TableRow
+            android:padding="4dp">
             <EditText
-                android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textSize="16sp"
+                android:layout_width="800dp"
+                android:layout_height="40dp"
+                android:background="@drawable/text_view_border"
                 android:inputType="textEmailAddress"
-                android:id="@+id/guest_email"/>
+                android:id="@+id/guest_email"
+                android:hint="@string/guest_email"/>
         </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dip"
-                android:textColor="@color/darkRed"
-                android:text="@string/guest_phone"
-                android:textSize="25dp"/>
+        <TableRow
+            android:padding="4dp">
             <EditText
-                android:layout_width="300dp"
-                android:layout_height="50dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textSize="16sp"
+                android:layout_width="800dp"
+                android:layout_height="40dp"
+                android:background="@drawable/text_view_border"
                 android:inputType="phone"
-                android:id="@+id/guest_phone"/>
+                android:id="@+id/guest_phone"
+                android:hint="@string/guest_phone"/>
         </TableRow>
-        <!--TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dip"
-                android:textColor="@color/darkRed"
-                android:text="@string/guest_date_check_out"
-                android:textSize="25dp"/>
-            <EditText
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:focusableInTouchMode="false"
-                android:id="@+id/guest_date_check_out"/>
-        </TableRow-->
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dip"
-                android:textColor="@color/darkRed"
-                android:text="@string/guest_room_number"
-                android:id="@+id/guest_room_number"
-                android:textSize="25dp"/>
-            <Spinner
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:id="@+id/guest_spinner"
-
-                />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dip"
-                android:textColor="@color/darkRed"
-                android:text="@string/welcome_message"
-                android:textSize="25dp"/>
+        <TableRow
+            android:padding="4dp">
             <EditText
                 android:inputType="textMultiLine|textCapSentences"
                 android:lines="5"
                 android:minLines="1"
                 android:maxLines="8"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/guest_welcome_message"/>
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textSize="16sp"
+                android:layout_width="800dp"
+                android:layout_height="40dp"
+                android:background="@drawable/text_view_border"
+                android:id="@+id/guest_welcome_message"
+                android:hint="@string/welcome_message"/>
         </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dip"
-                android:textColor="@color/darkRed"
-                android:text="@string/promo_img_select"
-                android:id="@+id/promo_img_text"
-                android:textSize="25dp"/>
-            <Spinner
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:id="@+id/promo_img_spinner"/>
+        <TableRow
+            android:padding="4dp">
+            <LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="8dp">
+                    <Spinner
+                        android:layout_width="396dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/text_view_border"
+                        android:id="@+id/guest_spinner"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:layout_width="396dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/text_view_border"
+                        android:id="@+id/promo_img_spinner"/>
+                </LinearLayout>
+            </LinearLayout>
         </TableRow>
     </TableLayout>
 
@@ -143,7 +120,6 @@
         android:text="@string/guest_checkin_submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
         android:layout_below="@+id/tableLayout"
         android:layout_toEndOf="@+id/tableLayout"
         android:background="@drawable/redbutton"

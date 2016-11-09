@@ -166,8 +166,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
             invalid = true;
             TextView spinnerErrorText = (TextView)spinnerRoomNumber.getSelectedView();
             spinnerErrorText.setError("");
-            spinnerErrorText.setTextColor(Color.RED);
-            spinnerErrorText.setText(getString(R.string.required));
+            spinnerErrorText.setText(getString(R.string.room_select));
         }
 
         Log.d(CheckGuestInFragment.class.getCanonicalName(), "Setting submit button to " + !invalid);
