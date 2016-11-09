@@ -35,13 +35,13 @@
     <View android:id="@+id/sent_image"
           android:layout_width="25dp"
           android:layout_height="25dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="20dp"
           android:layout_toRightOf="@+id/permintaan_order_sent_text"
           android:background="@drawable/circle_red" /> <!-- set bg to @drawable/circle_green here when needed -->
     <View android:id="@+id/processed_image"
           android:layout_width="25dp"
           android:layout_height="25dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="20dp"
           android:layout_toRightOf="@+id/permintaan_order_received_text"
           android:background="@drawable/circle_red"/> <!-- set bg to @drawable/circle_green here when needed -->
     <View android:id="@+id/completed_image"

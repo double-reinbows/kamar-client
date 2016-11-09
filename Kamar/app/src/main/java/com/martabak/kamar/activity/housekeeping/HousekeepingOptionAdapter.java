@@ -7,9 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
@@ -17,8 +17,6 @@ import com.martabak.kamar.domain.options.HousekeepingOption;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.Server;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,14 +29,17 @@ public class HousekeepingOptionAdapter
     private Context context;
     private Map<String, String> statuses;
     private View.OnClickListener submitButtonListener;
+    private final RadioGroup.OnCheckedChangeListener l;
 
     public HousekeepingOptionAdapter(List<HousekeepingOption> hkOptions,
                                      Context context, View.OnClickListener submitButtonListener,
-                                     Map<String, String> statuses) {
+                                     Map<String, String> statuses,
+                                     RadioGroup.OnCheckedChangeListener l) {
         this.housekeepingOptions = hkOptions;
         this.context = context;
         this.submitButtonListener = submitButtonListener;
         this.statuses = statuses;
+        this.l = l;
     }
 
     @Override
@@ -53,44 +54,28 @@ public class HousekeepingOptionAdapter
         holder.itemView.setSelected(selectedPos == position);
         holder.item = housekeepingOptions.get(position);
         holder.nameView.setText(housekeepingOptions.get(position).getName());
-//        holder.nameView.post(new Runnable() {
-//            @Override
-//            public void run() {
-////                Log.v("Child info", "child: "+currConsumable.name+" no. of lines: "+Integer.toString(txtListChild.getLineCount()));
-//                if (holder.nameView.count) {//if 2 lines used for item name
-//                    //reduce item name padding
-//                    txtListChild.setPadding(txtListChild.getPaddingLeft(),
-//                            txtListChild.getPaddingTop(),
-//                            txtListChild.getPaddingRight(),
-//                            20);
-//                } /*else {
-//                    //set item name padding to default
-//                    txtListChild.setPadding(txtListChild.getPaddingLeft(),
-//                            txtListChild.getPaddingTop(),
-//                            txtListChild.getPaddingRight(),
-//                            90);
-//
-////                    quantity.margin
-//                }*/
-//            }
-//        });
         Server.picasso(context)
-            .load(holder.item.getImageUrl())
-            .placeholder(R.drawable.loading_batik)
-            .error(R.drawable.error)
-            .into(holder.imgView);
+                .load(holder.item.getImageUrl())
+                .placeholder(R.drawable.loading_batik)
+                .error(R.drawable.error)
+                .into(holder.imgView);
+        //set radio group and create its buttons
+        holder.radioGroup.setOnCheckedChangeListener(l);
+        if (holder.radioGroup.getChildCount() == 0) {//stops duplicate buttons
+            for (Integer i = 0; i < holder.item.max; i++) {
+                RadioButton rb = new RadioButton(context);
+                Integer j = i + 1;
+                rb.setText(j.toString());
+                rb.setTag(j);
+                float scale = context.getResources().getDisplayMetrics().density;
+                int leftPad = (int) (20*scale + 0.5f);
+                int rightPad = (int) (45*scale + 0.5f);
+                rb.setPadding(leftPad, 0, rightPad, 0);
 
-        //create list of options in the spinner
-        final List<String> spinnerText = new ArrayList<>();
-        for (Integer i=0; i<=holder.item.max; i++) {
-            spinnerText.add(i.toString());
+                holder.radioGroup.addView(rb);
+            }
         }
-        ArrayAdapter adapter = new ArrayAdapter(context,
-                R.layout.support_simple_spinner_dropdown_item, spinnerText);
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        holder.spinner.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
+        //set permintaan statuses
         String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_CANCELLED;
         Log.d(HousekeepingActivity.class.getCanonicalName(), "Status for housekeeping " + holder.item.getName() + " is " + state);
         switch (state) {
@@ -120,22 +105,24 @@ public class HousekeepingOptionAdapter
         public final View rootView;
         public final TextView nameView;
         public final ImageView submitButton;
-        public final Spinner spinner;
         public final View sentImageView;
         public final View processedImageView;
         public final View completedImageView;
         public final ImageView imgView;
+        public final RadioGroup radioGroup;
+        public final RadioButton checkedRadioButton;
 
         public ViewHolder(View view) {
             super(view);
             rootView = view;
             nameView = (TextView) view.findViewById(R.id.hk_name);
             submitButton = (ImageView) view.findViewById(R.id.hk_submit);
-            spinner = (Spinner) view.findViewById(R.id.hk_spinner);
             sentImageView = view.findViewById(R.id.sent_image);
             processedImageView = view.findViewById(R.id.processed_image);
             completedImageView = view.findViewById(R.id.completed_image);
             imgView = (ImageView) view.findViewById(R.id.hk_img);
+            radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
+            checkedRadioButton = (RadioButton) view.findViewById(radioGroup.getCheckedRadioButtonId());
         }
 
         @Override

@@ -69,7 +69,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
         Integer multiplyFactor = 1000;
 
-        // fill in each of the respective display lists based on the ic_restaurant model manager
+        //fill in each of the respective display lists based on the ic_restaurant model manager
         RestaurantOrder tempRestaurantOrder = RestaurantOrderManager.getInstance().getOrder();
         restaurantOrderItems = tempRestaurantOrder.items;
 

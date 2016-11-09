@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
@@ -147,9 +149,10 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
     /**
      * This fragment generates the list of housekeeping options.
      */
-    public static class HousekeepingFragment extends Fragment implements View.OnClickListener {
+    public static class HousekeepingFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
         private RecyclerView optionRecyclerView;
         private Map<String, String> idToStatus;
+        Integer quantity;
         private HousekeepingOptionAdapter hkOptionRecyclerAdapter;
 
         public HousekeepingFragment() {}
@@ -161,13 +164,14 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
             optionRecyclerView = (RecyclerView) view.findViewById(R.id.hk_option_recycler);
             final ArrayList<HousekeepingOption> temp = buildOptions();
             idToStatus = new HashMap<>();
+            quantity = 0;
 
             // Get the statuses,
             PermintaanManager.getInstance().getHousekeepingStatuses(getContext()).subscribe(new Observer<Map<String, String>>() {
                 @Override public void onCompleted() {
                     Log.d(HousekeepingActivity.class.getCanonicalName(), "getHousekeepingStatuses#onCompleted");
                     hkOptionRecyclerAdapter = new HousekeepingOptionAdapter(temp, 
-                            HousekeepingFragment.this.getContext(), HousekeepingFragment.this, idToStatus);
+                            HousekeepingFragment.this.getContext(), HousekeepingFragment.this, idToStatus, HousekeepingFragment.this);
                     optionRecyclerView.setAdapter(hkOptionRecyclerAdapter);
                 }
                 @Override public void onError(Throwable e) {
@@ -203,7 +207,7 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                         ).show();
                         return;
                 }
-            } else if (holder.spinner.getSelectedItem().toString().equals("0")) {//quantity = 0
+            } else if (quantity == 0) {//.spinner.getSelectedItem().toString().equals("0")) {//quantity = 0
                  new AlertDialog.Builder(getContext())
                          .setTitle(option.getName())
                          .setMessage(R.string.housekeeping_zero_order)
@@ -229,7 +233,6 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                                     return;
                                 }                                String state = Permintaan.STATE_NEW;
                                 Date currentDate = Calendar.getInstance().getTime();
-                                final Integer quantity = Integer.parseInt(holder.spinner.getSelectedItem().toString());
                                 String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                                         .getString("roomNumber", "none");
                                 //Create the Housekeeping permintaan
@@ -249,10 +252,11 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                                                     Toast.LENGTH_SHORT
                                             ).show();
 
-                                            //get, modify, then set the order dictionary in the Manager
+                                            //get, modify then set the order dictionary in the Manager
                                             HashMap idToQuantity = HousekeepingManager.getInstance().getOrder();
                                             idToQuantity.put(option._id, quantity);
                                             HousekeepingManager.getInstance().setOrder(idToQuantity);
+                                            quantity = 0;
                                             idToStatus.put(option._id, Permintaan.STATE_NEW);
                                             hkOptionRecyclerAdapter.notifyDataSetChanged();
                                         } else {
@@ -305,6 +309,22 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                 }
             }
             return temp;
+        }
+
+        @Override
+        public void onCheckedChanged(RadioGroup radioGroup, int i) {
+            final HousekeepingOptionAdapter.ViewHolder holder =
+                    (HousekeepingOptionAdapter.ViewHolder)optionRecyclerView.getChildViewHolder((View)radioGroup.getParent());
+            final HousekeepingOption question = holder.item;
+
+            RadioButton checkedRadioButton = (RadioButton)radioGroup.findViewById(i);
+            // This puts the value (true/false) into the variable
+            boolean isChecked = checkedRadioButton.isChecked();
+            // If the radio button that has changed in check state is now checked...
+            if (isChecked) {
+                quantity = Integer.parseInt(checkedRadioButton.getTag().toString());
+//                idToQuantity.put(question._id, j);
+            }
         }
     }
 
