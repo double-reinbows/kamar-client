@@ -77,7 +77,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
 
         final TextView quantity = (TextView) convertView.findViewById(R.id.item_quantity);
         quantity.setText(idToQuantity.get(currConsumable._id).toString());
-        quantity.setBackgroundColor(0xFFac0d13);
+//        quantity.setBackgroundColor(0xFFac0d13);
         quantity.invalidate();
 
         //Set up main text

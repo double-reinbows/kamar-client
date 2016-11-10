@@ -2,6 +2,7 @@ package com.martabak.kamar.activity.engineering;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -167,7 +168,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                                     ).show();
                                     EngineeringActivity.this.statuses.put(item._id, Permintaan.STATE_NEW);
                                     View sentImageView = view.findViewById(R.id.sent_image);
-                                    sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                                    sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
                                 } else {
                                     Toast.makeText(
                                             EngineeringActivity.this.getApplicationContext(),
@@ -229,11 +230,11 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
             Log.d(EngineeringActivity.class.getCanonicalName(), "Status for ic_engineering " + holder.item.getName() + " is " + state);
             switch (state) {
                 case Permintaan.STATE_COMPLETED:
-                    holder.completedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
                 case Permintaan.STATE_INPROGRESS:
-                    holder.processedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
                 case Permintaan.STATE_NEW:
-                    holder.sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                    holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
                     break;
             }
         }

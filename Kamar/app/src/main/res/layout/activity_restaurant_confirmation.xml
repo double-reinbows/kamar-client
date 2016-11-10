@@ -15,7 +15,7 @@
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="520dp"
+            android:layout_height="550dp"
             android:layout_below="@+id/actionbar"
             tools:context="com.martabak.kamar.activity.restaurant.RestaurantConfirmationActivity">
 
@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:background="@color/pureWhite"
             tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity"
             android:layout_marginBottom="50dp"> <!--must equal height of bottom_bar.xml-->
 
@@ -47,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="23dp"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/order_total_text"
                 android:id="@+id/order_total" />

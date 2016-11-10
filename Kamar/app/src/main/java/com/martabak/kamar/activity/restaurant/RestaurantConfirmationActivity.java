@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,6 +55,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startFragment(); //permintaan status lights
 
         final RecyclerView rv = (RecyclerView) findViewById(R.id.restaurant_recycleview);
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
@@ -161,7 +163,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
                         finish();
                     }
                 });
-/*
+
                 new CountDownTimer(11000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
@@ -172,7 +174,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
                         dialog.dismiss();
                     }
                 }.start();
-                */
+
             }
         });
 
@@ -224,5 +226,11 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
             });
         }
 
+    }
+
+    public void startFragment() {
+        RestaurantPermintaanFragment f = new RestaurantPermintaanFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f);
+        ft.commit();
     }
 }

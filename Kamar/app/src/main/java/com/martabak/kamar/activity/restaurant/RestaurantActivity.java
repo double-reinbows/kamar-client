@@ -2,12 +2,9 @@ package com.martabak.kamar.activity.restaurant;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +65,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startFragment(); //permintaan status lights
 
         Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
 
@@ -102,6 +100,8 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
         dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
         subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
+        TextView totalText = (TextView)findViewById(R.id.order_total_text);
+        totalText.setText("Total");
 
         doGetConsumablesOfSectionAndCreateExpList("FOOD", food, foodExpListView); //since 1st tab is always food
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -282,4 +282,12 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
             createExpandableList(consumables, view);
         }
     }
+
+    public void startFragment() {
+        RestaurantPermintaanFragment f = new RestaurantPermintaanFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f);
+        ft.commit();
+    }
+
+
 }

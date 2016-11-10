@@ -2,6 +2,7 @@ package com.martabak.kamar.activity.housekeeping;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,11 +84,11 @@ public class HousekeepingOptionAdapter
                 holder.submitButton.setOnClickListener(submitButtonListener);
                 break;
             case Permintaan.STATE_COMPLETED:
-                holder.completedImageView.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+                holder.completedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
             case Permintaan.STATE_INPROGRESS:
-                holder.processedImageView.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+                holder.processedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
             case Permintaan.STATE_NEW:
-                holder.sentImageView.setBackground(context.getResources().getDrawable(R.drawable.circle_green));
+                holder.sentImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
                 holder.submitButton.setColorFilter(Color.argb(150,200,200,200));
                 break;
         }

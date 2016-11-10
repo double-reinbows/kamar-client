@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -122,7 +123,7 @@ public abstract class AbstractGuestBarsActivity extends AppCompatActivity implem
     }
 
     private void setupBottomBar(boolean showLogoutIcon) {
-        LinearLayout bottomBarLinearLayout = (LinearLayout) findViewById(R.id.bottombar_linearlayout);
+        RelativeLayout bottomBarLinearLayout = (RelativeLayout) findViewById(R.id.bottombar_linearlayout);
 
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");

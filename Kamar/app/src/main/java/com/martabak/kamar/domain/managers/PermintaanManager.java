@@ -86,6 +86,7 @@ public class PermintaanManager {
                 // Return its status
                 .map(new Func1<Permintaan, String>() {
                     @Override public String call(Permintaan permintaan) {
+                        Log.v("DICK", permintaan.state);
                         return permintaan.state;
                     }
                 });
@@ -232,5 +233,13 @@ public class PermintaanManager {
     public Observable<String> getLaundryStatus(Context c) {
         return getMostRecentStatusOf(c, Permintaan.TYPE_LAUNDRY);
     }
+
+    /**
+     * @return The state of the most recent laundry permintaan.
+     */
+    public Observable<String> getRestaurantStatus(Context c) {
+        return getMostRecentStatusOf(c, Permintaan.TYPE_RESTAURANT);
+    }
+
 
 }
