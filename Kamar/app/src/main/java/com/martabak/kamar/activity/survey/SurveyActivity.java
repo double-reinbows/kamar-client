@@ -3,10 +3,7 @@ package com.martabak.kamar.activity.survey;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
@@ -43,6 +40,7 @@ public class SurveyActivity extends AbstractGuestBarsActivity {
 
         // Instantiate a ViewPager and a PagerAdapter.
         viewPager = (ViewPager) findViewById(R.id.survey_pager);
+        viewPager.setOffscreenPageLimit(10); //maintains views of off-screen slides
 
         if (SurveyManager.getInstance().getMappings() == null) {
             sections = new ArrayList<>();

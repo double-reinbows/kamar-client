@@ -157,7 +157,7 @@
     <string name="room_number_changed">Room number changed</string>
     <string name="room_number_password">Input password</string>
     <string name="room_number_result">Room number changed</string>
-    <string name="logout">Enter password</string>
+    <string name="logout">STAFF ONLY</string>
     <string name="logout_result">Logged out of guest</string>
 
     <string name="guest_welcome_title">Добро пожаловать!</string>
@@ -194,4 +194,5 @@
     <string name="quantity">количество</string>
     <string name="add_more_items"> + Добавить еще</string>
     <string name="restaurant_confirmation_price_text">Итого с НАЛОГА</string>
+    <string name="bellboy_cancel"></string>
 </resources>

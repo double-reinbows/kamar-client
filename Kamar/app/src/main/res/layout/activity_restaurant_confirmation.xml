@@ -33,7 +33,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="50dp"
                 android:background="@color/colorNavBar"
                 android:layout_above="@+id/order_total_text"
                 android:layout_marginBottom="3dp"/>
@@ -58,8 +58,8 @@
                 android:text="@string/restaurant_submit_button"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorNavBar"
-                android:background="@color/colorNavBarBackground"
+                android:textColor="@color/colorNavBarBackground"
+                android:background="@color/colorNavBar"
                 android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>

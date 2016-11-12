@@ -13,9 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
@@ -51,7 +50,6 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         Bundle args = new Bundle();
         args.putBoolean("flag", Boolean.FALSE);
-        Log.v("SECTIONS", sections.toString());
         args.putString("currSection", sections.get(position));
         if (position == getCount()-1) {//set "last slide" flag
             args.putBoolean("flag", Boolean.TRUE);
@@ -66,7 +64,7 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
         return sections.size();
     }
 
-    public static class ScreenSlidePageFragment extends Fragment implements RadioGroup.OnCheckedChangeListener {
+    public static class ScreenSlidePageFragment extends Fragment implements RatingBar.OnRatingBarChangeListener {
         public ScreenSlidePageFragment() {};
         private RecyclerView recyclerView;
         private HashMap<String, Integer> idToRating;
@@ -96,7 +94,7 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
             SurveyRecyclerAdapter recyclerAdapter = new SurveyRecyclerAdapter(questionList, ScreenSlidePageFragment.this);
             recyclerView.setAdapter(recyclerAdapter);
 
-            ImageView submitButton = (ImageView)rootView.findViewById(R.id.survey_submit);
+            Button submitButton = (Button)rootView.findViewById(R.id.survey_submit);
             if (flag) {//last slide
                 submitButton.setAlpha(0.9f);
                 submitButton.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +151,7 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                                 @Override
                                 public void onNext(Boolean result) {
                                     if (result) {
-                                        Log.v("WWW", "answers created");
+//                                        Log.v("WWW", "answers created");
                                     }
                                 }
                             });
@@ -164,19 +162,14 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
             return rootView;
         }
 
-        public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+
+        @Override
+        public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
             final SurveyRecyclerAdapter.ViewHolder holder =
-                    (SurveyRecyclerAdapter.ViewHolder)recyclerView.getChildViewHolder((View)radioGroup.getParent());
+                    (SurveyRecyclerAdapter.ViewHolder)recyclerView.getChildViewHolder((View)ratingBar.getParent());
             final SurveyQuestion question = holder.item;
 
-            RadioButton checkedRadioButton = (RadioButton)radioGroup.findViewById(checkedId);
-            // This puts the value (true/false) into the variable
-            boolean isChecked = checkedRadioButton.isChecked();
-            // If the radio button that has changed in check state is now checked...
-            if (isChecked) {
-                Integer i = Integer.parseInt(checkedRadioButton.getTag().toString());
-                idToRating.put(question._id, i);
-            }
+            idToRating.put(question._id, (int)v);
         }
     }
 

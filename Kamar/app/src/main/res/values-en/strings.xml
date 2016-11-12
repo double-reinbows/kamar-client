@@ -121,7 +121,7 @@
     <string name="housekeeping_confirm">Please confirm this order</string>
     <string name="housekeeping_zero_order">Please choose a valid quantity!</string>
 
-    <string name="bellboy_message">Are you sure you require a porter?</string>
+    <string name="bellboy_message">ARE YOU SURE YOU REQUIRE A PORTER?</string>
     <string name="bellboy_edittext">Input bellboy details</string>
     <string name="report_to_frontdesk">Please report to front desk</string>
 
@@ -164,7 +164,7 @@
     <string name="room_number_changed">Room number changed</string>
     <string name="room_number_password">Input password</string>
     <string name="room_number_result">Room number changed</string>
-    <string name="logout">Enter password</string>
+    <string name="logout">STAFF ONLY</string>
     <string name="logout_result">Logged out of guest</string>
     <string name="logout_options">Please choose one of the following options...</string>
     <string name="logout_change_room_number">Change room no.</string>
@@ -195,4 +195,6 @@
     <string name="quantity">Quantity</string>
     <string name="add_more_items">+ ADD MORE ITEMS</string>
     <string name="restaurant_confirmation_price_text">Total with TAX</string>
+    <string name="bellboy_cancel">CANCEL</string>
+    <string name="bellboy_confirm">ORDER</string>
 </resources>

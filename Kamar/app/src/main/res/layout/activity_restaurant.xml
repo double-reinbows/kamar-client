@@ -14,8 +14,8 @@
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="550dp"
-            android:layout_marginTop="150dp"
+            android:layout_height="500dp"
+            android:layout_marginTop="120dp"
             tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
 
             <include layout="@layout/content_restaurant" />

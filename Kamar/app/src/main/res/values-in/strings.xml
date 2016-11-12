@@ -111,7 +111,7 @@
     <string name="housekeeping_edittext">Input housekeeper details</string>
     <string name="housekeeping_result">Pesan telah dikirim</string>
 
-    <string name="bellboy_message">Yakin ingin pesan porter?</string>
+    <string name="bellboy_message">YAKIN INGIN PESAN PORTER?</string>
     <string name="bellboy_edittext">Input bellboy details</string>
     <string name="bellboy_result">Pesanan porter telah dikirim</string>
     <string name="report_to_frontdesk">Please report to front desk</string>
@@ -163,7 +163,7 @@
     <string name="housekeeping_confirm">Pastikan pesan ini</string>
     <string name="housekeeping_label">PEMBENAHAN</string>
     <string name="housekeeping_zero_order">Silakan pilih jumlah valid</string>
-    <string name="logout">Enter password</string>
+    <string name="logout">STAFF ONLY</string>
     <string name="nav_drawer_about">TENTANG KAMI</string>
     <string name="nav_drawer_change_language">GANTI BAHASA</string>
     <string name="nav_drawer_home">Homepage</string>
@@ -191,4 +191,6 @@
     <string name="quantity">Kuantitas</string>
     <string name="add_more_items"> + TAMBAH LEBIH</string>
     <string name="restaurant_confirmation_price_text">Total dengan PAJAK</string>
+    <string name="bellboy_cancel">BATAL</string>
+    <string name="bellboy_confirm">PESAN</string>
 </resources>

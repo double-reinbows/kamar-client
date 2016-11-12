@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView style="?android:textAppearanceMedium"
+    <TextView
         android:id="@+id/survey_section_text"
         android:padding="16dp"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
         android:lineSpacingMultiplier="1.2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -17,15 +20,19 @@
         android:id="@+id/survey_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/survey_section_text"
         app:layoutManager="LinearLayoutManager"
         tools:listitem="@layout/survey_list_row" />
 
-    <ImageView
+    <Button
         android:id="@+id/survey_submit"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:src="@drawable/button_submit"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:text="SUBMIT"
+        android:textColor="@color/colorNavBarBackground"
+        android:background="@color/colorNavBar"
         android:alpha="0"/>
 
-</LinearLayout>
+</RelativeLayout>

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +27,9 @@ public class SurveyRecyclerAdapter
     protected int selectedPos = -1;
 
     private final List<SurveyQuestion> mValues;
-    private final RadioGroup.OnCheckedChangeListener l;
+    private final RatingBar.OnRatingBarChangeListener l;
 
-    public SurveyRecyclerAdapter(List<SurveyQuestion> items, RadioGroup.OnCheckedChangeListener l) {
+    public SurveyRecyclerAdapter(List<SurveyQuestion> items, RatingBar.OnRatingBarChangeListener l) {
         mValues = items;
         this.l = l;
     }
@@ -45,7 +46,7 @@ public class SurveyRecyclerAdapter
         holder.itemView.setSelected(selectedPos == position);
         holder.item = mValues.get(position);
         holder.mainText.setText(holder.item.getQuestion());
-        holder.radioGroup.setOnCheckedChangeListener(l);
+        holder.ratingBar.setOnRatingBarChangeListener(l);
     }
 
     @Override
@@ -57,14 +58,12 @@ public class SurveyRecyclerAdapter
         public SurveyQuestion item;
         public final View rootView;
         public final TextView mainText;
-        public final RadioGroup radioGroup;
-        public final RadioButton checkedRadioButton;
+        public final RatingBar ratingBar;
 
         public ViewHolder(View view) {
             super(view);
             rootView = view;
-            radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
-            checkedRadioButton = (RadioButton) view.findViewById(radioGroup.getCheckedRadioButtonId());
+            ratingBar = (RatingBar)view.findViewById(R.id.survey_rating_bar);
             mainText = (TextView) view.findViewById(R.id.survey_row_text);
         }
 

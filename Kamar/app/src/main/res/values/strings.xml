@@ -19,4 +19,7 @@
     <string name="add_more_items">+ ADD MORE ITEMS</string>
     <string name="restaurant_confirmation_price_text">Total with TAX</string>
     <string name="restaurant_confirmation_dialog_desc"></string>
+    <string name="bellboy_cancel">CANCEL</string>
+    <string name="bellboy_confirm">ORDER</string>
+    <string name="logout">STAFF ONLY</string>
 </resources>

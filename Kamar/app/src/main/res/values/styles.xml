@@ -83,4 +83,9 @@
         <item name="android:paddingRight">6dp</item>
     </style>
 
+    <style name="surveyRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/survey_ratingbar</item>
+        <item name="android:minHeight">23dip</item>
+    </style>
+
 </resources>
