@@ -23,13 +23,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.domain.Staff;
 import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.LaundryOrder;
@@ -52,8 +52,8 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, Permintaan> idToPermintaan;
     ImageView assignPermintaanButton;
     ImageView infoPermintaanButton;
-    ImageView progressPermintaanButton;
-    ImageView regressPermintaanButton;
+    Button progressPermintaanButton;
+    Button regressPermintaanButton;
 
 
     public StaffExpandableListAdapter(Context context, List<String> states,
@@ -67,8 +67,6 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Permintaan getChild(int groupPosition, int childPosition) {
-//        Log.v("states", states.toString());
-//        Log.v("stateToPermIds", stateToPermIds.toString());
         return idToPermintaan.get(stateToPermIds.get(states.get(groupPosition)).get(childPosition));
     }
 
@@ -90,8 +88,31 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
         //Set main text
         TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
-        String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.created);
-        final String childText = currPermintaan.type+" ~~~ Room No. "+currPermintaan.roomNumber+" ~~~ Ordered @ "+simpleCreated;
+        String simpleCreated = new SimpleDateFormat("dd MMM - hh:mm a").format(currPermintaan.created);
+        String childText = "";
+
+        if (currPermintaan.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
+            childText += "RESTAURANT";
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_TRANSPORT)) {
+            Transport transportOrder = (Transport) currPermintaan.content;
+            childText += "<br>Departing in: " + transportOrder.departingIn +
+                    "<br>Destination: " + transportOrder.destination +
+                    "<br>Number of passengers: " + transportOrder.passengers;
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_HOUSEKEEPING)) {
+            Housekeeping hkOrder = (Housekeeping) currPermintaan.content;
+            childText += "HOUSEKEEPING - " + hkOrder.option.nameEn;
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_LAUNDRY)) {
+            childText += "LAUNDRY";
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_ENGINEERING)) {
+            Engineering engOrder = (Engineering) currPermintaan.content;
+            childText += "Engineering -  "+engOrder.option.nameEn;
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_MASSAGE)) {
+            Massage massageOrder = (Massage)currPermintaan.content;
+            childText += "Massage - "+massageOrder.option.nameEn;
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_BELLBOY)) {
+            childText += currPermintaan.content.getType();
+        }
+        childText += "\nRoom no. "+currPermintaan.roomNumber+" | "+simpleCreated;
         txtListChild.setText(childText);
 
         //Set up grey filter
@@ -102,13 +123,25 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         //Initialize the ImageViews (buttons)
         assignPermintaanButton =(ImageView) convertView.findViewById(R.id.assign_permintaan_button);
         infoPermintaanButton = (ImageView) convertView.findViewById(R.id.info_permintaan_button);
-        progressPermintaanButton = (ImageView) convertView.findViewById(R.id.progress_permintaan_button);
-        regressPermintaanButton = (ImageView) convertView.findViewById(R.id.regress_permintaan_button);
+        infoPermintaanButton.setColorFilter(0xffff0000);
+        progressPermintaanButton = (Button) convertView.findViewById(R.id.progress_permintaan_button);
+        regressPermintaanButton = (Button) convertView.findViewById(R.id.regress_permintaan_button);
 
+        if (currPermintaan.state.equals(Permintaan.STATE_NEW)) {
+            progressPermintaanButton.setText("PROCESS");
+            regressPermintaanButton.setText("N/A");
+        } else if (currPermintaan.state.equals(Permintaan.STATE_INPROGRESS)) {
+            progressPermintaanButton.setText("COMPLETE");
+            regressPermintaanButton.setText("BACK");
+        } else {
+            progressPermintaanButton.setText("N/A");
+            regressPermintaanButton.setText("N/A");
+        }
         /**
          * Assign staff member to a permintaan
          */
         if (currPermintaan.assignee.equals("none") && currPermintaan.state.equals(Permintaan.STATE_NEW)) {
+            assignPermintaanButton.setColorFilter(0xffff0000);
             assignPermintaanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -269,7 +302,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
             });
         } else {
-            progressPermintaanButton.setColorFilter(cf);
+            progressPermintaanButton.getBackground().setColorFilter(cf);
             progressPermintaanButton.setAlpha(0.5f);   // 128 = 0.5
             progressPermintaanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -316,7 +349,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
             });
         } else {
-            regressPermintaanButton.setColorFilter(cf);
+            regressPermintaanButton.getBackground().setColorFilter(cf);
             regressPermintaanButton.setAlpha(0.5f);
         }
 

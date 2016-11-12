@@ -13,7 +13,8 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:textSize="25dp"
+        android:textSize="15dp"
+        android:lines="2"
         android:textColor="@color/black" />
     <!--ImageView
         android:id="@+id/cancel_permintaan_button"
@@ -25,35 +26,40 @@
         android:focusable="false"/-->
     <ImageView
         android:id="@+id/assign_permintaan_button"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_toStartOf="@+id/info_permintaan_button"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_perm_identity_white_48dp"
+        android:src="@drawable/staff_assign_icon"
         android:focusable="false"/>
     <ImageView
         android:id="@+id/info_permintaan_button"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_toStartOf="@+id/regress_permintaan_button"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="25dp"
         android:src="@drawable/permintaan_info"
         android:focusable="false"/>
-    <ImageView
+    <Button
         android:id="@+id/regress_permintaan_button"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
         android:layout_toStartOf="@+id/progress_permintaan_button"
         android:layout_centerVertical="true"
-        android:src="@drawable/up_arrow"
+        android:layout_marginLeft="25dp"
+        android:background="@color/colorNavBar"
+        android:textColor="@color/guestTextColor"
         android:focusable="false"/>
-    <ImageView
+    <Button
         android:id="@+id/progress_permintaan_button"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/arrow_down_green"
+        android:layout_marginLeft="25dp"
+        android:background="@color/colorNavBar"
+        android:textColor="@color/guestTextColor"
         android:focusable="false"/>
 
 </RelativeLayout>
