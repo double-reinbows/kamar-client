@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:layout_marginTop="5dp"
+    android:layout_margin="20dp"
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
@@ -23,8 +23,35 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:maxLines="2"
-        android:id="@+id/engineering_name"/>
+        android:id="@+id/engineering_name"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:textColor="@color/textHint"/>
 
-    <include layout="@layout/permintaan_status"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:showDividers="none">
+
+        <Button
+            android:id="@+id/order_button"
+            android:text="@string/order_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/redbutton"
+            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|bottom"
+            android:gravity="end|bottom">
+            <include layout="@layout/permintaan_status"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
