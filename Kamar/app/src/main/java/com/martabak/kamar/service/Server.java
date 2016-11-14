@@ -80,6 +80,7 @@ public abstract class Server {
         //Yianni: http://192.168.1.4:5984/"
         //Amazon: http://54.255.137.25:5984/
         //Martabak: http://192.168.1.105:5984/
+        //Adarsh: "http://192.168.1.5:5984/"
     }
 
     /**

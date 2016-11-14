@@ -55,7 +55,7 @@ public class TransportActivity extends AppCompatActivity implements TextWatcher 
         });
 
         // Set room number text.
-        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
+        TextView roomNumberTextView = (TextView)findViewById(R.id.room_number);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);

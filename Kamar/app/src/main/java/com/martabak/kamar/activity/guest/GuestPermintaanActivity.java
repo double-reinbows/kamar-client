@@ -50,7 +50,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
 
         });
 
-        TextView roomNumberTextView = (TextView)findViewById(R.id.toolbar_roomnumber);
+        TextView roomNumberTextView = (TextView)findViewById(R.id.room_number);
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         // set room number text

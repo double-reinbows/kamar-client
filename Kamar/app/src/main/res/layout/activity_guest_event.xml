@@ -4,64 +4,49 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/actionbar_event_customview"/>
+    <include layout="@layout/actionbar"/>
 
-    <LinearLayout
-        android:id="@+id/event_container"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.8"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/button_previous"
-            android:src="@drawable/ic_arrow_left"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0.1" />
+        <LinearLayout
+            android:id="@+id/event_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:orientation="horizontal">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/event_view_pager"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.8">
-
-        </android.support.v4.view.ViewPager>
-
-        <ImageButton
-            android:id="@+id/button_next"
-            android:src="@drawable/ic_arrow_right"
-            android:layout_weight="0.1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-
-    </LinearLayout>
-
-    <!--
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="200dp" android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
-
-
-
-        <HorizontalScrollView
-            android:id="@+id/event_horizontal_scroll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/previous"
-            android:layout_toLeftOf="@+id/next">
-            <LinearLayout
-                android:id="@+id/event_linear"
-                android:layout_width="wrap_content"
+            <ImageButton
+                android:id="@+id/button_previous"
+                android:src="@drawable/ic_arrow_left"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"/>
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:background="?android:selectableItemBackground"/>
 
-        </HorizontalScrollView>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/event_view_pager"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8">
 
-    </RelativeLayout> -->
+            </android.support.v4.view.ViewPager>
+
+            <ImageButton
+                android:id="@+id/button_next"
+                android:src="@drawable/ic_arrow_right"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.1"
+                android:background="?android:selectableItemBackground" />
+
+
+        </LinearLayout>
+
+        <include layout="@layout/bottombar"/>
+    </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>

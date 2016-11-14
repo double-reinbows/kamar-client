@@ -30,22 +30,20 @@ public class GuestEventViewPagerAdapter extends FragmentStatePagerAdapter {
         return GuestEventFragment.getInstance(images.get(position));
     }
 
+    /*
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         // Remove viewpager
-        ((ViewPager) container).removeView((FrameLayout) object);
+        ((ViewPager) container).removeView((View) object);
     }
+    */
 
-
-
-    /*@Override
+    @Override
     public int getItemPosition(Object object) {
-        if (images.contains((View) object)) {
-            return images.indexOf((View) object);
-        } else {
-            return POSITION_NONE;
-        }
-    }*/
+        // get item position
+        int position = images.indexOf(object);
+        return position == -1 ? POSITION_NONE : position;
+    }
 
     @Override
     public int getCount() {

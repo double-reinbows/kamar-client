@@ -22,8 +22,6 @@ public class GuestEventFragment extends Fragment {
         GuestEventFragment guestEventFragment = new GuestEventFragment();
         Bundle args = new Bundle();
         args.putString("image_url", imageURL);
-        //Bundle args = new Bundle();
-        //args.putInt("image_source", imageURL);
         guestEventFragment.setArguments(args);
         return guestEventFragment;
     }
