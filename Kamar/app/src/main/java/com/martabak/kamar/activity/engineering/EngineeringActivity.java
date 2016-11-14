@@ -4,9 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +15,7 @@ import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
+import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.permintaan.Engineering;
@@ -86,6 +85,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                 Log.d(EngineeringActivity.class.getCanonicalName(), "getEngineeringStatuses#onCompleted");
                 recyclerViewAdapter = new EngineeringRecyclerViewAdapter(engOptions);
                 recyclerView.setAdapter(recyclerViewAdapter);
+                recyclerView.addItemDecoration(new SimpleDividerItemDecoration(EngineeringActivity.this));
             }
             @Override public void onError(Throwable e) {
                 Log.d(EngineeringActivity.class.getCanonicalName(), "getEngineeringStatuses#onError", e);
@@ -101,7 +101,6 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
     private boolean requestInProgress(String optionId) {
         if (statuses.containsKey(optionId)) {
             switch (statuses.get(optionId)) {
-                case Permintaan.STATE_COMPLETED:
                 case Permintaan.STATE_INPROGRESS:
                 case Permintaan.STATE_NEW:
                     return true;
@@ -113,23 +112,15 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
     /**
      * Handle a click on a single engineering option.
      * Bring up a confirmation dialog.
-     * @param view The view that was clicked on.
+     * @param buttonView The button that was clicked on.
      */
     @Override
-    public void onClick(final View view) {
+    public void onClick(final View buttonView) {
+        final View view = (View)buttonView.getParent().getParent();
         int itemPosition = recyclerView.getChildLayoutPosition(view);
         final EngineeringOption item = engOptions.get(itemPosition);
         Log.d(EngineeringActivity.class.getCanonicalName(), "Selected " + item.getName() + " with ID " + item._id);
         Log.d(EngineeringActivity.class.getCanonicalName(), "Statuses map is " + Arrays.toString(statuses.entrySet().toArray()));
-
-        if (requestInProgress(item._id)) {
-            Toast.makeText(
-                    EngineeringActivity.this.getApplicationContext(),
-                    R.string.existing_request,
-                    Toast.LENGTH_SHORT
-            ).show();
-            return;
-        }
 
         new AlertDialog.Builder(this)
                 .setTitle(item.getName())
@@ -167,8 +158,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                                             Toast.LENGTH_SHORT
                                     ).show();
                                     EngineeringActivity.this.statuses.put(item._id, Permintaan.STATE_NEW);
-                                    View sentImageView = view.findViewById(R.id.sent_image);
-                                    sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                                    recyclerViewAdapter.notifyDataSetChanged();
                                 } else {
                                     Toast.makeText(
                                             EngineeringActivity.this.getApplicationContext(),
@@ -184,11 +174,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                             }
                             @Override public void onNext(Permintaan permintaan) {
                                 Log.d(EngineeringActivity.class.getCanonicalName(), "On next");
-                                if (permintaan != null) {
-                                    success = true;
-                                } else {
-                                    success = false;
-                                }
+                                success = permintaan != null;
                             }
                         });
                     }})
@@ -210,7 +196,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.engineering_list_row, parent, false);
-            view.setOnClickListener(EngineeringActivity.this);
+            view.findViewById(R.id.order_button).setOnClickListener(EngineeringActivity.this);
             return new ViewHolder(view);
         }
 
@@ -227,15 +213,33 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                     .into(holder.imageView);
             holder.nameView.setText(holder.item.getName());
             String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_CANCELLED;
-            Log.d(EngineeringActivity.class.getCanonicalName(), "Status for ic_engineering " + holder.item.getName() + " is " + state);
+            Log.d(EngineeringActivity.class.getCanonicalName(), "Status for engineering " + holder.item.getName() + " is " + state);
             switch (state) {
-                case Permintaan.STATE_COMPLETED:
-                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
-                case Permintaan.STATE_INPROGRESS:
-                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
                 case Permintaan.STATE_NEW:
                     holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
                     break;
+                case Permintaan.STATE_INPROGRESS:
+                    holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    break;
+                case Permintaan.STATE_COMPLETED:
+                    holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    break;
+                default:
+                    holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    break;
+            }
+            if (requestInProgress(holder.item._id)) {
+                holder.buttonView.setEnabled(false);
+            } else {
+                holder.buttonView.setEnabled(true);
             }
         }
 
@@ -252,6 +256,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
             public final View sentImageView;
             public final View processedImageView;
             public final View completedImageView;
+            public final View buttonView;
 
             public ViewHolder(View view) {
                 super(view);
@@ -261,6 +266,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                 sentImageView = view.findViewById(R.id.sent_image);
                 processedImageView = view.findViewById(R.id.processed_image);
                 completedImageView = view.findViewById(R.id.completed_image);
+                buttonView = view.findViewById(R.id.order_button);
             }
 
             @Override

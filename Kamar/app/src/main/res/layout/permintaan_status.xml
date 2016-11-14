@@ -12,41 +12,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="16sp"
+        android:textAllCaps="true"
         android:text="@string/permintaan_order_sent"
         android:layout_alignParentStart="true"/>
     <TextView
         android:id="@+id/permintaan_order_received_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginRight="10dp"
+        android:textSize="16sp"
+        android:textAllCaps="true"
         android:text="@string/permintaan_order_received"
         android:layout_toRightOf="@+id/sent_image"/>
     <TextView
         android:id="@+id/permintaan_order_completed_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginRight="10dp"
+        android:textSize="16sp"
+        android:textAllCaps="true"
         android:text="@string/permintaan_order_completed"
         android:layout_toRightOf="@+id/processed_image"/>
 
     <View android:id="@+id/sent_image"
-          android:layout_width="25dp"
-          android:layout_height="25dp"
-        android:layout_marginRight="20dp"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_marginRight="40dp"
           android:layout_toRightOf="@+id/permintaan_order_sent_text"
           android:background="@drawable/circle_red" /> <!-- set bg to @drawable/circle_green here when needed -->
     <View android:id="@+id/processed_image"
-          android:layout_width="25dp"
-          android:layout_height="25dp"
-        android:layout_marginRight="20dp"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_marginRight="40dp"
           android:layout_toRightOf="@+id/permintaan_order_received_text"
           android:background="@drawable/circle_red"/> <!-- set bg to @drawable/circle_green here when needed -->
     <View android:id="@+id/completed_image"
-          android:layout_width="25dp"
-          android:layout_height="25dp"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
           android:layout_toRightOf="@+id/permintaan_order_completed_text"
           android:background="@drawable/circle_red"/> <!-- set bg to @drawable/circle_green here when needed -->
 

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
+import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.HousekeepingOption;
 import com.martabak.kamar.domain.managers.HousekeepingManager;
@@ -173,6 +174,8 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                     hkOptionRecyclerAdapter = new HousekeepingOptionAdapter(temp, 
                             HousekeepingFragment.this.getContext(), HousekeepingFragment.this, idToStatus, HousekeepingFragment.this);
                     optionRecyclerView.setAdapter(hkOptionRecyclerAdapter);
+                    optionRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+
                 }
                 @Override public void onError(Throwable e) {
                     Log.d(HousekeepingActivity.class.getCanonicalName(), "getHousekeepingStatuses#onError", e);

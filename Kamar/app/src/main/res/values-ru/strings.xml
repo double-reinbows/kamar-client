@@ -90,6 +90,7 @@
     <!-- Guest -->
     <string name="please_wait">Пожалуйста, подождите 10-20 минут, штатный сотрудник , чтобы прибыть в комнате</string>
     <string name="existing_request">Запрос этого типа уже существует</string>
+    <string name="order_button">ORDER</string>
 
     <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>

@@ -90,6 +90,7 @@
     <!-- Guest -->
     <string name="please_wait">请等待10-20分钟，一名工作人员在你的房间到达</string>
     <string name="existing_request">该类型的请求已经存在</string>
+    <string name="order_button">ORDER</string>
 
     <string name="transport_label">Transport</string>
     <string name="transport_passengers">Passengers</string>

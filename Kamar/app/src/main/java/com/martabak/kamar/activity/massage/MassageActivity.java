@@ -2,10 +2,9 @@ package com.martabak.kamar.activity.massage;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
+import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Massage;
@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observer;
 
@@ -37,11 +38,9 @@ import rx.Observer;
 public class MassageActivity extends AbstractGuestBarsActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
-    private View sentImageView;
-    private View processedImageView;
-    private View completedImageView;
     private List<MassageOption> massageOptions;
-    private String status;
+    private Map<String, String> statuses; // Maps massage option ID -> request status
+    private MassageRecyclerViewAdapter recyclerViewAdapter;
 
     protected Options getOptions() {
         return new Options()
@@ -55,21 +54,17 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         loadOptions();
-        loadStatus();
     }
 
     private void loadOptions() {
         recyclerView = (RecyclerView)findViewById(R.id.massage_list);
         massageOptions = new ArrayList<>();
-        final MassageRecyclerViewAdapter recyclerViewAdapter = new MassageRecyclerViewAdapter(massageOptions);
-        recyclerView.setAdapter(recyclerViewAdapter);
 
         StaffServer.getInstance(this).getMassageOptions().subscribe(new Observer<List<MassageOption>>() {
             @Override public void onCompleted() {
                 Log.d(MassageActivity.class.getCanonicalName(), "getMassageOptions#onCompleted");
-                recyclerViewAdapter.notifyDataSetChanged();
+                getStatuses();
             }
             @Override public void onError(Throwable e) {
                 Log.d(MassageActivity.class.getCanonicalName(), "getMassageOptions#onError", e);
@@ -82,65 +77,46 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
         });
     }
 
-    private void loadStatus() {
-        status = Permintaan.STATE_CANCELLED;
-        sentImageView = findViewById(R.id.sent_image);
-        processedImageView = findViewById(R.id.processed_image);
-        completedImageView = findViewById(R.id.completed_image);
-
-        PermintaanManager.getInstance().getMassageStatus(getBaseContext()).subscribe(new Observer<String>() {
+    private void getStatuses() {
+        PermintaanManager.getInstance().getMassageStatuses(getBaseContext()).subscribe(new Observer<Map<String, String>>() {
             @Override public void onCompleted() {
                 Log.d(MassageActivity.class.getCanonicalName(), "getMassageStatus#onCompleted");
+                recyclerViewAdapter = new MassageRecyclerViewAdapter(massageOptions);
+                recyclerView.setAdapter(recyclerViewAdapter);
+                recyclerView.addItemDecoration(new SimpleDividerItemDecoration(MassageActivity.this));
             }
             @Override public void onError(Throwable e) {
                 Log.d(MassageActivity.class.getCanonicalName(), "getMassageStatus#onError", e);
                 e.printStackTrace();
             }
-            @Override public void onNext(final String status) {
-                Log.d(MassageActivity.class.getCanonicalName(), "Massage status is " + status);
-                MassageActivity.this.status = status;
-                switch (status) {
-                    case Permintaan.STATE_COMPLETED:
-                        completedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
-                    case Permintaan.STATE_INPROGRESS:
-                        processedImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
-                    case Permintaan.STATE_NEW:
-                        sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
-                        break;
-                }
+            @Override public void onNext(Map<String, String> statuses) {
+                Log.d(MassageActivity.class.getCanonicalName(), "Fetching statuses of size " + statuses.size());
+                MassageActivity.this.statuses = statuses;
             }
         });
     }
 
     private boolean requestInProgress() {
-        switch (status) {
-            case Permintaan.STATE_INPROGRESS:
-            case Permintaan.STATE_NEW:
+        for (String status : statuses.values())
+            if (status.equals(Permintaan.STATE_INPROGRESS) ||
+                    status.equals(Permintaan.STATE_NEW)) {
                 return true;
-            default:
-                return false;
-        }
+            }
+        return false;
     }
 
     /**
      * Handle a click on a single massage option.
      * Bring up a confirmation dialog.
-     * @param view The view that was clicked on.
+     * @param buttonView The view that was clicked on.
      */
     @Override
-    public void onClick(final View view) {
-        if (requestInProgress()) {
-            Toast.makeText(
-                    MassageActivity.this.getApplicationContext(),
-                    R.string.existing_request,
-                    Toast.LENGTH_SHORT
-            ).show();
-            return;
-        }
-
+    public void onClick(final View buttonView) {
+        final View view = (View)buttonView.getParent().getParent();
         Log.d(MassageActivity.class.getCanonicalName(), "Selected recycler row: " + view.toString());
         int itemPosition = recyclerView.getChildLayoutPosition(view);
         final MassageOption item = massageOptions.get(itemPosition);
+
         new AlertDialog.Builder(this)
                 .setTitle(item.getName())
                 .setMessage(R.string.massage_message)
@@ -159,6 +135,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                                     R.string.no_guest_in_room,
                                     Toast.LENGTH_SHORT
                             ).show();
+                            buttonView.setEnabled(true);
                             return;
                         }
                         String state = Permintaan.STATE_NEW;
@@ -177,8 +154,8 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                                             R.string.massage_result,
                                             Toast.LENGTH_SHORT
                                     ).show();
-                                    status = Permintaan.STATE_NEW;
-                                    sentImageView.setBackground(getResources().getDrawable(R.drawable.circle_green));
+                                    MassageActivity.this.statuses.put(item._id, Permintaan.STATE_NEW);
+                                    recyclerViewAdapter.notifyDataSetChanged();
                                 } else {
                                     Toast.makeText(
                                             MassageActivity.this.getApplicationContext(),
@@ -196,11 +173,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                             @Override
                             public void onNext(Permintaan permintaan) {
                                 Log.d(MassageActivity.class.getCanonicalName(), "On next");
-                                if (permintaan != null) {
-                                    success = true;
-                                } else {
-                                    success = false;
-                                }
+                                success = permintaan != null;
                             }
                         });
                     }})
@@ -222,7 +195,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.massage_list_row, parent, false);
-            view.setOnClickListener(MassageActivity.this);
+            view.findViewById(R.id.order_button).setOnClickListener(MassageActivity.this);
             return new ViewHolder(view);
         }
 
@@ -239,12 +212,37 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                     .into(holder.imageView);
             holder.nameView.setText(holder.item.getName());
             if (holder.item.length != null) {
-                holder.lengthView.setText(holder.item.length.toString() + " mins");
+                holder.lengthView.setText(holder.item.length.toString() + " " + getString(R.string.transport_minutes));
             }
             if (holder.item.price != null) {
                 holder.priceView.setText("Rp. " + holder.item.price.toString());
             }
-            holder.descriptionView.setText(holder.item.getDescription());
+//            holder.descriptionView.setText(holder.item.getDescription());
+
+            String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_CANCELLED;
+            Log.d(MassageActivity.class.getCanonicalName(), "Status for massage " + holder.item.getName() + " is " + state);
+            switch (state) {
+                case Permintaan.STATE_NEW:
+                    holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    break;
+                case Permintaan.STATE_INPROGRESS:
+                    holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    break;
+                case Permintaan.STATE_COMPLETED:
+                    holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    break;
+            }
+            if (requestInProgress()) {
+                holder.buttonView.setEnabled(false);
+            } else {
+                holder.buttonView.setEnabled(true);
+            }
         }
 
         @Override
@@ -259,7 +257,11 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
             public final TextView nameView;
             public final TextView lengthView;
             public final TextView priceView;
-            public final TextView descriptionView;
+//            public final TextView descriptionView;
+            public final View sentImageView;
+            public final View processedImageView;
+            public final View completedImageView;
+            public final View buttonView;
 
             public ViewHolder(View view) {
                 super(view);
@@ -268,7 +270,11 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                 nameView = (TextView) view.findViewById(R.id.massage_name);
                 lengthView = (TextView) view.findViewById(R.id.massage_length);
                 priceView = (TextView) view.findViewById(R.id.massage_price);
-                descriptionView = (TextView) view.findViewById(R.id.massage_description);
+//                descriptionView = (TextView) view.findViewById(R.id.massage_description);
+                sentImageView = view.findViewById(R.id.sent_image);
+                processedImageView = view.findViewById(R.id.processed_image);
+                completedImageView = view.findViewById(R.id.completed_image);
+                buttonView = view.findViewById(R.id.order_button);
             }
 
             @Override

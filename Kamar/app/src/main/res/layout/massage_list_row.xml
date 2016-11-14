@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
@@ -14,48 +15,70 @@
     android:layout_gravity="bottom">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
         android:id="@+id/massage_image"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:divider="?android:attr/dividerVertical"
-        android:orientation="vertical"
-        android:showDividers="none">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:divider="?android:attr/dividerHorizontal"
-            android:orientation="horizontal"
-            android:showDividers="none">
-            <TextView
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:id="@+id/massage_name"/>
-
-            <TextView
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:id="@+id/massage_length"/>
-
-            <TextView
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:id="@+id/massage_price"/>
-        </LinearLayout>
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:id="@+id/massage_name"
+            android:textAllCaps="true"
             android:textSize="18sp"
-            android:id="@+id/massage_description"/>
+            android:textColor="@color/textHint"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:maxLines="2"
+            android:id="@+id/massage_price"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:textColor="@color/textHint"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:maxLines="2"
+            android:id="@+id/massage_length"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:textColor="@color/textHint"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:showDividers="none">
+
+        <Button
+            android:id="@+id/order_button"
+            android:text="@string/order_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/redbutton"
+            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|bottom"
+            android:gravity="end|bottom">
+            <include layout="@layout/permintaan_status"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

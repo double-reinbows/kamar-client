@@ -5,8 +5,10 @@ import android.util.Log;
 
 import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.options.HousekeepingOption;
+import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
+import com.martabak.kamar.domain.permintaan.Massage;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 
@@ -220,8 +222,59 @@ public class PermintaanManager {
                 });
     }
 
+    public Observable<Map<String, String>> getMassageStatuses(Context c) {
+        Log.d(PermintaanManager.class.getCanonicalName(), "getMassageStatuses");
+        final String type = Permintaan.TYPE_MASSAGE;
+        return PermintaanServer.getInstance(c).getPermintaansForGuest(getGuestId(c))
+                // Filter by type of permintaan
+                .filter(new Func1<Permintaan, Boolean>() {
+                    @Override public Boolean call(Permintaan permintaan) {
+                        return permintaan.type.equals(type);
+                    }
+                })
+                // Ignore any that weren't created today
+                .filter(new Func1<Permintaan, Boolean>() {
+                    @Override public Boolean call(Permintaan permintaan) {
+                        Calendar cal = Calendar.getInstance();
+                        int currYear = cal.get(Calendar.YEAR);
+                        int currDayOfYear = cal.get(Calendar.DAY_OF_YEAR);
+                        cal.setTime(permintaan.created);
+                        int permYear = cal.get(Calendar.YEAR);
+                        int permDayOfYear = cal.get(Calendar.DAY_OF_YEAR);
+                        return permYear == currYear && permDayOfYear == currDayOfYear;
+                    }
+                })
+                .toList()
+                .map(new Func1<List<Permintaan>, Map<String, Permintaan>>() {
+                    @Override public Map<String, Permintaan> call(List<Permintaan> ps) {
+                        Map<String, Permintaan> latestPs = new HashMap<>();
+                        for (Permintaan p : ps) {
+                            MassageOption o = ((Massage)p.content).option;
+                            if (!latestPs.containsKey(o._id)) {
+                                latestPs.put(o._id, p);
+                            } else {
+                                Permintaan otherP = latestPs.get(o._id);
+                                if (p.created.compareTo(otherP.created) > 0) {
+                                    latestPs.put(o._id, p);
+                                }
+                            }
+                        }
+                        return latestPs;
+                    }
+                })
+                .map(new Func1<Map<String, Permintaan>, Map<String, String>>() {
+                    @Override public Map<String, String> call(Map<String, Permintaan> latestPs) {
+                        Map<String, String> statuses = new HashMap<>();
+                        for (String optionId : latestPs.keySet()) {
+                            statuses.put(optionId, latestPs.get(optionId).state);
+                        }
+                        return statuses;
+                    }
+                });
+    }
+
     /**
-     * @return The state of all possible ic_engineering option permintaans.
+     * @return The state of all possible engineering option permintaans.
      */
     public Observable<Map<String, String>> getEngineeringStatuses(Context c) {
         return getStatusesByTypeOf(c, Permintaan.TYPE_ENGINEERING);

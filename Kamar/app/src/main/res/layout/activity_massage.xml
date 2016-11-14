@@ -9,34 +9,47 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
-        android:divider="?android:attr/dividerHorizontal">
-
-        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-                                                xmlns:tools="http://schemas.android.com/tools"
-                                                android:id="@+id/massage_list"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                app:layoutManager="LinearLayoutManager"
-                                                tools:listitem="@layout/massage_list_row" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:divider="?android:attr/dividerVertical"
-            android:orientation="horizontal"
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="50dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:divider="?android:attr/dividerHorizontal"
+            android:orientation="vertical"
             android:showDividers="none">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:paddingRight="20dp"
-                android:text="@string/please_wait"/>
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                                                    xmlns:tools="http://schemas.android.com/tools"
+                                                    android:id="@+id/massage_list"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:showDividers="middle"
+                                                    android:divider="?android:attr/dividerHorizontal"
+                                                    app:layoutManager="LinearLayoutManager"
+                                                    tools:listitem="@layout/massage_list_row" />
 
-            <include layout="@layout/permintaan_status"/>
+            <!--LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:divider="?android:attr/dividerVertical"
+                android:orientation="horizontal"
+                android:showDividers="none">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:paddingRight="20dp"
+                    android:text="@string/please_wait"/>
+
+                <include layout="@layout/permintaan_status"/>
+
+            </LinearLayout-->
 
         </LinearLayout>
 

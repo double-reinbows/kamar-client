@@ -1,4 +1,4 @@
-package com.martabak.kamar.activity.restaurant;
+package com.martabak.kamar.activity.guest;
 
 import android.content.Context;
 import android.graphics.Canvas;

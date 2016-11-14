@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp">
 
     <ImageView
         android:id="@+id/hk_img"
         android:layout_width="250dp"
-        android:layout_height="125dp"
+        android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"/>
     <TextView
@@ -15,9 +17,10 @@
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:layout_toRightOf="@+id/hk_img"
-        android:textSize="17dp"
+        android:textAllCaps="true"
+        android:textSize="18sp"
         android:ellipsize="none"
-        android:textColor="@color/black"
+        android:textColor="@color/textHint"
         android:maxLines="2"
         android:scrollHorizontally="false"/>
     <LinearLayout
@@ -37,11 +40,13 @@
         android:layout_alignBottom="@+id/hk_submit"
         android:layout_toLeftOf="@+id/hk_submit"
         android:gravity="center_vertical"/>
-    <ImageView
+    <Button
         android:id="@+id/hk_submit"
-        android:layout_width="200dp"
-        android:layout_height="65dp"
+        android:text="@string/order_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/button_submit"/>
+        android:background="@drawable/redbutton"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>

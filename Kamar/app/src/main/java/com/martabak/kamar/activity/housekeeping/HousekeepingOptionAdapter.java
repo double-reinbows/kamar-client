@@ -76,23 +76,51 @@ public class HousekeepingOptionAdapter
                 holder.radioGroup.addView(rb);
             }
         }
+        holder.submitButton.setOnClickListener(submitButtonListener);
+
         //set permintaan statuses
         String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_CANCELLED;
         Log.d(HousekeepingActivity.class.getCanonicalName(), "Status for housekeeping " + holder.item.getName() + " is " + state);
         switch (state) {
-            case Permintaan.STATE_CANCELLED:
-                holder.submitButton.setOnClickListener(submitButtonListener);
-                break;
-            case Permintaan.STATE_COMPLETED:
-                holder.completedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
-            case Permintaan.STATE_INPROGRESS:
-                holder.processedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
             case Permintaan.STATE_NEW:
                 holder.sentImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
-                holder.submitButton.setColorFilter(Color.argb(150,200,200,200));
+                holder.processedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_red));
+                holder.completedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_red));
+                break;
+            case Permintaan.STATE_INPROGRESS:
+                holder.sentImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
+                holder.processedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
+                holder.completedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_red));
+                break;
+            case Permintaan.STATE_COMPLETED:
+                holder.sentImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
+                holder.processedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
+                holder.completedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_green));
+                break;
+            default:
+                holder.sentImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_red));
+                holder.processedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_red));
+                holder.completedImageView.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_red));
                 break;
         }
 
+        if (requestInProgress(holder.item._id)) {
+            holder.submitButton.setEnabled(false);
+        } else {
+            holder.submitButton.setEnabled(true);
+        }
+    }
+
+    private boolean requestInProgress(String optionId) {
+        if (statuses.containsKey(optionId)) {
+            switch (statuses.get(optionId)) {
+                case Permintaan.STATE_COMPLETED:
+                case Permintaan.STATE_INPROGRESS:
+                case Permintaan.STATE_NEW:
+                    return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -105,7 +133,7 @@ public class HousekeepingOptionAdapter
         public HousekeepingOption item;
         public final View rootView;
         public final TextView nameView;
-        public final ImageView submitButton;
+        public final View submitButton;
         public final View sentImageView;
         public final View processedImageView;
         public final View completedImageView;
@@ -117,7 +145,7 @@ public class HousekeepingOptionAdapter
             super(view);
             rootView = view;
             nameView = (TextView) view.findViewById(R.id.hk_name);
-            submitButton = (ImageView) view.findViewById(R.id.hk_submit);
+            submitButton = view.findViewById(R.id.hk_submit);
             sentImageView = view.findViewById(R.id.sent_image);
             processedImageView = view.findViewById(R.id.processed_image);
             completedImageView = view.findViewById(R.id.completed_image);
