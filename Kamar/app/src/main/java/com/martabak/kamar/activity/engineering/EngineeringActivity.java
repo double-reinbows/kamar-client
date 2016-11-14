@@ -101,7 +101,6 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
     private boolean requestInProgress(String optionId) {
         if (statuses.containsKey(optionId)) {
             switch (statuses.get(optionId)) {
-                case Permintaan.STATE_COMPLETED:
                 case Permintaan.STATE_INPROGRESS:
                 case Permintaan.STATE_NEW:
                     return true;
@@ -117,22 +116,11 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
      */
     @Override
     public void onClick(final View buttonView) {
-        buttonView.setEnabled(false);
-
         final View view = (View)buttonView.getParent().getParent();
         int itemPosition = recyclerView.getChildLayoutPosition(view);
         final EngineeringOption item = engOptions.get(itemPosition);
         Log.d(EngineeringActivity.class.getCanonicalName(), "Selected " + item.getName() + " with ID " + item._id);
         Log.d(EngineeringActivity.class.getCanonicalName(), "Statuses map is " + Arrays.toString(statuses.entrySet().toArray()));
-
-        if (requestInProgress(item._id)) {
-            Toast.makeText(
-                    EngineeringActivity.this.getApplicationContext(),
-                    R.string.existing_request,
-                    Toast.LENGTH_SHORT
-            ).show();
-            return;
-        }
 
         new AlertDialog.Builder(this)
                 .setTitle(item.getName())
@@ -152,7 +140,6 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                                     R.string.no_guest_in_room,
                                     Toast.LENGTH_SHORT
                             ).show();
-                            buttonView.setEnabled(true);
                             return;
                         }
                         String state = Permintaan.STATE_NEW;
@@ -171,16 +158,13 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                                             Toast.LENGTH_SHORT
                                     ).show();
                                     EngineeringActivity.this.statuses.put(item._id, Permintaan.STATE_NEW);
-                                    View sentImageView = view.findViewById(R.id.sent_image);
-                                    sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
-                                    buttonView.setEnabled(false);
+                                    recyclerViewAdapter.notifyDataSetChanged();
                                 } else {
                                     Toast.makeText(
                                             EngineeringActivity.this.getApplicationContext(),
                                             R.string.something_went_wrong,
                                             Toast.LENGTH_SHORT
                                     ).show();
-                                    buttonView.setEnabled(true);
                                 }
                             }
                             @Override public void onError(Throwable e) {
@@ -190,11 +174,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                             }
                             @Override public void onNext(Permintaan permintaan) {
                                 Log.d(EngineeringActivity.class.getCanonicalName(), "On next");
-                                if (permintaan != null) {
-                                    success = true;
-                                } else {
-                                    success = false;
-                                }
+                                success = permintaan != null;
                             }
                         });
                     }})
@@ -224,7 +204,6 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.itemView.setSelected(selectedPos == position);
             holder.item = mValues.get(position);
-            View buttonView = holder.itemView.findViewById(R.id.order_button);
 
             Log.d(EngineeringActivity.class.getCanonicalName(), "Loading image " + holder.item.getImageUrl() + " into " + holder.imageView);
             Server.picasso(EngineeringActivity.this)
@@ -236,17 +215,31 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
             String state = statuses.containsKey(holder.item._id) ? statuses.get(holder.item._id) : Permintaan.STATE_CANCELLED;
             Log.d(EngineeringActivity.class.getCanonicalName(), "Status for engineering " + holder.item.getName() + " is " + state);
             switch (state) {
-                case Permintaan.STATE_COMPLETED:
-                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
-                case Permintaan.STATE_INPROGRESS:
-                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
                 case Permintaan.STATE_NEW:
                     holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
-                    buttonView.setEnabled(false);
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    break;
+                case Permintaan.STATE_INPROGRESS:
+                    holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    break;
+                case Permintaan.STATE_COMPLETED:
+                    holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
                     break;
                 default:
-                    buttonView.setEnabled(true);
+                    holder.sentImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    holder.processedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
+                    holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_red));
                     break;
+            }
+            if (requestInProgress(holder.item._id)) {
+                holder.buttonView.setEnabled(false);
+            } else {
+                holder.buttonView.setEnabled(true);
             }
         }
 
@@ -263,6 +256,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
             public final View sentImageView;
             public final View processedImageView;
             public final View completedImageView;
+            public final View buttonView;
 
             public ViewHolder(View view) {
                 super(view);
@@ -272,6 +266,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                 sentImageView = view.findViewById(R.id.sent_image);
                 processedImageView = view.findViewById(R.id.processed_image);
                 completedImageView = view.findViewById(R.id.completed_image);
+                buttonView = view.findViewById(R.id.order_button);
             }
 
             @Override
