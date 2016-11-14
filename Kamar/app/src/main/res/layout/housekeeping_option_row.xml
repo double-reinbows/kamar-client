@@ -40,11 +40,13 @@
         android:layout_alignBottom="@+id/hk_submit"
         android:layout_toLeftOf="@+id/hk_submit"
         android:gravity="center_vertical"/>
-    <ImageView
+    <Button
         android:id="@+id/hk_submit"
-        android:layout_width="200dp"
-        android:layout_height="65dp"
+        android:text="@string/order_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/button_submit"/>
+        android:background="@drawable/redbutton"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>
