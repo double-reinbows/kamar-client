@@ -212,7 +212,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                     .into(holder.imageView);
             holder.nameView.setText(holder.item.getName());
             if (holder.item.length != null) {
-                holder.lengthView.setText(holder.item.length.toString() + " minutes");
+                holder.lengthView.setText(holder.item.length.toString() + " " + getString(R.string.transport_minutes));
             }
             if (holder.item.price != null) {
                 holder.priceView.setText("Rp. " + holder.item.price.toString());
