@@ -1,17 +1,11 @@
 package com.martabak.kamar.activity.restaurant;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -111,8 +105,6 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         });
         */
 
-
-
         //Set up price text
         String priceText = currConsumable.price.toString();
         TextView priceView = (TextView)convertView.findViewById(R.id.item_price);
@@ -194,23 +186,13 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
             }
         });
 */
-
-        note.addTextChangedListener(new TextWatcher() {
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO Auto-generated method stub
-
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                // TODO Auto-generated method stub
-
-            }
-
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
-                idToNote.put(currConsumable._id, note.getText().toString());
-//                Log.v("HERP", idToNote.toString());
+        note.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    idToNote.put(currConsumable._id, note.getText().toString());
+                    Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "Adding note " + note.getText().toString() + " for " + currConsumable.name);
+                }
             }
         });
 
