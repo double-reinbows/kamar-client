@@ -88,7 +88,7 @@
     <!-- Guest -->
     <string name="please_wait">Silakan tunggu 10-20 menit untuk anggota staf untuk tiba di kamar Anda</string>
     <string name="existing_request">Permintaan dari jenis itu sudah ada</string>
-    <string name="order_button">ORDER</string>
+    <string name="order_button">PESAN</string>
 
     <string name="transport_label">Transport</string>
 

@@ -48,8 +48,6 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Consumable getChild(int groupPosition, int childPosition) {
-//        return idToConsumable.get(this.subsectionToIds.get(this.subsections.get(groupPosition))
-//                .get(childPosititon));
         return idToConsumable.get(subsectionToIds.get(subsections.get(groupPosition)).get(childPosition));
     }
 
@@ -71,7 +69,6 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
 
         final TextView quantity = (TextView) convertView.findViewById(R.id.item_quantity);
         quantity.setText(idToQuantity.get(currConsumable._id).toString());
-//        quantity.setBackgroundColor(0xFFac0d13);
         quantity.invalidate();
 
         //Set up main text
@@ -80,30 +77,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
         txtListChild.setTypeface(customFont);
         txtListChild.setText(childText);
-        /*
-        txtListChild.post(new Runnable() {
-            @Override
-            public void run() {
-                Log.v("Child info", "child: "+currConsumable.name+" no. of lines: "+Integer.toString(txtListChild.getLineCount()));
-                if (txtListChild.getLineCount() > 1) {//if 2 lines used for item name
-                    //reduce item name padding
-                    txtListChild.setPadding(txtListChild.getPaddingLeft(),
-                            txtListChild.getPaddingTop(),
-                            txtListChild.getPaddingRight(),
-                            20);
-                } /*else {
-                    //set item name padding to default
-                    txtListChild.setPadding(txtListChild.getPaddingLeft(),
-                            txtListChild.getPaddingTop(),
-                            txtListChild.getPaddingRight(),
-                            90);
 
-//                    quantity.margin
-                }
-            }
-
-        });
-        */
 
         //Set up price text
         String priceText = currConsumable.price.toString();
@@ -159,33 +133,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
 
         final EditText note = (EditText) convertView.findViewById(R.id.item_note);
         note.setText(idToNote.get(currConsumable._id));
-/*
-        final Activity parentActivity = (Activity)context;
 
-        note.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId,
-                                          KeyEvent event) {
-                if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    Log.v("SOMETHING", "something");
-                    InputMethodManager in = (InputMethodManager) parentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                    // NOTE: In the author's example, he uses an identifier
-                    // called searchBar. If setting this code on your EditText
-                    // then use v.getWindowToken() as a reference to your
-                    // EditText is passed into this callback as a TextView
-
-                    in.hideSoftInputFromWindow(v.getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
-//                    userValidateEntry();
-                    // Must return true here to consume event
-                    return true;
-
-                }
-                return false;
-            }
-        });
-*/
         note.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
