@@ -52,9 +52,10 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     private Boolean dessertFlag = false;
 
     //Views
-    private ExpandableListView foodExpListView;
-    private ExpandableListView bevExpListView;
-    private ExpandableListView dessExpListView;
+    private List<ExpandableListView> expandableListViews;
+//    private ExpandableListView foodExpListView;
+//    private ExpandableListView bevExpListView;
+//    private ExpandableListView dessExpListView;
 
 
     protected Options getOptions() {
@@ -75,15 +76,22 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         MenuServer.getInstance(this).getMenu().subscribe(new Observer<List<Consumable>>() {
             @Override
             public void onCompleted() {
+                Log.v("CUNT", test.toString());
                 sections = new ArrayList<>();
                 sectionToConsumables = new HashMap<>();
+                expandableListViews = new ArrayList<>();
                 for (Consumable c : test) {
+                    Log.v("HELLO", c.nameEn);
                     if (!sections.contains(c.sectionEn)) {//new tab
+//                        Log.v("HELLO", "mate");
+                        sections.add(c.sectionEn);
                         List<Consumable> temp = new ArrayList<>();
                         temp.add(c);
                         sectionToConsumables.put(c.sectionEn, temp);
                         //initialize tabs
                         tabLayout.addTab(tabLayout.newTab().setText(c.getSection()));
+                        ExpandableListView tempView = (ExpandableListView)findViewById(R.id.restaurant_exp_list);
+                        expandableListViews.add(tempView);
                     } else { //previously found tab
                         List<Consumable> temp = sectionToConsumables.get(c.sectionEn);
                         temp.add(c);
@@ -93,6 +101,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                 Log.v("SECTIONS", sections.toString());
                 Log.v("DICK", sectionToConsumables.toString());
                 setCustomFont(tabLayout);
+                setTabListener(tabLayout);
             }
             @Override
             public void onError(Throwable e) {}
@@ -119,51 +128,56 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         food = new ArrayList<>();
         beverages = new ArrayList<>();
         desserts = new ArrayList<>();
-        foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
-        bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
-        dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+//        foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+//        bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+//        dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
         subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
         TextView totalText = (TextView)findViewById(R.id.order_total_text);
         totalText.setText("Total");
 
-        doGetConsumablesOfSectionAndCreateExpList("FOOD", food, foodExpListView); //since 1st tab is always food
+//        doGetConsumablesOfSectionAndCreateExpList("FOOD", food, foodExpListView); //since 1st tab is always food
+
+    }
+
+    private void setTabListener(TabLayout tabLayout) {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.v("tab", tab.getText().toString());
+                Log.v("DICKTAB", tab.getText().toString());
                 String selectedTab = tab.getText().toString();
-                if (selectedTab.equals("Food")) {
-                    dessertFlag = false;
-                    //if (food.isEmpty()) {
-                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), food, foodExpListView);
+                createExpandableList(sectionToConsumables.get(selectedTab), expandableListViews.get(tab.getPosition()));
+//                if (selectedTab.equals("Food")) {
+//                    dessertFlag = false;
+                //if (food.isEmpty()) {
+//                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), food, foodExpListView);
                     /*} else {
                         Log.v("tab", "saved food view");
                         foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
                         foodExpListView.setAdapter(listAdapter);
                     }
                     */
-                } else if (selectedTab.equals("Beverages")) {
-                    dessertFlag = false;
-                    //if (beverages.isEmpty()) {
-                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), beverages, bevExpListView);
+//                } else if (selectedTab.equals("Beverages")) {
+//                    dessertFlag = false;
+                //if (beverages.isEmpty()) {
+//                        doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), beverages, bevExpListView);
                     /*} else {
                         Log.v("tab", "saved bev view");
                         bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
                         bevExpListView.setAdapter(listAdapter);
                     }
                     */
-                } else if (selectedTab.equals("Desserts")) {
-                    //if (desserts.isEmpty()) {
-                    dessertFlag = true;
-                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), desserts, dessExpListView);
+//                } else if (selectedTab.equals("Desserts")) {
+                //if (desserts.isEmpty()) {
+//                    dessertFlag = true;
+//                    doGetConsumablesOfSectionAndCreateExpList(selectedTab.toUpperCase(), desserts, dessExpListView);
                     /*} else {
                         Log.v("tab", "saved dess view");
                         dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
                         dessExpListView.setAdapter(listAdapter);
                     }
                     */
-                }
+//                }
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -173,12 +187,12 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                 Log.v("tab", "Reselected tab");
                 String selectedTab = tab.getText().toString();
                 if (selectedTab.equals("Food")) {
-                    foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+//                    foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
                     Log.v("tab", "Reselected food");
                 } else if (selectedTab.equals("Beverages")) {
-                    bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+//                    bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
                 } else if (selectedTab.equals("Desserts")) {
-                    dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+//                    dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
                 }
             }
         });

@@ -76,10 +76,8 @@
         <TableRow
             android:padding="4dp">
             <EditText
-                android:inputType="textMultiLine|textCapSentences"
-                android:lines="5"
-                android:minLines="1"
-                android:maxLines="8"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:textSize="16sp"
