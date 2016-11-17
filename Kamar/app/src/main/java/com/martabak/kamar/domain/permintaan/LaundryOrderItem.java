@@ -19,12 +19,18 @@ public class LaundryOrderItem {
 
     public final Boolean pressing;
 
+    public final String extras;
+
+    public final String notes;
+
     public LaundryOrderItem(Integer quantity, Integer price, Boolean laundry,
-                            Boolean pressing, LaundryOption option) {
+                            Boolean pressing, LaundryOption option, String extras, String notes) {
         this.quantity = quantity;
         this.price = price;
         this.laundry = laundry;
         this.pressing = pressing;
         this.option = option;
+        this.extras = extras;
+        this.notes = notes;
     }
 }

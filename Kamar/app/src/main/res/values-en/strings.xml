@@ -198,4 +198,5 @@
     <string name="restaurant_confirmation_price_text">Total with TAX</string>
     <string name="bellboy_cancel">CANCEL</string>
     <string name="bellboy_confirm">ORDER</string>
+    <string name="total_with_tax">Total with TAX</string>
 </resources>

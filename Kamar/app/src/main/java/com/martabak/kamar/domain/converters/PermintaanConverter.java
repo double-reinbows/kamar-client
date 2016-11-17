@@ -104,6 +104,8 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                     orderItem.addProperty("name_ru", i.option.nameRu);
                     orderItem.addProperty("laundry_price", i.option.laundryPrice);
                     orderItem.addProperty("pressing_price", i.option.pressingPrice);
+                    orderItem.addProperty("extras", i.extras);
+                    orderItem.addProperty("notes", i.notes);
                     laundryItems.add(orderItem);
                 }
                 content.add("items", laundryItems);
@@ -278,9 +280,11 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                     String nameRuLaundry = item.getAsJsonPrimitive("name_ru").getAsString();
                     Integer priceLaundry = item.getAsJsonPrimitive("laundry_price").getAsInt();
                     Integer pricePressing = item.getAsJsonPrimitive("pressing_price").getAsInt();
+                    String laundryExtras = item.getAsJsonPrimitive("extras").getAsString();
+                    String notes = item.getAsJsonPrimitive("notes").getAsString();
                     LaundryOption optionLaundry = new LaundryOption(idLaundry, revLaundry, nameEnLaundry,
                             nameInLaundry, nameZhLaundry, nameRuLaundry, priceLaundry, pricePressing, null, null);
-                    laundryItems.add(new LaundryOrderItem(quantity, price, laundry, pressing, optionLaundry));
+                    laundryItems.add(new LaundryOrderItem(quantity, price, laundry, pressing, optionLaundry, laundryExtras, notes));
                 }
                 Integer totalLaundryPrice = c.getAsJsonPrimitive("total_price").getAsInt();
                 content = new LaundryOrder(message, laundryItems, totalLaundryPrice);

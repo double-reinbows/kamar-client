@@ -288,7 +288,7 @@ public class PermintaanManager {
     }
 
     /**
-     * @return The state of the most recent laundry permintaan.
+     * @return The state of the most recent restaurant permintaan.
      */
     public Observable<String> getRestaurantStatus(Context c) {
         return getMostRecentStatusOf(c, Permintaan.TYPE_RESTAURANT);

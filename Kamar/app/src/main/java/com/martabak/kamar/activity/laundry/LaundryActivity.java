@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
+import com.martabak.kamar.activity.restaurant.RestaurantPermintaanFragment;
 import com.martabak.kamar.domain.options.LaundryOption;
 import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -52,7 +55,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
     private RecyclerView recyclerView;
     private List<LaundryOption> laundryOptions;
     private List<LaundryOrderItem> laundryOrderItems;
-    private List<String> laundryInstructions;
+
 
     protected Options getOptions() {
         return new Options()
@@ -71,59 +74,12 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
         recyclerView = (RecyclerView)findViewById(R.id.laundry_recycleview);
         laundryOptions = new ArrayList<>();
         laundryOrderItems = new ArrayList<>();
-        laundryInstructions = new ArrayList<>();
         final LaundryRecyclerViewAdapter recyclerViewAdapter = new LaundryRecyclerViewAdapter(laundryOptions, laundryView);
         recyclerView.setAdapter(recyclerViewAdapter);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        //if the radio buttons are toggled, add it to the laundry instruction list here
-        final CheckBox noIroning = (CheckBox) findViewById(R.id.no_ironing);
-        final CheckBox onHanger = (CheckBox) findViewById(R.id.on_hanger);
-        final CheckBox folded = (CheckBox) findViewById(R.id.folded);
 
-        noIroning.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                {
-
-                    laundryInstructions.add(noIroning.getText().toString());
-                }
-                else if((!isChecked) && (laundryInstructions.contains(noIroning.getText().toString())))
-                {
-                    laundryInstructions.remove(noIroning.getText().toString());
-                }
-            }
-        });
-
-        onHanger.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                {
-                    laundryInstructions.add(onHanger.getText().toString());
-                }
-                else if((!isChecked) && (laundryInstructions.contains(onHanger.getText().toString())))
-                {
-                    laundryInstructions.remove(onHanger.getText().toString());
-                }
-            }
-        });
-
-        folded.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                {
-                    laundryInstructions.add(folded.getText().toString());
-                }
-                else if((!isChecked) && (laundryInstructions.contains(folded.getText().toString())))
-                {
-                    laundryInstructions.remove(folded.getText().toString());
-                }
-            }
-        });
         Button submitButton = (Button) findViewById(R.id.laundry_submit);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -134,21 +90,47 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                 for (int i=0; i < laundryOptions.size(); i++)
                 {
                     View laundryView = layoutManager.findViewByPosition(i);
+
                     TextView quantityView = (TextView) laundryView.findViewById(R.id.quantity_text);
-                    TextView priceView = (TextView) laundryView.findViewById(R.id.laundry_item_price_total);
+
+
+                    //TextView priceView = (TextView) laundryView.findViewById(R.id.laundry_item_price_total);
+
                     CheckBox laundryCheckButton = (CheckBox) laundryView.findViewById(R.id.laundry_price_option);
                     CheckBox pressingCheckButton = (CheckBox) laundryView.findViewById(R.id.pressing_price_option);
 
+                    CheckBox onHangerCheckButton = (CheckBox) laundryView.findViewById(R.id.on_hanger_option);
+                    CheckBox noIroningCheckButton = (CheckBox) laundryView.findViewById(R.id.no_ironing_option);
+                    CheckBox foldedCheckButton = (CheckBox) laundryView.findViewById(R.id.folded_option);
+
+                    EditText notesEditText = (EditText) laundryView.findViewById(R.id.laundry_notes);
+
                     LaundryOption laundryOption= laundryOptions.get(i);
                     int quantity = Integer.parseInt(quantityView.getText().toString());
-
-
+                    List<String> laundryExtras;
                     if ((laundryCheckButton.isChecked() || pressingCheckButton.isChecked()) && (quantity > 0))
                     {
-//                        laundryOption = setOptionPrices(laundryOption, laundryCheckButton, pressingCheckButton);
-                        int itemPrice = Integer.parseInt(priceView.getText().toString());
+
+                        int itemPrice = 0;
+
+                        if (laundryCheckButton.isChecked())
+                        {
+                            itemPrice = itemPrice + Integer.parseInt(laundryCheckButton.getText().toString());
+                        }
+
+                        if (pressingCheckButton.isChecked())
+                        {
+                            itemPrice = itemPrice + Integer.parseInt(pressingCheckButton.getText().toString());
+                        }
+
+                        itemPrice = itemPrice * quantity;
+
+                        laundryExtras = setLaundryExtras(onHangerCheckButton, noIroningCheckButton, foldedCheckButton);
+                        String stringLaundryExtras = TextUtils.join(", ",laundryExtras);
+
                         LaundryOrderItem laundryOrderItem = new LaundryOrderItem(quantity, itemPrice,
-                                laundryCheckButton.isChecked(), pressingCheckButton.isChecked(), laundryOption);
+                                laundryCheckButton.isChecked(), pressingCheckButton.isChecked(), laundryOption,
+                                stringLaundryExtras, notesEditText.getText().toString());
 
                         laundryOrderItems.add(laundryOrderItem);
                     }
@@ -161,13 +143,13 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
 
                 if (laundryOrderItems.size() > 0)
                 {
-                    String stringLaundryInstructions = TextUtils.join(", ",laundryInstructions);
-                    LaundryOrder laundryOrder = new LaundryOrder(stringLaundryInstructions, laundryOrderItems, totalPrice);
+                    LaundryOrder laundryOrder = new LaundryOrder("", laundryOrderItems, totalPrice);
                     sendLaundryRequest(laundryOrder);                                            ;
                 }
             }
         });
 
+        startFragment();
 
         StaffServer.getInstance(this).getLaundryOptions().subscribe(new Observer<List<LaundryOption>>() {
             @Override public void onCompleted() {
@@ -185,6 +167,25 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
         });
     }
 
+    /*add the extras to the list*/
+    private List<String> setLaundryExtras(CheckBox noIroning, CheckBox onHanger, CheckBox folded)
+    {
+        List<String> laundryExtras = new ArrayList<>();
+        if (noIroning.isChecked())
+        {
+            laundryExtras.add(noIroning.getText().toString());
+        }
+        if (onHanger.isChecked())
+        {
+            laundryExtras.add(onHanger.getText().toString());
+        }
+        if (folded.isChecked())
+        {
+            laundryExtras.add(folded.getText().toString());
+        }
+        return laundryExtras;
+    }
+
     /*Send laundry request*/
     public void sendLaundryRequest(LaundryOrder laundryOrder) {
 
@@ -196,8 +197,6 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                 .getString("guestId", null);
         String state = Permintaan.STATE_NEW;
         Date currentDate = Calendar.getInstance().getTime();
-
-
 
         /* create permintaan*/
         if (!guestId.equals("none") && !roomNumber.equals("none")) {
@@ -249,6 +248,12 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
 
     }
 
+    public void startFragment() {
+        LaundryPermintaanFragment f = new LaundryPermintaanFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f);
+        ft.commit();
+    }
+
 
     public class LaundryRecyclerViewAdapter
             extends RecyclerView.Adapter<LaundryRecyclerViewAdapter.ViewHolder> {
@@ -293,13 +298,15 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                     {
                         holder.laundryCheckButton.setEnabled(true);
                         holder.pressingCheckButton.setEnabled(true);
-
+                        holder.onHangerCheckButton.setEnabled(true);
+                        holder.noIroningCheckButton.setEnabled(true);
+                        holder.foldedCheckButton.setEnabled(true);
                     }
 
                     Integer prevItemTotal = 0;
-                    if (!holder.itemPriceTotal.getText().toString().equals(""))
+                    if (holder.itemPriceTotal != 0)
                     {
-                        prevItemTotal = Integer.parseInt(holder.itemPriceTotal.getText().toString());
+                        prevItemTotal = holder.itemPriceTotal;
                     }
 
 
@@ -315,8 +322,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                     }
 
                     Integer newItemTotal = calculateItemPrice(laundryPrice, pressingPrice, newQuantity);
-                    holder.itemPriceTotal.setText(
-                            String.valueOf(calculateItemPrice(laundryPrice, pressingPrice, newQuantity)));
+                    holder.itemPriceTotal = newItemTotal;
 
                     Integer difference = newItemTotal - prevItemTotal;
 
@@ -340,12 +346,15 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                     {
                         holder.laundryCheckButton.setEnabled(false);
                         holder.pressingCheckButton.setEnabled(false);
+                        holder.onHangerCheckButton.setEnabled(false);
+                        holder.noIroningCheckButton.setEnabled(false);
+                        holder.foldedCheckButton.setEnabled(false);
                     }
                     int laundryPrice = 0;
                     int pressingPrice = 0;
 
                     if (newQuantity >= 0) {
-                        Integer prevItemTotal = Integer.parseInt(holder.itemPriceTotal.getText().toString());
+                        Integer prevItemTotal = holder.itemPriceTotal;
 
                         if (holder.laundryCheckButton.isChecked()) {
                             laundryPrice = Integer.parseInt(holder.laundryCheckButton.getText().toString());
@@ -357,8 +366,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
 
                         Integer newItemTotal = calculateItemPrice(laundryPrice, pressingPrice, newQuantity);
 
-                        holder.itemPriceTotal.setText(
-                                String.valueOf(newItemTotal));
+                        holder.itemPriceTotal = newItemTotal;
                         Integer difference = prevItemTotal - newItemTotal;
 
                         //subtract the new price total to the tally
@@ -386,9 +394,9 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                         int prevItemTotal = 0;
-                        if (!holder.itemPriceTotal.getText().toString().equals(""))
+                        if (holder.itemPriceTotal != prevItemTotal)
                         {
-                            prevItemTotal = Integer.parseInt(holder.itemPriceTotal.getText().toString());
+                            prevItemTotal = holder.itemPriceTotal;
                         }
 
                         if (isChecked) {
@@ -406,7 +414,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                             int tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
 
                             int newTotalPrice = (tempTotalPrice - prevItemTotal) + currentPrice;
-                            holder.itemPriceTotal.setText(String.valueOf(currentPrice));
+                            holder.itemPriceTotal = currentPrice;
                             laundryTextView.setText(String.valueOf(newTotalPrice));
                         }
                         else
@@ -419,15 +427,12 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                             {
                                 pressingPrice = Integer.parseInt(holder.pressingCheckButton.getText().toString());
                             }
-
-
-
                             int currentPrice = calculateItemPrice(laundryPrice, pressingPrice, newQuantity);
 
                             int tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
 
                             int newTotalPrice = tempTotalPrice - (prevItemTotal - currentPrice);
-                            holder.itemPriceTotal.setText(String.valueOf(currentPrice));
+                            holder.itemPriceTotal = currentPrice;
                             laundryTextView.setText(String.valueOf(newTotalPrice));
                         }
                     }
@@ -441,9 +446,9 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                         int prevItemTotal = 0;
-                        if (!holder.itemPriceTotal.getText().toString().equals(""))
+                        if (holder.itemPriceTotal != prevItemTotal)
                         {
-                            prevItemTotal = Integer.parseInt(holder.itemPriceTotal.getText().toString());
+                            prevItemTotal = holder.itemPriceTotal;
                         }
 
                         if (isChecked) {
@@ -460,7 +465,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                             int tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
 
                             int newTotalPrice = (tempTotalPrice - prevItemTotal) + currentPrice;
-                            holder.itemPriceTotal.setText(String.valueOf(currentPrice));
+                            holder.itemPriceTotal = currentPrice;
                             laundryTextView.setText(String.valueOf(newTotalPrice));
                         }
                         else
@@ -480,7 +485,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                             int tempTotalPrice = Integer.parseInt(laundryTextView.getText().toString());
 
                             int newTotalPrice = tempTotalPrice - (prevItemTotal - currentPrice);
-                            holder.itemPriceTotal.setText(String.valueOf(currentPrice));
+                            holder.itemPriceTotal = currentPrice;
                             laundryTextView.setText(String.valueOf(newTotalPrice));
                         }
                     }
@@ -511,7 +516,12 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
             public final TextView nameView;
             public final CheckBox laundryCheckButton;
             public final CheckBox pressingCheckButton;
-            public final TextView itemPriceTotal;
+            public final CheckBox noIroningCheckButton;
+            public final CheckBox onHangerCheckButton;
+            public final CheckBox foldedCheckButton;
+            public int itemPriceTotal;
+            //public final TextView itemPriceTotal;
+            public final EditText notesEditText;
 
             public ViewHolder(View view) {
                 super(view);
@@ -523,7 +533,11 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                 nameView = (TextView) view.findViewById(R.id.laundry_option_text);
                 laundryCheckButton = (CheckBox) view.findViewById(R.id.laundry_price_option);
                 pressingCheckButton = (CheckBox) view.findViewById(R.id.pressing_price_option);
-                itemPriceTotal = (TextView) view.findViewById(R.id.laundry_item_price_total);
+                itemPriceTotal = 0;
+                noIroningCheckButton = (CheckBox) view.findViewById(R.id.no_ironing_option);
+                onHangerCheckButton = (CheckBox) view.findViewById(R.id.on_hanger_option);
+                foldedCheckButton = (CheckBox) view.findViewById(R.id.folded_option);
+                notesEditText = (EditText) view.findViewById(R.id.laundry_notes);
             }
 
 
@@ -532,20 +546,6 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
                 return super.toString() + " " + nameView.getText();
             }
         }
-    }
-
-    private LaundryOption setOptionPrices(LaundryOption lOption, CheckBox laundry, CheckBox pressing) {
-        Integer newLaundryPrice = lOption.laundryPrice;
-        Integer newPressingPrice = lOption.pressingPrice;
-        if (!laundry.isChecked()) {
-            Log.v("DICK", "WAD");
-            newLaundryPrice = 0;
-        }
-        if (!pressing.isChecked()) {
-            newPressingPrice = 0;
-        }
-        return new LaundryOption(lOption.nameEn, lOption.nameIn, lOption.nameZh, lOption.nameRu,
-                newLaundryPrice, newPressingPrice, lOption.order,lOption.attachmentName);
     }
 
 
