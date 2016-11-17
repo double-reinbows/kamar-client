@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<FrameLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <include layout="@layout/actionbar_custom_view"/>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <!--ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="@drawable/wood_background_highres">
+        android:src="@drawable/front_side"
+        android:scaleType="centerCrop"/-->
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/centre_point"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:src="@drawable/logo_coloured"
+            android:layout_width="600dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="100dp"
+            android:id="@+id/logo"/>
 
         <ImageButton
             android:layout_width="200dp"
@@ -22,8 +37,9 @@
             android:src="@drawable/ic_english"
             android:scaleType="fitXY"
             android:background="@android:color/transparent"
-            android:layout_gravity="center"
-            android:padding="0dp"
+            android:layout_toLeftOf="@+id/language_bahasa"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="100dp"
             android:contentDescription="@string/language_english"
             android:id="@+id/language_english" />
 
@@ -33,8 +49,9 @@
             android:src="@drawable/ic_bahasa"
             android:scaleType="fitXY"
             android:background="@android:color/transparent"
-            android:layout_gravity="center"
-            android:layout_marginLeft="100dp"
+            android:layout_toLeftOf="@+id/centre_point"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="50dp"
             android:padding="0dp"
             android:contentDescription="@string/language_bahasa"
             android:id="@+id/language_bahasa" />
@@ -45,8 +62,9 @@
             android:src="@drawable/ic_russian"
             android:scaleType="fitXY"
             android:background="@android:color/transparent"
-            android:layout_gravity="center"
-            android:layout_marginLeft="100dp"
+            android:layout_toRightOf="@+id/centre_point"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="50dp"
             android:padding="0dp"
             android:contentDescription="@string/language_russian"
             android:id="@+id/language_russian" />
@@ -57,11 +75,12 @@
             android:src="@drawable/ic_chinese"
             android:scaleType="fitXY"
             android:background="@android:color/transparent"
-            android:layout_gravity="center"
+            android:layout_toRightOf="@+id/language_russian"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="100dp"
             android:padding="0dp"
             android:contentDescription="@string/language_zh"
             android:id="@+id/language_zh" />
 
-    </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+    </RelativeLayout>
+</FrameLayout>

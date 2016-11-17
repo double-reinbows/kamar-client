@@ -22,4 +22,5 @@
     <string name="bellboy_cancel">CANCEL</string>
     <string name="bellboy_confirm">ORDER</string>
     <string name="logout">STAFF ONLY</string>
+    <string name="order_button">ORDER</string>
 </resources>
