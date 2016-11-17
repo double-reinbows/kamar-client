@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.martabak.kamar.domain.Consumable;
 import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.PostResponse;
 import com.martabak.kamar.service.response.PutResponse;
 import com.martabak.kamar.service.response.ViewResponse;
@@ -51,7 +52,7 @@ public class MenuServer extends Server {
 
     /**
      * Get all the menu items that match the states given.
-     * I.E. {@code getMenuBySection("FOOD", "DESSERT", "BEVERAGES")}
+     * E.G.. {@code getMenuBySection("FOOD", "DESSERT", "BEVERAGES")}
      * @param sections The sections to match on.
      * @return Observable on the consumable menu items.
      */
@@ -73,6 +74,25 @@ public class MenuServer extends Server {
                     .observeOn(AndroidSchedulers.mainThread()));
         }
         return Observable.merge(results);
+    }
+
+    /**
+     * Get all the menu items
+     * @return Observable on the consumable menu items.
+     */
+    public Observable<List<Consumable>> getMenu() {
+        return service.getMenu()
+                .flatMap(new Func1<AllResponse<Consumable>, Observable<List<Consumable>>>() {
+                    @Override public Observable<List<Consumable>> call(AllResponse<Consumable> response) {
+                        List<Consumable> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<Consumable>.AllResult<Consumable> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+                        return Observable.just(toReturn);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

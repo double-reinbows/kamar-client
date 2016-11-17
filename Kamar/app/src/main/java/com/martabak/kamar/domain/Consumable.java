@@ -31,8 +31,22 @@ public class Consumable extends Model {
     /**
      * The name; e.g. RAWON DAGING INDOLUXE.
      */
-    public final String name;
+    public final String nameEn;
 
+    /**
+     * The name; e.g. RAWON DAGING INDOLUXE.
+     */
+    public final String nameIn;
+
+    /**
+     * The name; e.g. RAWON DAGING INDOLUXE.
+     */
+    public final String nameRu;
+
+    /**
+     * The name; e.g. RAWON DAGING INDOLUXE.
+     */
+    public final String nameZh;
     /**
      * The description; e.g. Kluwek beef soup served with rice, sambal, lime and crackers.
      */
@@ -54,14 +68,44 @@ public class Consumable extends Model {
     @SerializedName("description_ru") public final String descriptionRu;
 
     /**
-     * The section; e.g. INDONESIAN.
+     * The section/tab; e.g. INDONESIAN.
      */
-    public final String section;
+    public final String sectionEn;
 
     /**
-     * The subsection; e.g. MAIN COURSE.
+     * The section/tab; e.g. INDONESIAN.
      */
-    public final String subsection;
+    public final String sectionIn;
+
+    /**
+     * The section/tab; e.g. INDONESIAN.
+     */
+    public final String sectionRu;
+
+    /**
+     * The section/tab; e.g. INDONESIAN.
+     */
+    public final String sectionZh;
+
+    /**
+     * The subsection/expandable list dropdown; e.g. MAIN COURSE.
+     */
+    public final String subsectionEn;
+
+    /**
+     * The subsection/expandable list dropdown; e.g. MAIN COURSE.
+     */
+    public final String subsectionIn;
+
+    /**
+     * The subsection/expandable list dropdown; e.g. MAIN COURSE.
+     */
+    public final String subsectionRu;
+
+    /**
+     * The subsection/expandable list dropdown; e.g. MAIN COURSE.
+     */
+    public final String subsectionZh;
 
     /**
      * The order that this item should show up in the menu's section or subsection; e.g. 2.
@@ -79,28 +123,48 @@ public class Consumable extends Model {
     public final Integer price;
 
     public Consumable() {
-        this.name = null;
+        this.nameEn = null;
+        this.nameIn = null;
+        this.nameRu = null;
+        this.nameZh = null;
         this.descriptionEn = null;
         this.descriptionIn = null;
         this.descriptionZh = null;
         this.descriptionRu = null;
-        this.section = null;
-        this.subsection = null;
+        this.sectionEn = null;
+        this.sectionIn = null;
+        this.sectionRu = null;
+        this.sectionZh = null;
+        this.subsectionEn = null;
+        this.subsectionIn = null;
+        this.subsectionRu = null;
+        this.subsectionZh = null;
         this.order = null;
         this.price = null;
         this.attachmentName = null;
     }
 
-    public Consumable(String name, String descriptionEn, String descriptionIn, String descriptionZh,
-                      String descriptionRu, String section, String subsection, Integer order,
-                      Integer price, String attachmentName) {
-        this.name = name;
+    public Consumable(String nameEn, String nameIn, String nameRu, String nameZh,
+                      String descriptionEn, String descriptionIn, String descriptionZh, String descriptionRu,
+                      String sectionEn, String sectionIn, String sectionRu, String sectionZh,
+                      String subsectionEn, String subsectionIn, String subsectionRu, String subsectionZh,
+                      Integer order, Integer price, String attachmentName) {
+        this.nameEn = nameEn;
+        this.nameIn = nameIn;
+        this.nameRu = nameRu;
+        this.nameZh = nameZh;
         this.descriptionEn = descriptionEn;
         this.descriptionIn = descriptionIn;
         this.descriptionZh = descriptionZh;
         this.descriptionRu = descriptionRu;
-        this.section = section;
-        this.subsection = subsection;
+        this.sectionEn = null;
+        this.sectionIn = null;
+        this.sectionRu = null;
+        this.sectionZh = null;
+        this.subsectionEn = null;
+        this.subsectionIn = null;
+        this.subsectionRu = null;
+        this.subsectionZh = null;
         this.order = order;
         this.price = price;
         this.attachmentName = attachmentName;
@@ -121,6 +185,60 @@ public class Consumable extends Model {
         } else {
             Log.e(Consumable.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
             return this.descriptionEn;
+        }
+    }
+
+    /**
+     * @return The description in the appropriate language.
+     */
+    public String getName() {
+        if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage())) {
+            return this.nameEn;
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("in").getLanguage())) {
+            return this.nameIn;
+        } else if (Locale.getDefault().getLanguage().equals(Locale.CHINESE.getLanguage())) {
+            return this.nameZh;
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("ru").getLanguage())) {
+            return this.nameRu;
+        } else {
+            Log.e(Consumable.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
+            return this.nameEn;
+        }
+    }
+
+    /**
+     * @return The description in the appropriate language.
+     */
+    public String getSection() {
+        if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage())) {
+            return this.sectionEn;
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("in").getLanguage())) {
+            return this.sectionIn;
+        } else if (Locale.getDefault().getLanguage().equals(Locale.CHINESE.getLanguage())) {
+            return this.sectionZh;
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("ru").getLanguage())) {
+            return this.sectionRu;
+        } else {
+            Log.e(Consumable.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
+            return this.descriptionEn;
+        }
+    }
+
+    /**
+     * @return The description in the appropriate language.
+     */
+    public String getSubsection() {
+        if (Locale.getDefault().getLanguage().equals(Locale.ENGLISH.getLanguage())) {
+            return this.subsectionEn;
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("in").getLanguage())) {
+            return this.subsectionIn;
+        } else if (Locale.getDefault().getLanguage().equals(Locale.CHINESE.getLanguage())) {
+            return this.subsectionZh;
+        } else if (Locale.getDefault().getLanguage().equals(new Locale("ru").getLanguage())) {
+            return this.subsectionRu;
+        } else {
+            Log.e(Consumable.class.getCanonicalName(), "Unknown locale language: " + Locale.getDefault().getLanguage());
+            return this.subsectionEn;
         }
     }
 

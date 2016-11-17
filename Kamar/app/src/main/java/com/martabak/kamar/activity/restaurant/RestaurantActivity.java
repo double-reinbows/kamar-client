@@ -20,6 +20,7 @@ import com.martabak.kamar.domain.managers.RestaurantOrderManager;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.MenuServer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,9 +40,12 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     private HashMap<String, Consumable> idToConsumable;
     private HashMap<String, String> idToNote;
     //lists of sections
+    List<String> sections; //AKA tabs
+    private HashMap<String, List<Consumable>> sectionToConsumables;
     private List<Consumable> food;
     private List<Consumable> beverages;
     private List<Consumable> desserts;
+    private List<Consumable> test;
 
     RestaurantExpListAdapter listAdapter;
     private TextView subtotalText;
@@ -65,29 +69,48 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startFragment(); //permintaan status lights
+        permintaanFragment(); //permintaan status lights
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
-
-        //initialize tabs
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("Food"));
-        tabLayout.addTab(tabLayout.newTab().setText("Beverages"));
-        tabLayout.addTab(tabLayout.newTab().setText("Desserts"));
-
-        //set tab text's font
-        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
-        int numTabs = vg.getChildCount();
-        for (int j = 0; j < numTabs; j++) {
-            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
-            int tabChildsCount = vgTab.getChildCount();
-            for (int i = 0; i < tabChildsCount; i++) {
-                View tabViewChild = vgTab.getChildAt(i);
-                if (tabViewChild instanceof TextView) {
-                    ((TextView) tabViewChild).setTypeface(customFont);
+        MenuServer.getInstance(this).getMenu().subscribe(new Observer<List<Consumable>>() {
+            @Override
+            public void onCompleted() {
+                sections = new ArrayList<>();
+                sectionToConsumables = new HashMap<>();
+                for (Consumable c : test) {
+                    if (!sections.contains(c.sectionEn)) {//new tab
+                        List<Consumable> temp = new ArrayList<>();
+                        temp.add(c);
+                        sectionToConsumables.put(c.sectionEn, temp);
+                        //initialize tabs
+                        tabLayout.addTab(tabLayout.newTab().setText(c.getSection()));
+                    } else { //previously found tab
+                        List<Consumable> temp = sectionToConsumables.get(c.sectionEn);
+                        temp.add(c);
+                        sectionToConsumables.put(c.sectionEn, temp);
+                    }
                 }
+                Log.v("SECTIONS", sections.toString());
+                Log.v("DICK", sectionToConsumables.toString());
+                setCustomFont(tabLayout);
             }
-        }
+            @Override
+            public void onError(Throwable e) {}
+            @Override
+            public void onNext(List<Consumable> consumables) {
+                test = consumables;
+            }
+        });
+
+
+
+
+
+//        tabLayout.addTab(tabLayout.newTab().setText("Food"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Beverages"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Desserts"));
+
+
 
         //initialize constant variables
         idToQuantity = new HashMap<>();
@@ -161,6 +184,58 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         });
     }
 
+    private void setCustomFont(ViewGroup tabLayout) {
+        //set tab text's font
+        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        int numTabs = vg.getChildCount();
+        for (int j = 0; j < numTabs; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(customFont);
+                }
+            }
+        }
+    }
+    /**
+     * Pulls the consumables on the server based on the selected section (tab) and, if successful,
+     * calls createExpandableList().
+     */
+    private void doGetConsumablesOfSectionAndCreateExpList(final String section,
+                                                           final List<Consumable> consumables,
+                                                           final ExpandableListView view) {
+        Log.d(RestaurantActivity.class.getCanonicalName(), "Doing get consumables of section");
+
+        if (consumables.isEmpty()) { //if we haven't pulled the section's consumables yet...
+            MenuServer.getInstance(this).getMenuBySection(section)
+                    .subscribe(new Observer<Consumable>() {
+
+                        @Override
+                        public void onCompleted() {
+                            Log.d(RestaurantActivity.class.getCanonicalName(), "getMenuBySection: On completed");
+                            createExpandableList(consumables, view);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d(RestaurantActivity.class.getCanonicalName(), "On error");
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onNext(Consumable result) {
+                            Log.d(RestaurantActivity.class.getCanonicalName(), "getMenuBySection: On next: " + result.nameEn);
+                            consumables.add(result);
+                        }
+                    });
+        } else { //skip pulling consumables from server
+            createExpandableList(consumables, view);
+        }
+    }
+
     /**
      * Creates an exp list then sets the ic_restaurant exp list onto it
      */
@@ -174,15 +249,15 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
 
         //iterate over the consumables for the current tab/section
         for (Consumable consumable : consumables) {
-            if (!subsections.contains(consumable.subsection)) {//subsection doesn't exist yet
-                subsections.add(consumable.subsection); //add subsection
+            if (!subsections.contains(consumable.getSubsection())) {//subsection doesn't exist yet
+                subsections.add(consumable.getSubsection()); //add subsection
                 List<String> currList = new ArrayList<>();
                 currList.add(consumable._id); //add ID to the subsection
-                subsectionToIds.put(consumable.subsection, currList); //reinsert the subsection
+                subsectionToIds.put(consumable.getSubsection(), currList); //reinsert the subsection
             } else {//subsection previously added
-                List<String> currList = subsectionToIds.get(consumable.subsection);
+                List<String> currList = subsectionToIds.get(consumable.getSubsection());
                 currList.add(consumable._id); //add ID to the subsection
-                subsectionToIds.put(consumable.subsection, currList); //reinsert the subsection
+                subsectionToIds.put(consumable.getSubsection(), currList); //reinsert the subsection
             }
             idToConsumable.put(consumable._id, consumable); //add _id:consumable
             if (!idToQuantity.containsKey(consumable._id)) {//if quantity hasn't been initialized
@@ -219,9 +294,8 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                 Iterator it = idToQuantity.entrySet().iterator();
                 while (it.hasNext()) {
                     HashMap.Entry pair = (HashMap.Entry) it.next();
-//                    Log.v("CUNT", idToNote.toString());
                     if (((int)pair.getValue() > 0) && (pair.getKey().toString() != "subtotal")){
-                        OrderItem orderItem = new OrderItem((int)pair.getValue(),idToConsumable.get(pair.getKey().toString()).name,
+                        OrderItem orderItem = new OrderItem((int)pair.getValue(),idToConsumable.get(pair.getKey().toString()).nameEn,
                                 idToConsumable.get(pair.getKey().toString()).price, idToNote.get(pair.getKey().toString()));
                         restaurantOrderItems.add(orderItem);
                         restaurantImgUrls.add(idToConsumable.get(pair.getKey().toString()).getImageUrl());
@@ -247,43 +321,9 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         });
     }
 
-    /**
-     * Pulls the consumables on the server based on the selected section (tab) and, if successful,
-     * calls createExpandableList().
-     */
-    private void doGetConsumablesOfSectionAndCreateExpList(final String section,
-                                                            final List<Consumable> consumables,
-                                                                final ExpandableListView view) {
-        Log.d(RestaurantActivity.class.getCanonicalName(), "Doing get consumables of section");
 
-        if (consumables.isEmpty()) { //if we haven't pulled the section's consumables yet...
-            MenuServer.getInstance(this).getMenuBySection(section)
-                    .subscribe(new Observer<Consumable>() {
 
-                        @Override
-                        public void onCompleted() {
-                            Log.d(RestaurantActivity.class.getCanonicalName(), "getMenuBySection: On completed");
-                            createExpandableList(consumables, view);
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.d(RestaurantActivity.class.getCanonicalName(), "On error");
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onNext(Consumable result) {
-                            Log.d(RestaurantActivity.class.getCanonicalName(), "getMenuBySection: On next: " + result.name);
-                            consumables.add(result);
-                        }
-                    });
-        } else { //skip pulling consumables from server
-            createExpandableList(consumables, view);
-        }
-    }
-
-    public void startFragment() {
+    public void permintaanFragment() {
         RestaurantPermintaanFragment f = new RestaurantPermintaanFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f);
         ft.commit();
