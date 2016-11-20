@@ -37,7 +37,6 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
     private RestaurantOrder restaurantOrder;
 
-
     protected Options getOptions() {
         return new Options()
                 .withBaseLayout(R.layout.activity_restaurant_confirmation)
@@ -99,11 +98,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
         Integer finalPriceInteger = (int)finalPriceFloat;
         String newFinalPrice = finalPriceInteger.toString();
-        //final price's pretext
-        TextView finalPriceText = (TextView)findViewById(R.id.order_total_text);
-        finalPriceText.setText(getString(R.string.restaurant_confirmation_price_text));
-
-        finalPriceTextView.setText("Rp. "+newFinalPrice);
+        finalPriceTextView.setText("RP." + newFinalPrice);
 
         //+ Add More Items
         TextView addMoreText = (TextView)findViewById(R.id.order_add_more);

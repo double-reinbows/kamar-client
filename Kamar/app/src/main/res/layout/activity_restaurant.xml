@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -14,53 +15,63 @@
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_marginTop="120dp"
+            android:layout_height="492dp"
             tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
 
             <include layout="@layout/content_restaurant" />
 
         </RelativeLayout>
 
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp"
+                        android:background="@color/darkRed"
+                        tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity"/>
+
         <!---RESTAURANT BOTTOM BAR START -->
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:tools="http://schemas.android.com/tools"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
                         android:background="@color/pureWhite"
-                        tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity"
-                        android:layout_marginBottom="50dp"> <!--must equal height of bottom_bar.xml-->
+                        android:paddingLeft="65dp"
+                        android:paddingRight="65dp"
+                        tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:paddingTop="6dp"
+                android:textSize="14sp"
                 android:layout_alignParentStart="true"
-                android:id="@+id/order_total_text" />
+                android:id="@+id/order_total_text"
+                android:text="@string/total_with_tax"/>
 
             <TextView
                 android:id="@+id/restaurant_subtotal_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textSize="23dp"
-                android:background="#FFFFFF"
+                android:textColor="@color/textHint"
+                android:textStyle="bold"
+                android:textSize="22sp"
                 android:layout_below="@+id/order_total_text"
                 android:layout_alignParentStart="true"/>
 
-            <ImageView
-                android:id="@+id/restaurant_add"
-                android:layout_width="75dp"
-                android:layout_height="64dp"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/panah" />
+            <TextView
+                android:id="@+id/restaurant_arrow_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/darkRed"
+                android:textStyle="bold"
+                android:textSize="42sp"/>
 
         </RelativeLayout>
         <!--RESTAURANT BOTTOM BAR END -->
 
         <include layout="@layout/bottombar"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
