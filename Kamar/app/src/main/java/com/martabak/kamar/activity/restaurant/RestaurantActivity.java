@@ -45,7 +45,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     private List<Consumable> food;
     private List<Consumable> beverages;
     private List<Consumable> desserts;
-    private List<Consumable> test;
+    private List<Consumable> consumables;
 
     RestaurantExpListAdapter listAdapter;
     private TextView subtotalText;
@@ -76,12 +76,12 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         MenuServer.getInstance(this).getMenu().subscribe(new Observer<List<Consumable>>() {
             @Override
             public void onCompleted() {
-                Log.v("CUNT", test.toString());
+                Log.v("CUNT", consumables.toString());
                 sections = new ArrayList<>();
                 sectionToConsumables = new HashMap<>();
                 expandableListViews = new ArrayList<>();
-                for (Consumable c : test) {
-                    Log.v("HELLO", c.nameEn);
+                for (Consumable c : consumables) {
+                    Log.v("HELLO", c.sectionEn);
                     if (!sections.contains(c.sectionEn)) {//new tab
 //                        Log.v("HELLO", "mate");
                         sections.add(c.sectionEn);
@@ -107,7 +107,10 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
             public void onError(Throwable e) {}
             @Override
             public void onNext(List<Consumable> consumables) {
-                test = consumables;
+                RestaurantActivity.this.consumables = consumables;
+//                for (Consumable c:consumables) {
+//                    Log.v("HELLO", c.toString());
+//                }
             }
         });
 

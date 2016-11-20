@@ -31,31 +31,31 @@ public class Consumable extends Model {
     /**
      * The name; e.g. RAWON DAGING INDOLUXE.
      */
-    public final String nameEn;
+    @SerializedName("name_en") public final String nameEn;
 
     /**
      * The name; e.g. RAWON DAGING INDOLUXE.
      */
-    public final String nameIn;
+    @SerializedName("name_in") public final String nameIn;
 
     /**
      * The name; e.g. RAWON DAGING INDOLUXE.
      */
-    public final String nameRu;
+    @SerializedName("name_ru") public final String nameRu;
 
     /**
      * The name; e.g. RAWON DAGING INDOLUXE.
      */
-    public final String nameZh;
+    @SerializedName("name_zh") public final String nameZh;
     /**
      * The description; e.g. Kluwek beef soup served with rice, sambal, lime and crackers.
      */
-    @SerializedName("descriptionEn") public final String descriptionEn;
+    @SerializedName("description_en") public final String descriptionEn;
 
     /**
      * The description in INDO; e.g. dwklajdawlkdjd akwjdwadawlk  dka jldkjwal d.
      */
-    @SerializedName("descriptionIn") public final String descriptionIn;
+    @SerializedName("description_in") public final String descriptionIn;
 
     /**
      * The description in CHINESE; e.g. xing xong xang.
@@ -70,42 +70,42 @@ public class Consumable extends Model {
     /**
      * The section/tab; e.g. INDONESIAN.
      */
-    public final String sectionEn;
+    @SerializedName("section_en") public final String sectionEn;
 
     /**
      * The section/tab; e.g. INDONESIAN.
      */
-    public final String sectionIn;
+    @SerializedName("section_in") public final String sectionIn;
 
     /**
      * The section/tab; e.g. INDONESIAN.
      */
-    public final String sectionRu;
+    @SerializedName("section_ru") public final String sectionRu;
 
     /**
      * The section/tab; e.g. INDONESIAN.
      */
-    public final String sectionZh;
+    @SerializedName("section_zh") public final String sectionZh;
 
     /**
      * The subsection/expandable list dropdown; e.g. MAIN COURSE.
      */
-    public final String subsectionEn;
+    @SerializedName("subsection_en") public final String subsectionEn;
 
     /**
      * The subsection/expandable list dropdown; e.g. MAIN COURSE.
      */
-    public final String subsectionIn;
+    @SerializedName("subsection_in") public final String subsectionIn;
 
     /**
      * The subsection/expandable list dropdown; e.g. MAIN COURSE.
      */
-    public final String subsectionRu;
+    @SerializedName("subsection_ru") public final String subsectionRu;
 
     /**
      * The subsection/expandable list dropdown; e.g. MAIN COURSE.
      */
-    public final String subsectionZh;
+    @SerializedName("subsection_zh") public final String subsectionZh;
 
     /**
      * The order that this item should show up in the menu's section or subsection; e.g. 2.
