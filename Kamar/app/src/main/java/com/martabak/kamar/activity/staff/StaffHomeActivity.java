@@ -17,10 +17,16 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
-import com.martabak.kamar.domain.permintaan.Permintaan;
-import com.martabak.kamar.service.Server;
 
-public class StaffHomeActivity extends AppCompatActivity {
+public class StaffHomeActivity extends AbstractStaffBarsActivity {
+
+
+    protected AbstractStaffBarsActivity.Options getOptions() {
+        return new AbstractStaffBarsActivity.Options()
+                .withBaseLayout(R.layout.activity_staff_home)
+                .enableChatIcon(true);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +35,12 @@ public class StaffHomeActivity extends AppCompatActivity {
         startStaffServices(staffType);
         setContentView(R.layout.activity_staff_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
         }
+        /*
         ImageView staffImageView = (ImageView) findViewById(R.id.staff_image);
         if (staffImageView != null) {
             int staffImage;
@@ -53,7 +59,7 @@ public class StaffHomeActivity extends AppCompatActivity {
                     .into(staffImageView);
         }
         TextView staffTitleView = (TextView) findViewById(R.id.staff_title);
-        if (staffTitleView != null) staffTitleView.setText(staffType);
+        if (staffTitleView != null) staffTitleView.setText(staffType);*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,

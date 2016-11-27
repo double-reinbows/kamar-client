@@ -20,6 +20,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_guest_home"
+        app:itemBackground="@drawable/nav_drawer_item"
         app:menu="@menu/activity_guest_home_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -412,7 +412,9 @@ public class GuestHomeActivity extends AppCompatActivity implements
                             .commit();
                     break;
                 case R.id.nav_about:
-                    Log.v(GuestHomeActivity.class.toString(), "");
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.guest_container, AboutUsFragment.newInstance())
+                            .commit();
                     break;
             }
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
