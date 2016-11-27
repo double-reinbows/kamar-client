@@ -196,4 +196,5 @@
     <string name="add_more_items"> + Добавить еще</string>
     <string name="restaurant_confirmation_price_text">Итого с НАЛОГА</string>
     <string name="bellboy_cancel"></string>
+    <string name="total_with_tax">Total with TAX</string>
 </resources>

@@ -4,23 +4,30 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
 
-        <include layout="@layout/actionbar"
-            android:id="@+id/actionbar"/>
+        <include layout="@layout/actionbar" android:id="@+id/actionbar"/>
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="550dp"
+            android:layout_height="541dp"
             android:layout_below="@+id/actionbar"
             tools:context="com.martabak.kamar.activity.restaurant.RestaurantConfirmationActivity">
 
             <include layout="@layout/content_restaurant_confirmation" />
         </RelativeLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      xmlns:tools="http://schemas.android.com/tools"
+                      android:layout_width="match_parent"
+                      android:layout_height="6dp"
+                      android:background="@color/darkRed"
+                      tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity"/>
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -28,27 +35,25 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/pureWhite"
-            tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity"
-            android:layout_marginBottom="50dp"> <!--must equal height of bottom_bar.xml-->
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/colorNavBar"
-                android:layout_above="@+id/order_total_text"
-                android:layout_marginBottom="3dp"/>
+                        android:paddingLeft="65dp"
+                        android:paddingRight="65dp"
+            tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:paddingTop="6dp"
+                android:textSize="14sp"
                 android:layout_alignParentStart="true"
-                android:id="@+id/order_total_text" />
+                android:id="@+id/order_total_text"
+                android:text="@string/total_with_tax"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="23dp"
+                android:textColor="@color/textHint"
+                android:textStyle="bold"
+                android:textSize="22sp"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/order_total_text"
                 android:id="@+id/order_total" />
@@ -67,6 +72,6 @@
 
         <include layout="@layout/bottombar"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

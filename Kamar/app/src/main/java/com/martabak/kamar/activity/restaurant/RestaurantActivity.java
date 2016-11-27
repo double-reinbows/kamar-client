@@ -45,6 +45,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
 
     RestaurantExpListAdapter listAdapter;
     private TextView subtotalText;
+    private TextView arrowText;
     private Boolean dessertFlag = false;
 
     //Views
@@ -100,15 +101,14 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
         dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
         subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
-        TextView totalText = (TextView)findViewById(R.id.order_total_text);
-        totalText.setText("Total");
+        arrowText = (TextView) findViewById(R.id.restaurant_arrow_text);
 
         doGetConsumablesOfSectionAndCreateExpList("FOOD", food, foodExpListView); //since 1st tab is always food
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.v("tab", tab.getText().toString());
+                Log.v(RestaurantActivity.class.getCanonicalName(), "Selected tab " +  tab.getText().toString());
                 String selectedTab = tab.getText().toString();
                 if (selectedTab.equals("Food")) {
                     dessertFlag = false;
@@ -193,8 +193,9 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         //Initialize subtotal
         if (!idToQuantity.containsKey("subtotal")) {
             idToQuantity.put("subtotal", 0);
-            subtotalText.setText("Rp. "+ idToQuantity.get("subtotal").toString());
+            subtotalText.setText("RP."+ idToQuantity.get("subtotal").toString());
         }
+        arrowText.setText("\u2192");
 
 
         //set up ic_restaurant expandable list adapter
@@ -209,42 +210,43 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         view.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 
         //set listener for the button
-        final ImageView restaurantButton = (ImageView) findViewById(R.id.restaurant_add);
-        restaurantButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // only add the ones that are greater than 0
-                List<OrderItem> restaurantOrderItems = new ArrayList<>();
-                List<String> restaurantImgUrls = new ArrayList<>();
-                Iterator it = idToQuantity.entrySet().iterator();
-                while (it.hasNext()) {
-                    HashMap.Entry pair = (HashMap.Entry) it.next();
-//                    Log.v("CUNT", idToNote.toString());
-                    if (((int)pair.getValue() > 0) && (pair.getKey().toString() != "subtotal")){
-                        OrderItem orderItem = new OrderItem((int)pair.getValue(),idToConsumable.get(pair.getKey().toString()).name,
-                                idToConsumable.get(pair.getKey().toString()).price, idToNote.get(pair.getKey().toString()));
-                        restaurantOrderItems.add(orderItem);
-                        restaurantImgUrls.add(idToConsumable.get(pair.getKey().toString()).getImageUrl());
+        final TextView restaurantButton = (TextView) findViewById(R.id.restaurant_arrow_text);
+        if (restaurantButton != null) {
+            restaurantButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // only add the ones that are greater than 0
+                    List<OrderItem> restaurantOrderItems = new ArrayList<>();
+                    List<String> restaurantImgUrls = new ArrayList<>();
+                    Iterator it = idToQuantity.entrySet().iterator();
+                    while (it.hasNext()) {
+                        HashMap.Entry pair = (HashMap.Entry) it.next();
+                        if (((int) pair.getValue() > 0) && (pair.getKey().toString() != "subtotal")) {
+                            OrderItem orderItem = new OrderItem((int) pair.getValue(), idToConsumable.get(pair.getKey().toString()).name,
+                                    idToConsumable.get(pair.getKey().toString()).price, idToNote.get(pair.getKey().toString()));
+                            restaurantOrderItems.add(orderItem);
+                            restaurantImgUrls.add(idToConsumable.get(pair.getKey().toString()).getImageUrl());
+                        }
+                    }
+
+                    if (restaurantOrderItems.size() > 0) { //if user added food
+                        RestaurantOrder restaurantOrder = new RestaurantOrder("", restaurantOrderItems, idToQuantity.get("subtotal"));
+                        RestaurantOrderManager restaurantOrderManager = RestaurantOrderManager.getInstance();
+                        restaurantOrderManager.setOrder(restaurantOrder);
+                        restaurantOrderManager.setUrls(restaurantImgUrls);
+
+                        Intent intent = new Intent(getBaseContext(), RestaurantConfirmationActivity.class);
+                        startActivity(intent);
+                    } else { //all quantities are 0
+                        Toast.makeText(
+                                RestaurantActivity.this,
+                                "You didn't add any food!",
+                                Toast.LENGTH_LONG
+                        ).show();
                     }
                 }
-
-                if (restaurantOrderItems.size() > 0) { //if user added food
-                    RestaurantOrder restaurantOrder = new RestaurantOrder("",restaurantOrderItems, idToQuantity.get("subtotal"));
-                    RestaurantOrderManager restaurantOrderManager = RestaurantOrderManager.getInstance();
-                    restaurantOrderManager.setOrder(restaurantOrder);
-                    restaurantOrderManager.setUrls(restaurantImgUrls);
-
-                    Intent intent = new Intent(getBaseContext(), RestaurantConfirmationActivity.class);
-                    startActivity(intent);
-                } else { //all quantities are 0
-                    Toast.makeText(
-                            RestaurantActivity.this,
-                            "You didn't add any food!",
-                            Toast.LENGTH_LONG
-                    ).show();
-                }
-            }
-        });
+            });
+        }
     }
 
     /**
