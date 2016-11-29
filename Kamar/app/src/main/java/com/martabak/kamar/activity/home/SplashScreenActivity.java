@@ -13,7 +13,7 @@ import com.martabak.kamar.R;
 public class SplashScreenActivity extends Activity {
 
     //splash screen timer
-    private static int SPLASH_TIME_OUT = 3000;
+    private static int SPLASH_TIME_OUT = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
