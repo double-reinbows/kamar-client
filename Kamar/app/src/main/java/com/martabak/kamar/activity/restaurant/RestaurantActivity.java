@@ -72,6 +72,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         super.onCreate(savedInstanceState);
         permintaanFragment(); //permintaan status lights
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        Log.v("XXX", "XXX");
 
         MenuServer.getInstance(this).getMenu().subscribe(new Observer<List<Consumable>>() {
             @Override
@@ -81,8 +82,8 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                 sectionToConsumables = new HashMap<>();
                 expandableListViews = new ArrayList<>();
                 for (Consumable c : consumables) {
-                    Log.v("HELLO", c.sectionEn);
-                    if (!sections.contains(c.sectionEn)) {//new tab
+                    Log.v("HELLO", c.nameEn);
+                    if (!sections.contains(c.sectionEn)) {//new taHELLOb
 //                        Log.v("HELLO", "mate");
                         sections.add(c.sectionEn);
                         List<Consumable> temp = new ArrayList<>();
@@ -106,10 +107,10 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
             @Override
             public void onError(Throwable e) {}
             @Override
-            public void onNext(List<Consumable> consumables) {
-                RestaurantActivity.this.consumables = consumables;
+            public void onNext(List<Consumable> output) {
+                consumables = output;
 //                for (Consumable c:consumables) {
-//                    Log.v("HELLO", c.toString());
+//                    Log.v("HELLO", c.nameEn);
 //                }
             }
         });
@@ -125,18 +126,18 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
 
 
         //initialize constant variables
-        idToQuantity = new HashMap<>();
-        idToConsumable = new HashMap<>();
-        idToNote = new HashMap<>();
-        food = new ArrayList<>();
-        beverages = new ArrayList<>();
-        desserts = new ArrayList<>();
+//        idToQuantity = new HashMap<>();
+//        idToConsumable = new HashMap<>();
+//        idToNote = new HashMap<>();
+//        food = new ArrayList<>();
+//        beverages = new ArrayList<>();
+//        desserts = new ArrayList<>();
 //        foodExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
 //        bevExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
 //        dessExpListView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
-        subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
-        TextView totalText = (TextView)findViewById(R.id.order_total_text);
-        totalText.setText("Total");
+//        subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
+//        TextView totalText = (TextView)findViewById(R.id.order_total_text);
+//        totalText.setText("Total");
 
 //        doGetConsumablesOfSectionAndCreateExpList("FOOD", food, foodExpListView); //since 1st tab is always food
 
