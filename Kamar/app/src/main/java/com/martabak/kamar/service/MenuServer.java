@@ -87,7 +87,6 @@ public class MenuServer extends Server {
                     @Override public Observable<List<Consumable>> call(AllResponse<Consumable> response) {
                         List<Consumable> toReturn = new ArrayList<>(response.total_rows);
                         for (AllResponse<Consumable>.AllResult<Consumable> i : response.rows) {
-                            Log.v("CUNT", i.doc.nameEn);
                             toReturn.add(i.doc);
                         }
                         return Observable.just(toReturn);
