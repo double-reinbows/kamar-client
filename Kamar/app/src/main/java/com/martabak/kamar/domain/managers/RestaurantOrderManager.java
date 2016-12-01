@@ -1,7 +1,9 @@
 package com.martabak.kamar.domain.managers;
 
+import com.martabak.kamar.domain.Consumable;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -15,6 +17,8 @@ public class RestaurantOrderManager {
     private RestaurantOrder order = null;
 
     private List<String> restaurantImgUrls = null;
+
+    private HashMap<String, Consumable> idToConsumables = null;
 
     private RestaurantOrderManager() {}
 
@@ -51,6 +55,21 @@ public class RestaurantOrderManager {
      */
     public void setUrls(List<String> restaurantImgUrls) {
         this.restaurantImgUrls = restaurantImgUrls;
+    }
+
+    /**
+     * Save the consumables into memory
+     * @param sectionToConsumables
+     */
+    public void saveConsumables(HashMap<String, Consumable> sectionToConsumables) {
+        this.idToConsumables = sectionToConsumables;
+    }
+
+    /**
+     * @return the consumables
+     */
+    public HashMap<String, Consumable> getConsumables() {
+        return idToConsumables;
     }
 
 }

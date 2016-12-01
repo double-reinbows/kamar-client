@@ -255,6 +255,12 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                                 "Petugas: "+currPermintaan.assignee+
                                 "<br>Rincian: <b><br>"+contentString+"</b>"))
                         .setCancelable(true)
+                        .setNeutralButton("TUTUP", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        })
                 ;
                 AlertDialog alertDialog = builder.create();
                 //set font size
@@ -262,6 +268,8 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 TextView textView = (TextView) alertDialog.findViewById(android.R.id.message);
                 textView.setTextSize(25);
                 alertDialog.getWindow().setLayout(width, (height-100));
+                alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setBackgroundColor(0xffff0000);
+                alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(0xffffffff);
             }
         });
 

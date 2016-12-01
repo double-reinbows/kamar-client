@@ -30,13 +30,17 @@ public interface PermintaanService {
     @GET("permintaan/_design/permintaan/_view/state")
     Observable<ViewResponse<Permintaan>> getPermintaansOfState(@Query("key") String state);
 
+    @GET("permintaan/_design/permintaan/_view/time")
+    Observable<ViewResponse<Permintaan>> getPermintaansofTime(@Query("startKey") Date start, @Query("endKey") Date end);
+
+    @GET("permintaan/_all_docs?include_docs=true&descending=true&skip=1\"")
+    Observable<AllResponse<Permintaan>> getAllPermintaans();
+
     @POST("permintaan")
     Observable<PostResponse> createPermintaan(@Body Permintaan permintaan);
 
     @PUT("permintaan/{id}")
     Observable<PutResponse> updatePermintaan(@Path("id") String id, @Body Permintaan permintaan);
 
-    @GET("permintaan/_design/permintaan/_view/time")
-    Observable<ViewResponse<Permintaan>> getPermintaansofTime(@Query("startKey") Date start, @Query("endKey") Date end);
 
 }

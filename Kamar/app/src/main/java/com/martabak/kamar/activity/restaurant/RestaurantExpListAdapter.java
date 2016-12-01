@@ -72,7 +72,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         quantity.invalidate();
 
         //Set up main text
-        String childText = currConsumable.name;
+        String childText = currConsumable.nameEn;
         final TextView txtListChild = (TextView) convertView.findViewById(R.id.item_text);
         Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
         txtListChild.setTypeface(customFont);
@@ -139,7 +139,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     idToNote.put(currConsumable._id, note.getText().toString());
-                    Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "Adding note " + note.getText().toString() + " for " + currConsumable.name);
+                    Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "Adding note " + note.getText().toString() + " for " + currConsumable.nameEn);
                 }
             }
         });
