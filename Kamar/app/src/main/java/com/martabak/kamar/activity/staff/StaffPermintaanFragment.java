@@ -41,6 +41,7 @@ public  class StaffPermintaanFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_staff_permintaan, container, false);
         doGetPermintaansOfStateAndCreateExpList();
+
         return view;
      }
 

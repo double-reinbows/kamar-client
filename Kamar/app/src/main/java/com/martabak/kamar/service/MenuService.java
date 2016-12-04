@@ -1,9 +1,7 @@
 package com.martabak.kamar.service;
 
 import com.martabak.kamar.domain.Consumable;
-import com.martabak.kamar.domain.permintaan.Permintaan;
-import com.martabak.kamar.service.response.PostResponse;
-import com.martabak.kamar.service.response.PutResponse;
+import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.ViewResponse;
 
 import retrofit2.http.Body;
@@ -21,5 +19,8 @@ public interface MenuService {
 
     @GET("menu/_design/menu/_view/section")
     Observable<ViewResponse<Consumable>> getMenuBySection(@Query("key") String section2);
+
+    @GET("menu/_all_docs?include_docs=true&descending=true&skip=1")
+    Observable<AllResponse<Consumable>> getMenu();
 
 }

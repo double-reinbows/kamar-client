@@ -2,7 +2,7 @@
 <RelativeLayout
     android:id="@+id/bottombar_linearlayout"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="40dp"
     android:background="@color/roomNumberBackground"
     android:orientation="horizontal"
     android:layout_alignParentBottom="true"

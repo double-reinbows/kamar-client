@@ -179,4 +179,24 @@ public class PermintaanServer extends Server {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    /**
+     * @return All permintaans in the database.
+     * TODO: doesn't work, getPermintaansOfTime() can just call this if it works
+     * TODO: since a view is unnecessary to pull by time
+     */
+    public Observable<List<Permintaan>> getAllPermintaans() {
+        return service.getAllPermintaans()
+                .flatMap(new Func1<AllResponse<Permintaan>, Observable<List<Permintaan>>>() {
+                    @Override public Observable<List<Permintaan>> call(AllResponse<Permintaan> response) {
+                        List<Permintaan> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<Permintaan>.AllResult<Permintaan> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+                        return Observable.just(toReturn);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 }
