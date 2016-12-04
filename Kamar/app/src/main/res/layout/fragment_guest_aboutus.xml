@@ -15,7 +15,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="220dp"
             android:src="@drawable/banner"
             android:scaleType="fitXY"
             android:id="@+id/banner_image"/>

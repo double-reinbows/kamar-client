@@ -48,8 +48,6 @@ public class GuestEventFragment extends Fragment {
                 .placeholder(R.drawable.loading_batik)
                 .error(R.drawable.error)
                 .into(eventImageView);
-        eventImageView.getLayoutParams().height = 1000;
-        eventImageView.getLayoutParams().width = 1000;
     }
 
     @Override

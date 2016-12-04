@@ -5,6 +5,6 @@
     <stroke
         android:color="@color/guestHomeTextColor"
         android:width="1dp"/>
-    <size android:height="170dp"/>
+    <size android:height="120dp"/>
 
 </shape>

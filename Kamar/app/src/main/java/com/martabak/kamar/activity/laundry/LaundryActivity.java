@@ -2,10 +2,7 @@ package com.martabak.kamar.activity.laundry;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,15 +16,13 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
+import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
-import com.martabak.kamar.activity.restaurant.RestaurantPermintaanFragment;
 import com.martabak.kamar.domain.options.LaundryOption;
 import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -76,6 +71,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
         laundryOrderItems = new ArrayList<>();
         final LaundryRecyclerViewAdapter recyclerViewAdapter = new LaundryRecyclerViewAdapter(laundryOptions, laundryView);
         recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(LaundryActivity.this));
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -87,9 +83,9 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
             public void onClick(View v) {
                 int size =  laundryOptions.size();
 
-                for (int i=0; i < laundryOptions.size(); i++)
+                for (int i=0; i < recyclerView.getChildCount(); i++)
                 {
-                    View laundryView = layoutManager.findViewByPosition(i);
+                    View laundryView = recyclerView.getChildAt(i);
 
                     TextView quantityView = (TextView) laundryView.findViewById(R.id.quantity_text);
 
