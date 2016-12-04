@@ -197,4 +197,5 @@
     <string name="restaurant_confirmation_price_text">Итого с НАЛОГА</string>
     <string name="bellboy_cancel"></string>
     <string name="total_with_tax">Total with TAX</string>
+    <string name="staff_mode">STAFF MODE</string>
 </resources>

@@ -4,6 +4,8 @@
     <color name="colorNavBarBackground">#FFFFFF</color>
     <color name="colorAccent">#E57373</color>
     <color name="colorButton">#AC0D13</color>
+    <color name="splashScreenTransparent">#99AC0D13</color>
+    <color name="languageScreenTransparent">#90FFFFFF</color>
     <color name="roomNumberBackground">#be142d</color>
     <color name="guestHomeBackgroundColor">#FFFFFF</color>
     <color name="guestHomeTextColor">#808184</color>

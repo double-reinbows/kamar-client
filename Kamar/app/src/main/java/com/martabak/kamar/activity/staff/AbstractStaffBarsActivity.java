@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.GuestChatActivity;
+import com.martabak.kamar.activity.chat.StaffChatFragment;
 
 /**
  * An abstract class that provides functionality for the toolbar and bottom staff bar shared
@@ -41,7 +43,6 @@ public abstract class AbstractStaffBarsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getOptions().baseLayout);
         setupToolbar(getOptions().enableChatIcon);
-        setupBottomBar();
     }
 
     private void setupToolbar(boolean enableChatIcon) {
@@ -62,16 +63,11 @@ public abstract class AbstractStaffBarsActivity extends AppCompatActivity {
             chatIconView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(v.getContext(), GuestChatActivity.class));
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.staff_container, StaffChatFragment.newInstance())
+                            .commit();
                 }
             });
         }
-    }
-
-    private void setupBottomBar() {
-        String staff = "STAFF MODE";
-        TextView staffTextView = (TextView) findViewById(R.id.staff_text);
-        staffTextView.setText(staff);
-
     }
 }

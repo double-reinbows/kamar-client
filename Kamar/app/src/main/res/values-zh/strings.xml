@@ -195,4 +195,5 @@
     <string name="add_more_items">+添加更多的商品</string>
     <string name="restaurant_confirmation_price_text"> 总税收</string>
     <string name="total_with_tax">Total with TAX</string>
+    <string name="staff_mode">STAFF MODE</string>
 </resources>
