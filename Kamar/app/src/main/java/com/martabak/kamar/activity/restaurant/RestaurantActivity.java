@@ -39,6 +39,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     private HashMap<String, Consumable> idToConsumable;
     private HashMap<String, String> idToNote;
     //lists of sections
+    List<Consumable> consumables;
     List<String> sections; //AKA tabs
     private HashMap<String, List<Consumable>> sectionToConsumables;
     RestaurantExpListAdapter listAdapter;
@@ -63,20 +64,21 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         super.onCreate(savedInstanceState);
         permintaanFragment(); //permintaan status lights
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        idToConsumable = RestaurantOrderManager.getInstance().getConsumables();
+        consumables = RestaurantOrderManager.getInstance().getConsumables();
 
         if (idToConsumable == null) {
             Log.v("MEMORY", "server");
+            consumables = new ArrayList<>();
             MenuServer.getInstance(this).getMenu().subscribe(new Observer<List<Consumable>>() {
-                List<Consumable> consumables = new ArrayList<>();
 
                 @Override
                 public void onCompleted() {
                     //initialize constant variables
                     idToConsumable = new HashMap<>();
                     setGlobals();
-                    for (Consumable c : consumables) {
-//                        Log.v("HELLO", c.nameEn);
+                    for (int i=0; i<consumables.size()-1; i++) {
+                        Consumable c = consumables.get(i);
+                        Log.v("HELLO", c.nameEn + " " + c.sectionEn);
                         idToConsumable.put(c._id, c);
                         idToQuantity.put(c._id, 0);
                         idToNote.put(c._id, "");
@@ -86,11 +88,11 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                             temp.add(c);
                             sectionToConsumables.put(c.getSection(), temp);
                             //create tab
-                            if (tabLayout.getTabCount() == 0) { //add first tab
+//                            if (tabLayout.getTabCount() == 0) { //add first tab
                                 tabLayout.addTab(tabLayout.newTab().setText(c.getSection()));
-                            } else { //add new tab to the back
-                                tabLayout.addTab(tabLayout.newTab().setText(c.getSection()), tabLayout.getTabCount() - 1);
-                            }
+//                            } else { //add new tab to the back
+//                                tabLayout.addTab(tabLayout.newTab().setText(c.getSection()), tabLayout.getTabCount() - 1);
+//                            }
                             ExpandableListView tempView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
                             expandableListViews.put(c.getSection(), tempView);
                         } else { //previously found tab
@@ -100,7 +102,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                         }
                     }
                     setupTabs(tabLayout);
-                    RestaurantOrderManager.getInstance().saveConsumables(idToConsumable);
+                    RestaurantOrderManager.getInstance().saveConsumables(consumables);
                 }
 
                 @Override
@@ -115,8 +117,9 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         } else {
             Log.v("MEMORY", "memory");
             setGlobals();
-            for (String id : idToConsumable.keySet()) {
-                Consumable c = idToConsumable.get(id);
+            idToConsumable = new HashMap<>();
+            for (Consumable c : consumables) {
+                idToConsumable.put(c._id, c);
                 idToQuantity.put(c._id, 0);
                 idToNote.put(c._id, "");
                 if (!sections.contains(c.getSection())) {//new tab
@@ -178,17 +181,15 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                String selectedTab = tab.getText().toString();
-                createExpandableList(sectionToConsumables.get(selectedTab), expandableListViews.get(selectedTab));
+                String tabString = tab.getText().toString();
+                createExpandableList(sectionToConsumables.get(tabString), expandableListViews.get(tabString));
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
-
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                tab.select();
+                onTabSelected(tab);
             }
         });
     }
