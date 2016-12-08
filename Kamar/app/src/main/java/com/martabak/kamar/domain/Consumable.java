@@ -6,7 +6,10 @@ import com.google.gson.annotations.SerializedName;
 import com.martabak.kamar.service.MenuServer;
 import com.martabak.kamar.service.MenuService;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * A consumable item on a menu that a {@link Guest} can order from the ic_restaurant.
@@ -26,7 +29,7 @@ public class Consumable extends Model {
     /**
      * The BEVERAGES consumable section.
      */
-    public static final String SECTION_BEVERAGES = "BEVERAGES";
+    public static final Set<String> SECTION_BEVERAGES = new HashSet<>(Arrays.asList("DRINKS", "MINUMAN", "АЗИАНАПИТКИТСКИЙ", "饮料"));
 
     /**
      * The name; e.g. RAWON DAGING INDOLUXE.
@@ -248,6 +251,13 @@ public class Consumable extends Model {
      */
     public String getImageUrl() {
         return MenuServer.getBaseUrl() + "/menu/" + this._id + "/" + this.attachmentName;
+    }
+
+    /**
+     * @return Whether or not this permintaan is cancellable.
+     */
+    public boolean isDrinks() {
+        return SECTION_BEVERAGES.contains(getSection());
     }
 
 }

@@ -3,6 +3,10 @@
     package="com.martabak.kamar">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -10,8 +14,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:largeHeap="true"
-        android:theme="@style/KamarAppTheme">
-
+        android:theme="@style/KamarAppTheme"
+        android:name=".activity.home.KamarApp">
 
         <service android:name=".activity.chat.GuestChatService" />
         <service android:name=".activity.guest.GuestPermintaanService" />

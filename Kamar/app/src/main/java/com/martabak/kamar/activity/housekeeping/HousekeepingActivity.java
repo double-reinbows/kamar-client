@@ -59,10 +59,11 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
         super.onCreate(savedInstanceState);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        housekeepingSections = HousekeepingManager.getInstance().getSections();
+        hkOptions = HousekeepingManager.getInstance().getOptions();
 
-        if (housekeepingSections == null) {
-            housekeepingSections = new ArrayList<>();
+        if (hkOptions == null) {
+            Log.v("MEMORY", "server");
+//            housekeepingSections = new ArrayList<>();
             StaffServer.getInstance(this).getHousekeepingOptions().subscribe(new Observer<List<HousekeepingOption>>() {
                 @Override
                 public void onCompleted() {
@@ -73,14 +74,15 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                         idToQuantity = new HashMap<>();
                         setupSectionsOrder();
                         HousekeepingManager.getInstance().setOrder(idToQuantity);
-                        HousekeepingManager.getInstance().setSections(housekeepingSections);
+//                        HousekeepingManager.getInstance().setSections(housekeepingSections);
                         HousekeepingManager.getInstance().setHkOptions(hkOptions);
                         //initialize tabs
                         for (String section : housekeepingSections) {
                             tabLayout.addTab(tabLayout.newTab().setText(section));
                         }
-                        startHKFragment("Towels");
+//                        startHKFragment("Towels");
                         setTabListener();
+                        tabLayout.getTabAt(0).select();
                     }
                 }
 
@@ -97,14 +99,22 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                 }
             });
         } else {
-            hkOptions = HousekeepingManager.getInstance().getOptions();
+            Log.v("MEMORY", "memory");
+//            housekeepingSections = HousekeepingManager.getInstance().getSections();
+            housekeepingSections = new ArrayList<>();
+            for (HousekeepingOption hk : hkOptions) {
+                if (!housekeepingSections.contains(hk.getSection())) {
+                    housekeepingSections.add(String.valueOf(hk.getSection()));
+                }
+            }
             idToQuantity = HousekeepingManager.getInstance().getOrder();
             //initialize tabs
             for (String section : housekeepingSections) {
                 tabLayout.addTab(tabLayout.newTab().setText(section));
             }
-            startHKFragment("Towels");
+//            startHKFragment("Towels");
             setTabListener();
+            tabLayout.getTabAt(0).select();
         }
     }
 

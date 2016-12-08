@@ -196,4 +196,5 @@
     <string name="bellboy_confirm">PESAN</string>
     <string name="total_with_tax">Total with TAX</string>
     <string name="staff_mode">STAFF MODE</string>
+    <string name="restaurant_subtotal_text">Total sebelum PAJAK</string>
 </resources>
