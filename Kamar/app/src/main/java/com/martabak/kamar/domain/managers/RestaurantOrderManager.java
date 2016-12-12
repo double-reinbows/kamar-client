@@ -18,7 +18,7 @@ public class RestaurantOrderManager {
 
     private List<String> restaurantImgUrls = null;
 
-    private HashMap<String, Consumable> idToConsumables = null;
+    private List<Consumable> consumables = null;
 
     private RestaurantOrderManager() {}
 
@@ -59,17 +59,17 @@ public class RestaurantOrderManager {
 
     /**
      * Save the consumables into memory
-     * @param sectionToConsumables
+     * @param consumables
      */
-    public void saveConsumables(HashMap<String, Consumable> sectionToConsumables) {
-        this.idToConsumables = sectionToConsumables;
+    public void saveConsumables(List<Consumable> consumables) {
+        this.consumables = consumables;
     }
 
     /**
      * @return the consumables
      */
-    public HashMap<String, Consumable> getConsumables() {
-        return idToConsumables;
+    public List<Consumable> getConsumables() {
+        return consumables;
     }
 
 }
