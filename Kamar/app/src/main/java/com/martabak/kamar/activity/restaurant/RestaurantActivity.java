@@ -50,6 +50,10 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     private HashMap<String, ExpandableListView> expandableListViews;
 
 
+    /**
+     *
+     * @return
+     */
     protected Options getOptions() {
         return new Options()
                 .withBaseLayout(R.layout.activity_restaurant)
@@ -67,32 +71,26 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         consumables = RestaurantOrderManager.getInstance().getConsumables();
 
         if (idToConsumable == null) {
-            Log.v("MEMORY", "server");
             consumables = new ArrayList<>();
             MenuServer.getInstance(this).getMenu().subscribe(new Observer<List<Consumable>>() {
-
                 @Override
                 public void onCompleted() {
                     //initialize constant variables
                     idToConsumable = new HashMap<>();
                     setGlobals();
-                    for (int i=0; i<consumables.size()-1; i++) {
+                    for (int i=0; i<consumables.size()-1; i++) { //ignores the last Consumable (the view)
                         Consumable c = consumables.get(i);
-                        Log.v("HELLO", c.nameEn + " " + c.sectionEn);
+//                        Log.v("HELLO", c.nameEn + " " + c.sectionEn);
                         idToConsumable.put(c._id, c);
                         idToQuantity.put(c._id, 0);
                         idToNote.put(c._id, "");
-                        if (!sections.contains(c.getSection())) {//new tab
-                            sections.add(c.getSection());
+                        if (!sections.contains(c.getSection())) {//new tab/section
+                            sections.add(c.getSection()); //add to sections List
+                            //create new List of Consumables for the new section
                             List<Consumable> temp = new ArrayList<>();
                             temp.add(c);
-                            sectionToConsumables.put(c.getSection(), temp);
-                            //create tab
-//                            if (tabLayout.getTabCount() == 0) { //add first tab
-                                tabLayout.addTab(tabLayout.newTab().setText(c.getSection()));
-//                            } else { //add new tab to the back
-//                                tabLayout.addTab(tabLayout.newTab().setText(c.getSection()), tabLayout.getTabCount() - 1);
-//                            }
+                            sectionToConsumables.put(c.getSection(), temp); //link them together
+                            tabLayout.addTab(tabLayout.newTab().setText(c.getSection())); //add new tab
                             ExpandableListView tempView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
                             expandableListViews.put(c.getSection(), tempView);
                         } else { //previously found tab
@@ -115,7 +113,6 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                 }
             });
         } else {
-            Log.v("MEMORY", "memory");
             setGlobals();
             idToConsumable = new HashMap<>();
             for (Consumable c : consumables) {

@@ -68,17 +68,13 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                 @Override
                 public void onCompleted() {
                     Log.d(HousekeepingActivity.class.getCanonicalName(), "onCompleted");
-//                    idToQuantity = HousekeepingManager.getInstance().getOrder();
-                    //order dict has not been initialized which should always be the case
                     setupSectionsOrder();
                     HousekeepingManager.getInstance().setOrder(idToQuantity);
-//                        HousekeepingManager.getInstance().setSections(housekeepingSections);
                     HousekeepingManager.getInstance().setHkOptions(hkOptions);
                     //initialize tabs
                     for (String section : housekeepingSections) {
                         tabLayout.addTab(tabLayout.newTab().setText(section));
                     }
-//                        startHKFragment("Towels");
                     setTabListener();
                     tabLayout.getTabAt(0).select();
                 }
@@ -96,19 +92,18 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                 }
             });
         } else {
-//            housekeepingSections = HousekeepingManager.getInstance().getSections();
             housekeepingSections = new ArrayList<>();
             for (HousekeepingOption hk : hkOptions) {
                 if (!housekeepingSections.contains(hk.getSection())) {
                     housekeepingSections.add(String.valueOf(hk.getSection()));
                 }
             }
+            //Get previous orders
             idToQuantity = HousekeepingManager.getInstance().getOrder();
             //initialize tabs
             for (String section : housekeepingSections) {
                 tabLayout.addTab(tabLayout.newTab().setText(section));
             }
-//            startHKFragment("Towels");
             setTabListener();
             tabLayout.getTabAt(0).select();
         }
