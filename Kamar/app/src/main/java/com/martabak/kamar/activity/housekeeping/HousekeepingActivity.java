@@ -62,28 +62,25 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
         hkOptions = HousekeepingManager.getInstance().getOptions();
 
         if (hkOptions == null) {
-            Log.v("MEMORY", "server");
-//            housekeepingSections = new ArrayList<>();
+            housekeepingSections = new ArrayList<>();
+            idToQuantity = new HashMap<>();
             StaffServer.getInstance(this).getHousekeepingOptions().subscribe(new Observer<List<HousekeepingOption>>() {
                 @Override
                 public void onCompleted() {
                     Log.d(HousekeepingActivity.class.getCanonicalName(), "onCompleted");
-                    idToQuantity = HousekeepingManager.getInstance().getOrder();
+//                    idToQuantity = HousekeepingManager.getInstance().getOrder();
                     //order dict has not been initialized which should always be the case
-                    if (idToQuantity == null) {
-                        idToQuantity = new HashMap<>();
-                        setupSectionsOrder();
-                        HousekeepingManager.getInstance().setOrder(idToQuantity);
+                    setupSectionsOrder();
+                    HousekeepingManager.getInstance().setOrder(idToQuantity);
 //                        HousekeepingManager.getInstance().setSections(housekeepingSections);
-                        HousekeepingManager.getInstance().setHkOptions(hkOptions);
-                        //initialize tabs
-                        for (String section : housekeepingSections) {
-                            tabLayout.addTab(tabLayout.newTab().setText(section));
-                        }
-//                        startHKFragment("Towels");
-                        setTabListener();
-                        tabLayout.getTabAt(0).select();
+                    HousekeepingManager.getInstance().setHkOptions(hkOptions);
+                    //initialize tabs
+                    for (String section : housekeepingSections) {
+                        tabLayout.addTab(tabLayout.newTab().setText(section));
                     }
+//                        startHKFragment("Towels");
+                    setTabListener();
+                    tabLayout.getTabAt(0).select();
                 }
 
                 @Override
@@ -99,7 +96,6 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                 }
             });
         } else {
-            Log.v("MEMORY", "memory");
 //            housekeepingSections = HousekeepingManager.getInstance().getSections();
             housekeepingSections = new ArrayList<>();
             for (HousekeepingOption hk : hkOptions) {
