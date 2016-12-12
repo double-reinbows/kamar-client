@@ -98,10 +98,8 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         float finalPriceFloat = subFinalPriceInteger.floatValue() + tax + svcCharge;
 
         Integer finalPriceInteger = (int)finalPriceFloat;
-        String newFinalPrice = finalPriceInteger.toString();
         DecimalFormat df = new DecimalFormat("#,###,###");
         finalPriceTextView.setText("Rp. "+df.format(finalPriceInteger).replaceAll(",", " "));
-//        finalPriceTextView.setText("Rp. " + newFinalPrice);
 
         //+ Add More Items
         TextView addMoreText = (TextView)findViewById(R.id.order_add_more);
