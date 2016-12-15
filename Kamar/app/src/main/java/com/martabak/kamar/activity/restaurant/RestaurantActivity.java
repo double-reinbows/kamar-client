@@ -248,7 +248,6 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         //set list adapter onto view
         view.setAdapter(listAdapter);
         //open the first expandable group if we are in the DRINKS tab
-//        if (consumables.get(0).getSection().matches(Consumable.SECTION_BEVERAGES)) {
         if (consumables.get(0).isDrinks()) {
             view.expandGroup(0, true);
         }
