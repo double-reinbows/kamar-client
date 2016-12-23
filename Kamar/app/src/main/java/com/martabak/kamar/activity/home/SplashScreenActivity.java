@@ -26,7 +26,6 @@ public class SplashScreenActivity extends Activity {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v("CUNT", "cunt");
                 Intent intent = new Intent(SplashScreenActivity.this, SelectLanguageActivity.class);
                 startActivity(intent);
             }
