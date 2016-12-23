@@ -26,6 +26,7 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.PermintaanServer;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -97,8 +98,8 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         float finalPriceFloat = subFinalPriceInteger.floatValue() + tax + svcCharge;
 
         Integer finalPriceInteger = (int)finalPriceFloat;
-        String newFinalPrice = finalPriceInteger.toString();
-        finalPriceTextView.setText("RP." + newFinalPrice);
+        DecimalFormat df = new DecimalFormat("#,###,###");
+        finalPriceTextView.setText("Rp. "+df.format(finalPriceInteger).replaceAll(",", " "));
 
         //+ Add More Items
         TextView addMoreText = (TextView)findViewById(R.id.order_add_more);
