@@ -20,7 +20,7 @@ public interface MenuService {
     @GET("menu/_design/menu/_view/section")
     Observable<ViewResponse<Consumable>> getMenuBySection(@Query("key") String section2);
 
-    @GET("menu/_all_docs?include_docs=true&descending=true&skip=1")
+    @GET("menu/_all_docs?include_docs=true")
     Observable<AllResponse<Consumable>> getMenu();
 
 }

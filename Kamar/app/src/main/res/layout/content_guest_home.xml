@@ -13,7 +13,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/guest_container"
         android:orientation="vertical"
-        android:layout_marginTop="40dp"
         tools:context=".activity.guest.GuestHomeActivity">
     </RelativeLayout>
 

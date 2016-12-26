@@ -160,7 +160,11 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         public void onClick(DialogInterface dialog, int which) {
                             String assignee = textInput.getText().toString();
                             getAndUpdatePermintaan(currPermintaan._id, 0, assignee);
-                            ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+                            if (assignPermintaanButton.getParent() != null) {
+                                ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+                            } else {
+                                //TODO: not sure lol. sometimes this crashes
+                            }
 
                         }
                     });
