@@ -236,6 +236,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
     public void sendCreateGuestRequest(String firstName, String lastName, String phoneNumber,
             String email, String roomNumber, Date checkOutDate, String welcome, String promoImageId) {
         Calendar c = Calendar.getInstance();
+        c.add(Calendar.MINUTE, -1); // little hack here
         Date currentDate = c.getTime();
 
         GuestServer.getInstance(getActivity().getBaseContext()).createGuest(new Guest(
