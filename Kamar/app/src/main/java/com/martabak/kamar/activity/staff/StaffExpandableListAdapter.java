@@ -159,12 +159,16 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String assignee = textInput.getText().toString();
+//                            disableButtons((ViewGroup)assignPermintaanButton.getParent());
+//                            notifyDataSetChanged();
                             getAndUpdatePermintaan(currPermintaan._id, 0, assignee);
+                            ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+                            /*
                             if (assignPermintaanButton.getParent() != null) {
-                                ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+
                             } else {
                                 //TODO: not sure lol. sometimes this crashes
-                            }
+                            }*/
 
                         }
                     });
@@ -383,6 +387,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         final String updatedAssignee = setAssignee(assignee, currPermintaan);
         final String targetState = setTargetState(currPermintaan.state, increment);
 
+        //disableButtons();
         PermintaanServer.getInstance(context).getPermintaan(currPermintaan._id).subscribe(new Observer<Permintaan>() {
             String rev;
             @Override
@@ -474,6 +479,23 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
             return currPermintaan.assignee;
         } else {
             return assignee;
+        }
+    }
+
+    /**
+     * Disables all of the buttons
+     */
+    private void disableButtons(ViewGroup parentGroup) {
+        for (int i=0; i<parentGroup.getChildCount(); i++) {
+            View v = parentGroup.getChildAt(i);
+            v.setEnabled(false);
+            /*
+            if (v instanceof ImageView) {
+                v.setEnabled(false);
+            }else
+            if (v instanceof Button) {
+                ((Button)v).setEnabled(false);
+            }*/
         }
     }
     @Override
