@@ -167,7 +167,7 @@
     <string name="logout">STAFF ONLY</string>
     <string name="nav_drawer_about">TENTANG KAMI</string>
     <string name="nav_drawer_change_language">GANTI BAHASA</string>
-    <string name="nav_drawer_home">Homepage</string>
+    <string name="nav_drawer_home">HOME</string>
     <string name="permintaan_assign_person">Masukkan nama staf seseorang</string>
     <string name="permintaan_title">Requests</string>
     <string name="restaurant_back_button">Back</string>
