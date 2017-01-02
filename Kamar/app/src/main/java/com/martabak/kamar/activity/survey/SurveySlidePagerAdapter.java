@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -66,7 +68,9 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
 
     public static class ScreenSlidePageFragment extends Fragment implements RatingBar.OnRatingBarChangeListener {
         public ScreenSlidePageFragment() {};
-        private RecyclerView recyclerView;
+        @BindView(R.id.survey_list) RecyclerView recyclerView;
+        @BindView(R.id.survey_section_text) TextView sectionText;
+        @BindView(R.id.survey_submit) Button submitButton;
         private HashMap<String, Integer> idToRating;
 
         @Override
@@ -86,15 +90,12 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
             }
             ViewGroup rootView = (ViewGroup) inflater.inflate(
                     R.layout.survey_fragment_slide, container, false);
-            recyclerView = (RecyclerView)rootView.findViewById(R.id.survey_list);
-            TextView sectionText = (TextView)rootView.findViewById(R.id.survey_section_text);
+            ButterKnife.bind(this, rootView);
 
             List<SurveyQuestion> questionList = sectionMappings.get(currSection);
             sectionText.setText(questionList.get(0).getSection());
             SurveyRecyclerAdapter recyclerAdapter = new SurveyRecyclerAdapter(questionList, ScreenSlidePageFragment.this);
             recyclerView.setAdapter(recyclerAdapter);
-
-            Button submitButton = (Button)rootView.findViewById(R.id.survey_submit);
             if (flag) {//last slide
                 submitButton.setAlpha(0.9f);
                 submitButton.setOnClickListener(new View.OnClickListener() {

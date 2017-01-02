@@ -18,6 +18,9 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * The ic_restaurant confirmation array adapter class is a recycler view to hold the items for the
  *  ic_restaurant confirmation activity.
@@ -33,19 +36,15 @@ public class RestaurantConfirmationArrayAdapter
     private Context context;
 
     public class RestaurantConfirmationViewHolder extends RecyclerView.ViewHolder {
-        public TextView restaurantTextView;
-        public TextView restaurantSubPriceTextView;
-        public TextView restaurantQuantityTextView;
-        public TextView restaurantNoteTextView;
-        public ImageView itemImg;
+        @BindView(R.id.restaurant_confirmation_sub_price) TextView restaurantSubPriceTextView;
+        @BindView(R.id.restaurant_confirmation_text) TextView restaurantTextView;
+        @BindView(R.id.restaurant_confirmation_quantity) TextView restaurantQuantityTextView;
+        @BindView(R.id.item_note) TextView restaurantNoteTextView;
+        @BindView(R.id.item_img) ImageView itemImg;
 
         public RestaurantConfirmationViewHolder(View restaurantConfirmationView) {
             super(restaurantConfirmationView);
-            restaurantTextView = (TextView) restaurantConfirmationView.findViewById(R.id.restaurant_confirmation_text);
-            restaurantSubPriceTextView = (TextView) restaurantConfirmationView.findViewById(R.id.restaurant_confirmation_sub_price);
-            restaurantQuantityTextView = (TextView) restaurantConfirmationView.findViewById(R.id.restaurant_confirmation_quantity);
-            restaurantNoteTextView = (TextView) restaurantConfirmationView.findViewById(R.id.item_note);
-            itemImg = (ImageView) restaurantConfirmationView.findViewById(R.id.item_img);
+            ButterKnife.bind(this, restaurantConfirmationView);
         }
     }
 

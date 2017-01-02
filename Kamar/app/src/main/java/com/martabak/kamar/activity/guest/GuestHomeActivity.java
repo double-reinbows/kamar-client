@@ -40,6 +40,9 @@ import com.martabak.kamar.activity.staff.CheckGuestInFragment;
 import java.util.Calendar;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observer;
 
 public class GuestHomeActivity extends AppCompatActivity implements
@@ -49,11 +52,18 @@ public class GuestHomeActivity extends AppCompatActivity implements
 
     private String guestSelectedOption;
 
+    // on click bindings for the guest home activity
+    @OnClick(R.id.chat_icon)
+    public void onChatIConClick(View v) {
+        startActivity(new Intent(v.getContext(), GuestChatActivity.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_home);
 
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -68,15 +78,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
         }
-
-        // chat icon click
-        ImageView chatIconView = (ImageView) findViewById(R.id.chat_icon);
-        chatIconView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), GuestChatActivity.class));
-            }
-        });
 
         getFragmentManager().beginTransaction()
                 .add(R.id.guest_container, GuestHomeFragment.newInstance())

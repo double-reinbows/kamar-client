@@ -15,11 +15,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 public class SurveyActivity extends AbstractGuestBarsActivity {
 
-    private ViewPager viewPager;
+    @BindView(R.id.survey_pager) ViewPager viewPager;
     private List<String> sections;
     private HashMap<String, List<SurveyQuestion>> sectionMappings; //section to questions
     private HashMap<String, Integer> idToRating;
@@ -37,9 +39,8 @@ public class SurveyActivity extends AbstractGuestBarsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ButterKnife.bind(this);
         // Instantiate a ViewPager and a PagerAdapter.
-        viewPager = (ViewPager) findViewById(R.id.survey_pager);
         viewPager.setOffscreenPageLimit(10); //maintains views of off-screen slides
 
         if (SurveyManager.getInstance().getMappings() == null) {

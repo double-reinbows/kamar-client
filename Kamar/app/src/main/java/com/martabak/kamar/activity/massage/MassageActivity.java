@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -37,7 +39,7 @@ import rx.Observer;
  */
 public class MassageActivity extends AbstractGuestBarsActivity implements View.OnClickListener {
 
-    private RecyclerView recyclerView;
+    @BindView(R.id.massage_list) RecyclerView recyclerView;
     private List<MassageOption> massageOptions;
     private Map<String, String> statuses; // Maps massage option ID -> request status
     private MassageRecyclerViewAdapter recyclerViewAdapter;
@@ -54,13 +56,12 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
         loadOptions();
     }
 
     private void loadOptions() {
-        recyclerView = (RecyclerView)findViewById(R.id.massage_list);
         massageOptions = new ArrayList<>();
-
         StaffServer.getInstance(this).getMassageOptions().subscribe(new Observer<List<MassageOption>>() {
             @Override public void onCompleted() {
                 Log.d(MassageActivity.class.getCanonicalName(), "getMassageOptions#onCompleted");
@@ -253,28 +254,21 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
         public class ViewHolder extends RecyclerView.ViewHolder {
             public MassageOption item;
             public final View rootView;
-            public final ImageView imageView;
-            public final TextView nameView;
-            public final TextView lengthView;
-            public final TextView priceView;
+            @BindView(R.id.massage_image) ImageView imageView;
+            @BindView(R.id.massage_name) TextView nameView;
+            @BindView(R.id.massage_length) TextView lengthView;
+            @BindView(R.id.massage_price) TextView priceView;
 //            public final TextView descriptionView;
-            public final View sentImageView;
-            public final View processedImageView;
-            public final View completedImageView;
-            public final View buttonView;
+            @BindView(R.id.sent_image) View sentImageView;
+            @BindView(R.id.processed_image) View processedImageView;
+            @BindView(R.id.completed_image) View completedImageView;
+            @BindView(R.id.order_button) View buttonView;
 
             public ViewHolder(View view) {
                 super(view);
                 rootView = view;
-                imageView = (ImageView) view.findViewById(R.id.massage_image);
-                nameView = (TextView) view.findViewById(R.id.massage_name);
-                lengthView = (TextView) view.findViewById(R.id.massage_length);
-                priceView = (TextView) view.findViewById(R.id.massage_price);
 //                descriptionView = (TextView) view.findViewById(R.id.massage_description);
-                sentImageView = view.findViewById(R.id.sent_image);
-                processedImageView = view.findViewById(R.id.processed_image);
-                completedImageView = view.findViewById(R.id.completed_image);
-                buttonView = view.findViewById(R.id.order_button);
+                ButterKnife.bind(this, view);
             }
 
             @Override

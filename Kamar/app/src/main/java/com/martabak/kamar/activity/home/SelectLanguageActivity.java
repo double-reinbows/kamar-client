@@ -24,6 +24,7 @@ import com.martabak.kamar.service.Server;
 import java.util.Locale;
 
 import butterknife.BindString;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;

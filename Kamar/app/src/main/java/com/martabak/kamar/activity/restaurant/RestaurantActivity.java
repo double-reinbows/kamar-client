@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -43,8 +45,6 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     List<String> sections; //AKA tabs
     private HashMap<String, List<Consumable>> sectionToConsumables;
     RestaurantExpListAdapter listAdapter;
-    private TextView subtotalText;
-    private TextView arrowText;
 
     //Views
     private HashMap<String, ExpandableListView> expandableListViews;
@@ -63,10 +63,15 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                 .enableChatIcon(true);
     }
 
+    //bind views here
+    @BindView(R.id.restaurant_subtotal_text) TextView subtotalText;
+    @BindView(R.id.restaurant_arrow_text) TextView arrowText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         permintaanFragment(); //permintaan status lights
+        ButterKnife.bind(this);
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         consumables = RestaurantOrderManager.getInstance().getConsumables();
 
@@ -151,8 +156,6 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         expandableListViews = new HashMap<>();
         idToQuantity = new HashMap<>();
         idToQuantity.put("subtotal", 0);
-        subtotalText = (TextView) findViewById(R.id.restaurant_subtotal_text);
-        arrowText = (TextView) findViewById(R.id.restaurant_arrow_text);
         arrowText.setText("\u2192");
         subtotalText.setText("Rp. " + idToQuantity.get("subtotal").toString());
         idToNote = new HashMap<>();

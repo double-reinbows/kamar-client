@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -43,7 +45,7 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
     private List<String> housekeepingSections;
     private List<HousekeepingOption> hkOptions;
     private HashMap<String, Integer> idToQuantity;
-    private TabLayout tabLayout;
+    @BindView(R.id.tabs) TabLayout tabLayout;
 
     protected Options getOptions() {
         return new Options()
@@ -57,8 +59,7 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        ButterKnife.bind(this);
         hkOptions = HousekeepingManager.getInstance().getOptions();
 
         if (hkOptions == null) {
@@ -152,7 +153,8 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
      * This fragment generates the list of housekeeping options.
      */
     public static class HousekeepingFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
-        private RecyclerView optionRecyclerView;
+
+        @BindView(R.id.hk_option_recycler) RecyclerView optionRecyclerView;
         private Map<String, String> idToStatus;
         Integer quantity;
         private HousekeepingOptionAdapter hkOptionRecyclerAdapter;
@@ -163,7 +165,7 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                                  Bundle savedInstanceState) {
 
             View view = inflater.inflate(R.layout.fragment_housekeeping, container, false);
-            optionRecyclerView = (RecyclerView) view.findViewById(R.id.hk_option_recycler);
+            ButterKnife.bind(this,view);
             final ArrayList<HousekeepingOption> temp = buildOptions();
             idToStatus = new HashMap<>();
             quantity = 0;

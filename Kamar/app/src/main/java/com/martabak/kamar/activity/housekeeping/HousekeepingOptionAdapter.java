@@ -21,6 +21,9 @@ import com.martabak.kamar.service.Server;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class HousekeepingOptionAdapter
         extends RecyclerView.Adapter<HousekeepingOptionAdapter.ViewHolder> {
 
@@ -132,25 +135,20 @@ public class HousekeepingOptionAdapter
 
         public HousekeepingOption item;
         public final View rootView;
-        public final TextView nameView;
-        public final View submitButton;
-        public final View sentImageView;
-        public final View processedImageView;
-        public final View completedImageView;
-        public final ImageView imgView;
-        public final RadioGroup radioGroup;
         public final RadioButton checkedRadioButton;
+
+        @BindView(R.id.hk_name) TextView nameView;
+        @BindView(R.id.hk_submit) View submitButton;
+        @BindView(R.id.sent_image) View sentImageView;
+        @BindView(R.id.processed_image) View processedImageView;
+        @BindView(R.id.completed_image) View completedImageView;
+        @BindView(R.id.hk_img) ImageView imgView;
+        @BindView(R.id.radio_group) RadioGroup radioGroup;
 
         public ViewHolder(View view) {
             super(view);
+            ButterKnife.bind(this, view);
             rootView = view;
-            nameView = (TextView) view.findViewById(R.id.hk_name);
-            submitButton = view.findViewById(R.id.hk_submit);
-            sentImageView = view.findViewById(R.id.sent_image);
-            processedImageView = view.findViewById(R.id.processed_image);
-            completedImageView = view.findViewById(R.id.completed_image);
-            imgView = (ImageView) view.findViewById(R.id.hk_img);
-            radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
             checkedRadioButton = (RadioButton) view.findViewById(radioGroup.getCheckedRadioButtonId());
         }
 

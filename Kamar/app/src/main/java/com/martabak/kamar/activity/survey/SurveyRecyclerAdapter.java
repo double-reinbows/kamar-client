@@ -18,6 +18,9 @@ import com.martabak.kamar.domain.SurveyQuestion;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  *
  */
@@ -57,14 +60,13 @@ public class SurveyRecyclerAdapter
     public class ViewHolder extends RecyclerView.ViewHolder {
         public SurveyQuestion item;
         public final View rootView;
-        public final TextView mainText;
-        public final RatingBar ratingBar;
+        @BindView(R.id.survey_row_text) TextView mainText;
+        @BindView(R.id.survey_rating_bar) RatingBar ratingBar;
 
         public ViewHolder(View view) {
             super(view);
             rootView = view;
-            ratingBar = (RatingBar)view.findViewById(R.id.survey_rating_bar);
-            mainText = (TextView) view.findViewById(R.id.survey_row_text);
+            ButterKnife.bind(this, view);
         }
 
         @Override

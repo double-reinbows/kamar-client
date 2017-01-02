@@ -42,6 +42,8 @@ import com.martabak.kamar.service.GuestServer;
 import java.util.Calendar;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -85,11 +87,16 @@ public abstract class AbstractGuestBarsActivity extends AppCompatActivity implem
         }
     }
 
+    // binding the views here
+    @BindView(R.id.room_number) TextView roomTextView;
+    @BindView(R.id.toolbar_title) TextView toolbarText;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getOptions().baseLayout);
-
+        ButterKnife.bind(this);
         setupToolbar(getOptions().toolbarLabel, getOptions().enableChatIcon);
         setupBottomBar(getOptions().showLogoutIcon);
         setupTabLayout(getOptions().showTabLayout);
@@ -101,7 +108,6 @@ public abstract class AbstractGuestBarsActivity extends AppCompatActivity implem
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        TextView toolbarText = (TextView)findViewById(R.id.toolbar_title);
         toolbarText.setText(label);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,10 +133,8 @@ public abstract class AbstractGuestBarsActivity extends AppCompatActivity implem
 
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-        TextView roomTextView = (TextView) findViewById(R.id.room_number);
         roomTextView.setText(roomNumber);
-
-        View logoutView = findViewById(R.id.logoutIcon);
+        ImageView logoutView = (ImageView) findViewById(R.id.logoutIcon);
         if (showLogoutIcon) {
             if (logoutView != null) {
                 logoutView.setOnClickListener(new View.OnClickListener() {
