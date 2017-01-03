@@ -41,6 +41,8 @@ import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.domain.permintaan.Transport;
 import com.martabak.kamar.service.PermintaanServer;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 class StaffExpandableListAdapter extends BaseExpandableListAdapter {
@@ -50,10 +52,10 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, List<String>> stateToPermIds;
     private HashMap<String, Permintaan> idToPermintaan;
-    ImageView assignPermintaanButton;
-    ImageView infoPermintaanButton;
-    Button progressPermintaanButton;
-    Button regressPermintaanButton;
+    @BindView(R.id.assign_permintaan_button) ImageView assignPermintaanButton;
+    @BindView(R.id.info_permintaan_button) ImageView infoPermintaanButton;
+    @BindView(R.id.progress_permintaan_button) Button progressPermintaanButton;
+    @BindView(R.id.regress_permintaan_button) Button regressPermintaanButton;
 
 
     public StaffExpandableListAdapter(Context context, List<String> states,
@@ -84,7 +86,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         LayoutInflater infalInflater = (LayoutInflater) this.context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = infalInflater.inflate(R.layout.staff_permintaan_row, null);
-
+        ButterKnife.bind(this, convertView);
 
         //Set main text
         TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
@@ -121,11 +123,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         ColorMatrixColorFilter cf = new ColorMatrixColorFilter(matrix);
 
         //Initialize the ImageViews (buttons)
-        assignPermintaanButton =(ImageView) convertView.findViewById(R.id.assign_permintaan_button);
-        infoPermintaanButton = (ImageView) convertView.findViewById(R.id.info_permintaan_button);
         infoPermintaanButton.setColorFilter(0xffff0000);
-        progressPermintaanButton = (Button) convertView.findViewById(R.id.progress_permintaan_button);
-        regressPermintaanButton = (Button) convertView.findViewById(R.id.regress_permintaan_button);
 
         if (currPermintaan.state.equals(Permintaan.STATE_NEW)) {
             progressPermintaanButton.setText("PROCESS");
