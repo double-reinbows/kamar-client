@@ -19,6 +19,8 @@ import com.martabak.kamar.service.GuestServer;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -33,11 +35,13 @@ public class StaffChatFragment extends Fragment {
         return new StaffChatFragment();
     }
 
+    //bind views here
+    @BindView(R.id.chat_list) RecyclerView recyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_chat_list, container, false);
-
-        RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.chat_list);
+        ButterKnife.bind(this,rootView);
         final List<Guest> guests = new ArrayList<Guest>();
         final ChatRecyclerViewAdapter recyclerViewAdapter = new ChatRecyclerViewAdapter(guests);
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -91,17 +95,19 @@ public class StaffChatFragment extends Fragment {
             return mValues.size();
         }
 
+
+
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
+            //bind views here
+            @BindView(R.id.id) TextView mIdView;
+            @BindView(R.id.content) TextView mContentView;
             public Guest mItem;
 
             public ViewHolder(View view) {
                 super(view);
+                ButterKnife.bind(this,view);
                 mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
                 mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

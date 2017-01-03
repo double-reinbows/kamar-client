@@ -45,6 +45,7 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
     private List<String> housekeepingSections;
     private List<HousekeepingOption> hkOptions;
     private HashMap<String, Integer> idToQuantity;
+    //binding view here
     @BindView(R.id.tabs) TabLayout tabLayout;
 
     protected Options getOptions() {

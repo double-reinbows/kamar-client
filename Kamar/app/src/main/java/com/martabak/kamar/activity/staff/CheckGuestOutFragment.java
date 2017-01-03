@@ -25,6 +25,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnItemSelected;
 import rx.Observer;
 
 /**
@@ -33,10 +37,9 @@ import rx.Observer;
 public class CheckGuestOutFragment extends Fragment  {
 
     private String roomNumber;
+    private List<String> roomNumbers;
     private Guest guest;
     private ArrayAdapter rooms;
-    private TextView guestInfoText;
-    private Button submitButton;
 
     public CheckGuestOutFragment() {
     }
@@ -45,13 +48,27 @@ public class CheckGuestOutFragment extends Fragment  {
         return new CheckGuestOutFragment();
     }
 
+    // bind views here
+    @BindView(R.id.guest_info) TextView guestInfoText;
+    @BindView(R.id.guest_spinner_checkout) Spinner spinner;
+    @BindView(R.id.check_guest_out_submit) Button submitButton;
+
+    // on click listener
+    @OnClick(R.id.check_guest_out_submit)
+    void onSubmit() {
+        if (guest != null) {
+            checkGuestOut(guest);
+        }
+    }
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View parentView =  inflater.inflate(R.layout.fragment_check_guest_out, container, false);
-        guestInfoText = (TextView)parentView.findViewById(R.id.guest_info);
-        final Spinner spinner = (Spinner) parentView.findViewById(R.id.guest_spinner_checkout);
-        final List<String> roomNumbers = getRoomNumbersWithGuests();
-        submitButton = (Button) parentView.findViewById(R.id.check_guest_out_submit);
+        ButterKnife.bind(this,parentView);
+
+        roomNumbers = getRoomNumbersWithGuests();
 
         rooms = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
@@ -72,14 +89,6 @@ public class CheckGuestOutFragment extends Fragment  {
             }
             @Override public void onNothingSelected(AdapterView<?> parent) {
                 submitButton.setEnabled(false);
-            }
-        });
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
-                if (guest != null) {
-                    checkGuestOut(guest);
-                }
             }
         });
 

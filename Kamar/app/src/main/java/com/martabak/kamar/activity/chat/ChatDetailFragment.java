@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -75,6 +77,11 @@ public class ChatDetailFragment extends Fragment {
     public ChatDetailFragment() {
     }
 
+    //bind views here
+    @BindView(R.id.chat_message_list) RecyclerView recyclerView;
+    @BindView(R.id.chat_send_button) Button sendButton;
+    @BindView(R.id.chat_message_edit_text) EditText messageEditText;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,11 +97,10 @@ public class ChatDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.chat_detail, container, false);
-
+        ButterKnife.bind(this,rootView);
         if (mGuestId != null) {
             Log.d(ChatDetailFragment.class.getCanonicalName(), "Creating view for " + mGuestId);
 
-            RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.chat_message_list);
             mChatMessages = new ArrayList<>();
             mRecyclerViewAdapter = new MessageRecyclerViewAdapter(mChatMessages);
             recyclerView.setAdapter(mRecyclerViewAdapter);
@@ -102,9 +108,6 @@ public class ChatDetailFragment extends Fragment {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             layoutManager.setStackFromEnd(true);
             recyclerView.setLayoutManager(layoutManager);
-
-            EditText messageEditText = (EditText) rootView.findViewById(R.id.chat_message_edit_text);
-            Button sendButton = (Button) rootView.findViewById(R.id.chat_send_button);
             sendButton.setOnClickListener(new MessageSender(messageEditText, mGuestId, mSender));
         } else {
             Log.e(ChatDetailFragment.class.getCanonicalName(), "mGuestId is null");
@@ -215,21 +218,17 @@ public class ChatDetailFragment extends Fragment {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
-            public final LinearLayout mLinearLayout;
-            public final TextView mFromView;
-            public final TextView mSentTimeView;
-            public final ImageView mIconView;
-            public final TextView mMessageView;
+            @BindView(R.id.chat_message_layout) LinearLayout mLinearLayout;
+            @BindView(R.id.chat_message_from) TextView mFromView;
+            @BindView(R.id.chat_message_sent_time) TextView mSentTimeView;
+            @BindView(R.id.chat_message_icon) ImageView mIconView;
+            @BindView(R.id.chat_message_text) TextView mMessageView;
             public ChatMessage mItem;
 
             public ViewHolder(View view) {
                 super(view);
+                ButterKnife.bind(this,view);
                 mView = view;
-                mLinearLayout = (LinearLayout) view.findViewById(R.id.chat_message_layout);
-                mFromView = (TextView) view.findViewById(R.id.chat_message_from);
-                mSentTimeView = (TextView) view.findViewById(R.id.chat_message_sent_time);
-                mIconView = (ImageView) view.findViewById(R.id.chat_message_icon);
-                mMessageView = (TextView) view.findViewById(R.id.chat_message_text);
             }
 
             @Override

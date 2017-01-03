@@ -39,6 +39,7 @@ import rx.Observer;
  */
 public class MassageActivity extends AbstractGuestBarsActivity implements View.OnClickListener {
 
+    // bind view here
     @BindView(R.id.massage_list) RecyclerView recyclerView;
     private List<MassageOption> massageOptions;
     private Map<String, String> statuses; // Maps massage option ID -> request status

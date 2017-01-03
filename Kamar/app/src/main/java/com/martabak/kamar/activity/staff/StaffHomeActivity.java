@@ -20,6 +20,7 @@ import com.martabak.kamar.activity.home.SelectLanguageActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class StaffHomeActivity extends AbstractStaffBarsActivity {
 
@@ -31,6 +32,12 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity {
                 .enableChatIcon(true);
     }
 
+    // on click bindings for the guest home activity
+    @OnClick(R.id.chat_icon)
+    public void onChatIConClick() {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.staff_container, StaffChatFragment.newInstance()).commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
