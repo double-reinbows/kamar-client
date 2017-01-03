@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,8 @@ import java.util.Locale;
  * Duplicate of SelectLanguageActivity because this is a fragment instead of activity.
  * Does not have the welcome/promoImg code either
  */
-public class SelectLanguageFragment extends Fragment {
+public class
+SelectLanguageFragment extends Fragment {
 
     public SelectLanguageFragment() {
     }
@@ -41,7 +43,9 @@ public class SelectLanguageFragment extends Fragment {
         final ImageButton indonesianButton = (ImageButton) view.findViewById(R.id.language_bahasa);
         final ImageButton russianButton = (ImageButton) view.findViewById(R.id.language_russian);
         final ImageButton zhButton = (ImageButton) view.findViewById(R.id.language_zh);
+        ImageView logo = (ImageView)view.findViewById(R.id.logo);
 
+        logo.setVisibility(View.GONE);
 
         if (englishButton != null) {
             englishButton.setOnClickListener(new View.OnClickListener() {

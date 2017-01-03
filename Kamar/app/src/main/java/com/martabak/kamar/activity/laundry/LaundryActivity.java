@@ -376,6 +376,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
             Log.d(LaundryActivity.class.getCanonicalName(), "Loading image " + holder.item.getImageUrl() + " into " + holder.imageView);
             Server.picasso(LaundryActivity.this)
                     .load(holder.item.getImageUrl())
+                    .resize(150,150)
                     .placeholder(R.drawable.loading_batik)
                     .error(R.drawable.error)
                     .into(holder.imageView);

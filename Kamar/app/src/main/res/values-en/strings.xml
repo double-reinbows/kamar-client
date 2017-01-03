@@ -86,10 +86,10 @@
     <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
     <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
     <string name="nav_drawer_staff_hours">STAFF HOURS</string>
-    <string name="nav_drawer_logout">LOGOUT</string>
+    <string name="nav_drawer_logout">GUEST MODE</string>
 
     <!-- Guest Nav drawer -->
-    <string name="nav_drawer_home">Homepage</string>
+    <string name="nav_drawer_home">HOME</string>
     <string name="nav_drawer_change_language">CHANGE LANGUAGE</string>
     <string name="nav_drawer_about">ABOUT US</string>
 

@@ -148,7 +148,7 @@ public class CheckGuestOutFragment extends Fragment  {
      */
     private void checkGuestOut(Guest guest) {
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.MINUTE, -1);
+        c.add(Calendar.MINUTE, -1); // little hack here
         Date currentDate = c.getTime();
         Guest updateGuest;
 

@@ -60,6 +60,7 @@ public class HousekeepingOptionAdapter
         holder.nameView.setText(housekeepingOptions.get(position).getName());
         Server.picasso(context)
                 .load(holder.item.getImageUrl())
+                .resize(250, 125)
                 .placeholder(R.drawable.loading_batik)
                 .error(R.drawable.error)
                 .into(holder.imgView);

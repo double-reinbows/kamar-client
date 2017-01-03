@@ -85,7 +85,7 @@
     <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
     <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
     <string name="nav_drawer_staff_hours">STAFF HOURS</string>
-    <string name="nav_drawer_logout">LOGOUT</string>
+    <string name="nav_drawer_logout">GUEST MODE</string>
 
     <!-- Guest -->
     <string name="please_wait">Пожалуйста, подождите 10-20 минут, штатный сотрудник , чтобы прибыть в комнате</string>
@@ -177,7 +177,7 @@
     <string name="logout_staff">Staff mode</string>
     <string name="nav_drawer_about">О НАС</string>
     <string name="nav_drawer_change_language">ИЗМЕНИТЬ ЯЗЫК</string>
-    <string name="nav_drawer_home">домашняя страничка</string>
+    <string name="nav_drawer_home">ГЛАВНАЯ</string>
     <string name="permintaan_assign_person">Please enter staff person\'s name</string>
     <string name="promo_img_select">Promotional Image</string>
     <string name="language_russian">русский язык</string>

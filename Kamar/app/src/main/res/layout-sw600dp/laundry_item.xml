@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/laundry_option_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/laundry_option_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/darkRed"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <CheckBox
+                        style="@android:style/Widget.CompoundButton.RadioButton"
+                        android:id="@+id/laundry_price_option"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:enabled="false"/>
+                    <CheckBox
+                        style="@android:style/Widget.CompoundButton.RadioButton"
+                        android:id="@+id/pressing_price_option"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:enabled="false"/>
+                </LinearLayout>
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/no_ironing_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_ironing"
+                android:enabled="false"
+                android:textSize="18sp"/>
+
+            <CheckBox
+                android:id="@+id/on_hanger_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/on_hanger"
+                android:enabled="false"
+                android:textSize="18sp"/>
+
+            <CheckBox
+                android:id="@+id/folded_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/folded"
+                android:enabled="false"
+                android:textSize="18sp"
+                android:layout_marginRight="10dp"/>
+
+            <LinearLayout
+                android:id="@+id/quantity_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/minus_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/restaurant_minus" />
+
+                <TextView
+                    android:id="@+id/quantity_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/add_button"
+                    android:textSize="17dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingRight="19dp"
+                    android:paddingLeft="19dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="8dp"
+                    android:background="@drawable/top_bottom_border"
+                    android:textColor="@color/guestHomeTextColor" />
+
+                <ImageButton
+                    android:id="@+id/add_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/restaurant_plus"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:id="@+id/laundry_notes"
+            android:hint="@string/restaurant_edittext"
+            android:background="@drawable/rounded_edittext"/>
+
+    </LinearLayout>
+    <!--
+    <TextView
+        android:id="@+id/laundry_item_price_total"
+        android:layout_marginLeft="50dp"
+        android:layout_width="100dp"
+        android:textSize="22sp"
+        android:layout_height="wrap_content" /> -->
+</LinearLayout>

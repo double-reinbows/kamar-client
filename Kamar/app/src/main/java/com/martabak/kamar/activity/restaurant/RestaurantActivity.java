@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -40,6 +39,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     private HashMap<String, Integer> idToQuantity;
     private HashMap<String, Consumable> idToConsumable;
     private HashMap<String, String> idToNote;
+
     //lists of sections
     List<Consumable> consumables;
     List<String> sections; //AKA tabs
@@ -305,6 +305,5 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f);
         ft.commit();
     }
-
 
 }

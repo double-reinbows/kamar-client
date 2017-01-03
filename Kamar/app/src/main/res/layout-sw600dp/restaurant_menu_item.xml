@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/item_img"
+        android:layout_width="250dp"
+        android:layout_height="125dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"/>
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:layout_toRightOf="@+id/item_img"
+        android:textSize="17sp"
+        android:textColor="@color/black" />
+    <TextView
+        android:id="@+id/item_price"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/item_text"
+        android:layout_toRightOf="@+id/item_img"
+        android:textColor="@color/black"
+        android:textSize="17sp" />
+    <ImageView
+        android:id="@+id/minus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_toStartOf="@+id/item_quantity"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/restaurant_minus"
+        android:focusable="false" />
+    <TextView
+        android:id="@+id/item_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/plus_button"
+        android:textSize="17dp"
+        android:layout_marginTop="10dp"
+        android:paddingRight="19dp"
+        android:paddingLeft="19dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/top_bottom_border"
+        android:textColor="@color/guestHomeTextColor"/>
+    <ImageView
+        android:id="@+id/plus_button"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/restaurant_plus"
+        android:focusable="false"/>
+    <EditText
+        android:id="@+id/item_note"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_toRightOf="@+id/item_img"
+        android:layout_below="@+id/item_price"
+        android:hint="@string/restaurant_edittext"
+        android:background="@drawable/rounded_edittext"
+        android:imeOptions="actionDone"
+        android:singleLine="true"/>
+</RelativeLayout>
