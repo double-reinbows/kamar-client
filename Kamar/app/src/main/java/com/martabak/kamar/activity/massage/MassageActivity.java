@@ -207,6 +207,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
             Log.d(MassageActivity.class.getCanonicalName(), "Loading image " + holder.item.getImageUrl() + " into " + holder.imageView);
             Server.picasso(MassageActivity.this)
                     .load(holder.item.getImageUrl())
+                    .resize(250, 125)
                     .placeholder(R.drawable.loading_batik)
                     .error(R.drawable.error)
                     .into(holder.imageView);

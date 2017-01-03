@@ -83,7 +83,7 @@
     <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
     <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
     <string name="nav_drawer_staff_hours">STAFF HOURS</string>
-    <string name="nav_drawer_logout">LOGOUT</string>
+    <string name="nav_drawer_logout">GUEST MODE</string>
 
     <!-- Guest -->
     <string name="please_wait">Silakan tunggu 10-20 menit untuk anggota staf untuk tiba di kamar Anda</string>
@@ -167,7 +167,7 @@
     <string name="logout">STAFF ONLY</string>
     <string name="nav_drawer_about">TENTANG KAMI</string>
     <string name="nav_drawer_change_language">GANTI BAHASA</string>
-    <string name="nav_drawer_home">Homepage</string>
+    <string name="nav_drawer_home">HOME</string>
     <string name="permintaan_assign_person">Masukkan nama staf seseorang</string>
     <string name="permintaan_title">Requests</string>
     <string name="restaurant_back_button">Back</string>

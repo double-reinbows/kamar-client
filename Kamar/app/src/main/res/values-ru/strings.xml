@@ -85,7 +85,7 @@
     <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
     <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
     <string name="nav_drawer_staff_hours">STAFF HOURS</string>
-    <string name="nav_drawer_logout">LOGOUT</string>
+    <string name="nav_drawer_logout">GUEST MODE</string>
 
     <!-- Guest -->
     <string name="please_wait">Пожалуйста, подождите 10-20 минут, штатный сотрудник , чтобы прибыть в комнате</string>

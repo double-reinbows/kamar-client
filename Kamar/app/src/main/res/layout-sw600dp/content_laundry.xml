@@ -39,13 +39,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/total_with_tax"
-                android:textSize="20dp"
+                android:paddingTop="6dp"
+                android:textSize="12sp"
                 android:id="@+id/laundry_total_tax"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/zero"
-                android:textSize="20dp"
+                android:textSize="18sp"
                 android:id="@+id/laundry_total_price"/>
         </LinearLayout>
 
@@ -53,11 +54,13 @@
             android:id="@+id/laundry_submit"
             android:text="@string/submit"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:background="@drawable/redbutton"
             android:textColor="@android:color/white"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textSize="12sp"/>
     </RelativeLayout>
 
 

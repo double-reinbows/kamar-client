@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -23,21 +26,29 @@ public class KamarApp extends Application {
         super.onCreate();
         AppInitialization();
         singleton = this;
+
+        Picasso.Builder builder = new Picasso.Builder(this);
+        builder.downloader(new OkHttpDownloader(this,Integer.MAX_VALUE));
+        Picasso built = builder.build();
+        built.setIndicatorsEnabled(true);
+        built.setLoggingEnabled(true);
+        Picasso.setSingletonInstance(built);
     }
+
+    private Thread.UncaughtExceptionHandler defaultUEH;
 
     private void AppInitialization() {
         defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(_unCaughtExceptionHandler);
     }
 
-    private Thread.UncaughtExceptionHandler defaultUEH;
+
 
     // handler listener
     private Thread.UncaughtExceptionHandler _unCaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
         @Override
         public void uncaughtException(Thread thread, Throwable ex) {
             ex.printStackTrace();
-            // TODO handle exception here
             sendLogcatMail();
         }
     };

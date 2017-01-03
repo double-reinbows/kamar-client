@@ -46,6 +46,7 @@ import rx.Observer;
 class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
+    private StaffPermintaanFragment staffPermintaanFragment;
     private List<String> states; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> stateToPermIds;
@@ -58,11 +59,12 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
 
     public StaffExpandableListAdapter(Context context, List<String> states,
                                  HashMap<String, List<String>> stateToPermIds, HashMap<String,
-                                    Permintaan> idToPermintaan) {
+                                    Permintaan> idToPermintaan, StaffPermintaanFragment staffPermintaanFragment) {
         this.context = context;
         this.states = states;
         this.stateToPermIds = stateToPermIds;
         this.idToPermintaan = idToPermintaan;
+        this.staffPermintaanFragment = staffPermintaanFragment;
     }
 
     @Override
@@ -159,16 +161,9 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String assignee = textInput.getText().toString();
-//                            disableButtons((ViewGroup)assignPermintaanButton.getParent());
-//                            notifyDataSetChanged();
+                            staffPermintaanFragment.disableUserInput();
                             getAndUpdatePermintaan(currPermintaan._id, 0, assignee);
-                            ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
-                            /*
-                            if (assignPermintaanButton.getParent() != null) {
-
-                            } else {
-                                //TODO: not sure lol. sometimes this crashes
-                            }*/
+                            ((ViewGroup)assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
 
                         }
                     });
@@ -182,7 +177,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 }
             });
         } else {
-            ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+            ((ViewGroup)assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
         }
 
         /**
@@ -212,7 +207,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
                     lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime()) / 1000;
                 } else {
-                    simpleUpdated = "tidak pernah dirubah";
+                    simpleUpdated = "tidak pernah diubah";
                     lastStateChange = 0;
                 }
                 String contentString = "";
@@ -298,7 +293,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                             //Check permintaan can be progressed
                             if (currPermintaan.isProgressable()) {
                                 Log.v("id", currPermintaan._id);
-
+                                staffPermintaanFragment.disableUserInput();
                                 getAndUpdatePermintaan(currPermintaan._id, 1, null);
                             } else {
                                 //TODO: Tell the user they can't progress the permintaan
@@ -346,6 +341,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         public void onClick(DialogInterface dialog, int which) {
                             //Check permintaan can be regressed
                             if (currPermintaan.isRegressable()) {
+                                staffPermintaanFragment.disableUserInput();
                                 getAndUpdatePermintaan(currPermintaan._id, -1, null);
                             } else {
                                 //TODO tell user they cannot regress
@@ -429,6 +425,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         //update Permintaan dictionary
                         idToPermintaan.put(permintaan._id, permintaan);
                         notifyDataSetChanged();
+                        staffPermintaanFragment.enableUserInput();
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -482,22 +479,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    /**
-     * Disables all of the buttons
-     */
-    private void disableButtons(ViewGroup parentGroup) {
-        for (int i=0; i<parentGroup.getChildCount(); i++) {
-            View v = parentGroup.getChildAt(i);
-            v.setEnabled(false);
-            /*
-            if (v instanceof ImageView) {
-                v.setEnabled(false);
-            }else
-            if (v instanceof Button) {
-                ((Button)v).setEnabled(false);
-            }*/
-        }
-    }
+
     @Override
     public int getChildrenCount(int groupPosition) {
         return this.stateToPermIds.get(this.states.get(groupPosition))

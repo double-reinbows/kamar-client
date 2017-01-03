@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.annotations.SerializedName;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Consumable;
 import com.martabak.kamar.service.Server;
@@ -72,11 +73,11 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         quantity.invalidate();
 
         //Set up main text
-        String childText = currConsumable.nameEn;
+        String itemName = currConsumable.getName();
         final TextView txtListChild = (TextView) convertView.findViewById(R.id.item_text);
         Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
         txtListChild.setTypeface(customFont);
-        txtListChild.setText(childText);
+        txtListChild.setText(itemName);
 
 
         //Set up price text
@@ -87,8 +88,10 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         //Set up item image1
         ImageView itemImg = (ImageView) convertView.findViewById(R.id.item_img);
         Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "Loading image " + currConsumable.getImageUrl() + " into " + itemImg);
+        Server.picasso(context).setIndicatorsEnabled(true);
         Server.picasso(context)
                 .load(currConsumable.getImageUrl())
+                .resize(250, 125)
                 .placeholder(R.drawable.loading_batik)
                 .error(R.drawable.error)
                 .into(itemImg);
@@ -122,12 +125,14 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(final View v) {
                 Integer currQuantity = idToQuantity.get(currConsumable._id);
-                //Add 1 to the quantity
-                idToQuantity.put(currConsumable._id, (currQuantity + 1));
-                //plus subtotal by price of item
-                idToQuantity.put("subtotal", idToQuantity.get("subtotal") + currConsumable.price);
-                subtotalText.setText("Rp. "+ idToQuantity.get("subtotal").toString()+" 000");
-                notifyDataSetChanged();
+                if (currQuantity + 1 < 11) {
+                    //Add 1 to the quantity
+                    idToQuantity.put(currConsumable._id, (currQuantity + 1));
+                    //plus subtotal by price of item
+                    idToQuantity.put("subtotal", idToQuantity.get("subtotal") + currConsumable.price);
+                    subtotalText.setText("Rp. " + idToQuantity.get("subtotal").toString() + " 000");
+                    notifyDataSetChanged();
+                }
             }
         });
 

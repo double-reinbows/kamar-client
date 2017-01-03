@@ -208,6 +208,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
             Log.d(EngineeringActivity.class.getCanonicalName(), "Loading image " + holder.item.getImageUrl() + " into " + holder.imageView);
             Server.picasso(EngineeringActivity.this)
                     .load(holder.item.getImageUrl())
+                    .resize(250, 125)
                     .placeholder(R.drawable.loading_batik)
                     .error(R.drawable.error)
                     .into(holder.imageView);

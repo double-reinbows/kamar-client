@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import android.view.WindowManager;
 import android.widget.ExpandableListView;
 
 import rx.Observer;
@@ -92,7 +93,7 @@ public  class StaffPermintaanFragment extends Fragment {
         stateToPermintaanIds.put(states.get(2), completed_permintaan);
 
         // create expandable list
-        listAdapter = new StaffExpandableListAdapter(this.getActivity(), states, stateToPermintaanIds, permintaanIdToPermintaan);
+        listAdapter = new StaffExpandableListAdapter(this.getActivity(), states, stateToPermintaanIds, permintaanIdToPermintaan, this);
 
         // setting list rooms
         expListView.setAdapter(listAdapter);
@@ -125,5 +126,19 @@ public  class StaffPermintaanFragment extends Fragment {
                 permintaans = result;
             }
         });
+    }
+
+    /**
+     * Disables the entire screen from user input
+     */
+    public void disableUserInput() {
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    /**
+     * Enables the entire screen for user input
+     */
+    public void enableUserInput() {
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }
