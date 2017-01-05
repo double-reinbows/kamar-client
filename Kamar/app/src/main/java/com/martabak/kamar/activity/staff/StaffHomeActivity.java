@@ -125,6 +125,13 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity {
                             .addToBackStack(null)
                             .commit();
                     break;
+                case R.id.nav_create_permintaan:
+                    Log.v(StaffHomeActivity.class.toString(), "Loading create permintaan fragment");
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.staff_container, CreatePermintaanFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit();
+                    break;
 //                case R.id.nav_staff_hours:
 //                    Log.v(StaffHomeActivity.class.toString(), "Loading staff hours fragment");
 //                    getFragmentManager().beginTransaction()

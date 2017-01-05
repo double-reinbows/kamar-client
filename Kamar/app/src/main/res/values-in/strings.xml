@@ -82,6 +82,7 @@
     <string name="nav_drawer_chat">CHAT</string>
     <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
     <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
+    <string name="nav_drawer_create_permintaan">CREATE REQUEST</string>
     <string name="nav_drawer_staff_hours">STAFF HOURS</string>
     <string name="nav_drawer_logout">GUEST MODE</string>
 
@@ -141,6 +142,7 @@
     <string name="restaurant_equal_sign">=</string>
     <string name="restaurant_confirmation_label">KONFIRMASI</string>
 
+    <string name="permintaan_select">Request Type</string>
     <string name="room_select">Room Number</string>
     <string name="room_number">Room Number</string>
     <string name="room_number_change">Change Room Number</string>
