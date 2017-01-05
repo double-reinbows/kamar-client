@@ -15,11 +15,15 @@ import android.widget.TextView;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
+
 /**
  * Created by adarsh on 10/08/16.
  */
 public class GuestHomeFragment extends Fragment {
-
 
     private String option;
     private TextView roomNumberTextView;
@@ -28,28 +32,45 @@ public class GuestHomeFragment extends Fragment {
 
     private GuestHomeIconListener guestHomeIconListener;
 
-
     public GuestHomeFragment() {
     }
 
     public static GuestHomeFragment newInstance() {
         return new GuestHomeFragment();
     }
+    GuestHomeAdapter guestHomeAdapter;
+
+    // binding the views here
+    @BindView(R.id.guestgridview) GridView gridView;
+    @BindView(R.id.room_number) TextView roomTextView;
+
+    // tapping on each individual item in the grid
+    @OnItemClick(R.id.guestgridview)
+    void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // perform action for each individual feature
+        option = guestHomeAdapter.getItem(position).toString();
+        guestHomeIconListener.onIconClick(option);
+    }
+
+    // tapping on the logout icon
+    @OnClick(R.id.logoutIcon)
+    public void onLogoutClick() {
+        DialogFragment logoutDialogFragment = new LogoutDialogFragment();
+        logoutDialogFragment.show(getFragmentManager(), "logout");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guest_home, container, false);
-        final GuestHomeAdapter guestHomeAdapter = new GuestHomeAdapter(this.getActivity());
-        final GridView gridView = (GridView) view.findViewById(R.id.guestgridview);
-        //View passwordIconView = findViewById(R.id.passwordChangeIcon);
-        View logoutView = view.findViewById(R.id.logoutIcon);
+
+        ButterKnife.bind(this, view);
         guest = new Guest();
 
         final String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", "none");
-        TextView roomTextView = (TextView) view.findViewById(R.id.room_number);
         roomTextView.setText(roomNumber);
+        guestHomeAdapter = new GuestHomeAdapter(this.getActivity());
         gridView.setAdapter(guestHomeAdapter);
 
         // update the text of the navigation menu items if language changed.
@@ -62,6 +83,7 @@ public class GuestHomeFragment extends Fragment {
         }
 
         // display feature text on each item click
+        /*
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -69,7 +91,7 @@ public class GuestHomeFragment extends Fragment {
                 option = guestHomeAdapter.getItem(position).toString();
                 guestHomeIconListener.onIconClick(option);
             }
-        });
+        }); */
 /*
         // open the change room number as a fragment
         if (passwordIconView != null) {
@@ -83,6 +105,7 @@ public class GuestHomeFragment extends Fragment {
         }
 */
         // logout guest
+        /*
         if (logoutView != null) {
             logoutView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -130,9 +153,9 @@ public class GuestHomeFragment extends Fragment {
                     .create().show();
 
 */
-                }
+/*                }
             });
-        }
+        }*/
         return view;
     }
 

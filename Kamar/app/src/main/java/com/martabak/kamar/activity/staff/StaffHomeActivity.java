@@ -19,15 +19,26 @@ import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class StaffHomeActivity extends AbstractStaffBarsActivity {
 
-
+    @BindView(R.id.nav_view) NavigationView navigationView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     protected AbstractStaffBarsActivity.Options getOptions() {
         return new AbstractStaffBarsActivity.Options()
                 .withBaseLayout(R.layout.activity_staff_home)
                 .enableChatIcon(true);
     }
 
+    // on click bindings for the guest home activity
+    @OnClick(R.id.chat_icon)
+    public void onChatIConClick() {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.staff_container, StaffChatFragment.newInstance()).commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +46,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity {
         String staffType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none");
         startStaffServices(staffType);
         setContentView(R.layout.activity_staff_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        ButterKnife.bind(this);
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
         }

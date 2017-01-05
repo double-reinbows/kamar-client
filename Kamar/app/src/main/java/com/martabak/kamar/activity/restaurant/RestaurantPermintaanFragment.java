@@ -12,6 +12,8 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -20,16 +22,17 @@ import rx.Observer;
 public class RestaurantPermintaanFragment extends Fragment {
     public RestaurantPermintaanFragment() {}
 
+    //bind views here
+    @BindView(R.id.permintaan_order_sent_text) TextView orderSent;
+    @BindView(R.id.permintaan_order_received_text) TextView orderProcessed;
+    @BindView(R.id.permintaan_order_completed_text) TextView orderCompleted;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.permintaan_status, container, false);
-
+        ButterKnife.bind(this, view);
         //Change text colour of permintaans
-        TextView orderSent = (TextView)view.findViewById(R.id.permintaan_order_sent_text);
-        TextView orderProcessed = (TextView)view.findViewById(R.id.permintaan_order_received_text);
-        TextView orderCompleted = (TextView)view.findViewById(R.id.permintaan_order_completed_text);
-
         orderSent.setTextColor(ContextCompat.getColor(getActivity().getBaseContext(), R.color.guestTextColor));
         orderProcessed.setTextColor(ContextCompat.getColor(getActivity().getBaseContext(), R.color.guestTextColor));
         orderCompleted.setTextColor(ContextCompat.getColor(getActivity().getBaseContext(), R.color.guestTextColor));

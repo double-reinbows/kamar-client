@@ -31,6 +31,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observer;
 
 /**
@@ -40,15 +43,36 @@ import rx.Observer;
  */
 public class CheckGuestInFragment extends Fragment implements TextWatcher, AdapterView.OnItemSelectedListener {
 
-    private EditText editFirstName;
-    private EditText editLastName;
-    private EditText editEmail;
-    private EditText editPhoneNumber;
-    private Spinner spinnerRoomNumber;
-    private EditText editWelcomeMessage;
-    private Spinner spinnerPromoImg;
-    private Button submitButton;
     private List<Event> promoImages;
+    private List<String> roomNumbers;
+
+    //bind views here
+    @BindView(R.id.guest_first_name) EditText editFirstName;
+    @BindView(R.id.guest_last_name) EditText editLastName;
+    @BindView(R.id.guest_phone) EditText editPhoneNumber;
+    @BindView(R.id.guest_spinner) Spinner spinnerRoomNumber;
+    @BindView(R.id.guest_email) EditText editEmail;
+    @BindView(R.id.guest_welcome_message) EditText editWelcomeMessage;
+    @BindView(R.id.promo_img_spinner) Spinner spinnerPromoImg;
+    @BindView(R.id.check_guest_in_submit) Button submitButton;
+
+    //on click check guest in submit
+    @OnClick(R.id.check_guest_in_submit)
+    void onClick() {
+        String firstName = editFirstName.getText().toString();
+        String lastName = editLastName.getText().toString();
+        String phoneNumber = editPhoneNumber.getText().toString();
+        String email = editEmail.getText().toString();
+        String roomNumber = roomNumbers.get((int)spinnerRoomNumber.getSelectedItemId()).toString();
+        Log.v(CheckGuestInFragment.class.getCanonicalName(), "Selected room number " + roomNumber);
+        String welcome = editWelcomeMessage.getText().toString();
+        Integer selectedPromoId = (int)spinnerPromoImg.getSelectedItemId();
+        Log.v(CheckGuestInFragment.class.getCanonicalName(), "Selected promo image with ID " + selectedPromoId.toString());
+        String promoImgId = selectedPromoId != 0 ? promoImages.get(selectedPromoId - 1)._id : null;
+        sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber, null, welcome, promoImgId);
+    }
+
+
 
     public CheckGuestInFragment() {
     }
@@ -63,20 +87,13 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_check_guest_in, container, false);
-
-        editFirstName = (EditText) view.findViewById(R.id.guest_first_name);
-        editLastName = (EditText) view.findViewById(R.id.guest_last_name);
-        editPhoneNumber = (EditText) view.findViewById(R.id.guest_phone);
-        editEmail = (EditText) view.findViewById(R.id.guest_email);
-        spinnerRoomNumber = (Spinner) view.findViewById(R.id.guest_spinner);
-        editWelcomeMessage = (EditText) view.findViewById(R.id.guest_welcome_message);
-        spinnerPromoImg = (Spinner) view.findViewById(R.id.promo_img_spinner);
+        ButterKnife.bind(this, view);
         editFirstName.addTextChangedListener(this);
         editLastName.addTextChangedListener(this);
         editPhoneNumber.addTextChangedListener(this);
         promoImages = null;
 
-        final List<String> roomNumbers = getRoomNumbersWithoutGuests();
+        roomNumbers = getRoomNumbersWithoutGuests();
         ArrayAdapter roomNumAdapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
         roomNumbers.add(0, getString(R.string.room_select));
@@ -96,24 +113,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         spinnerPromoImg.setSelection(0);
         spinnerPromoImg.setOnItemSelectedListener(this);
 
-        submitButton = (Button) view.findViewById(R.id.check_guest_in_submit);
         submitButton.setEnabled(false);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String firstName = editFirstName.getText().toString();
-                String lastName = editLastName.getText().toString();
-                String phoneNumber = editPhoneNumber.getText().toString();
-                String email = editEmail.getText().toString();
-                String roomNumber = roomNumbers.get((int)spinnerRoomNumber.getSelectedItemId()).toString();
-                Log.v(CheckGuestInFragment.class.getCanonicalName(), "Selected room number " + roomNumber);
-                String welcome = editWelcomeMessage.getText().toString();
-                Integer selectedPromoId = (int)spinnerPromoImg.getSelectedItemId();
-                Log.v(CheckGuestInFragment.class.getCanonicalName(), "Selected promo image with ID " + selectedPromoId.toString());
-                String promoImgId = selectedPromoId != 0 ? promoImages.get(selectedPromoId - 1)._id : null;
-                sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber, null, welcome, promoImgId);
-            }
-        });
         return view;
     }
 

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +23,10 @@ import com.martabak.kamar.service.Server;
 
 import java.util.Locale;
 
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observer;
 
 /**
@@ -36,6 +39,60 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     private String welcomeMessage;
     private String promoImgId;
+    private String roomNumber;
+
+    // the listener bindings for the language buttons
+    @OnClick(R.id.language_english)
+    public void onEnglishClick() {
+        setLocale("en");
+        Log.v("LOCALE",Locale.getDefault().getLanguage());
+        Toast.makeText(
+                SelectLanguageActivity.this,
+                getString(R.string.language_set_to),
+                Toast.LENGTH_LONG
+        ).show();
+        Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to English");
+        setGuestId(roomNumber);
+    }
+
+    @OnClick(R.id.language_bahasa)
+    public void onBahasaClick() {
+        setLocale("in");
+        Log.v("LOCALE",Locale.getDefault().getLanguage());
+        Toast.makeText(
+                SelectLanguageActivity.this,
+                getString(R.string.language_set_to),
+                Toast.LENGTH_LONG
+        ).show();
+        Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Indonesian");
+        setGuestId(roomNumber);
+    }
+
+    @OnClick(R.id.language_russian)
+    public void onRussianClick() {
+        setLocale("ru");
+        Log.v("LOCALE",Locale.getDefault().getLanguage());
+        Toast.makeText(
+                SelectLanguageActivity.this,
+                getString(R.string.language_set_to),
+                Toast.LENGTH_LONG
+        ).show();
+        Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Russian");
+        setGuestId(roomNumber);
+    }
+
+    @OnClick(R.id.language_zh)
+    public void onChineseClick() {
+        setLocale("zh");
+        Log.v("LOCALE",Locale.getDefault().getLanguage());
+        Toast.makeText(
+                SelectLanguageActivity.this,
+                getString(R.string.language_set_to),
+                Toast.LENGTH_LONG
+        ).show();
+        Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Chinese");
+        setGuestId(roomNumber);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,86 +100,13 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_select_language);
 
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final ImageButton englishButton = (ImageButton) findViewById(R.id.language_english);
-        final ImageButton indonesianButton = (ImageButton) findViewById(R.id.language_bahasa);
-        final ImageButton russianButton = (ImageButton) findViewById(R.id.language_russian);
-        final ImageButton zhButton = (ImageButton) findViewById(R.id.language_zh);
-
         //get the room number
-        final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
+        roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
-
-        if (englishButton != null) {
-            englishButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setLocale("en");
-                    Log.v("LOCALE",Locale.getDefault().getLanguage());
-                    Toast.makeText(
-                            SelectLanguageActivity.this,
-                            getString(R.string.language_set_to),
-                            Toast.LENGTH_LONG
-                    ).show();
-                    Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to English");
-
-                    setGuestId(roomNumber);
-                }
-            });
-        }
-        if (indonesianButton != null) {
-            indonesianButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setLocale("in");
-                    Log.v("LOCALE",Locale.getDefault().getLanguage());
-                    Toast.makeText(
-                            SelectLanguageActivity.this,
-                            getString(R.string.language_set_to),
-                            Toast.LENGTH_LONG
-                    ).show();
-                    Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Indonesian");
-
-                    setGuestId(roomNumber);
-                }
-            });
-        }
-        if (russianButton != null) {
-            russianButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setLocale("ru");
-                    Log.v("LOCALE",Locale.getDefault().getLanguage());
-                    Toast.makeText(
-                            SelectLanguageActivity.this,
-                            getString(R.string.language_set_to),
-                            Toast.LENGTH_LONG
-                    ).show();
-                    Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Russian");
-
-                    setGuestId(roomNumber);
-                }
-            });
-        }
-        if (zhButton != null) {
-            zhButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setLocale("zh");
-                    Log.v("LOCALE",Locale.getDefault().getLanguage());
-                    Toast.makeText(
-                            SelectLanguageActivity.this,
-                            getString(R.string.language_set_to),
-                            Toast.LENGTH_LONG
-                    ).show();
-                    Log.d(SelectLanguageActivity.class.getCanonicalName(), "Set locale to Chinese");
-
-                    setGuestId(roomNumber);
-                }
-            });
-        }
     }
 
     /**
@@ -204,11 +188,11 @@ public class SelectLanguageActivity extends AppCompatActivity {
         });
 
         //set up promo image
-        ImageView promoImg = (ImageView) view.findViewById(R.id.guest_welcome_image);
+        ImageView promoImg = ButterKnife.findById(view, R.id.guest_welcome_image);
         setPromoImg(promoImgId, promoImg);
 
         //set up welcome text and show dialog
-        final TextView textView = (TextView) view.findViewById(R.id.guest_welcome_text);
+        final TextView textView = ButterKnife.findById(view, R.id.guest_welcome_text);
         textView.setText(welcomeMessage);
         welcomeDialog.setView(view);
         welcomeDialog.show();

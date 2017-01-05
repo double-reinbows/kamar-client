@@ -17,6 +17,8 @@ import com.martabak.kamar.service.StaffServer;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -30,6 +32,8 @@ public class StaffHoursFragment extends Fragment {
     public StaffHoursFragment() {
     }
 
+    @BindView(R.id.staff_list) RecyclerView recyclerView;
+
     /**
      * @return A new instance of fragment CheckGuestInFragment.
      */
@@ -40,7 +44,7 @@ public class StaffHoursFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_staff_hours, container, false);
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.staff_list);
+        ButterKnife.bind(this,view);
         final List<Staff> staff = new ArrayList<>();
         final StaffRecyclerViewAdapter recyclerViewAdapter = new StaffRecyclerViewAdapter(staff);
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -106,20 +110,18 @@ public class StaffHoursFragment extends Fragment {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public Staff item;
             public final View rootView;
-            public final ImageView imageView;
-            public final TextView firstNameView;
-            public final TextView lastNameView;
-            public final TextView startTimeView;
-            public final TextView endTimeView;
+
+            @BindView(R.id.staff_image) ImageView imageView;
+            @BindView(R.id.staff_first_name) TextView firstNameView;
+            @BindView(R.id.staff_last_name) TextView lastNameView;
+            @BindView(R.id.staff_start_time) TextView startTimeView;
+            @BindView(R.id.staff_end_time) TextView endTimeView;
+
 
             public ViewHolder(View view) {
                 super(view);
+                ButterKnife.bind(this,view);
                 rootView = view;
-                imageView = (ImageView) view.findViewById(R.id.staff_image);
-                firstNameView = (TextView) view.findViewById(R.id.staff_first_name);
-                lastNameView = (TextView) view.findViewById(R.id.staff_last_name);
-                startTimeView = (TextView) view.findViewById(R.id.staff_start_time);
-                endTimeView = (TextView) view.findViewById(R.id.staff_end_time);
             }
 
             @Override

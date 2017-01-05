@@ -32,6 +32,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observer;
 
 public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
@@ -47,11 +50,58 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
                 .enableChatIcon(true);
     }
 
+    // bind views here
+    @BindView(R.id.order_total) TextView finalPriceTextView;
+
+    //on click confirm here
+    @OnClick(R.id.restaurant_confirm)
+    void onSubmitClick() {
+        //check there's a guest...
+        if (getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("guestId", "none").equals("none")) {
+            Toast.makeText(
+                    RestaurantConfirmationActivity.this,
+                    getString(R.string.no_guest_in_room),
+                    Toast.LENGTH_LONG
+            ).show();
+            return;
+        }
+        //ic_restaurant submit
+        sendRestaurantRequest(restaurantOrder);
+
+        //new dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_restaurant_confirmation);
+        dialog.show();
+
+        dialog.setOnDismissListener(new Dialog.OnDismissListener(){
+
+            @Override
+            public void onDismiss(DialogInterface dialogInterface){
+                startActivity(new Intent(getBaseContext(), GuestHomeActivity.class));
+                finish();
+            }
+        });
+
+        new CountDownTimer(11000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+            @Override
+            public void onFinish() {
+                dialog.dismiss();
+            }
+        }.start();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startFragment(); //permintaan status lights
-
+        ButterKnife.bind(this);
         final RecyclerView rv = (RecyclerView) findViewById(R.id.restaurant_recycleview);
         rv.addItemDecoration(new SimpleDividerItemDecoration(this));
         final LinearLayoutManager llm = new LinearLayoutManager(getBaseContext());
@@ -89,7 +139,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         Integer subFinalPriceInteger = tempRestaurantOrder.totalPrice * multiplyFactor;
 
         //final price
-        TextView finalPriceTextView = (TextView)findViewById(R.id.order_total);
+
         float taxPercentage = 10;
         float svcChargePercentage = 11;
 
@@ -123,6 +173,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         rv.setAdapter(restaurantConfirmationArrayAdapter);
 
         //confirmation
+        /*
         Button restaurantConfirmButton = (Button)findViewById(R.id.restaurant_confirm);
         restaurantConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +219,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
             }
         });
-
+        */
     }
 
     /*Send ic_restaurant request*/

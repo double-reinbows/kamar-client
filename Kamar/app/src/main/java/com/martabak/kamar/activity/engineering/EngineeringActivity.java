@@ -31,6 +31,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -38,7 +40,8 @@ import rx.Observer;
  */
 public class EngineeringActivity extends AbstractGuestBarsActivity implements View.OnClickListener {
 
-    private RecyclerView recyclerView;
+    @BindView(R.id.engineering_list) RecyclerView recyclerView;
+
     private List<EngineeringOption> engOptions;
     private Map<String, String> statuses; // Maps engineering option ID -> request status
     private EngineeringRecyclerViewAdapter recyclerViewAdapter;
@@ -55,11 +58,11 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
         loadOptions();
     }
 
     private void loadOptions() {
-        recyclerView = (RecyclerView)findViewById(R.id.engineering_list);
         engOptions = new ArrayList<>();
 
         StaffServer.getInstance(this).getEngineeringOptions().subscribe(new Observer<List<EngineeringOption>>() {
@@ -252,12 +255,13 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
         public class ViewHolder extends RecyclerView.ViewHolder {
             public EngineeringOption item;
             public final View rootView;
-            public final ImageView imageView;
-            public final TextView nameView;
-            public final View sentImageView;
-            public final View processedImageView;
-            public final View completedImageView;
-            public final View buttonView;
+            //binding views here
+            @BindView(R.id.engineering_image) ImageView imageView;
+            @BindView(R.id.engineering_name) TextView nameView;
+            @BindView(R.id.sent_image) View sentImageView;
+            @BindView(R.id.processed_image) View processedImageView;
+            @BindView(R.id.completed_image) View completedImageView;
+            @BindView(R.id.order_button) View buttonView;
 
             public ViewHolder(View view) {
                 super(view);

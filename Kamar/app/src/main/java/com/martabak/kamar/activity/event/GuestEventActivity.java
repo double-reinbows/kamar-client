@@ -14,6 +14,8 @@ import com.martabak.kamar.service.EventServer;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import rx.Observer;
 
 /**
@@ -23,10 +25,6 @@ public class GuestEventActivity extends AbstractGuestBarsActivity {
 
     String eventTypeSelected;
     List<String> imageUrls;
-
-    private ImageButton leftBtn;
-    private ImageButton rightBtn;
-    private ViewPager viewPager;
     private GuestEventViewPagerAdapter guestEventViewPagerAdapter;
 
     @Override
@@ -39,6 +37,23 @@ public class GuestEventActivity extends AbstractGuestBarsActivity {
                 .enableChatIcon(true);
     }
 
+    //binding views here
+    @BindView(R.id.button_previous) ImageButton leftBtn;
+    @BindView(R.id.button_next) ImageButton rightBtn;
+    @BindView(R.id.event_view_pager) ViewPager viewPager;
+
+    //on previous click
+    @OnClick(R.id.button_previous)
+    void onPreviousClick() {
+        OnClickListener(0);
+    }
+
+    //on next click
+    @OnClick(R.id.button_next)
+    void onNextClick(){
+        OnClickListener(1);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +63,7 @@ public class GuestEventActivity extends AbstractGuestBarsActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText("Bali events"));
         tabLayout.addTab(tabLayout.newTab().setText("Hotel events"));
-        viewPager = (ViewPager) findViewById(R.id.event_view_pager);
+
 
 
         guestEventViewPagerAdapter = new GuestEventViewPagerAdapter(getSupportFragmentManager(), imageUrls);
@@ -60,12 +75,8 @@ public class GuestEventActivity extends AbstractGuestBarsActivity {
 
         //find view by id
 
-
-        leftBtn = (ImageButton) findViewById(R.id.button_previous);
-        rightBtn = (ImageButton) findViewById(R.id.button_next);
-
-        leftBtn.setOnClickListener(OnClickListener(0));
-        rightBtn.setOnClickListener(OnClickListener(1));
+        //leftBtn.setOnClickListener(OnClickListener(0));
+        //rightBtn.setOnClickListener(OnClickListener(1));
 
         setPromoImgsForType(eventTypeSelected);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
