@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:layout_toRightOf="@+id/item_img"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textColor="@color/black" />
     <TextView
         android:id="@+id/item_price"
@@ -29,7 +29,7 @@
     <ImageView
         android:id="@+id/minus_button"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_height="40dp"
         android:layout_toStartOf="@+id/item_quantity"
         android:layout_marginTop="10dp"
         android:src="@drawable/restaurant_minus"
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@+id/plus_button"
-        android:textSize="20sp"
+        android:textSize="17dp"
         android:layout_marginTop="10dp"
         android:paddingRight="19dp"
         android:paddingLeft="19dp"
@@ -50,7 +50,7 @@
     <ImageView
         android:id="@+id/plus_button"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
         android:src="@drawable/restaurant_plus"

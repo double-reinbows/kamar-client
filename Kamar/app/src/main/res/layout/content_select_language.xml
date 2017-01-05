@@ -25,16 +25,16 @@
 
     <ImageView
         android:src="@drawable/logo_coloured"
-        android:layout_width="700dp"
-        android:layout_height="150dp"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:id="@+id/logo"/>
 
     <ImageButton
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:src="@drawable/ic_english"
         android:scaleType="fitXY"
         android:background="@android:color/transparent"
@@ -45,8 +45,8 @@
         android:id="@+id/language_english" />
 
     <ImageButton
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:src="@drawable/ic_bahasa"
         android:scaleType="fitXY"
         android:background="@android:color/transparent"
@@ -58,8 +58,8 @@
         android:id="@+id/language_bahasa" />
 
     <ImageButton
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:src="@drawable/ic_russian"
         android:scaleType="fitXY"
         android:background="@android:color/transparent"
@@ -71,8 +71,8 @@
         android:id="@+id/language_russian" />
 
     <ImageButton
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:src="@drawable/ic_chinese"
         android:scaleType="fitXY"
         android:background="@android:color/transparent"

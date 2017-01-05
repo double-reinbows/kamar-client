@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/permintaan_list_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:textSize="24dp"
+        android:lines="2"
+        android:textColor="@color/black" />
+    <!--ImageView
+        android:id="@+id/cancel_permintaan_button"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_toStartOf="@+id/info_permintaan_button"
+        android:layout_centerVertical="true"
+        android:src="@drawable/permintaan_cancel_button"
+        android:focusable="false"/-->
+    <ImageView
+        android:id="@+id/assign_permintaan_button"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_toStartOf="@+id/info_permintaan_button"
+        android:layout_centerVertical="true"
+        android:src="@drawable/staff_assign_icon"
+        android:focusable="false"/>
+    <ImageView
+        android:id="@+id/info_permintaan_button"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_toStartOf="@+id/regress_permintaan_button"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="25dp"
+        android:src="@drawable/permintaan_info"
+        android:focusable="false"/>
+    <Button
+        android:id="@+id/regress_permintaan_button"
+        android:layout_width="160dp"
+        android:layout_height="75dp"
+        android:layout_toStartOf="@+id/progress_permintaan_button"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="25dp"
+        android:background="@color/colorNavBar"
+        android:textColor="@color/guestTextColor"
+        android:textSize="24dp"
+        android:focusable="false"/>
+    <Button
+        android:id="@+id/progress_permintaan_button"
+        android:layout_width="160dp"
+        android:layout_height="75dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="25dp"
+        android:background="@color/colorNavBar"
+        android:textColor="@color/guestTextColor"
+        android:focusable="false"
+        android:textSize="24dp"/>
+
+</RelativeLayout>

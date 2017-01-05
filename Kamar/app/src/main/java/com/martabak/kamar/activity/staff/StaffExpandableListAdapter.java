@@ -269,7 +269,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 //set font size
                 alertDialog.show();
                 TextView textView = (TextView) alertDialog.findViewById(android.R.id.message);
-                textView.setTextSize(25);
+                textView.setTextSize(27);
                 alertDialog.getWindow().setLayout(width, (height-100));
                 alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setBackgroundColor(0xffff0000);
                 alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(0xffffffff);
