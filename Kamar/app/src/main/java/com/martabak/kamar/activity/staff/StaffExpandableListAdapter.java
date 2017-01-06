@@ -388,7 +388,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onCompleted() {
                 Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "Completed getting _rev");
-                Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, rev, currPermintaan.owner, currPermintaan.type,
+                Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, rev, currPermintaan.owner, currPermintaan.creator, currPermintaan.type,
                         currPermintaan.roomNumber, currPermintaan.guestId, targetState,
                         currPermintaan.created, new Date(), updatedAssignee, currPermintaan.content);
                 updatePermintaanAndView(updatedPermintaan, currPermintaan.state);

@@ -17,6 +17,8 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.domain.Event;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.User;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.EventServer;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.Server;
@@ -129,6 +131,11 @@ public class SelectLanguageActivity extends AppCompatActivity {
      * @param roomNumber The room number.
      */
     private void setGuestId(final String roomNumber) {
+        getSharedPreferences("userSettings", MODE_PRIVATE)
+                .edit()
+                .putString("userType", User.TYPE_GUEST)
+                .commit();
+
         GuestServer.getInstance(getBaseContext()).getGuestInRoom(
                 roomNumber).subscribe(new Observer<Guest>() {
             @Override

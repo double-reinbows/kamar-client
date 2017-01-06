@@ -91,6 +91,8 @@ public class BellboyDialogFragment extends DialogFragment {
 
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_BELLBOY;
+        String creator = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                .getString("userType", "none");
         String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", "none");
         String guestId= getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
@@ -100,6 +102,7 @@ public class BellboyDialogFragment extends DialogFragment {
         if (!guestId.equals("none") && !roomNumber.equals("none")) {
             PermintaanServer.getInstance(getActivity().getBaseContext()).createPermintaan(new Permintaan(
                     owner,
+                    creator,
                     type,
                     roomNumber,
                     guestId,

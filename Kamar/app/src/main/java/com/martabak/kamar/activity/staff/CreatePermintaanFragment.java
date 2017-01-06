@@ -49,6 +49,7 @@ public class CreatePermintaanFragment extends Fragment  {
     private ArrayAdapter permintaans;
     private Spinner guestSpinner;
     private TextView guestInfoText;
+    private Spinner permintaanSpinner;
     private Button submitButton;
 
     public CreatePermintaanFragment() {
@@ -60,12 +61,13 @@ public class CreatePermintaanFragment extends Fragment  {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View parentView = inflater.inflate(R.layout.fragment_check_guest_out, container, false);
+        final View parentView = inflater.inflate(R.layout.fragment_create_permintaan, container, false);
         guestInfoText = (TextView) parentView.findViewById(R.id.guest_info);
-        guestSpinner = (Spinner) parentView.findViewById(R.id.guest_spinner_checkout);
+        guestSpinner = (Spinner) parentView.findViewById(R.id.guest_spinner);
+        permintaanSpinner = (Spinner) parentView.findViewById(R.id.permintaan_spinner);
         roomNumbers = getRoomNumbersWithGuests();
         permintaanOptions = getPermintaanOptions();
-        submitButton = (Button) parentView.findViewById(R.id.check_guest_out_submit);
+        submitButton = (Button) parentView.findViewById(R.id.create_permintaan_submit);
 
         setupGuestSpinner();
         setupPermintaanSpinner();
@@ -106,15 +108,14 @@ public class CreatePermintaanFragment extends Fragment  {
                 R.layout.support_simple_spinner_dropdown_item, permintaanOptions);
         permintaanOptions.add(0, getString(R.string.permintaan_select));
         permintaans.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        guestSpinner.setAdapter(permintaans);
-        guestSpinner.setSelection(0);
-        guestSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        permintaanSpinner.setAdapter(permintaans);
+        permintaanSpinner.setSelection(0);
+        permintaanSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     permintaan = permintaanOptions.get(position);
                     Log.v(CreatePermintaanFragment.class.getCanonicalName(), "Permintaan selected is " + permintaan);
-                    getGuestInRoomNumber(permintaan);
                 } else {
                     permintaan = null;
                 }
@@ -131,26 +132,9 @@ public class CreatePermintaanFragment extends Fragment  {
     private void setupButtons(final Context context) {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                switch (permintaan) {
-                    case Permintaan.TYPE_BELLBOY:
-                        launchPorterDialog();
-                        break;
-                    case Permintaan.TYPE_ENGINEERING:
-                        launchActivity(EngineeringActivity.class, context);
-                        break;
-                    case Permintaan.TYPE_HOUSEKEEPING:
-                        launchActivity(HousekeepingActivity.class, context);
-                        break;
-                    case Permintaan.TYPE_LAUNDRY:
-                        launchActivity(LaundryActivity.class, context);
-                        break;
-                    case Permintaan.TYPE_MASSAGE:
-                        launchActivity(MassageActivity.class, context);
-                        break;
-                    case Permintaan.TYPE_RESTAURANT:
-                        launchActivity(RestaurantActivity.class, context);
-                        break;
-                }
+                setRoomNumberAndGuestId(context);
+                launchPermintaanView(context);
+
             }
         });
     }
@@ -163,8 +147,39 @@ public class CreatePermintaanFragment extends Fragment  {
         }
     }
 
+    private void setRoomNumberAndGuestId(Context context) {
+        context.getSharedPreferences("userSettings", Context.MODE_PRIVATE).edit()
+                .putString("guestId", guest._id)
+                .putString("roomNumber", guest.roomNumber)
+                .commit();
+        Log.i(CreatePermintaanFragment.class.getCanonicalName(), "Setting userSettings guestId to " + guest._id + " and roomNumber to " + guest.roomNumber);
+    }
+
+    private void launchPermintaanView(Context context) {
+        switch (permintaan) {
+            case Permintaan.TYPE_BELLBOY:
+                launchPorterDialog();
+                break;
+            case Permintaan.TYPE_ENGINEERING:
+                launchActivity(EngineeringActivity.class, context);
+                break;
+            case Permintaan.TYPE_HOUSEKEEPING:
+                launchActivity(HousekeepingActivity.class, context);
+                break;
+            case Permintaan.TYPE_LAUNDRY:
+                launchActivity(LaundryActivity.class, context);
+                break;
+            case Permintaan.TYPE_MASSAGE:
+                launchActivity(MassageActivity.class, context);
+                break;
+            case Permintaan.TYPE_RESTAURANT:
+                launchActivity(RestaurantActivity.class, context);
+                break;
+        }
+    }
+
     private void launchPorterDialog() {
-        // TODO launch the
+        // TODO launch the porter dialog
     }
 
     private void launchActivity(Class activity, Context context) {
@@ -175,14 +190,14 @@ public class CreatePermintaanFragment extends Fragment  {
      * @return A list of permintaan options that the staff may select.
      */
     private List<String> getPermintaanOptions() {
-        return Arrays.asList(
+        return new ArrayList<>(Arrays.asList(
                 Permintaan.TYPE_BELLBOY,
                 Permintaan.TYPE_ENGINEERING,
                 Permintaan.TYPE_HOUSEKEEPING,
                 Permintaan.TYPE_LAUNDRY,
                 Permintaan.TYPE_MASSAGE,
                 Permintaan.TYPE_RESTAURANT
-        );
+        ));
     }
 
     /**
@@ -201,7 +216,7 @@ public class CreatePermintaanFragment extends Fragment  {
             @Override public void onNext(Room room) {
                 if (room != null) {
                     roomStrings.add(room.number);
-                    Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found room: " + room.number);
+                    Log.v(CreatePermintaanFragment.class.getCanonicalName(), "Found room: " + room.number);
                 }
             }
         });
@@ -220,18 +235,17 @@ public class CreatePermintaanFragment extends Fragment  {
                 if (guest != null) {
                     guestInfoText.setText(guest.firstName + " " + guest.lastName);
                 }
-                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On completed");
+                Log.d(CreatePermintaanFragment.class.getCanonicalName(), "On completed");
             }
             @Override public void onError(Throwable e) {
-                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
+                Log.d(CreatePermintaanFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
             }
             @Override public void onNext(Guest result) {
                 guest = result;
-                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On next guest " + result);
+                Log.d(CreatePermintaanFragment.class.getCanonicalName(), "On next guest " + result);
             }
         });
     }
-
 
 }

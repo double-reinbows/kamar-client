@@ -226,6 +226,8 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
     public void sendRestaurantRequest(RestaurantOrder restaurantOrder) {
         String owner = Permintaan.OWNER_RESTAURANT;
         String type = Permintaan.TYPE_RESTAURANT;
+        String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("userType", "none");
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", null);
         String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -239,6 +241,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         if (!guestId.equals("none") && !roomNumber.equals("none")) {
             PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                     owner,
+                    creator,
                     type,
                     roomNumber,
                     guestId,

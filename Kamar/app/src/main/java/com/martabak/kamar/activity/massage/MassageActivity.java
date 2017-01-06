@@ -127,6 +127,8 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String owner = Permintaan.OWNER_FRONTDESK;
                         String type = Permintaan.TYPE_MASSAGE;
+                        String creator = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
+                                .getString("userType", "none");
                         String roomNumber = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
                                 .getString("roomNumber", "none");
                         String guestId = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
@@ -143,7 +145,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                         String state = Permintaan.STATE_NEW;
                         Date currentDate = Calendar.getInstance().getTime();
                         PermintaanServer.getInstance(MassageActivity.this).createPermintaan(
-                                new Permintaan(owner, type, roomNumber, guestId, state, currentDate,
+                                new Permintaan(owner, creator, type, roomNumber, guestId, state, currentDate,
                                         new Massage("", item))
                         ).subscribe(new Observer<Permintaan>() {
                             boolean success;

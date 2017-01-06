@@ -52,6 +52,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         j.addProperty("_id", src._id);
         j.addProperty("_rev", src._rev);
         j.addProperty("owner", src.owner);
+        j.addProperty("creator", src.creator);
         j.addProperty("type", src.type);
         j.addProperty("room_number", src.roomNumber);
         j.addProperty("guest_id", src.guestId);
@@ -169,6 +170,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         String _id = j.getAsJsonPrimitive("_id").getAsString();
         String _rev = j.getAsJsonPrimitive("_rev").getAsString();
         String owner = j.getAsJsonPrimitive("owner").getAsString();
+        String creator = j.getAsJsonPrimitive("creator").getAsString();
         String ptype = j.getAsJsonPrimitive("type").getAsString();
         String roomNumber = j.getAsJsonPrimitive("room_number").getAsString();
         String guestId = j.getAsJsonPrimitive("guest_id").getAsString();
@@ -293,6 +295,6 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 throw new JsonParseException("Unknown Permintaan content type.");
         }
 
-        return new Permintaan(_id, _rev, owner, ptype, roomNumber, guestId, state, created, updated, assignee, content);
+        return new Permintaan(_id, _rev, owner, creator, ptype, roomNumber, guestId, state, created, updated, assignee, content);
     }
 }

@@ -187,6 +187,8 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
 
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_LAUNDRY;
+        String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("userType", "none");
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", null);
         String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -198,6 +200,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
         if (!guestId.equals("none") && !roomNumber.equals("none")) {
             PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                     owner,
+                    creator,
                     type,
                     roomNumber,
                     guestId,

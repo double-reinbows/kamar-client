@@ -15,8 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
@@ -40,7 +38,6 @@ import com.martabak.kamar.activity.staff.CheckGuestInFragment;
 import java.util.Calendar;
 import java.util.Date;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
@@ -211,10 +208,11 @@ public class GuestHomeActivity extends AppCompatActivity implements
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             stopGuestServices();
-                            SharedPreferences.Editor editor = getSharedPreferences("userSettings", MODE_PRIVATE)
-                                    .edit();
-                            editor.putString("subUserType", User.TYPE_STAFF_FRONTDESK)
-                                    .commit();
+                            getSharedPreferences("userSettings", MODE_PRIVATE)
+                                .edit()
+                                .putString("userType", User.TYPE_STAFF)
+                                .putString("subUserType", User.TYPE_STAFF_FRONTDESK)
+                                .commit();
                             startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
                             finish();
                         }

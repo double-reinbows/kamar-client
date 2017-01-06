@@ -240,11 +240,13 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                                     return;
                                 }                                String state = Permintaan.STATE_NEW;
                                 Date currentDate = Calendar.getInstance().getTime();
+                                String creator = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                                        .getString("userType", "none");
                                 String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                                         .getString("roomNumber", "none");
                                 //Create the Housekeeping permintaan
                                 PermintaanServer.getInstance(getActivity()).createPermintaan(
-                                        new Permintaan(owner, type, roomNumber, guestId, state, currentDate,
+                                        new Permintaan(owner, creator, type, roomNumber, guestId, state, currentDate,
                                                 new Housekeeping("", quantity, option))
                                 ).subscribe(new Observer<Permintaan>() {
                                     boolean success;

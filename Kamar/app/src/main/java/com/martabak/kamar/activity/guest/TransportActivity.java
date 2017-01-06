@@ -150,6 +150,8 @@ public class TransportActivity extends AppCompatActivity implements TextWatcher 
 
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_TRANSPORT;
+        String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("userType", "none");
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -160,6 +162,7 @@ public class TransportActivity extends AppCompatActivity implements TextWatcher 
         if (!guestId.equals("none") && !roomNumber.equals("none")) {
             PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                     owner,
+                    creator,
                     type,
                     roomNumber,
                     guestId,
