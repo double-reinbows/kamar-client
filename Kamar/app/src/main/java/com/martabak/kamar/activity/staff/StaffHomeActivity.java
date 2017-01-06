@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.staff;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,17 +14,20 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
+import com.martabak.kamar.activity.guest.PermintaanDialogListener;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class StaffHomeActivity extends AbstractStaffBarsActivity {
+public class StaffHomeActivity extends AbstractStaffBarsActivity
+        implements PermintaanDialogListener {
 
     @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -95,6 +99,20 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity {
      */
     @Override
     public void onBackPressed() {}
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, Boolean success) {
+        dialog.dismiss();
+        Toast.makeText(
+                this,
+                getString(R.string.bellboy_result),
+                Toast.LENGTH_LONG
+        ).show();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+    }
 
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override

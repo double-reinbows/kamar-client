@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.engineering.EngineeringActivity;
+import com.martabak.kamar.activity.guest.BellboyDialogFragment;
 import com.martabak.kamar.activity.housekeeping.HousekeepingActivity;
 import com.martabak.kamar.activity.laundry.LaundryActivity;
 import com.martabak.kamar.activity.massage.MassageActivity;
@@ -180,6 +181,7 @@ public class CreatePermintaanFragment extends Fragment  {
 
     private void launchPorterDialog() {
         // TODO launch the porter dialog
+        new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
     }
 
     private void launchActivity(Class activity, Context context) {

@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/massage_list_row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
+    android:baselineAligned="false"
+    android:divider="?android:attr/dividerHorizontal"
+    android:orientation="horizontal"
+    android:showDividers="none"
+    tools:context=".activity.massage.MassageActivity"
+    android:weightSum="1"
+    android:layout_gravity="bottom">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="225dp"
+            android:layout_height="125dp"
+            android:id="@+id/massage_image"
+            android:layout_alignParentStart="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/massage_image"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:id="@+id/massage_name"
+                android:textAllCaps="true"
+                android:textSize="14sp"
+                android:textColor="@color/textHint"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:maxLines="2"
+                android:id="@+id/massage_price"
+                android:textAllCaps="true"
+                android:textSize="12sp"
+                android:textColor="@color/textHint"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:maxLines="2"
+                android:id="@+id/massage_length"
+                android:textAllCaps="true"
+                android:textSize="12sp"
+                android:textColor="@color/textHint"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/order_button"
+            android:text="@string/order_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/redbutton"
+            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true">
+            <include layout="@layout/permintaan_status"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>
