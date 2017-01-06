@@ -11,51 +11,71 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
+        tools:context="com.martabak.kamar.activity.restaurant.RestaurantConfirmationActivity">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/content_restaurant"
-            android:layout_below="@+id/tabs"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@+id/restaurant_confirmation_redline"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".activity.restaurant.RestaurantActivity"
-            tools:showIn="@layout/activity_restaurant">
+            tools:context=".activity.restaurant.RestaurantConfirmationActivity"
+            tools:showIn="@layout/activity_restaurant_confirmation">
 
-            <ExpandableListView
-                android:id="@+id/restaurant_exp_list"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="130dp"/>
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="70dp"
+                android:background="@color/colorNavBarBackground">
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/restaurant_recycleview">
+                </android.support.v7.widget.RecyclerView>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:gravity="center"
+                android:id="@+id/order_add_more"
+                android:layout_gravity="bottom"
+                android:background="@color/roomNumberBackground"
+                android:textColor="@color/guestTextColor"/>
 
         </LinearLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/restaurant_red_line"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:background="@color/darkRed"
-            android:layout_above="@+id/restaurant_bottombar"
-            tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity"
-            android:orientation="horizontal" />
 
-    <!---RESTAURANT BOTTOM BAR START -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:id="@+id/restaurant_confirmation_redline"
+          android:layout_width="match_parent"
+          android:layout_height="6dp"
+          android:layout_above="@+id/restaurant_confirmation_bottombar"
+          android:background="@color/darkRed"
+          tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity"
+          android:orientation="horizontal" />
+
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/restaurant_bottombar"
+            android:id="@+id/restaurant_confirmation_bottombar"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/pureWhite"
-            android:paddingLeft="65dp"
-            android:paddingRight="65dp"
             android:layout_above="@+id/bottombar_linearlayout"
+            android:background="@color/pureWhite"
+                        android:paddingLeft="65dp"
+                        android:paddingRight="65dp"
             tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
 
             <TextView
@@ -65,33 +85,30 @@
                 android:textSize="18sp"
                 android:layout_alignParentStart="true"
                 android:id="@+id/order_total_text"
-                android:text="@string/restaurant_subtotal_text"/>
+                android:text="@string/total_with_tax"/>
 
             <TextView
-                android:id="@+id/restaurant_subtotal_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textHint"
                 android:textStyle="bold"
                 android:textSize="26sp"
+                android:layout_alignParentStart="true"
                 android:layout_below="@+id/order_total_text"
-                android:layout_alignParentStart="true"/>
+                android:id="@+id/order_total" />
 
-            <TextView
-                android:id="@+id/restaurant_arrow_text"
+            <Button
+                android:id="@+id/restaurant_confirm"
+                android:text="@string/restaurant_submit_button"
                 android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:textColor="@color/darkRed"
-                android:textStyle="bold"
-                android:textSize="40sp"/>
-
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorNavBarBackground"
+                android:background="@color/colorNavBar"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
         </RelativeLayout>
-        <!--RESTAURANT BOTTOM BAR END -->
 
         <include layout="@layout/bottombar"/>
     </RelativeLayout>
-
 
 </android.support.design.widget.CoordinatorLayout>

@@ -10,23 +10,50 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="none"
-    tools:context=".activity.engineering.EngineeringActivity"
+    tools:context=".activity.massage.MassageActivity"
     android:weightSum="1"
     android:layout_gravity="bottom">
 
     <ImageView
-        android:layout_width="225dp"
-        android:layout_height="125dp"
-        android:id="@+id/engineering_image"/>
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:id="@+id/massage_image"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="2"
-        android:id="@+id/engineering_name"
-        android:textAllCaps="true"
-        android:textSize="14sp"
-        android:textColor="@color/textHint"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:id="@+id/massage_name"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textColor="@color/textHint"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:maxLines="2"
+            android:id="@+id/massage_price"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textColor="@color/textHint"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:maxLines="2"
+            android:id="@+id/massage_length"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:textColor="@color/textHint"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
