@@ -164,6 +164,8 @@
     <string name="no_ironing">Jangan diseterika</string>
     <string name="on_hanger">Digantung</string>
     <string name="folded">Berlipat</string>
+    <string name="laundry_price">Harga laundry</string>
+    <string name="pressing_price">Harga mendesak</string>
     <string name="housekeeping_confirm">Pastikan pesan ini</string>
     <string name="housekeeping_label">PEMBENAHAN</string>
     <string name="housekeeping_zero_order">Silakan pilih jumlah valid</string>

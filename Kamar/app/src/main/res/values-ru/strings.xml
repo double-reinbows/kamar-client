@@ -169,7 +169,8 @@
     <string name="no_ironing">Не гладить</string>
     <string name="on_hanger">На вешалке</string>
     <string name="folded">согнутый</string>
-
+    <string name="laundry_price">цена Прачечная</string>
+    <string name="pressing_price">Прессинг цена</string>
     <string name="housekeeping_confirm">Пожалуйста, подтвердите этот заказ</string>
     <string name="housekeeping_label">домоводство</string>
     <string name="housekeeping_zero_order">Пожалуйста, выберите допустимое количество</string>

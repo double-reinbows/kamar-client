@@ -168,7 +168,8 @@
     <string name="no_ironing">不能熨</string>
     <string name="on_hanger">在衣架</string>
     <string name="folded">折叠</string>
-
+    <string name="laundry_price">洗衣价格</string>
+    <string name="pressing_price">压价</string>
     <string name="housekeeping_confirm">請確認訂單</string>
     <string name="housekeeping_label">家政</string>
     <string name="housekeeping_zero_order">請選擇一個有效的量</string>

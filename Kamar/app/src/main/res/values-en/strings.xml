@@ -182,6 +182,8 @@
     <string name="on_hanger">On Hanger</string>
     <string name="folded">Folded</string>
     <string name="laundry_result">Laundry Request sent!</string>
+    <string name="laundry_price">Laundry Price</string>
+    <string name="pressing_price">Pressing Price</string>
     <string name="zero">0</string>
     <string name="language_russian">Russian</string>
     <string name="language_zh">Chinese</string>
