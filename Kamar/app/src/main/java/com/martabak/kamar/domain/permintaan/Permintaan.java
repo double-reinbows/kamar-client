@@ -71,6 +71,11 @@ public class Permintaan<T extends Content> extends Model {
     public static final String TYPE_CHAT = "CHAT";
 
     /**
+     * The success int
+     */
+    public static final int SUCCESS = 1;
+
+    /**
      * The NEW state string. A.k.a. SENT.
      */
     public static final String STATE_NEW = "ORDER-SENT";

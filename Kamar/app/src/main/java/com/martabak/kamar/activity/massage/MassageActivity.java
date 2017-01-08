@@ -127,7 +127,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String owner = Permintaan.OWNER_FRONTDESK;
                         String type = Permintaan.TYPE_MASSAGE;
-                        String creator = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
+                        final String creator = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
                                 .getString("userType", "none");
                         String roomNumber = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
                                 .getString("roomNumber", "none");
@@ -153,13 +153,20 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                             public void onCompleted() {
                                 Log.d(MassageActivity.class.getCanonicalName(), "On completed");
                                 if (success) {
-                                    Toast.makeText(
-                                            MassageActivity.this.getApplicationContext(),
-                                            R.string.massage_result,
-                                            Toast.LENGTH_SHORT
-                                    ).show();
                                     MassageActivity.this.statuses.put(item._id, Permintaan.STATE_NEW);
                                     recyclerViewAdapter.notifyDataSetChanged();
+                                    if (creator.equals("GUEST")) {
+                                        Toast.makeText(
+                                                MassageActivity.this.getApplicationContext(),
+                                                R.string.massage_result,
+                                                Toast.LENGTH_SHORT
+                                        ).show();
+                                    }
+                                    else if (creator.equals("STAFF")) {
+                                        setResult(Permintaan.SUCCESS);
+                                        finish();
+                                    }
+
                                 } else {
                                     Toast.makeText(
                                             MassageActivity.this.getApplicationContext(),

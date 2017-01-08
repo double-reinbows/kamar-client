@@ -3,6 +3,7 @@ package com.martabak.kamar.activity.staff;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.guest.PermintaanDialogListener;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -108,6 +111,19 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
                 getString(R.string.bellboy_result),
                 Toast.LENGTH_LONG
         ).show();
+        // create snackbar for bellboy
+        Snackbar.make(this.getWindow().getDecorView()
+                        .findViewById(android.R.id.content),
+                R.string.request_success,Snackbar.LENGTH_INDEFINITE).
+                setAction(R.string.positive, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.staff_container, CreatePermintaanFragment.newInstance())
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                }).show();
     }
 
     @Override
@@ -182,6 +198,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffChatService.class.getCanonicalName());
         startService(new Intent(this, StaffChatService.class));
     }
+
 
     /**
      * Stop any relevant staff services.

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -185,7 +186,39 @@ public class CreatePermintaanFragment extends Fragment  {
     }
 
     private void launchActivity(Class activity, Context context) {
-        startActivity(new Intent(context, activity));
+        startActivityForResult(new Intent(context, activity), Permintaan.SUCCESS);
+    }
+
+    /**
+     * Show Snackbar based on the success of the permintaan
+     */
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //successful in creating permintaan
+        if (resultCode == Permintaan.SUCCESS) {
+
+            //replace fragment here
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.staff_container, StaffPermintaanFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit();
+
+            // create snackbar
+            Snackbar.make(this.getActivity().getWindow().getDecorView()
+                            .findViewById(android.R.id.content),
+                    R.string.request_success,Snackbar.LENGTH_INDEFINITE).
+                    setAction(R.string.positive, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getFragmentManager().beginTransaction()
+                                    .replace(R.id.staff_container, CreatePermintaanFragment.newInstance())
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
+                    }).show();
+
+        }
+
     }
 
     /**

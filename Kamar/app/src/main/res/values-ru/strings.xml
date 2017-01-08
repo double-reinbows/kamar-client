@@ -202,4 +202,5 @@
     <string name="total_with_tax">Total with TAX</string>
     <string name="staff_mode">STAFF MODE</string>
     <string name="restaurant_subtotal_text">Итого до НАЛОГА</string>
+    <string name="request_success">Запрос отправлен! Вы хотите, чтобы сделать еще один запрос?</string>
 </resources>

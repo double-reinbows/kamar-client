@@ -132,7 +132,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String owner = Permintaan.OWNER_FRONTDESK;
-                        String creator = EngineeringActivity.this.getSharedPreferences("userSettings", EngineeringActivity.this.MODE_PRIVATE)
+                        final String creator = EngineeringActivity.this.getSharedPreferences("userSettings", EngineeringActivity.this.MODE_PRIVATE)
                                 .getString("userType", "none");
                         String type = Permintaan.TYPE_ENGINEERING;
                         String roomNumber = EngineeringActivity.this.getSharedPreferences("userSettings", EngineeringActivity.this.MODE_PRIVATE)
@@ -158,13 +158,20 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                             @Override public void onCompleted() {
                                 Log.d(EngineeringActivity.class.getCanonicalName(), "On completed");
                                 if (success) {
-                                    Toast.makeText(
-                                            EngineeringActivity.this.getApplicationContext(),
-                                            R.string.engineering_result,
-                                            Toast.LENGTH_SHORT
-                                    ).show();
                                     EngineeringActivity.this.statuses.put(item._id, Permintaan.STATE_NEW);
                                     recyclerViewAdapter.notifyDataSetChanged();
+                                    if (creator.equals("GUEST")) {
+                                        Toast.makeText(
+                                                EngineeringActivity.this.getApplicationContext(),
+                                                R.string.engineering_result,
+                                                Toast.LENGTH_SHORT
+                                        ).show();
+                                    }
+                                    else if (creator.equals("STAFF")) {
+                                        setResult(Permintaan.SUCCESS);
+                                        finish();
+                                    }
+
                                 } else {
                                     Toast.makeText(
                                             EngineeringActivity.this.getApplicationContext(),

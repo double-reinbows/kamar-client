@@ -1,7 +1,9 @@
 package com.martabak.kamar.activity.laundry;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,7 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
+import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.domain.options.LaundryOption;
 import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -187,7 +190,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
 
         String owner = Permintaan.OWNER_FRONTDESK;
         String type = Permintaan.TYPE_LAUNDRY;
-        String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
+        final String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("userType", "none");
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", null);
@@ -210,12 +213,17 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
             ).subscribe(new Observer<Permintaan>() {
                 @Override public void onCompleted() {
                     Log.d(LaundryActivity.class.getCanonicalName(), "createPermintaan() On completed");
-                    Toast.makeText(
-                            LaundryActivity.this.getApplicationContext(),
-                            R.string.laundry_result,
-                            Toast.LENGTH_SHORT
-                    ).show();
-                    startActivity(new Intent(getBaseContext(), GuestHomeActivity.class));
+                    if (creator.equals("GUEST")) {
+                        Toast.makeText(
+                                LaundryActivity.this.getApplicationContext(),
+                                R.string.laundry_result,
+                                Toast.LENGTH_SHORT
+                        ).show();
+                        startActivity(new Intent(getBaseContext(), GuestHomeActivity.class));
+                    }
+                    else if (creator.equals("STAFF")) {
+                        setResult(Permintaan.SUCCESS);
+                    }
                     finish();
                 }
                 @Override public void onError(Throwable e) {

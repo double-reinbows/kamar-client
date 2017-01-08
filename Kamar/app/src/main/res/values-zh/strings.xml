@@ -200,4 +200,5 @@
     <string name="total_with_tax">Total with TAX</string>
     <string name="staff_mode">STAFF MODE</string>
     <string name="restaurant_subtotal_text">TAX前的总计</string>
+    <string name="request_success">请求发送！您要再次提出要求吗？</string>
 </resources>

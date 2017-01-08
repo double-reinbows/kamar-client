@@ -206,4 +206,5 @@
     <string name="guest_about_text">About Text Goes Here</string>
     <string name="staff_mode">STAFF MODE</string>
     <string name="restaurant_subtotal_text">Total before TAX</string>
+    <string name="request_success">Request Sent! Would you like to make another request?</string>
 </resources>
