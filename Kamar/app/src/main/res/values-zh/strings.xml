@@ -22,6 +22,7 @@
     <string name="something_went_wrong">哎呀！出事了</string>
     <string name="required">Required</string>
     <string name="create">Create</string>
+    <string name="loading">Loading</string>
 
     <!-- Home -->
     <string name="language_english">英语</string>

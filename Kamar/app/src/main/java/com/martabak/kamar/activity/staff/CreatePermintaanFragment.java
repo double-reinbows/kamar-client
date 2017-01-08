@@ -63,17 +63,21 @@ public class CreatePermintaanFragment extends Fragment  {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        roomNumbers = new ArrayList<>();
+        permintaanOptions = new ArrayList<>();
+
         final View parentView = inflater.inflate(R.layout.fragment_create_permintaan, container, false);
         guestInfoText = (TextView) parentView.findViewById(R.id.guest_info);
         guestSpinner = (Spinner) parentView.findViewById(R.id.guest_spinner);
         permintaanSpinner = (Spinner) parentView.findViewById(R.id.permintaan_spinner);
-        roomNumbers = getRoomNumbersWithGuests();
-        permintaanOptions = getPermintaanOptions();
         submitButton = (Button) parentView.findViewById(R.id.create_permintaan_submit);
 
         setupGuestSpinner();
         setupPermintaanSpinner();
         setupButtons(parentView.getContext());
+
+        getRoomNumbersWithGuests();
+        getPermintaanOptions();
 
         return parentView;
     }
@@ -181,7 +185,6 @@ public class CreatePermintaanFragment extends Fragment  {
     }
 
     private void launchPorterDialog() {
-        // TODO launch the porter dialog
         new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
     }
 
@@ -193,7 +196,6 @@ public class CreatePermintaanFragment extends Fragment  {
      * Show Snackbar based on the success of the permintaan
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         //successful in creating permintaan
         if (resultCode == Permintaan.SUCCESS) {
 
@@ -216,16 +218,14 @@ public class CreatePermintaanFragment extends Fragment  {
                                     .commit();
                         }
                     }).show();
-
         }
-
     }
 
     /**
-     * @return A list of permintaan options that the staff may select.
+     * Gets a list of permintaan options that the staff may select.
      */
-    private List<String> getPermintaanOptions() {
-        return new ArrayList<>(Arrays.asList(
+    private void getPermintaanOptions() {
+        permintaanOptions.addAll(Arrays.asList(
                 Permintaan.TYPE_BELLBOY,
                 Permintaan.TYPE_ENGINEERING,
                 Permintaan.TYPE_HOUSEKEEPING,
@@ -236,12 +236,16 @@ public class CreatePermintaanFragment extends Fragment  {
     }
 
     /**
-     * @return A list of room numbers with guests checked in.
+     * Gets a list of room numbers with guests checked in.
      */
-    private List<String> getRoomNumbersWithGuests() {
-        final List <String> roomStrings = new ArrayList<String>();
+    private void getRoomNumbersWithGuests() {
+        roomNumbers.set(0, getString(R.string.loading));
+        guestSpinner.setEnabled(false);
+        rooms.notifyDataSetChanged();
         GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithGuests().subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
+                roomNumbers.set(0, getString(R.string.room_select));
+                guestSpinner.setEnabled(true);
                 rooms.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
@@ -250,12 +254,11 @@ public class CreatePermintaanFragment extends Fragment  {
             }
             @Override public void onNext(Room room) {
                 if (room != null) {
-                    roomStrings.add(room.number);
+                    roomNumbers.add(room.number);
                     Log.v(CreatePermintaanFragment.class.getCanonicalName(), "Found room: " + room.number);
                 }
             }
         });
-        return roomStrings;
     }
 
     /**

@@ -21,6 +21,7 @@
     <string name="something_went_wrong">Ups, ada yang tidak beres</string>
     <string name="required">Required</string>
     <string name="create">Create</string>
+    <string name="loading">Loading</string>
 
     <!-- Home -->
     <string name="language_english">Bahasa Inggris</string>

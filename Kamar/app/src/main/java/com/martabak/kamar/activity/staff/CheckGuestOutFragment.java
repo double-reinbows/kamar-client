@@ -68,12 +68,12 @@ public class CheckGuestOutFragment extends Fragment  {
         final View parentView =  inflater.inflate(R.layout.fragment_check_guest_out, container, false);
         ButterKnife.bind(this,parentView);
 
-        roomNumbers = getRoomNumbersWithGuests();
-
+        roomNumbers = new ArrayList<>();
+        roomNumbers.add(0, getString(R.string.room_select));
         rooms = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.support_simple_spinner_dropdown_item, roomNumbers);
-        roomNumbers.add(0, getString(R.string.room_select));
         rooms.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        getRoomNumbersWithGuests();
         spinner.setAdapter(rooms);
         spinner.setSelection(0);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -96,12 +96,16 @@ public class CheckGuestOutFragment extends Fragment  {
     }
 
     /**
-     * @return A list of room numbers with guests checked in.
+     * Gets a list of room numbers with guests checked in.
      */
-    private List<String> getRoomNumbersWithGuests() {
-        final List <String> roomStrings = new ArrayList<String>();
+    private void getRoomNumbersWithGuests() {
+        roomNumbers.set(0, getString(R.string.loading));
+        spinner.setEnabled(false);
+        rooms.notifyDataSetChanged();
         GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithGuests().subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
+                roomNumbers.set(0, getString(R.string.room_select));
+                spinner.setEnabled(true);
                 rooms.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
@@ -110,12 +114,11 @@ public class CheckGuestOutFragment extends Fragment  {
             }
             @Override public void onNext(Room room) {
                 if (room != null) {
-                    roomStrings.add(room.number);
+                    roomNumbers.add(room.number);
                     Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found room: " + room.number);
                 }
             }
         });
-        return roomStrings;
     }
 
     /**
