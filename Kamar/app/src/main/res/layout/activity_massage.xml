@@ -16,8 +16,8 @@
             android:layout_height="match_parent"
             android:layout_marginTop="70dp"
             android:layout_marginBottom="50dp"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
+            android:paddingLeft="@dimen/activity_horizontal_padding"
+            android:paddingRight="@dimen/activity_horizontal_padding"
             android:divider="?android:attr/dividerHorizontal"
             android:orientation="vertical"
             android:showDividers="none">
