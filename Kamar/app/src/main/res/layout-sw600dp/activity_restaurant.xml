@@ -1,98 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:fitsSystemWindows="true">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+    <include layout="@layout/actionbar"/>
 
-        <include layout="@layout/actionbar"/>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="329dp"
+        tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="329dp"
-            tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/content_restaurant"
-                android:layout_below="@+id/tabs"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:context=".activity.restaurant.RestaurantActivity"
-                tools:showIn="@layout/activity_restaurant">
-
-                <ExpandableListView
-                    android:id="@+id/restaurant_exp_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <!--- RED LINE -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:tools="http://schemas.android.com/tools"
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:background="@color/darkRed"
-                        tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity"/>
+            android:id="@+id/content_restaurant"
+            android:layout_below="@+id/tabs"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_padding"
+            android:paddingRight="@dimen/activity_horizontal_padding"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context=".activity.restaurant.RestaurantActivity"
+            tools:showIn="@layout/activity_restaurant">
 
-        <!--- RESTAURANT BOTTOM BAR START -->
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:tools="http://schemas.android.com/tools"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/pureWhite"
-                        android:paddingLeft="65dp"
-                        android:paddingRight="65dp"
-                        tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
+            <ExpandableListView
+                android:id="@+id/restaurant_exp_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-            <TextView
-                android:id="@+id/order_total_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="6dp"
-                android:textSize="12sp"
-                android:layout_alignParentStart="true"
-                android:text="@string/restaurant_subtotal_text"/>
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/restaurant_subtotal_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textHint"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_below="@+id/order_total_text"
-                android:layout_alignParentStart="true"/>
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/restaurant_arrow_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/darkRed"
-                android:textStyle="bold"
-                android:textSize="36sp"/>
+    <!--- RED LINE -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/darkRed"
+        tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity"/>
 
-        </RelativeLayout>
-        <!--RESTAURANT BOTTOM BAR END -->
+    <!--- RESTAURANT BOTTOM BAR START -->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pureWhite"
+        android:paddingLeft="@dimen/activity_horizontal_padding"
+        android:paddingRight="@dimen/activity_horizontal_padding"
+        tools:context="com.martabak.kamar.activity.restaurant.RestaurantActivity">
 
-        <include layout="@layout/bottombar"/>
+        <TextView
+            android:id="@+id/order_total_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:textSize="12sp"
+            android:layout_alignParentStart="true"
+            android:text="@string/restaurant_subtotal_text"/>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/restaurant_subtotal_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textHint"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_below="@+id/order_total_text"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/restaurant_arrow_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/darkRed"
+            android:textStyle="bold"
+            android:textSize="36sp"/>
+
+    </RelativeLayout>
+    <!--RESTAURANT BOTTOM BAR END -->
+
+    <include layout="@layout/bottombar"/>
+
+</LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
