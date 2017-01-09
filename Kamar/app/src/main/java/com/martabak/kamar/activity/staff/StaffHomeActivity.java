@@ -106,11 +106,10 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, Boolean success) {
         dialog.dismiss();
-        Toast.makeText(
-                this,
-                getString(R.string.bellboy_result),
-                Toast.LENGTH_LONG
-        ).show();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.staff_container, StaffPermintaanFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
         // create snackbar for bellboy
         Snackbar.make(this.getWindow().getDecorView()
                         .findViewById(android.R.id.content),

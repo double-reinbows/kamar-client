@@ -73,37 +73,32 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
                 .getString("userType", "none");
         //new dialog
 
-        if (creator.equals("GUEST")) {
-            final Dialog dialog = new Dialog(this);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.dialog_restaurant_confirmation);
-            dialog.show();
 
-            dialog.setOnDismissListener(new Dialog.OnDismissListener() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_restaurant_confirmation);
+        dialog.show();
 
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    startActivity(new Intent(getBaseContext(), GuestHomeActivity.class));
-                    finish();
-                }
-            });
+        dialog.setOnDismissListener(new Dialog.OnDismissListener() {
 
-            new CountDownTimer(11000, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                startActivity(new Intent(getBaseContext(), GuestHomeActivity.class));
+                finish();
+            }
+        });
 
-                }
+        new CountDownTimer(11000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
 
-                @Override
-                public void onFinish() {
-                    dialog.dismiss();
-                }
-            }.start();
-        }
-        else if (creator.equals("STAFF")) {
-            setResult(Permintaan.SUCCESS);
-            finish();
-        }
+            }
+
+            @Override
+            public void onFinish() {
+                dialog.dismiss();
+            }
+        }.start();
     }
 
     @Override
