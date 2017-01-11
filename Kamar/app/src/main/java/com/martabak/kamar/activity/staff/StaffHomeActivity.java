@@ -88,6 +88,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity {
     public void onStop() {
         stopStaffServices();
         super.onStop();
+        Log.v("RandomShit", "randomshit");
     }
 
     /*
