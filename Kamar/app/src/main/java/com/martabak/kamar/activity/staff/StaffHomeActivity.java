@@ -84,11 +84,28 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        getFragmentManager().beginTransaction()
-                .add(R.id.staff_container, StaffPermintaanFragment.newInstance())
-                .addToBackStack(null)
-                .commit();
-        navigationView.getMenu().getItem(0).setChecked(true);
+
+        //open chat when staff home entered from notification
+        String fragType = getIntent().getStringExtra("FragType");
+        if (fragType != null) {
+            switch (fragType) {
+                case "StaffChatFragment":
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.staff_container, StaffChatFragment.newInstance())
+                            .commit();
+
+            }
+        }
+        else {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.staff_container, StaffPermintaanFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit();
+            navigationView.getMenu().getItem(0).setChecked(true);
+
+        }
+
+
     }
 
     @Override
