@@ -69,16 +69,20 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         //ic_restaurant submit
         sendRestaurantRequest(restaurantOrder);
 
+        String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("userType", "none");
         //new dialog
+
+
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_restaurant_confirmation);
         dialog.show();
 
-        dialog.setOnDismissListener(new Dialog.OnDismissListener(){
+        dialog.setOnDismissListener(new Dialog.OnDismissListener() {
 
             @Override
-            public void onDismiss(DialogInterface dialogInterface){
+            public void onDismiss(DialogInterface dialogInterface) {
                 startActivity(new Intent(getBaseContext(), GuestHomeActivity.class));
                 finish();
             }
@@ -89,12 +93,12 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
             public void onTick(long millisUntilFinished) {
 
             }
+
             @Override
             public void onFinish() {
                 dialog.dismiss();
             }
         }.start();
-
     }
 
     @Override
@@ -226,6 +230,8 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
     public void sendRestaurantRequest(RestaurantOrder restaurantOrder) {
         String owner = Permintaan.OWNER_RESTAURANT;
         String type = Permintaan.TYPE_RESTAURANT;
+        String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("userType", "none");
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", null);
         String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -239,6 +245,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         if (!guestId.equals("none") && !roomNumber.equals("none")) {
             PermintaanServer.getInstance(this.getBaseContext()).createPermintaan(new Permintaan(
                     owner,
+                    creator,
                     type,
                     roomNumber,
                     guestId,

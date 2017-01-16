@@ -21,6 +21,8 @@
     <string name="submit">Submit</string>
     <string name="something_went_wrong">Oops, something went wrong</string>
     <string name="required">Required</string>
+    <string name="create">Create</string>
+    <string name="loading">Loading</string>
 
     <!-- Home -->
     <string name="language_english">English</string>
@@ -85,6 +87,7 @@
     <string name="nav_drawer_chat">CHAT</string>
     <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
     <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
+    <string name="nav_drawer_create_permintaan">CREATE REQUEST</string>
     <string name="nav_drawer_staff_hours">STAFF HOURS</string>
     <string name="nav_drawer_logout">GUEST MODE</string>
 
@@ -158,7 +161,7 @@
     </string>
 
     <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
-
+    <string name="permintaan_select">Request Type</string>
     <string name="room_select">Room Number</string>
     <string name="room_number">Room Number</string>
     <string name="room_number_change">Change Room Number</string>
@@ -180,6 +183,8 @@
     <string name="on_hanger">On Hanger</string>
     <string name="folded">Folded</string>
     <string name="laundry_result">Laundry Request sent!</string>
+    <string name="laundry_price">Laundry Price</string>
+    <string name="pressing_price">Pressing Price</string>
     <string name="zero">0</string>
     <string name="language_russian">Russian</string>
     <string name="language_zh">Chinese</string>
@@ -202,4 +207,5 @@
     <string name="guest_about_text">About Text Goes Here</string>
     <string name="staff_mode">STAFF MODE</string>
     <string name="restaurant_subtotal_text">Total before TAX</string>
+    <string name="request_success">Request Sent! Would you like to make another request?</string>
 </resources>

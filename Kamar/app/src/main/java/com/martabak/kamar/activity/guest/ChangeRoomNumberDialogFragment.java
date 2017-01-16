@@ -55,7 +55,6 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 String roomNumber = roomNumbers.get((int)spinner.getSelectedItemId()).toString();
                 changeRoomNumber(roomNumber);
-
             }
         });
 
@@ -79,10 +78,8 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
      * @param roomNumber The room number.
      */
     public void changeRoomNumber(final String roomNumber) {
-
         changeRoomDialogListener.onChangeRoomDialogPositiveClick(
                 ChangeRoomNumberDialogFragment.this, roomNumber, true, null);
-
     }
 
     /**

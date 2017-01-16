@@ -71,6 +71,11 @@ public class Permintaan<T extends Content> extends Model {
     public static final String TYPE_CHAT = "CHAT";
 
     /**
+     * The success int
+     */
+    public static final int SUCCESS = 1;
+
+    /**
      * The NEW state string. A.k.a. SENT.
      */
     public static final String STATE_NEW = "ORDER-SENT";
@@ -111,6 +116,15 @@ public class Permintaan<T extends Content> extends Model {
      * </ul>
      */
     public final String owner;
+
+    /**
+     * The creator of the request. One of:
+     * <ul>
+     * <li>GUEST</li>
+     * <li>STAFF</li>
+     * </ul>
+     */
+    public final String creator;
 
     /**
      * The type of the request. One of:
@@ -172,6 +186,7 @@ public class Permintaan<T extends Content> extends Model {
 
     public Permintaan() {
         this.owner = null;
+        this.creator = null;
         this.type = null;
         this.roomNumber = null;
         this.guestId = null;
@@ -184,10 +199,11 @@ public class Permintaan<T extends Content> extends Model {
     /**
      * for creating new permintaans
      */
-    public Permintaan(String owner, String type, String roomNumber, String guestId, String state,
+    public Permintaan(String owner, String creator, String type, String roomNumber, String guestId, String state,
                       Date created, T content) {
         super(null, null);
         this.owner = owner;
+        this.creator = creator;
         this.type = type;
         this.roomNumber = roomNumber;
         this.guestId = guestId;
@@ -201,10 +217,11 @@ public class Permintaan<T extends Content> extends Model {
     /**
      * For updating permintaans (make sure you get the latest _rev which changes immediately after
      */
-    public Permintaan(String _id, String _rev, String owner, String type, String roomNumber, String guestId, String state,
-                      Date created, Date updated, String assignee, T content) {
+    public Permintaan(String _id, String _rev, String owner, String creator, String type, String roomNumber,
+                      String guestId, String state, Date created, Date updated, String assignee, T content) {
         super(_id, _rev);
         this.owner = owner;
+        this.creator = creator;
         this.type = type;
         this.roomNumber = roomNumber;
         this.guestId = guestId;

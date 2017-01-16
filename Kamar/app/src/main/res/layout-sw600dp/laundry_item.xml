@@ -34,21 +34,46 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <CheckBox
-                        style="@android:style/Widget.CompoundButton.RadioButton"
-                        android:id="@+id/laundry_price_option"
+                    android:orientation="vertical">
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:enabled="false"/>
-                    <CheckBox
-                        style="@android:style/Widget.CompoundButton.RadioButton"
-                        android:id="@+id/pressing_price_option"
+                        android:showDividers="middle"
+                        android:divider="@drawable/empty_wide_divider"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/laundry_price_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:text="@string/laundry_price"/>
+                        <TextView
+                            android:id="@+id/pressing_price_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:text="@string/pressing_price"/>
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:enabled="false"/>
+                        android:showDividers="middle"
+                        android:divider="@drawable/empty_wide_divider"
+                        android:orientation="horizontal">
+                        <CheckBox
+                            android:id="@+id/laundry_price_option"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:enabled="false"/>
+                        <CheckBox
+                            android:id="@+id/pressing_price_option"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:paddingLeft="5dp"
+                            android:enabled="false"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
             <CheckBox

@@ -21,6 +21,8 @@
     <string name="submit">Submit</string>
     <string name="something_went_wrong">哎呀！出事了</string>
     <string name="required">Required</string>
+    <string name="create">Create</string>
+    <string name="loading">Loading</string>
 
     <!-- Home -->
     <string name="language_english">英语</string>
@@ -84,6 +86,7 @@
     <string name="nav_drawer_chat">CHAT</string>
     <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
     <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
+    <string name="nav_drawer_create_permintaan">CREATE REQUEST</string>
     <string name="nav_drawer_staff_hours">STAFF HOURS</string>
     <string name="nav_drawer_logout">GUEST MODE</string>
 
@@ -150,7 +153,7 @@
     </string>
 
     <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
-
+    <string name="permintaan_select">Request Type</string>
     <string name="room_select">Room Number</string>
     <string name="room_number">Room Number</string>
     <string name="room_number_change">Change Room Number</string>
@@ -166,7 +169,8 @@
     <string name="no_ironing">不能熨</string>
     <string name="on_hanger">在衣架</string>
     <string name="folded">折叠</string>
-
+    <string name="laundry_price">洗衣价格</string>
+    <string name="pressing_price">压价</string>
     <string name="housekeeping_confirm">請確認訂單</string>
     <string name="housekeeping_label">家政</string>
     <string name="housekeeping_zero_order">請選擇一個有效的量</string>
@@ -197,4 +201,5 @@
     <string name="total_with_tax">Total with TAX</string>
     <string name="staff_mode">STAFF MODE</string>
     <string name="restaurant_subtotal_text">TAX前的总计</string>
+    <string name="request_success">请求发送！您要再次提出要求吗？</string>
 </resources>

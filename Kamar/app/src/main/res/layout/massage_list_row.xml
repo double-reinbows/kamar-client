@@ -15,8 +15,8 @@
     android:layout_gravity="bottom">
 
     <ImageView
-        android:layout_width="250dp"
-        android:layout_height="150dp"
+        android:layout_width="225dp"
+        android:layout_height="125dp"
         android:id="@+id/massage_image"/>
 
     <LinearLayout

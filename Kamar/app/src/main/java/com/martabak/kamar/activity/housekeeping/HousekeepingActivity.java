@@ -240,11 +240,13 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                                     return;
                                 }                                String state = Permintaan.STATE_NEW;
                                 Date currentDate = Calendar.getInstance().getTime();
+                                final String creator = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                                        .getString("userType", "none");
                                 String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                                         .getString("roomNumber", "none");
                                 //Create the Housekeeping permintaan
                                 PermintaanServer.getInstance(getActivity()).createPermintaan(
-                                        new Permintaan(owner, type, roomNumber, guestId, state, currentDate,
+                                        new Permintaan(owner, creator, type, roomNumber, guestId, state, currentDate,
                                                 new Housekeeping("", quantity, option))
                                 ).subscribe(new Observer<Permintaan>() {
                                     boolean success;
@@ -253,12 +255,6 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                                     public void onCompleted() {
                                         Log.d(HousekeepingActivity.class.getCanonicalName(), "On completed");
                                         if (success) {
-                                            Toast.makeText(
-                                                    getActivity().getApplicationContext(),
-                                                    R.string.housekeeping_result,
-                                                    Toast.LENGTH_SHORT
-                                            ).show();
-
                                             //get, modify then set the order dictionary in the Manager
                                             HashMap idToQuantity = HousekeepingManager.getInstance().getOrder();
                                             idToQuantity.put(option._id, quantity);
@@ -266,6 +262,18 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                                             quantity = 0;
                                             idToStatus.put(option._id, Permintaan.STATE_NEW);
                                             hkOptionRecyclerAdapter.notifyDataSetChanged();
+                                            if (creator.equals("GUEST")) {
+                                                Toast.makeText(
+                                                        getActivity().getApplicationContext(),
+                                                        R.string.housekeeping_result,
+                                                        Toast.LENGTH_SHORT
+                                                ).show();
+                                            }
+                                            else if (creator.equals("STAFF")) {
+                                                getActivity().setResult(Permintaan.SUCCESS);
+                                                getActivity().finish();
+                                            }
+
                                         } else {
                                             Toast.makeText(
                                                     getActivity().getApplicationContext(),

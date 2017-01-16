@@ -26,6 +26,7 @@ import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.service.EventServer;
 import com.martabak.kamar.service.GuestServer;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,6 +46,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
 
     private List<Event> promoImages;
     private List<String> roomNumbers;
+    private ArrayAdapter roomNumAdapter;
 
     //bind views here
     @BindView(R.id.guest_first_name) EditText editFirstName;
@@ -72,8 +74,6 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber, null, welcome, promoImgId);
     }
 
-
-
     public CheckGuestInFragment() {
     }
 
@@ -93,12 +93,12 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         editPhoneNumber.addTextChangedListener(this);
         promoImages = null;
 
-        roomNumbers = getRoomNumbersWithoutGuests();
-        ArrayAdapter roomNumAdapter = new ArrayAdapter(getActivity().getBaseContext(),
-                R.layout.support_simple_spinner_dropdown_item, roomNumbers);
+        roomNumbers = new ArrayList<>();
         roomNumbers.add(0, getString(R.string.room_select));
+        roomNumAdapter = new ArrayAdapter(getActivity().getBaseContext(),
+                R.layout.support_simple_spinner_dropdown_item, roomNumbers);
         roomNumAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        roomNumAdapter.notifyDataSetChanged();
+        getRoomNumbersWithoutGuests();
         spinnerRoomNumber.setAdapter(roomNumAdapter);
         spinnerRoomNumber.setSelection(0);
         spinnerRoomNumber.setOnItemSelectedListener(this);
@@ -166,7 +166,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
             invalid = true;
             TextView spinnerErrorText = (TextView)spinnerRoomNumber.getSelectedView();
             spinnerErrorText.setError("");
-            spinnerErrorText.setText(getString(R.string.room_select));
+//            spinnerErrorText.setText(getString(R.string.room_select));
         }
 
         Log.d(CheckGuestInFragment.class.getCanonicalName(), "Setting submit button to " + !invalid);
@@ -174,24 +174,29 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
     }
 
     /**
-     * @return A list of room number strings without guests currently checked in.
+     * Gets a list of room number strings without guests currently checked in.
      */
-    private List<String> getRoomNumbersWithoutGuests() {
-        final List<String> roomStrings = new ArrayList<>();
+    private void getRoomNumbersWithoutGuests() {
+        roomNumbers.set(0, getString(R.string.loading));
+        spinnerRoomNumber.setEnabled(false);
+        roomNumAdapter.notifyDataSetChanged();
         GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithoutGuests()
                 .subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
+                roomNumbers.set(0, getString(R.string.room_select));
+                spinnerRoomNumber.setEnabled(true);
+                roomNumAdapter.notifyDataSetChanged();
+                validate();
             }
             @Override public void onError(Throwable e) {
                 Log.v(CheckGuestInFragment.class.getCanonicalName(),  "getRoomNumbersWithoutGuests() onError");
                 e.printStackTrace();
             }
             @Override public void onNext(Room room) {
-                roomStrings.add(room.number);
+                roomNumbers.add(room.number);
                 Log.v(CheckGuestInFragment.class.getCanonicalName(), "getRoomNumbersWithoutGuests() onNext");
             }
         });
-        return roomStrings;
     }
 
     /**

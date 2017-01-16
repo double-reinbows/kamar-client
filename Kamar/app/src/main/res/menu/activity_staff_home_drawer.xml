@@ -14,6 +14,9 @@
         <item
             android:id="@+id/nav_check_guest_out"
             android:title="@string/nav_drawer_checkguestout" />
+        <item
+            android:id="@+id/nav_create_permintaan"
+            android:title="@string/nav_drawer_create_permintaan" />
         <!--item
             android:id="@+id/nav_staff_hours"
             android:title="@string/nav_drawer_staff_hours" /-->

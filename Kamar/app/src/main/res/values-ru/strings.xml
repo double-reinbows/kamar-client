@@ -21,6 +21,8 @@
     <string name="submit">Submit</string>
     <string name="something_went_wrong">Упс! Что-то пошло не так</string>
     <string name="required">Required</string>
+    <string name="create">Create</string>
+    <string name="loading">Loading</string>
 
     <!-- Home -->
     <string name="language_english">английский язык</string>
@@ -84,6 +86,7 @@
     <string name="nav_drawer_chat">CHAT</string>
     <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
     <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
+    <string name="nav_drawer_create_permintaan">CREATE REQUEST</string>
     <string name="nav_drawer_staff_hours">STAFF HOURS</string>
     <string name="nav_drawer_logout">GUEST MODE</string>
 
@@ -151,7 +154,7 @@
     </string>
 
     <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
-
+    <string name="permintaan_select">Request Type</string>
     <string name="room_select">Room Number</string>
     <string name="room_number">Room Number</string>
     <string name="room_number_change">Change Room Number</string>
@@ -167,7 +170,8 @@
     <string name="no_ironing">Не гладить</string>
     <string name="on_hanger">На вешалке</string>
     <string name="folded">согнутый</string>
-
+    <string name="laundry_price">цена Прачечная</string>
+    <string name="pressing_price">Прессинг цена</string>
     <string name="housekeeping_confirm">Пожалуйста, подтвердите этот заказ</string>
     <string name="housekeeping_label">домоводство</string>
     <string name="housekeeping_zero_order">Пожалуйста, выберите допустимое количество</string>
@@ -199,4 +203,5 @@
     <string name="total_with_tax">Total with TAX</string>
     <string name="staff_mode">STAFF MODE</string>
     <string name="restaurant_subtotal_text">Итого до НАЛОГА</string>
+    <string name="request_success">Запрос отправлен! Вы хотите, чтобы сделать еще один запрос?</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.martabak.kamar.activity.staff;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,20 +12,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
+import com.martabak.kamar.activity.guest.PermintaanDialogListener;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
+import com.martabak.kamar.domain.permintaan.Permintaan;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class StaffHomeActivity extends AbstractStaffBarsActivity {
+public class StaffHomeActivity extends AbstractStaffBarsActivity
+        implements PermintaanDialogListener {
 
     @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -88,7 +95,6 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity {
     public void onStop() {
         stopStaffServices();
         super.onStop();
-        Log.v("RandomShit", "randomshit");
     }
 
     /*
@@ -96,6 +102,32 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity {
      */
     @Override
     public void onBackPressed() {}
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, Boolean success) {
+        dialog.dismiss();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.staff_container, StaffPermintaanFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
+        // create snackbar for bellboy
+        Snackbar.make(this.getWindow().getDecorView()
+                        .findViewById(android.R.id.content),
+                R.string.request_success,Snackbar.LENGTH_INDEFINITE).
+                setAction(R.string.positive, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.staff_container, CreatePermintaanFragment.newInstance())
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                }).show();
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+    }
 
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override
@@ -123,6 +155,13 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity {
                     Log.v(StaffHomeActivity.class.toString(), "Loading check-guest-out fragment");
                     getFragmentManager().beginTransaction()
                             .replace(R.id.staff_container, CheckGuestOutFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit();
+                    break;
+                case R.id.nav_create_permintaan:
+                    Log.v(StaffHomeActivity.class.toString(), "Loading create permintaan fragment");
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.staff_container, CreatePermintaanFragment.newInstance())
                             .addToBackStack(null)
                             .commit();
                     break;
@@ -158,6 +197,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity {
         Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffChatService.class.getCanonicalName());
         startService(new Intent(this, StaffChatService.class));
     }
+
 
     /**
      * Stop any relevant staff services.
