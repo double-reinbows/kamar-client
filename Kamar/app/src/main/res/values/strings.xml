@@ -7,7 +7,7 @@
     <string name="laundry_label">Laundry</string>
     <string name="chat_label">Chat</string>
     <string name="laundry_result">Laundry request sent!</string>
-    <string name="room_number_not_found">Sorry, I can\'t find your room number. Please notify a staff member</string>
+    <string name="room_number_not_found">Sorry, I can\'t find your room number. Please notify a staff member.</string>
     <string name="guest_empty_room">No guest inside this room</string>
     <string name="no_guest_in_room">Sorry, but you\'re not checked in!</string>
     <string name="survey_previously_submitted">Sorry, but you can only submit feedback once!</string>
