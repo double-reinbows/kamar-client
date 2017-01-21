@@ -4,105 +4,105 @@
     <!-- Misc -->
     <string name="app_name">Kamar</string>
     <string name="action_settings">Settings</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Открыть панель навигации</string>
+    <string name="navigation_drawer_close">Закрыть панель навигации</string>
     <string name="title_activity_guest_home">GuestHomeActivity</string>
     <string name="title_activity_staff_home">StaffHomeActivity</string>
     <string name="title_activity_transport">TransportActivity</string>
     <string name="title_activity_survey">SurveyActivity</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="welcome">добро пожаловать</string>
-    <string name="welcome_message">Welcome Message</string>
-    <string name="upload">Upload</string>
-    <string name="positive">Yes</string>
-    <string name="negative">No</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
-    <string name="submit">Submit</string>
+    <string name="welcome_message">Приветственное сообщение</string>
+    <string name="upload">Загрузить</string>
+    <string name="positive">да</string>
+    <string name="negative">Нет</string>
+    <string name="ok">ОК</string>
+    <string name="cancel">ОТМЕНИТЬ</string>
+    <string name="submit">Отправить</string>
     <string name="something_went_wrong">Упс! Что-то пошло не так</string>
-    <string name="required">Required</string>
-    <string name="create">Create</string>
-    <string name="loading">Loading</string>
+    <string name="required">необходимые</string>
+    <string name="create">Создайте</string>
+    <string name="loading">загрузка</string>
 
     <!-- Home -->
     <string name="language_english">английский язык</string>
-    <string name="language_bahasa">Bahasa Indonesia</string>
+    <string name="language_bahasa">индонезийском</string>
     <string name="language_set_to">Язык задан русский</string>
-    <string name="user_set_to">User set to</string>
-    <string name="guest">Guest</string>
-    <string name="staff">Staff</string>
-    <string name="user_set_to_guest">User set to Guest</string>
-    <string name="user_set_to_staff">User set to Staff</string>
-    <string name="password_prompt">Enter Staff Password: </string>
-    <string name="incorrect_password">The password you entered is incorrect</string>
-    <string name="frontdesk">Front Desk</string>
-    <string name="restaurant">Restaurant</string>
-    <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
+    <string name="user_set_to">Пользователь установлен</string>
+    <string name="guest">гость</string>
+    <string name="staff">Сотрудники</string>
+    <string name="user_set_to_guest">Пользователь установлен Гость</string>
+    <string name="user_set_to_staff">Пользователь установлен в штаб</string>
+    <string name="password_prompt">Введите пароль сотрудников:</string>
+    <string name="incorrect_password">Пароль, который вы ввели неверный</string>
+    <string name="frontdesk">отдел регистрации и обслуживания</string>
+    <string name="restaurant">Ресторан</string>
+    <string name="frontdesk_or_restaurant">Отдел регистрации и обслуживания или ресторан?</string>
 
     <!-- Permintaan -->
-    <string name="permintaan_title">Requests</string>
-    <string name="permintaan">request</string>
-    <string name="new_permintaan">NEW</string>
-    <string name="inprogress_permintaan">IN PROGRESS</string>
-    <string name="indelivery_permintaan">IN DELIVERY</string>
-    <string name="completed_permintaan">COMPLETED</string>
-    <string name="deleted_permintaan">DELETED</string>
-    <string name="cancelled_permintaan">CANCELLED</string>
-    <string name="permintaan_progress_confirmation">Are you sure you want to progress this request?</string>
-    <string name="permintaan_regress_confirmation">Are you sure you want to regress this request?</string>
-    <string name="permintaan_cancel_confirmation">Are you sure you want to cancel this request?</string>
-    <string name="permintaan_status_is_now">Status is now</string>
+    <string name="permintaan_title">Запросы</string>
+    <string name="permintaan">запрос</string>
+    <string name="new_permintaan">новый</string>
+    <string name="inprogress_permintaan">В ХОДЕ ВЫПОЛНЕНИЯ</string>
+    <string name="indelivery_permintaan">ДОСТАВКИ</string>
+    <string name="completed_permintaan">ЗАВЕРШЕНА</string>
+    <string name="deleted_permintaan">УДАЛИТЬ</string>
+    <string name="cancelled_permintaan">ОТМЕНЕН</string>
+    <string name="permintaan_progress_confirmation">Вы уверены, что хотите прогрессировать этот запрос?</string>
+    <string name="permintaan_regress_confirmation">Вы уверены, что хотите регрессируют этот запрос?</string>
+    <string name="permintaan_cancel_confirmation">Вы уверены, что хотите отменить этот запрос?</string>
+    <string name="permintaan_status_is_now">Состояние в настоящее время</string>
     <string name="permintaan_order_sent">Заказать Sent</string>
     <string name="permintaan_order_received">Заказ обрабатывал</string>
     <string name="permintaan_order_completed">Заказ Завершенный</string>
 
     <!-- Chat -->
-    <string name="title_chat_list">CHAT</string>
-    <string name="title_chat_detail">CHAT</string>
-    <string name="chat_message_text">Type your message ...</string>
-    <string name="chat_send_button">Send</string>
-    <string name="chat_message_sent">Message sent</string>
-    <string name="chat_message_from_guest">Message from guest room</string>
-    <string name="chat_message_from_staff">Message from staff</string>
+    <string name="title_chat_list">ЧАТ</string>
+    <string name="title_chat_detail">ЧАТ</string>
+    <string name="chat_message_text">Текст сообщения ...</string>
+    <string name="chat_send_button">послать</string>
+    <string name="chat_message_sent">Сообщение отправлено</string>
+    <string name="chat_message_from_guest">Сообщение от комнаты для гостей</string>
+    <string name="chat_message_from_staff">Сообщение от сотрудников</string>
 
     <!-- Check in/out -->
-    <string name="guest_first_name">First Name</string>
-    <string name="guest_last_name">Last Name</string>
-    <string name="guest_email">Email</string>
-    <string name="guest_phone">Phone Number</string>
-    <string name="guest_date">Date</string>
-    <string name="guest_date_check_out">Date Check Out</string>
-    <string name="guest_room_number">Set Room Number</string>
-    <string name="guest_checkout">Check Out Guest</string>
-    <string name="guest_checkin">GUEST INFORMATION</string>
-    <string name="guest_checkout_name">Guest Name</string>
-    <string name="guest_checkout_message">Guest has been checked out</string>
-    <string name="guest_checkout_submit_button">Check Out</string>
-    <string name="guest_checkin_message">Guest has been checked in</string>
-    <string name="guest_checkin_submit_button">Check In</string>
+    <string name="guest_first_name">Имя</string>
+    <string name="guest_last_name">Фамилия</string>
+    <string name="guest_email">Эл. адрес</string>
+    <string name="guest_phone">Номер телефона</string>
+    <string name="guest_date">Дата</string>
+    <string name="guest_date_check_out">Дата выезда</string>
+    <string name="guest_room_number">Набор номеров Номер</string>
+    <string name="guest_checkout">Проверить гость</string>
+    <string name="guest_checkin">Информация о госте</string>
+    <string name="guest_checkout_name">Имя гостя</string>
+    <string name="guest_checkout_message">Гость был извлечен</string>
+    <string name="guest_checkout_submit_button">Проверять, выписываться</string>
+    <string name="guest_checkin_message">Гость был проверен в</string>
+    <string name="guest_checkin_submit_button">Регистрироваться</string>
 
     <!-- Nav drawer -->
-    <string name="nav_drawer_requests">REQUESTS</string>
-    <string name="nav_drawer_chat">CHAT</string>
-    <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
-    <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
-    <string name="nav_drawer_create_permintaan">CREATE REQUEST</string>
-    <string name="nav_drawer_staff_hours">STAFF HOURS</string>
-    <string name="nav_drawer_logout">GUEST MODE</string>
+    <string name="nav_drawer_requests">ЗАПРОСЫ</string>
+    <string name="nav_drawer_chat">ЧАТ</string>
+    <string name="nav_drawer_checkguestin">ПРОВЕРКА гостьей в</string>
+    <string name="nav_drawer_checkguestout">Проверить доступность гостей OUT</string>
+    <string name="nav_drawer_create_permintaan">Создание запроса</string>
+    <string name="nav_drawer_staff_hours">ПЕРСОНАЛ ЧАСЫ</string>
+    <string name="nav_drawer_logout">ГОСТЕВОЙ РЕЖИМ</string>
 
     <!-- Guest -->
     <string name="please_wait">Пожалуйста, подождите 10-20 минут, штатный сотрудник , чтобы прибыть в комнате</string>
     <string name="existing_request">Запрос этого типа уже существует</string>
     <string name="order_button">ЗАКАЗ</string>
 
-    <string name="transport_label">Transport</string>
-    <string name="transport_passengers">Passengers</string>
-    <string name="transport_departing_in">Departing in</string>
-    <string name="transport_minutes">minutes</string>
-    <string name="transport_destination">Destination</string>
-    <string name="transport_message">Message</string>
-    <string name="transport_result">Transport request sent</string>
-    <string name="transport_submit_button">Submit</string>
+    <string name="transport_label">Транспорт</string>
+    <string name="transport_passengers">Пассажиры</string>
+    <string name="transport_departing_in">Отправляясь в</string>
+    <string name="transport_minutes">минут</string>
+    <string name="transport_destination">Место назначения</string>
+    <string name="transport_message">Сообщение</string>
+    <string name="transport_result">Запрос транспорта отправлено</string>
+    <string name="transport_submit_button">Отправить</string>
     <string-array name="departure_increments_array">
         <item>10</item>
         <item>20</item>
@@ -113,24 +113,24 @@
     </string-array>
 
     <string name="housekeeping_message">Вы уверены, что хотите сделать этот заказ?</string>
-    <string name="housekeeping_edittext">Input housekeeper details</string>
+    <string name="housekeeping_edittext">Детали ввода ключницы</string>
     <string name="housekeeping_result">Запрос Уборка номеров отправлено</string>
 
     <string name="bellboy_message">Вы уверены, что хотите посыльного?</string>
-    <string name="bellboy_edittext">Input bellboy details</string>
+    <string name="bellboy_edittext">детали ввода</string>
     <string name="bellboy_result">Запрос Bellboy отправлено</string>
-    <string name="report_to_frontdesk">Please report to front desk</string>
+    <string name="report_to_frontdesk">Пожалуйста, сообщите на стойке регистрации</string>
 
     <string name="engineering_label">текущий ремонт</string>
     <string name="engineering_message">Вы уверены, что вы хотите сделать запрос инжиниринг?</string>
     <string name="engineering_result">Запрос Техническое обслуживание отправлено</string>
 
-    <string name="tellus_message">Tell us what you think</string>
-    <string name="tellus_edittext">Leave your feedback here</string>
-    <string name="tellus_result">Thank you for leaving feedback</string>
+    <string name="tellus_message">Скажи нам что ты думаешь</string>
+    <string name="tellus_edittext">Оставьте свой отзыв здесь!</string>
+    <string name="tellus_result">Благодарим Вас за выходить обратная связь</string>
 
     <string name="survey_label">Обратная связь с клиентами</string>
-    <string name="survey_submit_button">Submit</string>
+    <string name="survey_submit_button">Отправить</string>
 
     <string name="massage_label">Массаж</string>
     <string name="massage_message">Вы уверены, что хотите заказать этот массаж ?</string>
@@ -144,8 +144,8 @@
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
     <string name="restaurant_submit_button">Подтвердите заказ</string>
-    <string name="restaurant_back_button">Back</string>
-    <string name="restaurant_confirm_input">Comments...</string>
+    <string name="restaurant_back_button">назад</string>
+    <string name="restaurant_confirm_input">Комментарии...</string>
     <string name="restaurant_confirmation_label">Подтверждение</string>
     <string name="restaurant_confirmation_dialog_title">Спасибо за ваш заказ.</string>
     <string name="restaurant_confirmation_dialog_desc">
@@ -153,16 +153,16 @@
         расположенный в главной странице нашего сайта.
     </string>
 
-    <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
-    <string name="permintaan_select">Request Type</string>
-    <string name="room_select">Room Number</string>
-    <string name="room_number">Room Number</string>
-    <string name="room_number_change">Change Room Number</string>
-    <string name="room_number_changed">Room number changed</string>
-    <string name="room_number_password">Input password</string>
-    <string name="room_number_result">Room number changed</string>
-    <string name="logout">STAFF ONLY</string>
-    <string name="logout_result">Logged out of guest</string>
+    <string name="checkout_request">ВЫЕЗД Информация для заказа</string>
+    <string name="permintaan_select">тип запроса</string>
+    <string name="room_select">Номер комнаты</string>
+    <string name="room_number">Номер комнаты</string>
+    <string name="room_number_change">Изменить номер Номер</string>
+    <string name="room_number_changed">Количество номеров изменилось</string>
+    <string name="room_number_password">Введите пароль</string>
+    <string name="room_number_result">Количество номеров изменилось</string>
+    <string name="logout">ТОЛЬКО ДЛЯ ПЕРСОНАЛА</string>
+    <string name="logout_result">Записан из гостей</string>
 
     <string name="guest_welcome_title">Добро пожаловать!</string>
 
@@ -175,19 +175,19 @@
     <string name="housekeeping_confirm">Пожалуйста, подтвердите этот заказ</string>
     <string name="housekeeping_label">домоводство</string>
     <string name="housekeeping_zero_order">Пожалуйста, выберите допустимое количество</string>
-    <string name="logout_change_room_number">Change room no.</string>
-    <string name="logout_reset_tablet">Reset tablet</string>
+    <string name="logout_change_room_number">Изменить номер комнаты</string>
+    <string name="logout_reset_tablet">Сброс таблетки</string>
     <string name="logout_options">Пожалуйста, выберите один из следующих вариантов ...</string>
-    <string name="logout_staff">Staff mode</string>
+    <string name="logout_staff">режим персонала</string>
     <string name="nav_drawer_about">О НАС</string>
     <string name="nav_drawer_change_language">ИЗМЕНИТЬ ЯЗЫК</string>
     <string name="nav_drawer_home">ГЛАВНАЯ</string>
-    <string name="permintaan_assign_person">Please enter staff person\'s name</string>
-    <string name="promo_img_select">Promotional Image</string>
+    <string name="permintaan_assign_person">Пожалуйста, введите имя сотрудника человека</string>
+    <string name="promo_img_select">Рекламные изображения</string>
     <string name="language_russian">русский язык</string>
     <string name="language_zh">китайский язык</string>
     <string name="bellboy_label">Портье</string>
-    <string name="chat_label">Chat</string>
+    <string name="chat_label">чат</string>
     <string name="checkout_label">отладка</string>
     <string name="event_label">Мероприятия</string>
     <string name="laundry_label">Прачечная</string>
@@ -199,9 +199,14 @@
     <string name="quantity">количество</string>
     <string name="add_more_items"> + Добавить еще</string>
     <string name="restaurant_confirmation_price_text">Итого с НАЛОГА</string>
-    <string name="bellboy_cancel"></string>
-    <string name="total_with_tax">Total with TAX</string>
-    <string name="staff_mode">STAFF MODE</string>
+    <string name="bellboy_cancel">ОТМЕНИТЬ</string>
+    <string name="total_with_tax">Итого с НАЛОГА</string>
+    <string name="staff_mode">ПЕРСОНАЛ РЕЖИМ</string>
     <string name="restaurant_subtotal_text">Итого до НАЛОГА</string>
     <string name="request_success">Запрос отправлен! Вы хотите, чтобы сделать еще один запрос?</string>
+    <string name="bellboy_confirm">ПРИКАЗ</string>
+    <string name="guest_empty_room">Не гость в этой комнате</string>
+    <string name="no_guest_in_room">Извините, но вы не зарегистрировались!</string>
+    <string name="room_number_not_found">К сожалению, я не могу найти свой номер комнаты. Пожалуйста, сообщите сотруднику.</string>
+    <string name="survey_thank_you">Мы очень ценим ваши комментарии и будет гарантировать, что мы используем его, чтобы сделать следующий пребывание у нас еще лучше!</string>
 </resources>
