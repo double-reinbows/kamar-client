@@ -1,17 +1,12 @@
 package com.martabak.kamar.activity.staff;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.martabak.kamar.R;
-import com.martabak.kamar.activity.chat.GuestChatActivity;
+import com.martabak.kamar.activity.AbstractCustomFontActivity;
 import com.martabak.kamar.activity.chat.StaffChatFragment;
 
 /**
@@ -20,7 +15,7 @@ import com.martabak.kamar.activity.chat.StaffChatFragment;
  * <p>
  * The base layout provided must have the action bar layout and bottom bar layout's included in it.
  */
-public abstract class AbstractStaffBarsActivity extends AppCompatActivity {
+public abstract class AbstractStaffBarsActivity extends AbstractCustomFontActivity {
 
     protected abstract Options getOptions();
 
