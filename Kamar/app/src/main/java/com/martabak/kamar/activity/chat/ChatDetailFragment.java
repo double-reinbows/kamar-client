@@ -201,13 +201,14 @@ public class ChatDetailFragment extends Fragment {
 
             if (msg.fromGuest()) {
                 holder.mLinearLayout.setBackgroundResource(R.drawable.chat_msg_bg_red);
-
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)holder.mLinearLayout.getLayoutParams();
                 layoutParams.gravity = Gravity.END;
                 holder.mLinearLayout.setLayoutParams(layoutParams);
-//                holder.mLinearLayout.setGravity(Gravity.END);
             } else {
                 holder.mLinearLayout.setBackgroundResource(R.drawable.chat_msg_bg_blue);
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)holder.mLinearLayout.getLayoutParams();
+                layoutParams.gravity = Gravity.START;
+                holder.mLinearLayout.setLayoutParams(layoutParams);
             }
         }
 
