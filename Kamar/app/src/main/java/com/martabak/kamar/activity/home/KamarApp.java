@@ -49,7 +49,7 @@ public class KamarApp extends Application {
         @Override
         public void uncaughtException(Thread thread, Throwable ex) {
             ex.printStackTrace();
-            sendLogcatMail();
+//            sendLogcatMail();
         }
     };
 
