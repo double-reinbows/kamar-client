@@ -3,9 +3,9 @@
 
     <!-- Misc -->
     <string name="app_name">Kamar</string>
-    <string name="action_settings">Settings</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Pengaturan</string>
+    <string name="navigation_drawer_open">Terbuka laci navigasi</string>
+    <string name="navigation_drawer_close">Tutup laci navigasi</string>
     <string name="title_activity_guest_home">GuestHomeActivity</string>
     <string name="title_activity_staff_home">StaffHomeActivity</string>
     <string name="title_activity_transport">TransportActivity</string>
@@ -13,43 +13,43 @@
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="welcome">Selamat Datang</string>
     <string name="upload">Upload</string>
-    <string name="positive">Yes</string>
-    <string name="negative">No</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
+    <string name="positive">iya nih</string>
+    <string name="negative">Tidak</string>
+    <string name="ok">baik</string>
+    <string name="cancel">Batal</string>
     <string name="submit">Kirim</string>
     <string name="something_went_wrong">Ups, ada yang tidak beres</string>
-    <string name="required">Required</string>
-    <string name="create">Create</string>
-    <string name="loading">Loading</string>
+    <string name="required">Wajib</string>
+    <string name="create">Membuat</string>
+    <string name="loading">Pemuatan</string>
 
     <!-- Home -->
     <string name="language_english">Bahasa Inggris</string>
     <string name="language_bahasa">Bahasa Indonesia</string>
     <string name="language_set_to">Bahasa diatur ke Indonesia</string>
-    <string name="user_set_to">User set to</string>
+    <string name="user_set_to">Pengguna diatur ke</string>
     <string name="guest">Tamu</string>
     <string name="staff">Pegawai</string>
     <string name="user_set_to_guest">Pengguna diatur ke Tamu</string>
     <string name="user_set_to_staff">Pengguna diatur ke Pegawai</string>
-    <string name="password_prompt">Enter Staff Password: </string>
+    <string name="password_prompt">Masukkan Staf Password:</string>
     <string name="incorrect_password">Kata sandi yang anda masukki salah</string>
-    <string name="frontdesk">Front Desk</string>
-    <string name="restaurant">Restaurant</string>
-    <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
+    <string name="frontdesk">Resepsionis</string>
+    <string name="restaurant">Restoran</string>
+    <string name="frontdesk_or_restaurant">Meja depan atau Restaurant?</string>
 
     <!-- Permintaan -->
-    <string name="permintaan">request</string>
+    <string name="permintaan">permintaan</string>
     <string name="new_permintaan">BARU</string>
     <string name="inprogress_permintaan">SEDANG DIPROSES</string>
     <string name="indelivery_permintaan">SEDANG DIKIRIM</string>
     <string name="completed_permintaan">BERES</string>
-    <string name="deleted_permintaan">DELETED</string>
-    <string name="cancelled_permintaan">CANCELLED</string>
+    <string name="deleted_permintaan">DIHAPUS</string>
+    <string name="cancelled_permintaan">DIBATALKAN</string>
     <string name="permintaan_progress_confirmation">Apakah anda tentu ingin majukan pesan ini?</string>
     <string name="permintaan_regress_confirmation">Apakah anda tentu ingin mundurkan pesan ini?</string>
     <string name="permintaan_cancel_confirmation">Apakah anda tentu ingin batal pesan ini?</string>
-    <string name="permintaan_status_is_now">Status is now</string>
+    <string name="permintaan_status_is_now">Status sekarang</string>
     <string name="permintaan_order_sent">Agar Dikirim</string>
     <string name="permintaan_order_received">Agar Diproses</string>
     <string name="permintaan_order_completed">Agar Selesai</string>
@@ -57,51 +57,51 @@
     <!-- Chat -->
     <string name="title_chat_list">PESAN</string>
     <string name="title_chat_detail">PESAN</string>
-    <string name="chat_message_text">ketik pesan anda ...</string>
+    <string name="chat_message_text">Ketik pesan anda ...</string>
     <string name="chat_send_button">Kirim</string>
     <string name="chat_message_sent">Pesan terkirim</string>
-    <string name="chat_message_from_guest">Message from guest room</string>
-    <string name="chat_message_from_staff">Message from staff</string>
+    <string name="chat_message_from_guest">Pesan dari kamar tamu</string>
+    <string name="chat_message_from_staff">Pesan dari staf</string>
 
     <!-- Check in/out -->
-    <string name="guest_first_name">First Name</string>
-    <string name="guest_last_name">Last Name</string>
+    <string name="guest_first_name">Nama depan</string>
+    <string name="guest_last_name">Nama keluarga</string>
     <string name="guest_email">Email</string>
-    <string name="guest_phone">Phone Number</string>
-    <string name="guest_date">Date</string>
-    <string name="guest_date_check_out">Date Check Out</string>
+    <string name="guest_phone">Nomor telepon</string>
+    <string name="guest_date">Tanggal</string>
+    <string name="guest_date_check_out">Tanggal Check Out</string>
     <string name="guest_room_number">Set Room Number</string>
-    <string name="guest_checkout">Check Out Guest</string>
-    <string name="guest_checkin">GUEST INFORMATION</string>
-    <string name="guest_checkout_name">Guest Name</string>
-    <string name="guest_checkout_message">Guest has been checked out</string>
-    <string name="guest_checkout_submit_button">Check Out</string>
-    <string name="guest_checkin_message">Guest has been checked in</string>
-    <string name="guest_checkin_submit_button">Check In</string>
+    <string name="guest_checkout">Check Out Tamu</string>
+    <string name="guest_checkin">INFORMASI TAMU</string>
+    <string name="guest_checkout_name">Nama tamu</string>
+    <string name="guest_checkout_message">Tamu telah diperiksa</string>
+    <string name="guest_checkout_submit_button">Periksa</string>
+    <string name="guest_checkin_message">Tamu telah diperiksa</string>
+    <string name="guest_checkin_submit_button">Mendaftar</string>
 
     <!-- Nav drawer -->
-    <string name="nav_drawer_requests">REQUESTS</string>
-    <string name="nav_drawer_chat">CHAT</string>
-    <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
-    <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
-    <string name="nav_drawer_create_permintaan">CREATE REQUEST</string>
-    <string name="nav_drawer_staff_hours">STAFF HOURS</string>
-    <string name="nav_drawer_logout">GUEST MODE</string>
+    <string name="nav_drawer_requests">PERMINTAAN</string>
+    <string name="nav_drawer_chat">OBROLAN</string>
+    <string name="nav_drawer_checkguestin">LIHAT TAMU DI</string>
+    <string name="nav_drawer_checkguestout">LIHAT TAMU OUT</string>
+    <string name="nav_drawer_create_permintaan">BUAT REQUEST</string>
+    <string name="nav_drawer_staff_hours">JAM STAFF</string>
+    <string name="nav_drawer_logout">TAMU MODE</string>
 
     <!-- Guest -->
     <string name="please_wait">Silakan tunggu 10-20 menit untuk anggota staf untuk tiba di kamar Anda</string>
     <string name="existing_request">Permintaan dari jenis itu sudah ada</string>
     <string name="order_button">PESAN</string>
 
-    <string name="transport_label">Transport</string>
+    <string name="transport_label">Mengangkut</string>
 
-    <string name="transport_passengers">Passengers</string>
-    <string name="transport_departing_in">Departing in</string>
-    <string name="transport_minutes">minutes</string>
-    <string name="transport_destination">Destination</string>
-    <string name="transport_message">Message</string>>
-    <string name="transport_result">Transport request sent</string>
-    <string name="transport_submit_button">Submit</string>
+    <string name="transport_passengers">Penumpang</string>
+    <string name="transport_departing_in">berangkat di</string>
+    <string name="transport_minutes">menit</string>
+    <string name="transport_destination">Tujuan</string>
+    <string name="transport_message">Pesan</string>>
+    <string name="transport_result">permintaan transportasi mengirim</string>
+    <string name="transport_submit_button">Menyerahkan</string>
     <string-array name="departure_increments_array">
         <item>10</item>
         <item>20</item>
@@ -112,21 +112,21 @@
     </string-array>
 
     <string name="housekeeping_message">Apakah Anda yakin ingin membuat pesanan ini?</string>
-    <string name="housekeeping_edittext">Input housekeeper details</string>
+    <string name="housekeeping_edittext">Rincian masukan pembantu rumah tangga</string>
     <string name="housekeeping_result">Pesan telah dikirim</string>
 
     <string name="bellboy_message">YAKIN INGIN PESAN PORTER?</string>
-    <string name="bellboy_edittext">Input bellboy details</string>
+    <string name="bellboy_edittext">Rincian masukan</string>
     <string name="bellboy_result">Pesanan porter telah dikirim</string>
-    <string name="report_to_frontdesk">Please report to front desk</string>
+    <string name="report_to_frontdesk">Silakan laporkan ke meja depan</string>
 
     <string name="engineering_label">Pemeliharaan</string>
     <string name="engineering_message">Apakah Anda yakin ingin meminta pemeliharaan?</string>
     <string name="engineering_result">Maintenance request sent</string>
 
-    <string name="tellus_message">Tell us what you think</string>
-    <string name="tellus_edittext">Leave your feedback here!</string>
-    <string name="tellus_result">Thank you for leaving feedback</string>
+    <string name="tellus_message">Beritahu kami apa yang kamu pikirkan</string>
+    <string name="tellus_edittext">Meninggalkan umpan balik Anda di sini!</string>
+    <string name="tellus_result">Terima kasih untuk meninggalkan umpan balik</string>
 
     <string name="survey_label">Komentar Tamu</string>
     <string name="survey_submit_button">Submit</string>
@@ -144,20 +144,20 @@
     <string name="restaurant_equal_sign">=</string>
     <string name="restaurant_confirmation_label">KONFIRMASI</string>
 
-    <string name="permintaan_select">Request Type</string>
-    <string name="room_select">Room Number</string>
-    <string name="room_number">Room Number</string>
-    <string name="room_number_change">Change Room Number</string>
-    <string name="room_number_changed">Room number changed</string>
-    <string name="room_number_password">Input password</string>
-    <string name="room_number_result">Room number changed</string>
+    <string name="permintaan_select">Tipe Permintaan</string>
+    <string name="room_select">Nomor kamar</string>
+    <string name="room_number">Nomor kamar</string>
+    <string name="room_number_change">Ganti Nomor Room</string>
+    <string name="room_number_changed">nomor kamar berubah</string>
+    <string name="room_number_password">masukan password</string>
+    <string name="room_number_result">nomor kamar berubah</string>
 
-    <string name="logout_result">Logged out of guest</string>
+    <string name="logout_result">Log out dari tamu</string>
     <string name="logout_options">Silakan pilih salah satu opsi...</string>
     <string name="logout_change_room_number">Ganti nomor kamar</string>
-    <string name="logout_reset_tablet">Reset tablet</string>
-    <string name="logout_staff">Staff mode</string>
-    <string name="promo_img_select">Promotional Image</string>
+    <string name="logout_reset_tablet">Ulang tablet</string>
+    <string name="logout_staff">modus staf</string>
+    <string name="promo_img_select">Gambar promosi</string>
 
     <string name="guest_welcome_title">Selamat Datang!</string>
 
@@ -170,24 +170,24 @@
     <string name="housekeeping_confirm">Pastikan pesan ini</string>
     <string name="housekeeping_label">PEMBENAHAN</string>
     <string name="housekeeping_zero_order">Silakan pilih jumlah valid</string>
-    <string name="logout">STAFF ONLY</string>
+    <string name="logout">DILARANG MASUK SELAIN PETUGAS</string>
     <string name="nav_drawer_about">TENTANG KAMI</string>
     <string name="nav_drawer_change_language">GANTI BAHASA</string>
-    <string name="nav_drawer_home">HOME</string>
+    <string name="nav_drawer_home">RUMAH</string>
     <string name="permintaan_assign_person">Masukkan nama staf seseorang</string>
-    <string name="permintaan_title">Requests</string>
-    <string name="restaurant_back_button">Back</string>
-    <string name="restaurant_confirm_input">Comments...</string>
+    <string name="permintaan_title">permintaan</string>
+    <string name="restaurant_back_button">Kembali</string>
+    <string name="restaurant_confirm_input">Komentar ...</string>
     <string name="restaurant_confirmation_dialog_desc">MOHON TUNGGU 10-20 MENIT UNTUK PESANAN ANDA TIBA DI KAMAR ANDA</string>
     <string name="restaurant_confirmation_dialog_title">TERIMA KASIH ATAS PESANAN ANDA</string>
     <string name="restaurant_submit_button">Konfirmasi Pesan</string>
-    <string name="welcome_message">Welcome Message</string>
-    <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
+    <string name="welcome_message">Selamat Pesan</string>
+    <string name="checkout_request">CHECK OUT PESANAN RINCIAN</string>
     <string name="language_russian">俄语</string>
     <string name="language_zh">中文</string>
     <string name="bellboy_label">Portir</string>
-    <string name="chat_label">Chat</string>
-    <string name="checkout_label">Checkout</string>
+    <string name="chat_label">Obrolan</string>
+    <string name="checkout_label">Periksa</string>
     <string name="event_label">Perihal</string>
     <string name="laundry_label">Cucian</string>
     <string name="laundry_result">Pesan laundry dikirim!</string>
@@ -200,8 +200,12 @@
     <string name="restaurant_confirmation_price_text">Total dengan PAJAK</string>
     <string name="bellboy_cancel">BATAL</string>
     <string name="bellboy_confirm">PESAN</string>
-    <string name="total_with_tax">Total with TAX</string>
+    <string name="total_with_tax">Total dengan PAJAK</string>
     <string name="staff_mode">STAFF MODE</string>
     <string name="restaurant_subtotal_text">Total sebelum PAJAK</string>
     <string name="request_success">Permintaan terkirim! Apakah Anda ingin membuat permintaan lain?</string>
+    <string name="guest_empty_room">Tidak ada tamu di dalam ruangan ini</string>
+    <string name="no_guest_in_room">Maaf, tapi Anda tidak diperiksa!</string>
+    <string name="room_number_not_found">Maaf, saya tidak dapat menemukan nomor kamar Anda. Harap memberitahu anggota staf.</string>
+    <string name="survey_thank_you">Kami sangat menghargai komentar Anda dan akan memastikan kami menggunakannya untuk membuat Anda tinggal berikutnya dengan kami bahkan lebih baik!</string>
 </resources>

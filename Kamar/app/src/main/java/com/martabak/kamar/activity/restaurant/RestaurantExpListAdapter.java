@@ -75,10 +75,7 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         //Set up main text
         String itemName = currConsumable.getName();
         final TextView txtListChild = (TextView) convertView.findViewById(R.id.item_text);
-        Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
-        txtListChild.setTypeface(customFont);
         txtListChild.setText(itemName);
-
 
         //Set up price text
         String priceText = currConsumable.price.toString();
@@ -184,9 +181,6 @@ class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.restaurant_subsection);
-        Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
-        Typeface boldFont = Typeface.create(customFont, Typeface.BOLD);
-        lblListHeader.setTypeface(boldFont);
         lblListHeader.setText(headerTitle);
 
         return convertView;

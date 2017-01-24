@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.AbstractCustomFontActivity;
 import com.martabak.kamar.activity.chat.GuestChatActivity;
 import com.martabak.kamar.activity.chat.GuestChatService;
 import com.martabak.kamar.activity.engineering.EngineeringActivity;
@@ -52,7 +53,7 @@ import rx.Observer;
  * <p>
  * The base layout provided must have the action bar layout and bottom bar layout's included in it.
  */
-public abstract class AbstractGuestBarsActivity extends AppCompatActivity implements
+public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivity implements
         LogoutDialogFragment.LogoutDialogListener,
         ChangeRoomNumberDialogFragment.ChangeRoomDialogListener {
 

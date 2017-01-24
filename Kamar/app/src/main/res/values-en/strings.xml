@@ -126,7 +126,7 @@
     <string name="housekeeping_zero_order">Please choose a valid quantity!</string>
 
     <string name="bellboy_message">ARE YOU SURE YOU REQUIRE A PORTER?</string>
-    <string name="bellboy_edittext">Input bellboy details</string>
+    <string name="bellboy_edittext">Input details</string>
     <string name="report_to_frontdesk">Please report to front desk</string>
 
     <string name="engineering_label">ENGINEERING</string>
@@ -208,4 +208,8 @@
     <string name="staff_mode">STAFF MODE</string>
     <string name="restaurant_subtotal_text">Total before TAX</string>
     <string name="request_success">Request Sent! Would you like to make another request?</string>
+    <string name="edittext_hint"></string>
+    <string name="guest_empty_room">No guest inside this room</string>
+    <string name="no_guest_in_room">Sorry, but you\'re not checked in!</string>
+    <string name="room_number_not_found">Sorry, I can\'t find your room number. Please notify a staff member.</string>
 </resources>

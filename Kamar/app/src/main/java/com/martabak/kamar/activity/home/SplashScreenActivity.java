@@ -1,21 +1,14 @@
 package com.martabak.kamar.activity.home;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.AbstractCustomFontActivity;
 
-/**
- * Created by adarsh on 26/11/16.
- */
-public class SplashScreenActivity extends Activity {
-
-    //splash screen timer
-    private static int SPLASH_TIME_OUT = 9999;
+public class SplashScreenActivity extends AbstractCustomFontActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
