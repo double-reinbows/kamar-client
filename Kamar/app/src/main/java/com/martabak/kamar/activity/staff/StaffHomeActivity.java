@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.staff;
 
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -90,8 +91,13 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         if (fragType != null) {
             switch (fragType) {
                 case "StaffChatFragment":
+                    Bundle staffChatBundle = new Bundle();
+                    String roomNumberChat = getIntent().getStringExtra("RoomNumber");
+                    staffChatBundle.putString("roomNumberChatNotification", roomNumberChat);
+                    StaffChatFragment staffChatFragment = StaffChatFragment.newInstance();
+                    staffChatFragment.setArguments(staffChatBundle);
                     getFragmentManager().beginTransaction()
-                            .replace(R.id.staff_container, StaffChatFragment.newInstance())
+                            .replace(R.id.staff_container, staffChatFragment)
                             .commit();
 
             }
