@@ -37,7 +37,7 @@ import java.util.List;
 import rx.Observer;
 
 
-public class YiannisTestActivity extends AppCompatActivity {
+public class YiannisTestActivity extends AbstractCustomFontActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

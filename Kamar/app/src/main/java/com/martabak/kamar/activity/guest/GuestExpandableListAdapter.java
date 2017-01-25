@@ -220,8 +220,6 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
 
         final String childText =  getChild(groupPosition, childPosition).type;
         TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
-        Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
-        txtListChild.setTypeface(customFont);
         txtListChild.setText(childText);
         return convertView;
     }
@@ -273,9 +271,6 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
         }
         lblListHeader.invalidate();
 
-        Typeface customFont = Typeface.createFromAsset(context.getAssets(), "fonts/century-gothic.ttf");
-        Typeface boldFont = Typeface.create(customFont, Typeface.BOLD);
-        lblListHeader.setTypeface(boldFont);
         return convertView;
     }
 

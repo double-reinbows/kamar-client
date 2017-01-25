@@ -1,19 +1,21 @@
 package com.martabak.kamar.activity.home;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 
+import com.martabak.kamar.R;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by rei on 7/12/16.
- */
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class KamarApp extends Application {
 
     private static KamarApp singleton;
@@ -21,14 +23,21 @@ public class KamarApp extends Application {
     public static KamarApp getInstance(){
         return singleton;
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
         AppInitialization();
         singleton = this;
 
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Montserrat-Regular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
+
         Picasso.Builder builder = new Picasso.Builder(this);
-        builder.downloader(new OkHttpDownloader(this,Integer.MAX_VALUE));
+        builder.downloader(new OkHttpDownloader(this, Integer.MAX_VALUE));
         Picasso built = builder.build();
         built.setIndicatorsEnabled(true);
         built.setLoggingEnabled(true);
@@ -42,20 +51,16 @@ public class KamarApp extends Application {
         Thread.setDefaultUncaughtExceptionHandler(_unCaughtExceptionHandler);
     }
 
-
-
     // handler listener
     private Thread.UncaughtExceptionHandler _unCaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
         @Override
         public void uncaughtException(Thread thread, Throwable ex) {
             ex.printStackTrace();
-            sendLogcatMail();
+//            sendLogcatMail();
         }
     };
 
-
     public void sendLogcatMail(){
-
         // save logcat in file
         File outputFile = new File(Environment.getExternalStorageDirectory(),
                 "logcat.txt");
@@ -64,7 +69,6 @@ public class KamarApp extends Application {
             Runtime.getRuntime().exec(
                     "logcat -f " + outputFile.getAbsolutePath());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -74,7 +78,7 @@ public class KamarApp extends Application {
 //        emailIntent.setData(Uri.parse("mailto:"));
         // Set type to "email"
         emailIntent.setType("vnd.android.cursor.dir/email");
-        String to[] = {"dynamicfrogman@gmail.com"};
+        String to[] = {"rayssoftwarecompany@gmail.com"};
         emailIntent .putExtra(Intent.EXTRA_EMAIL, to);
         // the attachment
         emailIntent .putExtra(Intent.EXTRA_STREAM, uri);
