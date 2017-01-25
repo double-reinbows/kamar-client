@@ -180,7 +180,7 @@
     <string name="logout_options">Пожалуйста, выберите один из следующих вариантов ...</string>
     <string name="logout_staff">режим персонала</string>
     <string name="nav_drawer_about">О НАС</string>
-    <string name="nav_drawer_change_language">ИЗМЕНИТЬ ЯЗЫК</string>
+    <string name="nav_drawer_change_language">CHANGE LANGUAGE / 改变语言</string>
     <string name="nav_drawer_home">ГЛАВНАЯ</string>
     <string name="permintaan_assign_person">Пожалуйста, введите имя сотрудника человека</string>
     <string name="promo_img_select">Рекламные изображения</string>

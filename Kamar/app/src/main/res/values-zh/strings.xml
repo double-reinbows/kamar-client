@@ -121,7 +121,7 @@
     <string name="bellboy_result">行李员请求已发送</string>
     <string name="report_to_frontdesk">请向前台报告</string>
 
-    <string name="engineering_label">保养</string>
+    <string name="engineering_label">维修工作</string>
     <string name="engineering_message">你确定你想要求工程?</string>
     <string name="engineering_result">维护请求发送</string>
 
@@ -129,7 +129,7 @@
     <string name="tellus_edittext">在这里留下您的反馈！</string>
     <string name="tellus_result">感谢您留下反馈</string>
 
-    <string name="survey_label">客户的反馈意见</string>
+    <string name="survey_label">客房建议</string>
     <string name="survey_submit_button">提交</string>
 
     <string name="massage_label">按摩</string>
@@ -170,16 +170,16 @@
     <string name="on_hanger">在衣架</string>
     <string name="folded">折叠</string>
     <string name="laundry_price">洗衣价格</string>
-    <string name="pressing_price">压价</string>
+    <string name="pressing_price">熨烫</string>
     <string name="housekeeping_confirm">請確認訂單</string>
     <string name="housekeeping_label">家政</string>
     <string name="housekeeping_zero_order">請選擇一個有效的量</string>
     <string name="logout_reset_tablet">重置平板电脑</string>
     <string name="logout_options">請選擇下列選項之一......</string>
     <string name="logout_staff">员工模式</string>
-    <string name="nav_drawer_about">關於我們</string>
-    <string name="nav_drawer_change_language">改變語言</string>
-    <string name="nav_drawer_home">主頁</string>
+    <string name="nav_drawer_about">关于我们</string>
+    <string name="nav_drawer_change_language">CHANGE LANGUAGE / ИЗМЕНИТЬ ЯЗЫК</string>
+    <string name="nav_drawer_home">主页</string>
     <string name="permintaan_assign_person">请输入员工姓名</string>
     <string name="promo_img_select">促销图片</string>
     <string name="logout_change_room_number">更改房间号</string>
@@ -189,7 +189,7 @@
     <string name="chat_label">聊天</string>
     <string name="checkout_label">酒店结账 </string>
     <string name="event_label">活动</string>
-    <string name="laundry_label">洗衣店</string>
+    <string name="laundry_label">洗衣服务</string>
     <string name="laundry_result">洗衣顺序发送</string>
     <string name="zero">0</string>
     <string name="survey_previously_submitted">很抱歉，但你只能提交反馈一次！</string>
@@ -200,7 +200,7 @@
     <string name="restaurant_confirmation_price_text"> 总税收</string>
     <string name="total_with_tax">总计与TAX</string>
     <string name="staff_mode">工作人员模式</string>
-    <string name="restaurant_subtotal_text">TAX前的总计</string>
+    <string name="restaurant_subtotal_text">税前的总计</string>
     <string name="request_success">请求发送！您要再次提出要求吗？</string>
     <string name="bellboy_cancel">取消</string>
     <string name="bellboy_confirm">订购</string>
