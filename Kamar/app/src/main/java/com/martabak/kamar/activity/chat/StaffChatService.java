@@ -129,7 +129,7 @@ public class StaffChatService extends IntentService {
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
         //go to staff chat fragment
         resultIntent.putExtra("FragType","StaffChatFragment");
-
+        resultIntent.putExtra("RoomNumber",roomNumber);
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
         // This ensures that navigating backward from the Activity leads out of
