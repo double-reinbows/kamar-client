@@ -86,8 +86,11 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         toggle.syncState();
 
 
-        //open chat when staff home entered from notification
+
         String fragType = getIntent().getStringExtra("FragType");
+        String restaurantResult = getIntent().getStringExtra("RestaurantResult");
+
+        //open chat when staff home entered from notification
         if (fragType != null) {
             switch (fragType) {
                 case "StaffChatFragment":
@@ -102,14 +105,28 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
 
             }
         }
+        else if (restaurantResult != null) {
+            switch(restaurantResult) {
+                case "Success":
+                    makeSnackBar();
+            }
+            getFragmentManager().beginTransaction()
+                    .add(R.id.staff_container, StaffPermintaanFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit();
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
         else {
             getFragmentManager().beginTransaction()
                     .add(R.id.staff_container, StaffPermintaanFragment.newInstance())
                     .addToBackStack(null)
                     .commit();
             navigationView.getMenu().getItem(0).setChecked(true);
-
         }
+
+
+
+
 
 
     }
@@ -126,6 +143,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
     @Override
     public void onBackPressed() {}
 
+
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, Boolean success) {
         dialog.dismiss();
@@ -134,18 +152,8 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
                 .addToBackStack(null)
                 .commit();
         // create snackbar for bellboy
-        Snackbar.make(this.getWindow().getDecorView()
-                        .findViewById(android.R.id.content),
-                R.string.request_success,Snackbar.LENGTH_INDEFINITE).
-                setAction(R.string.positive, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.staff_container, CreatePermintaanFragment.newInstance())
-                                .addToBackStack(null)
-                                .commit();
-                    }
-                }).show();
+        makeSnackBar();
+
     }
 
     @Override
@@ -206,6 +214,25 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
             drawer.closeDrawer(GravityCompat.START);
             return true;
         }
+    }
+
+    /**
+     * Make snackbar for requests unable to be process by create permintaan fragment
+     */
+    private void makeSnackBar() {
+        Snackbar.make(this.getWindow().getDecorView()
+                        .findViewById(android.R.id.content),
+                R.string.request_success,Snackbar.LENGTH_LONG).
+                setAction(R.string.positive, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.staff_container, CreatePermintaanFragment.newInstance())
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                })
+                .show();
     }
 
     /**

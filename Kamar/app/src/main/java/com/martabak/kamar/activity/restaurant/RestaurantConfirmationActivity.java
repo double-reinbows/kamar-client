@@ -106,8 +106,10 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
         }
         else if (creator.equals("STAFF")) {
-            setResult(Permintaan.SUCCESS);
-            startActivity(new Intent(getBaseContext(), StaffHomeActivity.class));
+            Intent intent = new Intent(getBaseContext(), StaffHomeActivity.class);
+            intent.putExtra("RestaurantResult", "Success");
+            startActivity(intent);
+            finish();
         }
     }
 

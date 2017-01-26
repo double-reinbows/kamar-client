@@ -61,12 +61,7 @@ public class StaffChatFragment extends Fragment {
                 } catch (NullPointerException e) {}
                 if (!roomNumberChatNotification.equals("")) {
                     for (Guest guest : guests) {
-                        Log.v("RoomNumberStaffChat", guest.roomNumber);
-                        if (guest.roomNumber.equals(roomNumberChatNotification)) {
-
-                            /*View childView = recyclerView.get
-                            childView.performClick();*/
-                        }
+                        if (guest.roomNumber.equals(roomNumberChatNotification)) {}
                     }
 
                 }
