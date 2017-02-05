@@ -55,16 +55,16 @@ public class StaffServer extends Server {
     /**
      * Attempt to login as a staff member using a password.
      * @param password The staff password.
-     * @return Whether or not the login was successful.
+     * @return The staff member's sub-type or null if unsuccessful.
      */
-    public Observable<Boolean> login(String password) {
+    public Observable<String> login(String password) {
         return service.login('"' + password + '"')
-                .flatMap(new Func1<ViewResponse<Boolean>, Observable<Boolean>>() {
-                    @Override public Observable<Boolean> call(ViewResponse<Boolean> response) {
-                        for (ViewResponse<Boolean>.ViewResult<Boolean> i : response.rows) {
+                .flatMap(new Func1<ViewResponse<String>, Observable<String>>() {
+                    @Override public Observable<String> call(ViewResponse<String> response) {
+                        for (ViewResponse<String>.ViewResult<String> i : response.rows) {
                             return Observable.just(i.value);
                         }
-                        return Observable.just(false);
+                        return Observable.just(null);
                     }
                 })
                 .subscribeOn(Schedulers.io())

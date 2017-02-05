@@ -45,7 +45,7 @@ import rx.Observer;
 public class GuestHomeActivity extends AppCompatActivity implements
         PermintaanDialogListener, LogoutDialogFragment.LogoutDialogListener,
         ChangeRoomNumberDialogFragment.ChangeRoomDialogListener,
-        GuestHomeFragment.GuestHomeIconListener{
+        GuestHomeFragment.GuestHomeIconListener {
 
     private String guestSelectedOption;
 
@@ -84,18 +84,6 @@ public class GuestHomeActivity extends AppCompatActivity implements
         // Start any guest services.
         startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
     }
-/*
-        // open the change room number as a fragment
-        if (passwordIconView != null) {
-            passwordIconView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
-                    changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
-                }
-            });
-        }
-*/
 
     /**
      * Start any relevant guest services.
@@ -190,7 +178,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
      * @param success The outcome of the server request.
      */
     @Override
-    public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String reason) {
+    public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, final String staffSubType, String reason) {
         dialog.dismiss();
         if (success) {
             final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -211,7 +199,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
                             getSharedPreferences("userSettings", MODE_PRIVATE)
                                 .edit()
                                 .putString("userType", User.TYPE_STAFF)
-                                .putString("subUserType", User.TYPE_STAFF_FRONTDESK)
+                                .putString("userSubType", staffSubType)
                                 .commit();
                             startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
                             finish();
@@ -369,14 +357,8 @@ public class GuestHomeActivity extends AppCompatActivity implements
                     getString(R.string.room_number_changed),
                     Toast.LENGTH_LONG
             ).show();
-            //roomNumberTextView.setText(getString(R.string.room_number) + " " + roomNumber);
             startActivity(new Intent(this, SelectLanguageActivity.class));
             finish();
-            //String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
-            //      .getString("guestId", "none");
-
-            //setGuestId(roomNumber);
-
         } else {
             Toast.makeText(
                     GuestHomeActivity.this,

@@ -134,9 +134,6 @@ public class GuestHomeFragment extends Fragment {
                                     editor.putString("subUserType", User.TYPE_STAFF_FRONTDESK)
                                             .commit();
 
-                                    //Log.v(SelectUserTypeActivity.class.getCanonicalName(), "userType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none"));
-                                    //Log.v(SelectUserTypeActivity.class.getCanonicalName(), "subUserType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
-
                                     startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
                                     GuestHomeActivity.this.finish();
                                 }
