@@ -126,12 +126,6 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         }
     }
 
-    @Override
-    public void onStop() {
-        stopStaffServices();
-        super.onStop();
-    }
-
     /*
      * On Back pressed don't exit the activity
      */
@@ -199,6 +193,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
 //                            .commit();
 //                    break;
                 case R.id.nav_logout:
+                    stopStaffServices();
                     Log.v(StaffHomeActivity.class.toString(), "Loading select language activity");
                     startActivity(new Intent(StaffHomeActivity.this, SelectLanguageActivity.class));
                     finish();
