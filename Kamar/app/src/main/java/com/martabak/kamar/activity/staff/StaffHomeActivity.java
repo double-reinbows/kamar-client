@@ -126,6 +126,12 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         }
     }
 
+    @Override
+    public void onPause() {
+        stopStaffServices();
+        super.onPause();
+    }
+
     /*
      * On Back pressed don't exit the activity
      */

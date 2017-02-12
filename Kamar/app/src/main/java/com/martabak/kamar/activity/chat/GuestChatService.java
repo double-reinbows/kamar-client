@@ -87,7 +87,7 @@ public class GuestChatService extends IntentService {
         }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_menu_share)
-                .setContentTitle(getString(R.string.chat_message_from_staff) + " " + from.toLowerCase())
+                .setContentTitle(getString(R.string.chat_message_from_staff))
                 .setContentText(message.message);
 
         // Creates an explicit intent for an Activity in your app

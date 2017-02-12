@@ -85,6 +85,12 @@ public class GuestHomeActivity extends AppCompatActivity implements
         startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
     }
 
+    @Override
+    public void onPause() {
+        stopGuestServices();
+        super.onPause();
+    }
+
     /**
      * Start any relevant guest services.
      * @param guestId The guest's ID.
