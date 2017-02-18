@@ -365,31 +365,6 @@ public class YiannisTestActivity extends AbstractCustomFontActivity {
         });
     }
 
-    private void doLogin() {
-        Log.d(YiannisTestActivity.class.getCanonicalName(), "Done login");
-        StaffServer.getInstance(getBaseContext()).login("bleh123").subscribe(new Observer<Boolean>() {
-            @Override
-            public void onCompleted() {
-                Log.d(YiannisTestActivity.class.getCanonicalName(), "On completed");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d(YiannisTestActivity.class.getCanonicalName(), "On error");
-                TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                textView.setText(e.getMessage());
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onNext(Boolean result) {
-                Log.d(YiannisTestActivity.class.getCanonicalName(), "On next");
-                TextView textView = (TextView) findViewById(R.id.doSomethingText);
-                textView.setText(result.toString());
-            }
-        });
-    }
-
     private void doGetSurveyQuestions() {
         Log.d(YiannisTestActivity.class.getCanonicalName(), "Done get survey questions");
         SurveyServer.getInstance(getBaseContext()).getSurveyQuestions().subscribe(new Observer<List<SurveyQuestion>>() {

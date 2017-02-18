@@ -19,7 +19,7 @@ import rx.Observable;
 public interface StaffService {
 
     @GET("password/_design/password/_view/password")
-    Observable<ViewResponse<Boolean>> login(@Query("key") String password);
+    Observable<ViewResponse<String>> login(@Query("key") String password);
 
     @GET("staff/_design/staff/_view/division")
     Observable<ViewResponse<Staff>> getStaffOfDivision(@Query("key") String resp);

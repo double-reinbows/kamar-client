@@ -165,7 +165,7 @@ public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivi
      * @param success The outcome of the server request.
      */
     @Override
-    public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String reason) {
+    public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, final String staffSubType, String reason) {
         dialog.dismiss();
         if (success) {
             final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -182,13 +182,10 @@ public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivi
                     .setNeutralButton(getString(R.string.logout_staff), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
-                            SharedPreferences.Editor editor = getSharedPreferences("userSettings", MODE_PRIVATE)
-                                    .edit();
-                            editor.putString("subUserType", User.TYPE_STAFF_FRONTDESK)
+                            getSharedPreferences("userSettings", MODE_PRIVATE)
+                                    .edit()
+                                    .putString("userSubType", staffSubType)
                                     .commit();
-
-                            //Log.v(SelectUserTypeActivity.class.getCanonicalName(), "userType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("userType", "none"));
-                            //Log.v(SelectUserTypeActivity.class.getCanonicalName(), "subUserType is " + getActivity().getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none"));
 
                             startActivity(new Intent(AbstractGuestBarsActivity.this, StaffHomeActivity.class));
                             finish();

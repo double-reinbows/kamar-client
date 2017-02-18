@@ -11,14 +11,6 @@ import java.util.Date;
 public class ChatMessage extends Model {
 
     /**
-     * The RESTAURANT sender string.
-     */
-    public static final String SENDER_RESTAURANT = "RESTAURANT";
-    /**
-     * The FRONTDESK sender string.
-     */
-    public static final String SENDER_FRONTDESK = "FRONTDESK";
-    /**
      * The GUEST sender string.
      */
     public static final String SENDER_GUEST = "GUEST";

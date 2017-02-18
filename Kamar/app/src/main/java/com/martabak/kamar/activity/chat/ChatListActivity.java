@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.martabak.kamar.R;
 
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.service.GuestServer;
 
@@ -126,6 +127,6 @@ public class ChatListActivity extends AppCompatActivity {
 
     private String getSender() {
         SharedPreferences prefs = getSharedPreferences("userSettings", Context.MODE_PRIVATE);
-        return prefs.getString("userSubType", ChatMessage.SENDER_FRONTDESK);
+        return prefs.getString("userSubType", User.TYPE_STAFF_FRONTDESK);
     }
 }
