@@ -134,6 +134,7 @@
 
     <string name="massage_label">按摩</string>
     <string name="massage_message">你確定要預訂按摩？</string>
+    <string name="massage_disabled_message">按摩不能在下午10点至9点之间预订！</string>
     <string name="massage_result">按摩預約請求 </string>
 
     <string name="restaurant_label">餐厅</string>

@@ -23,6 +23,7 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:orientation="vertical"
+            android:id="@+id/survey_pager_layout"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
             <android.support.v4.view.ViewPager
@@ -30,7 +31,26 @@
                 android:id="@+id/survey_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/survey_button_previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/ic_arrow_left"/>
+
+        <ImageButton
+            android:id="@+id/survey_button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/ic_arrow_right"/>
 
         <include layout="@layout/bottombar"/>
 

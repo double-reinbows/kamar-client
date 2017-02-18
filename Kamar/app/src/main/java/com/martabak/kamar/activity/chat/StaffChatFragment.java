@@ -52,7 +52,7 @@ public class StaffChatFragment extends Fragment {
 
         GuestServer.getInstance(this.getActivity()).getGuestsCheckedIn().subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
-                Log.d(StaffChatFragment.class.getCanonicalName(), "onCompleted");
+                Log.v(StaffChatFragment.class.getCanonicalName(), "onCompleted");
                 recyclerViewAdapter.notifyDataSetChanged();
                 //room number chat is not empty hence the appropriate room  number
                 String roomNumberChatNotification = "";
@@ -61,7 +61,10 @@ public class StaffChatFragment extends Fragment {
                 } catch (NullPointerException e) {}
                 if (!roomNumberChatNotification.equals("")) {
                     for (Guest guest : guests) {
-                        if (guest.roomNumber.equals(roomNumberChatNotification)) {}
+                        Log.d(StaffChatFragment.class.getName(), guest.roomNumber.toString());
+                        if (guest.roomNumber.equals(roomNumberChatNotification)) {
+                            //recyclerView.findViewHolderForAdapterPosition(guest.roomNumber);
+                        }
                     }
 
                 }
