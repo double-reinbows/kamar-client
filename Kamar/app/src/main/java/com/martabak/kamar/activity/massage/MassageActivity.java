@@ -49,7 +49,6 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
     private MassageRecyclerViewAdapter recyclerViewAdapter;
 
     private Calendar currentDate = Calendar.getInstance();
-
     private Calendar beginDate = Calendar.getInstance();
     private Calendar endDate = Calendar.getInstance();
 
