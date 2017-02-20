@@ -23,7 +23,4 @@ public interface MenuService {
     @GET("menu/_all_docs?include_docs=true")
     Observable<AllResponse<Consumable>> getMenu();
 
-    @GET("menu/_all_docs?include_docs=true&descending=true")
-    Observable<AllResponse<Consumable>> getReverseMenu();
-
 }

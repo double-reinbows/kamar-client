@@ -105,15 +105,6 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
 
                 @Override
                 public void onNext(List<Consumable> output) {
-                    /*
-                    if (output.get(0).isDrinks()) {
-                        List<Consumable> temp = new ArrayList();
-                        temp = output;
-                        Collections.reverse(temp);
-                        for (Consumable c : temp) {
-                            Log.v("DICK", c.nameEn);
-                        }
-                    }*/
                     consumables = output;
                 }
             });
