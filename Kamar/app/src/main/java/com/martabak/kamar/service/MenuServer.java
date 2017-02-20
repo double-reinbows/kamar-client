@@ -11,6 +11,7 @@ import com.martabak.kamar.service.response.PutResponse;
 import com.martabak.kamar.service.response.ViewResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
@@ -86,9 +87,34 @@ public class MenuServer extends Server {
                 .flatMap(new Func1<AllResponse<Consumable>, Observable<List<Consumable>>>() {
                     @Override public Observable<List<Consumable>> call(AllResponse<Consumable> response) {
                         List<Consumable> toReturn = new ArrayList<>(response.total_rows);
+                        AllResponse<Consumable>.AllResult<Consumable> c = response.rows.get(0);
+//                        if (c.doc.nameEn == null) {
+//                            return getReverseMenu();
+//                        }
                         for (AllResponse<Consumable>.AllResult<Consumable> i : response.rows) {
                             toReturn.add(i.doc);
                         }
+                        return Observable.just(toReturn);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * Get all the menu items from the server in reverse, to skip the first null doc (view)
+     * and then reverse the ArrayList again to correct the order (DRINKS last).
+     * @return Observable on the consumable menu items.
+     */
+    public Observable<List<Consumable>> getReverseMenu() {
+        return service.getReverseMenu()
+                .flatMap(new Func1<AllResponse<Consumable>, Observable<List<Consumable>>>() {
+                    @Override public Observable<List<Consumable>> call(AllResponse<Consumable> response) {
+                        List<Consumable> toReturn = new ArrayList<>(response.total_rows);
+                        for (AllResponse<Consumable>.AllResult<Consumable> i : response.rows) {
+                            toReturn.add(i.doc);
+                        }
+//                        Collections.reverse(toReturn);
                         return Observable.just(toReturn);
                     }
                 })

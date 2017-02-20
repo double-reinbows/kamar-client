@@ -71,8 +71,8 @@ public class CheckGuestOutFragment extends Fragment  {
         roomNumbers = new ArrayList<>();
         roomNumbers.add(0, getString(R.string.room_select));
         rooms = new ArrayAdapter(getActivity().getBaseContext(),
-                R.layout.support_simple_spinner_dropdown_item, roomNumbers);
-        rooms.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                R.layout.spinner_item, roomNumbers);
+//        rooms.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         getRoomNumbersWithGuests();
         spinner.setAdapter(rooms);
         spinner.setSelection(0);

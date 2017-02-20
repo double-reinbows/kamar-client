@@ -22,6 +22,7 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.EventServer;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.Server;
+import com.martabak.kamar.domain.LocaleChanger;
 
 import java.util.Locale;
 
@@ -43,10 +44,11 @@ public class SelectLanguageActivity extends AppCompatActivity {
     private String promoImgId;
     private String roomNumber;
 
+    LocaleChanger localeChanger = new LocaleChanger();
     // the listener bindings for the language buttons
     @OnClick(R.id.language_english)
     public void onEnglishClick() {
-        setLocale("en");
+        localeChanger.setLocale(this, "en");
         Log.v("LOCALE",Locale.getDefault().getLanguage());
         Toast.makeText(
                 SelectLanguageActivity.this,
@@ -59,7 +61,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     @OnClick(R.id.language_bahasa)
     public void onBahasaClick() {
-        setLocale("in");
+        localeChanger.setLocale(this, "en");
         Log.v("LOCALE",Locale.getDefault().getLanguage());
         Toast.makeText(
                 SelectLanguageActivity.this,
@@ -72,7 +74,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     @OnClick(R.id.language_russian)
     public void onRussianClick() {
-        setLocale("ru");
+        localeChanger.setLocale(this, "en");
         Log.v("LOCALE",Locale.getDefault().getLanguage());
         Toast.makeText(
                 SelectLanguageActivity.this,
@@ -85,7 +87,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     @OnClick(R.id.language_zh)
     public void onChineseClick() {
-        setLocale("zh");
+        localeChanger.setLocale(this, "en");
         Log.v("LOCALE",Locale.getDefault().getLanguage());
         Toast.makeText(
                 SelectLanguageActivity.this,
@@ -111,19 +113,6 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 .getString("roomNumber", "none");
     }
 
-    /**
-     * Set the locale of the app.
-     *
-     * @param lang The 2-digit language code.
-     */
-    private void setLocale(String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-                getBaseContext().getResources().getDisplayMetrics());
-    }
 
     /**
      * Set guest id on shared preferences.

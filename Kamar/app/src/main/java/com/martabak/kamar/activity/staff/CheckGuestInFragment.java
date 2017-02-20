@@ -96,8 +96,8 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         roomNumbers = new ArrayList<>();
         roomNumbers.add(0, getString(R.string.room_select));
         roomNumAdapter = new ArrayAdapter(getActivity().getBaseContext(),
-                R.layout.support_simple_spinner_dropdown_item, roomNumbers);
-        roomNumAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                R.layout.spinner_item, roomNumbers);
+//        roomNumAdapter.setDropDownViewResource(R.layout.spinner_item);
         getRoomNumbersWithoutGuests();
         spinnerRoomNumber.setAdapter(roomNumAdapter);
         spinnerRoomNumber.setSelection(0);
@@ -105,9 +105,9 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
 
         final List<String> promoImageNames = getPromoImages();
         ArrayAdapter promImgAdapter = new ArrayAdapter(getActivity().getBaseContext(),
-                R.layout.support_simple_spinner_dropdown_item, promoImageNames);
+                R.layout.spinner_item, promoImageNames);
         promoImageNames.add(0, getString(R.string.promo_img_select));
-        promImgAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        promImgAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         promImgAdapter.notifyDataSetChanged();
         spinnerPromoImg.setAdapter(promImgAdapter);
         spinnerPromoImg.setSelection(0);
