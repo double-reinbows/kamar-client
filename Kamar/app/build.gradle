@@ -44,5 +44,8 @@ dependencies {
     compile 'io.reactivex:rxjava-math:1.0.0'
     compile 'com.jakewharton:butterknife:8.1.0'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile 'com.amazonaws:aws-android-sdk-core:2.2.+'
+    compile 'com.amazonaws:aws-android-sdk-ses:2.2.+'
+    compile 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.2.+'
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
 }

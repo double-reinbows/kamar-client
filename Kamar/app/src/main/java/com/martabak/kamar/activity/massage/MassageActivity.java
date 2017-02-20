@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
+import com.martabak.kamar.domain.Staff;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Massage;
@@ -164,7 +166,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String owner = Permintaan.OWNER_FRONTDESK;
+                        String owner = User.TYPE_STAFF;
                         String type = Permintaan.TYPE_MASSAGE;
                         final String creator = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
                                 .getString("userType", "none");

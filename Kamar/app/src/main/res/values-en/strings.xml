@@ -37,6 +37,7 @@
     <string name="incorrect_password">The password you entered is incorrect</string>
     <string name="frontdesk">Front Desk</string>
     <string name="restaurant">Restaurant</string>
+    <string name="spa">Spa</string>
     <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
 
     <!-- Permintaan -->

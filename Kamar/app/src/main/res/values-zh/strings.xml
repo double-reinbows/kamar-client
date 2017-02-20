@@ -209,4 +209,5 @@
     <string name="no_guest_in_room">很抱歉，您尚未签到！</string>
     <string name="room_number_not_found">对不起，我找不到您的房间号码。 请通知工作人员。</string>
     <string name="survey_thank_you">我们非常感谢您的意见，并将确保我们使用它，使您的下一次住宿与我们更好！</string>
+    <string name="spa">温泉</string>
 </resources>

@@ -16,15 +16,6 @@ import java.util.Set;
 public class Permintaan<T extends Content> extends Model {
 
     /**
-     * The RESTAURANT owner string.
-     */
-    public static final String OWNER_RESTAURANT = "RESTAURANT";
-    /**
-     * The FRONTDESK owner string.
-     */
-    public static final String OWNER_FRONTDESK = "FRONTDESK";
-
-    /**
      * The BELLBOY type string.
      */
     public static final String TYPE_BELLBOY = "BELLBOY";
