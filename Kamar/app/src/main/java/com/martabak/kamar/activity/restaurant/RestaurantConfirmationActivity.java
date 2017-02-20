@@ -22,6 +22,7 @@ import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
 import com.martabak.kamar.activity.staff.CreatePermintaanFragment;
 import com.martabak.kamar.activity.staff.StaffHomeActivity;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.managers.RestaurantOrderManager;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -106,8 +107,10 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
         }
         else if (creator.equals("STAFF")) {
-            setResult(Permintaan.SUCCESS);
-            startActivity(new Intent(getBaseContext(), StaffHomeActivity.class));
+            Intent intent = new Intent(getBaseContext(), StaffHomeActivity.class);
+            intent.putExtra("RestaurantResult", "Success");
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -238,7 +241,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
     /*Send ic_restaurant request*/
     public void sendRestaurantRequest(RestaurantOrder restaurantOrder) {
-        String owner = Permintaan.OWNER_RESTAURANT;
+        String owner = User.TYPE_STAFF_RESTAURANT;
         String type = Permintaan.TYPE_RESTAURANT;
 //        final String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
 //                .getString("userType", "none");

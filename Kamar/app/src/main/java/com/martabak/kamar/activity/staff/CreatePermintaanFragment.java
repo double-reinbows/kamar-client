@@ -194,6 +194,8 @@ public class CreatePermintaanFragment extends Fragment  {
 
     /**
      * Show Snackbar based on the success of the permintaan
+     * @param requestCode
+     * @param resultCode
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //successful in creating permintaan
@@ -208,7 +210,7 @@ public class CreatePermintaanFragment extends Fragment  {
             // create snackbar
             Snackbar.make(this.getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content),
-                    R.string.request_success,Snackbar.LENGTH_INDEFINITE).
+                    R.string.request_success,Snackbar.LENGTH_LONG).
                     setAction(R.string.positive, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

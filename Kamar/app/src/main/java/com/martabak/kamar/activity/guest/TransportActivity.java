@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.Transport;
 import com.martabak.kamar.service.PermintaanServer;
@@ -148,7 +149,7 @@ public class TransportActivity extends AppCompatActivity implements TextWatcher 
         Log.d(TransportActivity.class.getCanonicalName(), "sendTransportRequest() to " +
                 destination + " in " + departureIn + " for " + passengers + " passengers with message " + message);
 
-        String owner = Permintaan.OWNER_FRONTDESK;
+        String owner = User.TYPE_STAFF_FRONTDESK;
         String type = Permintaan.TYPE_TRANSPORT;
         String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("userType", "none");

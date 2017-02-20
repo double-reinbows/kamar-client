@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.permintaan.Bellboy;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -89,7 +90,7 @@ public class BellboyDialogFragment extends DialogFragment {
     public void sendBellboyRequest(String bellboyMessage) {
         Bellboy bellboy = new Bellboy(bellboyMessage);
 
-        String owner = Permintaan.OWNER_FRONTDESK;
+        String owner = User.TYPE_STAFF_FRONTDESK;
         String type = Permintaan.TYPE_BELLBOY;
         String creator = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("userType", "none");

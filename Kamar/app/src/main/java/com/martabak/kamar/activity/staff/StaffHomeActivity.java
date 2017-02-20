@@ -24,6 +24,7 @@ import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.guest.PermintaanDialogListener;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 
 import butterknife.BindView;
@@ -51,7 +52,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String staffType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("subUserType", "none");
+        String staffType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("userSubType", "none");
         startStaffServices(staffType);
         setContentView(R.layout.activity_staff_home);
         ButterKnife.bind(this);
@@ -75,9 +76,9 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
             Server.picasso(this)
                     .load(staffImage)
                     .into(staffImageView);
-        }
+        }*/
         TextView staffTitleView = (TextView) findViewById(R.id.staff_title);
-        if (staffTitleView != null) staffTitleView.setText(staffType);*/
+        if (staffTitleView != null) staffTitleView.setText(staffType);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -86,8 +87,11 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         toggle.syncState();
 
 
-        //open chat when staff home entered from notification
+
         String fragType = getIntent().getStringExtra("FragType");
+        String restaurantResult = getIntent().getStringExtra("RestaurantResult");
+
+        //open chat when staff home entered from notification
         if (fragType != null) {
             switch (fragType) {
                 case "StaffChatFragment":
@@ -102,22 +106,30 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
 
             }
         }
+        else if (restaurantResult != null) {
+            switch(restaurantResult) {
+                case "Success":
+                    makeSnackBar();
+            }
+            getFragmentManager().beginTransaction()
+                    .add(R.id.staff_container, StaffPermintaanFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit();
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
         else {
             getFragmentManager().beginTransaction()
                     .add(R.id.staff_container, StaffPermintaanFragment.newInstance())
                     .addToBackStack(null)
                     .commit();
             navigationView.getMenu().getItem(0).setChecked(true);
-
         }
-
-
     }
 
     @Override
-    public void onStop() {
+    public void onPause() {
         stopStaffServices();
-        super.onStop();
+        super.onPause();
     }
 
     /*
@@ -125,6 +137,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
      */
     @Override
     public void onBackPressed() {}
+
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, Boolean success) {
@@ -134,18 +147,8 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
                 .addToBackStack(null)
                 .commit();
         // create snackbar for bellboy
-        Snackbar.make(this.getWindow().getDecorView()
-                        .findViewById(android.R.id.content),
-                R.string.request_success,Snackbar.LENGTH_INDEFINITE).
-                setAction(R.string.positive, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.staff_container, CreatePermintaanFragment.newInstance())
-                                .addToBackStack(null)
-                                .commit();
-                    }
-                }).show();
+        makeSnackBar();
+
     }
 
     @Override
@@ -196,6 +199,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
 //                            .commit();
 //                    break;
                 case R.id.nav_logout:
+                    stopStaffServices();
                     Log.v(StaffHomeActivity.class.toString(), "Loading select language activity");
                     startActivity(new Intent(StaffHomeActivity.this, SelectLanguageActivity.class));
                     finish();
@@ -209,16 +213,35 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
     }
 
     /**
+     * Make snackbar for requests unable to be process by create permintaan fragment
+     */
+    private void makeSnackBar() {
+        Snackbar.make(this.getWindow().getDecorView()
+                        .findViewById(android.R.id.content),
+                R.string.request_success,Snackbar.LENGTH_LONG).
+                setAction(R.string.positive, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.staff_container, CreatePermintaanFragment.newInstance())
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                })
+                .show();
+    }
+
+    /**
      * Start any relevant staff services.
      */
     private void startStaffServices(String userSubType) {
-        if (!userSubType.equals("none")) {
-            Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffPermintaanService.class.getCanonicalName() + " as " + userSubType);
-            startService(new Intent(this, StaffPermintaanService.class)
-                    .putExtra("subUserType", userSubType));
+        Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffPermintaanService.class.getCanonicalName() + " as " + userSubType);
+        startService(new Intent(this, StaffPermintaanService.class)
+                .putExtra("subUserType", userSubType));
+        if (userSubType.equals(User.TYPE_STAFF_FRONTDESK)) {
+            Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffChatService.class.getCanonicalName());
+            startService(new Intent(this, StaffChatService.class));
         }
-        Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffChatService.class.getCanonicalName());
-        startService(new Intent(this, StaffChatService.class));
     }
 
 

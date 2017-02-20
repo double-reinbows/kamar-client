@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.service.GuestServer;
 
@@ -52,7 +53,7 @@ public class StaffChatFragment extends Fragment {
 
         GuestServer.getInstance(this.getActivity()).getGuestsCheckedIn().subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
-                Log.d(StaffChatFragment.class.getCanonicalName(), "onCompleted");
+                Log.v(StaffChatFragment.class.getCanonicalName(), "onCompleted");
                 recyclerViewAdapter.notifyDataSetChanged();
                 //room number chat is not empty hence the appropriate room  number
                 String roomNumberChatNotification = "";
@@ -61,11 +62,9 @@ public class StaffChatFragment extends Fragment {
                 } catch (NullPointerException e) {}
                 if (!roomNumberChatNotification.equals("")) {
                     for (Guest guest : guests) {
-                        Log.v("RoomNumberStaffChat", guest.roomNumber);
+                        Log.d(StaffChatFragment.class.getName(), guest.roomNumber.toString());
                         if (guest.roomNumber.equals(roomNumberChatNotification)) {
-
-                            /*View childView = recyclerView.get
-                            childView.performClick();*/
+                            //recyclerView.findViewHolderForAdapterPosition(guest.roomNumber);
                         }
                     }
 
@@ -160,7 +159,7 @@ public class StaffChatFragment extends Fragment {
 
     private String getSender() {
         SharedPreferences prefs = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE);
-        return prefs.getString("userSubType", ChatMessage.SENDER_FRONTDESK);
+        return prefs.getString("userSubType", User.TYPE_STAFF_FRONTDESK);
     }
 
 }

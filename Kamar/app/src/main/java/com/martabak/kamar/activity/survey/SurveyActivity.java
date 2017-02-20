@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
@@ -17,11 +19,31 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observer;
 
 public class SurveyActivity extends AbstractGuestBarsActivity {
 
     @BindView(R.id.survey_pager) ViewPager viewPager;
+    @BindView(R.id.survey_button_next) ImageButton nextBtn;
+
+    //on next click
+    @OnClick(R.id.survey_button_next)
+    void onNextClick(){
+        if (viewPager.getCurrentItem() < viewPager.getAdapter().getCount() - 1) {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+        }
+    }
+
+    //on previous click
+    @OnClick(R.id.survey_button_previous)
+    void onPreviousClick() {
+        if (viewPager.getCurrentItem() > 0) {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+
+        }
+    }
+
     private List<String> sections;
     private HashMap<String, List<SurveyQuestion>> sectionMappings; //section to questions
     private HashMap<String, Integer> idToRating;
@@ -35,6 +57,7 @@ public class SurveyActivity extends AbstractGuestBarsActivity {
                 .showLogoutIcon(false)
                 .enableChatIcon(true);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +115,28 @@ public class SurveyActivity extends AbstractGuestBarsActivity {
             pagerAdapter = new SurveySlidePagerAdapter(getSupportFragmentManager());
             viewPager.setAdapter(pagerAdapter);
         }
+    }
+
+    // method used to set the current page
+    private View.OnClickListener OnClickListener(final int i)
+    {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (i > 0) {
+                    //next page
+                    if (viewPager.getCurrentItem() < viewPager.getAdapter().getCount() - 1) {
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                    }
+                }
+                else {
+                    //previous page
+                    if (viewPager.getCurrentItem() > 0) {
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+                    }
+                }
+            }
+        };
     }
 
     @Override

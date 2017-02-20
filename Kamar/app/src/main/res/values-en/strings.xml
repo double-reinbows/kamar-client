@@ -37,6 +37,7 @@
     <string name="incorrect_password">The password you entered is incorrect</string>
     <string name="frontdesk">Front Desk</string>
     <string name="restaurant">Restaurant</string>
+    <string name="spa">Spa</string>
     <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
 
     <!-- Permintaan -->
@@ -142,6 +143,7 @@
 
     <string name="massage_label">MASSAGE</string>
     <string name="massage_message">Are you sure you want to book this massage?</string>
+    <string name="massage_disabled_message">Massages cannot be booked between the hours of 10PM and 9AM!</string>
     <string name="massage_result">Massage request sent</string>
 
     <string name="restaurant_label">RESTAURANT</string>
@@ -177,6 +179,10 @@
     <string name="promo_img_select">Promotional Image</string>
 
     <string name="guest_welcome_title">Welcome!</string>
+
+    <!--Terms and conditions-->
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="terms_and_conditions_message">Accept This!</string>
 
     <!-- Laundry special instructions -->
     <string name="no_ironing">No Ironing</string>
