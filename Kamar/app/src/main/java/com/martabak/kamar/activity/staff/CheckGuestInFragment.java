@@ -216,9 +216,17 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                     }
                     @Override public void onNext(List<Event> result) {
                         Log.v(CheckGuestInFragment.class.getCanonicalName(), "getPromoImages() onNext");
-                        for (Event event : result) {
-                            Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + event.name);
-                            promoImageNames[0].add(event.name);
+                        if (result.get(0).name != null) { //if view is not at the front
+                            for (int i=0; i<result.size()-1; i++) { //skip last event
+                                Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + result.get(i).name);
+                                promoImageNames[0].add(result.get(i).name);
+                            }
+
+                        } else {
+                            for (int i=1; i<result.size(); i++) { //skip first event
+                                Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + result.get(i).name);
+                                promoImageNames[0].add(result.get(i).name);
+                            }
                         }
                         promoImages = result;
                         Log.v(CheckGuestInFragment.class.getCanonicalName(), "Setting promoImages to " + promoImages + " with size " + promoImages.size());
