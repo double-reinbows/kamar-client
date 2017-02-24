@@ -209,4 +209,5 @@
     <string name="no_guest_in_room">Maaf, tapi Anda tidak diperiksa!</string>
     <string name="room_number_not_found">Maaf, saya tidak dapat menemukan nomor kamar Anda. Harap memberitahu anggota staf.</string>
     <string name="survey_thank_you">Kami sangat menghargai komentar Anda dan akan memastikan kami menggunakannya untuk membuat Anda tinggal berikutnya dengan kami bahkan lebih baik!</string>
+    <string name="spa">Spa</string>
 </resources>

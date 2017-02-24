@@ -37,6 +37,7 @@
     <string name="incorrect_password">The password you entered is incorrect</string>
     <string name="frontdesk">Front Desk</string>
     <string name="restaurant">Restaurant</string>
+    <string name="spa">Spa</string>
     <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
 
     <!-- Permintaan -->
@@ -93,7 +94,7 @@
 
     <!-- Guest Nav drawer -->
     <string name="nav_drawer_home">HOME</string>
-    <string name="nav_drawer_change_language">CHANGE LANGUAGE</string>
+    <string name="nav_drawer_change_language">改变语言 / ИЗМЕНИТЬ ЯЗЫК</string>
     <string name="nav_drawer_about">ABOUT US</string>
 
     <!-- Guest -->

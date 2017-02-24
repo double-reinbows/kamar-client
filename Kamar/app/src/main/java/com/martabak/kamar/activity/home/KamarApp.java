@@ -5,13 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.ContactsContract;
+import android.util.Log;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.util.Constants;
+import com.martabak.kamar.util.CrashReportSender;
+import com.martabak.kamar.util.EmailSender;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -44,48 +52,29 @@ public class KamarApp extends Application {
         Picasso.setSingletonInstance(built);
     }
 
-    private Thread.UncaughtExceptionHandler defaultUEH;
-
     private void AppInitialization() {
-        defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
-        Thread.setDefaultUncaughtExceptionHandler(_unCaughtExceptionHandler);
+        Thread.setDefaultUncaughtExceptionHandler(
+                new EmailExceptionHandler(Thread.getDefaultUncaughtExceptionHandler()));
     }
 
-    // handler listener
-    private Thread.UncaughtExceptionHandler _unCaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
+    class EmailExceptionHandler implements Thread.UncaughtExceptionHandler {
+
+        private Thread.UncaughtExceptionHandler defaultUEH;
+
+        public EmailExceptionHandler(Thread.UncaughtExceptionHandler defaultUEH) {
+            this.defaultUEH = defaultUEH;
+        }
+
         @Override
-        public void uncaughtException(Thread thread, Throwable ex) {
-            ex.printStackTrace();
-//            sendLogcatMail();
-        }
-    };
-
-    public void sendLogcatMail(){
-        // save logcat in file
-        File outputFile = new File(Environment.getExternalStorageDirectory(),
-                "logcat.txt");
-        Uri uri = Uri.fromFile(outputFile);
-        try {
-            Runtime.getRuntime().exec(
-                    "logcat -f " + outputFile.getAbsolutePath());
-        } catch (IOException e) {
+        public void uncaughtException(Thread thread, Throwable e) {
             e.printStackTrace();
+            Log.e(EmailExceptionHandler.class.getCanonicalName(), "Handling uncaught exception");
+            if (Constants.SEND_CRASH_REPORTS) {
+                CrashReportSender.sendCrashReport(getApplicationContext(), e);
+            }
+            defaultUEH.uncaughtException(thread, e);
         }
 
-        //send file using email
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        emailIntent.setData(Uri.parse("mailto:"));
-        // Set type to "email"
-        emailIntent.setType("vnd.android.cursor.dir/email");
-        String to[] = {"rayssoftwarecompany@gmail.com"};
-        emailIntent .putExtra(Intent.EXTRA_EMAIL, to);
-        // the attachment
-        emailIntent .putExtra(Intent.EXTRA_STREAM, uri);
-        // the mail subject
-        emailIntent .putExtra(Intent.EXTRA_SUBJECT, "Subject");
-        Intent newIntent = Intent.createChooser(emailIntent, "Share via");
-        newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getApplicationContext().startActivity(newIntent);
     }
+
 }

@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.YiannisTestActivity;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -80,14 +81,16 @@ public class GuestChatService extends IntentService {
 
     private void createNotification(int nId, ChatMessage message) {
         String from = "STAFF";
-        if (message.from.equals(Permintaan.OWNER_RESTAURANT)) {
+        if (message.from.equals(User.TYPE_STAFF_RESTAURANT)) {
             from = getString(R.string.restaurant);
-        } else if (message.from.equals(Permintaan.OWNER_FRONTDESK)) {
+        } else if (message.from.equals(User.TYPE_STAFF_FRONTDESK)) {
             from = getString(R.string.frontdesk);
+        } else if (message.from.equals(User.TYPE_STAFF_SPA)) {
+            from = getString(R.string.spa);
         }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_menu_share)
-                .setContentTitle(getString(R.string.chat_message_from_staff))
+                .setContentTitle(getString(R.string.chat_message_from_staff) + " " + from)
                 .setContentText(message.message);
 
         // Creates an explicit intent for an Activity in your app

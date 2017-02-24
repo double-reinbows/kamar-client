@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.HousekeepingOption;
 import com.martabak.kamar.domain.managers.HousekeepingManager;
@@ -228,7 +229,7 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                String owner = Permintaan.OWNER_FRONTDESK;
+                                String owner = User.TYPE_STAFF_FRONTDESK;
                                 String type = Permintaan.TYPE_HOUSEKEEPING;
                                 String guestId = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                                         .getString("guestId", "none");
