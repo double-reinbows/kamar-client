@@ -328,11 +328,13 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
 
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            final HousekeepingOptionAdapter.ViewHolder holder =
+            /*final HousekeepingOptionAdapter.ViewHolder holder =
                     (HousekeepingOptionAdapter.ViewHolder)optionRecyclerView.getChildViewHolder((View)radioGroup.getParent());
-            final HousekeepingOption question = holder.item;
+            final HousekeepingOption question = holder.item;*/
 
             RadioButton checkedRadioButton = (RadioButton)radioGroup.findViewById(i);
+
+            Log.v("CheckedButton", checkedRadioButton.toString());
             // This puts the value (true/false) into the variable
             boolean isChecked = checkedRadioButton.isChecked();
             // If the radio button that has changed in check state is now checked...
