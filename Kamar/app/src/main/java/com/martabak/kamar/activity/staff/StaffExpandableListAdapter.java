@@ -206,7 +206,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
                     lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime()) / 1000;
                 } else {
-                    simpleUpdated = "tidak pernah diubah";
+                    simpleUpdated = "Tidak Pernah Diubah";
                     lastStateChange = 0;
                 }
                 String contentString = "";
@@ -251,9 +251,9 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         .setTitle("KAMAR NOMOR "+currPermintaan.roomNumber+ "- PESANAN "+currPermintaan.type)
                         .setMessage(Html.fromHtml("State: "+currPermintaan.state+"<br>"+
                                 //"Message: "+currPermintaan.content.message+"<br>"+
-                                "Pesan masuk jam "+simpleCreated+"<br>"+
-                                "Waktu terakhir kali pesan dirubah: "+simpleUpdated+"<br>"+
-                                "Waktu sejak terakhir kali pesan diruabah: "+lastStateChange/60+" minutes ago<br>"+
+                                "Pesan Diterima Jam "+simpleCreated+"<br>"+
+                                "Waktu Terakhir Kali Pesan Diubah: "+simpleUpdated+"<br>"+
+                                "Waktu Sejak Terakhir Kali Pesan Diubah: "+lastStateChange/60+" menit yang lalu<br>"+
                                 "Petugas: "+currPermintaan.assignee+
                                 "<br>Rincian: <b><br>"+contentString+"</b>"))
                         .setCancelable(true)
