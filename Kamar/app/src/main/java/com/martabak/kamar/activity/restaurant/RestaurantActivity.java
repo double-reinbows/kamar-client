@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -20,6 +21,7 @@ import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.MenuServer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -83,25 +85,14 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                     //initialize constant variables
                     idToConsumable = new HashMap<>();
                     setGlobals();
-                    for (int i=0; i<consumables.size()-1; i++) { //ignores the last Consumable (the view)
-                        Consumable c = consumables.get(i);
-//                        Log.v("HELLO", c.nameEn + " " + c.sectionEn);
-                        idToConsumable.put(c._id, c);
-                        idToQuantity.put(c._id, 0);
-                        idToNote.put(c._id, "");
-                        if (!sections.contains(c.getSection())) {//new tab/section
-                            sections.add(c.getSection()); //add to sections List
-                            //create new List of Consumables for the new section
-                            List<Consumable> temp = new ArrayList<>();
-                            temp.add(c);
-                            sectionToConsumables.put(c.getSection(), temp); //link them together
-                            tabLayout.addTab(tabLayout.newTab().setText(c.getSection())); //add new tab
-                            ExpandableListView tempView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
-                            expandableListViews.put(c.getSection(), tempView);
-                        } else { //previously found tab
-                            List<Consumable> temp = sectionToConsumables.get(c.getSection());
-                            temp.add(c);
-                            sectionToConsumables.put(c.getSection(), temp);
+                    Consumable first = consumables.get(0);
+                    if (first.nameEn != null) {
+                        for (int i = 0; i < consumables.size() - 1; i++) { //ignores the last Consumable (the view)
+                            setListsViews(i, tabLayout);
+                        }
+                    } else if (first.nameEn == null) {
+                        for (int i = 1; i < consumables.size(); i++) { //ignores the first Consumable (the view)
+                            setListsViews(i, tabLayout);
                         }
                     }
                     setupTabs(tabLayout);
@@ -148,7 +139,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     }
 
     /**
-     * set global variables
+     * initialize global variables
      */
     private void setGlobals() {
         sectionToConsumables = new HashMap<>();
@@ -162,12 +153,39 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     }
 
     /**
-     * set custom font, tab listener and select left-most tab
+     * adds to the globals lists
+     * @param i current index of the for loop
+     * @param tabLayout the tab layout
+     */
+    private void setListsViews(Integer i, TabLayout tabLayout) {
+        Consumable c = consumables.get(i);
+//        Log.v("HELLO", c.nameEn + " " + c.sectionEn);
+        idToConsumable.put(c._id, c);
+        idToQuantity.put(c._id, 0);
+        idToNote.put(c._id, "");
+        if (!sections.contains(c.getSection())) {//new tab/section
+            sections.add(c.getSection()); //add to sections List
+            //create new List of Consumables for the new section
+            List<Consumable> temp = new ArrayList<>();
+            temp.add(c);
+            sectionToConsumables.put(c.getSection(), temp); //link them together
+            tabLayout.addTab(tabLayout.newTab().setText(c.getSection())); //add new tab
+            ExpandableListView tempView = (ExpandableListView) findViewById(R.id.restaurant_exp_list);
+            expandableListViews.put(c.getSection(), tempView);
+        } else { //previously found tab
+            List<Consumable> temp = sectionToConsumables.get(c.getSection());
+            temp.add(c);
+            sectionToConsumables.put(c.getSection(), temp);
+
+        }
+    }
+
+    /**
+     * set tab listener and select left-most tab
      *
      * @param tabLayout
      */
     private void setupTabs(TabLayout tabLayout) {
-        setCustomFont(tabLayout);
         setTabListener(tabLayout);
         tabLayout.getTabAt(0).select(); //initialize on the 1st tab
     }
@@ -192,27 +210,6 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                 onTabSelected(tab);
             }
         });
-    }
-
-    /**
-     * set the custom font onto the tab text
-     *
-     * @param tabLayout
-     */
-    private void setCustomFont(ViewGroup tabLayout) {
-        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/century-gothic.ttf");
-        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
-        int numTabs = vg.getChildCount();
-        for (int j = 0; j < numTabs; j++) {
-            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
-            int tabChildsCount = vgTab.getChildCount();
-            for (int i = 0; i < tabChildsCount; i++) {
-                View tabViewChild = vgTab.getChildAt(i);
-                if (tabViewChild instanceof TextView) {
-                    ((TextView) tabViewChild).setTypeface(customFont);
-                }
-            }
-        }
     }
 
     /**

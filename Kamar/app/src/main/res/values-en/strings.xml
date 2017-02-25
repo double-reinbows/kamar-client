@@ -37,6 +37,7 @@
     <string name="incorrect_password">The password you entered is incorrect</string>
     <string name="frontdesk">Front Desk</string>
     <string name="restaurant">Restaurant</string>
+    <string name="spa">Spa</string>
     <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
 
     <!-- Permintaan -->
@@ -93,7 +94,7 @@
 
     <!-- Guest Nav drawer -->
     <string name="nav_drawer_home">HOME</string>
-    <string name="nav_drawer_change_language">CHANGE LANGUAGE</string>
+    <string name="nav_drawer_change_language">改变语言 / ИЗМЕНИТЬ ЯЗЫК</string>
     <string name="nav_drawer_about">ABOUT US</string>
 
     <!-- Guest -->
@@ -126,7 +127,7 @@
     <string name="housekeeping_zero_order">Please choose a valid quantity!</string>
 
     <string name="bellboy_message">ARE YOU SURE YOU REQUIRE A PORTER?</string>
-    <string name="bellboy_edittext">Input bellboy details</string>
+    <string name="bellboy_edittext">Input details</string>
     <string name="report_to_frontdesk">Please report to front desk</string>
 
     <string name="engineering_label">ENGINEERING</string>
@@ -142,6 +143,7 @@
 
     <string name="massage_label">MASSAGE</string>
     <string name="massage_message">Are you sure you want to book this massage?</string>
+    <string name="massage_disabled_message">Massages cannot be booked between the hours of 10PM and 9AM!</string>
     <string name="massage_result">Massage request sent</string>
 
     <string name="restaurant_label">RESTAURANT</string>
@@ -178,6 +180,10 @@
 
     <string name="guest_welcome_title">Welcome!</string>
 
+    <!--Terms and conditions-->
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="terms_and_conditions_message">Accept This!</string>
+
     <!-- Laundry special instructions -->
     <string name="no_ironing">No Ironing</string>
     <string name="on_hanger">On Hanger</string>
@@ -208,4 +214,8 @@
     <string name="staff_mode">STAFF MODE</string>
     <string name="restaurant_subtotal_text">Total before TAX</string>
     <string name="request_success">Request Sent! Would you like to make another request?</string>
+    <string name="edittext_hint"></string>
+    <string name="guest_empty_room">No guest inside this room</string>
+    <string name="no_guest_in_room">Sorry, but you\'re not checked in!</string>
+    <string name="room_number_not_found">Sorry, I can\'t find your room number. Please notify a staff member.</string>
 </resources>

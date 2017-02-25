@@ -84,9 +84,9 @@ public class CreatePermintaanFragment extends Fragment  {
 
     private void setupGuestSpinner() {
         rooms = new ArrayAdapter(getActivity().getBaseContext(),
-                R.layout.support_simple_spinner_dropdown_item, roomNumbers);
+                R.layout.spinner_item, roomNumbers);
         roomNumbers.add(0, getString(R.string.room_select));
-        rooms.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        rooms.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         guestSpinner.setAdapter(rooms);
         guestSpinner.setSelection(0);
         guestSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -111,9 +111,9 @@ public class CreatePermintaanFragment extends Fragment  {
 
     private void setupPermintaanSpinner() {
         permintaans = new ArrayAdapter(getActivity().getBaseContext(),
-                R.layout.support_simple_spinner_dropdown_item, permintaanOptions);
+                R.layout.spinner_item, permintaanOptions);
         permintaanOptions.add(0, getString(R.string.permintaan_select));
-        permintaans.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        permintaans.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         permintaanSpinner.setAdapter(permintaans);
         permintaanSpinner.setSelection(0);
         permintaanSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -194,6 +194,8 @@ public class CreatePermintaanFragment extends Fragment  {
 
     /**
      * Show Snackbar based on the success of the permintaan
+     * @param requestCode
+     * @param resultCode
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //successful in creating permintaan
@@ -208,7 +210,7 @@ public class CreatePermintaanFragment extends Fragment  {
             // create snackbar
             Snackbar.make(this.getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content),
-                    R.string.request_success,Snackbar.LENGTH_INDEFINITE).
+                    R.string.request_success,Snackbar.LENGTH_LONG).
                     setAction(R.string.positive, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.massage;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
+import com.martabak.kamar.domain.Staff;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Massage;
@@ -24,6 +27,7 @@ import com.martabak.kamar.service.PermintaanServer;
 import com.martabak.kamar.service.Server;
 import com.martabak.kamar.service.StaffServer;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +37,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * This activity generates the list of massage options and allows the guest to request one.
@@ -44,6 +49,11 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
     private List<MassageOption> massageOptions;
     private Map<String, String> statuses; // Maps massage option ID -> request status
     private MassageRecyclerViewAdapter recyclerViewAdapter;
+
+    private Calendar currentDate = Calendar.getInstance();
+    private Calendar beginDate = Calendar.getInstance();
+    private Calendar endDate = Calendar.getInstance();
+
 
     protected Options getOptions() {
         return new Options()
@@ -59,6 +69,16 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         loadOptions();
+
+        if (checkMassageTimes())
+        {
+
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.massage_label)
+                    .setMessage(R.string.massage_disabled_message)
+                    .setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton(android.R.string.yes, null).show();
+        }
+
     }
 
     private void loadOptions() {
@@ -99,11 +119,32 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
     }
 
     private boolean requestInProgress() {
+
         for (String status : statuses.values())
             if (status.equals(Permintaan.STATE_INPROGRESS) ||
                     status.equals(Permintaan.STATE_NEW)) {
                 return true;
             }
+        return false;
+    }
+
+    private boolean checkMassageTimes() {
+        //the begin time and end time are set here
+        //the begin time is today's date + time:9AM
+        //the end time is today's date + time:10pm
+        beginDate.set(Calendar.MINUTE,0);
+        beginDate.set(Calendar.HOUR_OF_DAY,9);
+        beginDate.set(Calendar.SECOND,0);
+
+        endDate.set(Calendar.MINUTE,0);
+        endDate.set(Calendar.HOUR_OF_DAY,22);
+        endDate.set(Calendar.SECOND,0);
+
+
+        if ((currentDate.before(beginDate)) || (currentDate.after(endDate)))
+        {
+            return true;
+        }
         return false;
     }
 
@@ -125,7 +166,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String owner = Permintaan.OWNER_FRONTDESK;
+                        String owner = User.TYPE_STAFF;
                         String type = Permintaan.TYPE_MASSAGE;
                         final String creator = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
                                 .getString("userType", "none");
@@ -251,6 +292,8 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                     break;
             }
             if (requestInProgress()) {
+                holder.buttonView.setEnabled(false);
+            } else if (checkMassageTimes()) {
                 holder.buttonView.setEnabled(false);
             } else {
                 holder.buttonView.setEnabled(true);

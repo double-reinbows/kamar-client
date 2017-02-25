@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.Log;
 
+import com.martabak.kamar.domain.User;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -39,24 +41,26 @@ public class AuthorizationInterceptor implements Interceptor {
      * @return The user's Basic auth base64 encoded string.
      */
     private String getBasicString() {
+        SharedPreferences prefs = context.getSharedPreferences("userSettings", Context.MODE_PRIVATE);
         String username;
         String password;
-        SharedPreferences prefs = context.getSharedPreferences("userSettings", Context.MODE_PRIVATE);
 
-        switch (prefs.getString("userType", "STAFF")) {
-            case "GUEST":
+        switch (prefs.getString("userType", User.TYPE_GUEST)) {
+            case User.TYPE_GUEST:
                 username = "guest";
-                password = "guest123";
+                password = prefs.getString("userPassword", User.PASSWORD_GUEST);
                 break;
-            case "STAFF":
-                switch (prefs.getString("userSubType", "FRONTDESK")) {
-                    case "FRONTDESK":
-                        username = "frontdesk";
-                        password = "frontdesk123";
+            case User.TYPE_STAFF:
+                username = prefs.getString("userSubType", "");
+                switch (username.toUpperCase()) {
+                    case User.TYPE_STAFF_FRONTDESK:
+                        password = User.PASSWORD_FRONTDESK;
                         break;
-                    case "RESTAURANT":
-                        username = "ic_restaurant";
-                        password = "restaurant123";
+                    case User.TYPE_STAFF_RESTAURANT:
+                        password = User.PASSWORD_RESTAURANT;
+                        break;
+                    case User.TYPE_STAFF_SPA:
+                        password = User.PASSWORD_SPA;
                         break;
                     default:
                         return "";

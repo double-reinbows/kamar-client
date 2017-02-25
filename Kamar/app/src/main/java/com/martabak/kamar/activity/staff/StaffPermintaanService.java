@@ -50,15 +50,15 @@ public class StaffPermintaanService extends IntentService {
         final Set<String> permintaanIds = new HashSet<>();
 
         while (true) {
-            Log.d(StaffPermintaanService.class.getCanonicalName(), "Checking for new permintaans");
+            Log.d(StaffPermintaanService.class.getCanonicalName(), "Checking for new permintaans for owner " + owner);
             // Get all permintaans in the NEW state
-            PermintaanServer.getInstance(this).getPermintaansOfState("NEW")
+            PermintaanServer.getInstance(this).getPermintaansOfState(Permintaan.STATE_NEW)
                     // Filter for only permintaans that have not been seen by this service and not been updated
                     .filter(new Func1<Permintaan, Boolean>() {
                         @Override public Boolean call(Permintaan permintaan) {
                             boolean seen = permintaanIds.contains(permintaan._id);
                             permintaanIds.add(permintaan._id);
-                            return !seen && permintaan.updated == null && permintaan.owner.equals(owner);
+                            return !seen && permintaan.updated == null && permintaan.owner.equalsIgnoreCase(owner);
                         }
                     }).subscribe(new Action1<Permintaan>() {
                         @Override public void call(Permintaan permintaan) {
@@ -80,8 +80,8 @@ public class StaffPermintaanService extends IntentService {
     private void createNotification(int nId, Permintaan permintaan) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_menu_manage)
-                .setContentTitle(permintaan.type + " " + getString(R.string.permintaan))
-                .setContentText(getString(R.string.new_permintaan) + " " + permintaan.type + " " + getString(R.string.permintaan) + " " + permintaan.roomNumber);
+                .setContentTitle(getString(R.string.new_permintaan) + " " + getString(R.string.permintaan).toUpperCase())
+                .setContentText(permintaan.type + ": " + getString(R.string.room_number) + " " + permintaan.roomNumber);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
 

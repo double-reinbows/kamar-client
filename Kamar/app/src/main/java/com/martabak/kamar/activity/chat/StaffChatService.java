@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.YiannisTestActivity;
+import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.domain.chat.GuestChat;
@@ -34,7 +35,7 @@ public class StaffChatService extends IntentService {
 
     private static final int POLL_EVERY_SECONDS_AMOUNT = 20;
 
-    private static final Class RESULT_ACTIVITY = ChatListActivity.class;
+    private static final Class RESULT_ACTIVITY = StaffHomeActivity.class;
 
     /**
      * Construct a staff chat service.
@@ -126,7 +127,9 @@ public class StaffChatService extends IntentService {
                 .setContentText(message.message);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
-
+        //go to staff chat fragment
+        resultIntent.putExtra("FragType","StaffChatFragment");
+        resultIntent.putExtra("RoomNumber",roomNumber);
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
         // This ensures that navigating backward from the Activity leads out of

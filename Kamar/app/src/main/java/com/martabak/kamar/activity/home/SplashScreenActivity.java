@@ -1,21 +1,16 @@
 package com.martabak.kamar.activity.home;
 
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.AbstractCustomFontActivity;
 
-/**
- * Created by adarsh on 26/11/16.
- */
-public class SplashScreenActivity extends Activity {
-
-    //splash screen timer
-    private static int SPLASH_TIME_OUT = 9999;
+public class SplashScreenActivity extends AbstractCustomFontActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +21,20 @@ public class SplashScreenActivity extends Activity {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SplashScreenActivity.this, SelectLanguageActivity.class);
-                startActivity(intent);
+                //terms and conditions dialog
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SplashScreenActivity.this)
+                        .setTitle(R.string.terms_and_conditions)
+                        .setMessage(R.string.terms_and_conditions_message)
+                        .setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton(android.R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(SplashScreenActivity.this, SelectLanguageActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }).setNegativeButton(android.R.string.no, null);
+                alertDialogBuilder.show();
             }
         });
     }
-
 }

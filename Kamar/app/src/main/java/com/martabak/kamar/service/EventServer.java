@@ -1,6 +1,7 @@
 package com.martabak.kamar.service;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.martabak.kamar.domain.Event;
 import com.martabak.kamar.service.response.AllResponse;
@@ -122,6 +123,7 @@ public class EventServer extends Server {
                         List<Event> toReturn = new ArrayList<>();
                         for (ViewResponse<Event>.ViewResult<Event> i : response.rows) {
                             toReturn.add(i.value);
+                            Log.v("DICK", i.value.name + i.value.type);
                         }
                         return Observable.from(toReturn);
                     }

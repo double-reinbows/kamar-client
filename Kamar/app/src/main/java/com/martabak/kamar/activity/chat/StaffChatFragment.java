@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.service.GuestServer;
 
@@ -45,11 +46,29 @@ public class StaffChatFragment extends Fragment {
         final List<Guest> guests = new ArrayList<Guest>();
         final ChatRecyclerViewAdapter recyclerViewAdapter = new ChatRecyclerViewAdapter(guests);
         recyclerView.setAdapter(recyclerViewAdapter);
+        // get the guest/room number
+        // get the position in guests list
+        // call the onclick method on the room number to display the chat
+
 
         GuestServer.getInstance(this.getActivity()).getGuestsCheckedIn().subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
-                Log.d(StaffChatFragment.class.getCanonicalName(), "onCompleted");
+                Log.v(StaffChatFragment.class.getCanonicalName(), "onCompleted");
                 recyclerViewAdapter.notifyDataSetChanged();
+                //room number chat is not empty hence the appropriate room  number
+                String roomNumberChatNotification = "";
+                try{
+                    roomNumberChatNotification = getArguments().getString("roomNumberChatNotification");
+                } catch (NullPointerException e) {}
+                if (!roomNumberChatNotification.equals("")) {
+                    for (Guest guest : guests) {
+                        Log.d(StaffChatFragment.class.getName(), guest.roomNumber.toString());
+                        if (guest.roomNumber.equals(roomNumberChatNotification)) {
+                            //recyclerView.findViewHolderForAdapterPosition(guest.roomNumber);
+                        }
+                    }
+
+                }
             }
             @Override public void onError(Throwable e) {
                 Log.d(StaffChatFragment.class.getCanonicalName(), "onError", e);
@@ -60,6 +79,10 @@ public class StaffChatFragment extends Fragment {
                 guests.add(guest);
             }
         });
+
+
+
+
 
         return rootView;
     }
@@ -136,7 +159,7 @@ public class StaffChatFragment extends Fragment {
 
     private String getSender() {
         SharedPreferences prefs = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE);
-        return prefs.getString("userSubType", ChatMessage.SENDER_FRONTDESK);
+        return prefs.getString("userSubType", User.TYPE_STAFF_FRONTDESK);
     }
 
 }

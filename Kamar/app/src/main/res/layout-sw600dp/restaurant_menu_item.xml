@@ -29,7 +29,7 @@
     <ImageView
         android:id="@+id/minus_button"
         android:layout_width="wrap_content"
-        android:layout_height="38dp"
+        android:layout_height="36dp"
         android:layout_toStartOf="@+id/item_quantity"
         android:layout_marginTop="10dp"
         android:src="@drawable/restaurant_minus"
@@ -50,7 +50,7 @@
     <ImageView
         android:id="@+id/plus_button"
         android:layout_width="wrap_content"
-        android:layout_height="38dp"
+        android:layout_height="36dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
         android:src="@drawable/restaurant_plus"

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.permintaan.Engineering;
@@ -131,7 +132,7 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String owner = Permintaan.OWNER_FRONTDESK;
+                        String owner = User.TYPE_STAFF_FRONTDESK;
                         final String creator = EngineeringActivity.this.getSharedPreferences("userSettings", EngineeringActivity.this.MODE_PRIVATE)
                                 .getString("userType", "none");
                         String type = Permintaan.TYPE_ENGINEERING;

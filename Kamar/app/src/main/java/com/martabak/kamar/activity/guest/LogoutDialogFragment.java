@@ -17,13 +17,11 @@ import com.martabak.kamar.service.StaffServer;
 
 import rx.Observer;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class LogoutDialogFragment extends DialogFragment {
 
     private LogoutDialogListener logoutDialogListener;
-    private boolean success = false;
+    private boolean success;
+    private String staffSubType;
     private String reason;
 
     @Override
@@ -62,21 +60,24 @@ public class LogoutDialogFragment extends DialogFragment {
      * @param password The password string.
      */
     private void sendLogoutRequest(String password) {
-        StaffServer.getInstance(getActivity()).login(password).subscribe(new Observer<Boolean>() {
+        StaffServer.getInstance(getActivity()).login(password).subscribe(new Observer<String>() {
             @Override public void onCompleted() {
                 Log.d(LogoutDialogFragment.class.getCanonicalName(), "On completed");
-                logoutDialogListener.onLogoutDialogPositiveClick(LogoutDialogFragment.this, success, reason);
+                logoutDialogListener.onLogoutDialogPositiveClick(LogoutDialogFragment.this, success, staffSubType, reason);
             }
             @Override public void onError(Throwable e) {
                 Log.d(LogoutDialogFragment.class.getCanonicalName(), "On error");
                 e.printStackTrace();
                 reason = "Something went wrong";
-                logoutDialogListener.onLogoutDialogPositiveClick(LogoutDialogFragment.this, success, reason);
+                logoutDialogListener.onLogoutDialogPositiveClick(LogoutDialogFragment.this, success, staffSubType, reason);
             }
-            @Override  public void onNext(Boolean loginResponse) {
-                Log.d(LogoutDialogFragment.class.getCanonicalName(), "On next " + loginResponse.toString());
-                success = loginResponse;
-                if (!loginResponse) {
+            @Override  public void onNext(String response) {
+                Log.d(LogoutDialogFragment.class.getCanonicalName(), "On next " + response);
+                if (response != null) {
+                    success = true;
+                    staffSubType = response;
+                } else {
+                    success = false;
                     reason = "Incorrect Password";
                 }
 
@@ -85,7 +86,7 @@ public class LogoutDialogFragment extends DialogFragment {
     }
 
     public interface LogoutDialogListener {
-        void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String reason);
+        void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String staffSubType, String reason);
         void onLogoutDialogNegativeClick(DialogFragment dialog);
     }
 

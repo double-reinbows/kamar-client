@@ -26,6 +26,7 @@ import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.activity.staff.StaffHomeActivity;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.options.LaundryOption;
 import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -188,7 +189,7 @@ public class LaundryActivity extends AbstractGuestBarsActivity {
     /*Send laundry request*/
     public void sendLaundryRequest(LaundryOrder laundryOrder) {
 
-        String owner = Permintaan.OWNER_FRONTDESK;
+        String owner = User.TYPE_STAFF_FRONTDESK;
         String type = Permintaan.TYPE_LAUNDRY;
         final String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("userType", "none");

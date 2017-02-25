@@ -4,105 +4,105 @@
     <!-- Misc -->
     <string name="app_name">Kamar</string>
     <string name="action_settings">Settings</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">打开导航抽屉</string>
+    <string name="navigation_drawer_close">关闭导航抽屉</string>
     <string name="title_activity_guest_home">GuestHomeActivity</string>
     <string name="title_activity_staff_home">StaffHomeActivity</string>
     <string name="title_activity_transport">TransportActivity</string>
     <string name="title_activity_survey">SurveyActivity</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="welcome">欢迎</string>
-    <string name="welcome_message">Welcome Message</string>
-    <string name="upload">Upload</string>
-    <string name="positive">Yes</string>
-    <string name="negative">No</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
-    <string name="submit">Submit</string>
+    <string name="welcome_message">欢迎消息</string>
+    <string name="upload">上传</string>
+    <string name="positive">是</string>
+    <string name="negative">没有</string>
+    <string name="ok">好</string>
+    <string name="cancel">取消</string>
+    <string name="submit">提交</string>
     <string name="something_went_wrong">哎呀！出事了</string>
-    <string name="required">Required</string>
-    <string name="create">Create</string>
-    <string name="loading">Loading</string>
+    <string name="required">需要</string>
+    <string name="create">创建</string>
+    <string name="loading">载入中</string>
 
     <!-- Home -->
     <string name="language_english">英语</string>
-    <string name="language_bahasa">Bahasa Indonesia</string>
+    <string name="language_bahasa">印尼语</string>
     <string name="language_set_to">語言設置為俄語</string>
-    <string name="user_set_to">User set to</string>
-    <string name="guest">Guest</string>
-    <string name="staff">Staff</string>
-    <string name="user_set_to_guest">User set to Guest</string>
-    <string name="user_set_to_staff">User set to Staff</string>
-    <string name="password_prompt">Enter Staff Password: </string>
-    <string name="incorrect_password">The password you entered is incorrect</string>
-    <string name="frontdesk">Front Desk</string>
-    <string name="restaurant">Restaurant</string>
-    <string name="frontdesk_or_restaurant">Front Desk or Restaurant?</string>
+    <string name="user_set_to">用户设置为</string>
+    <string name="guest">客人</string>
+    <string name="staff">员工</string>
+    <string name="user_set_to_guest">用户设置为访客</string>
+    <string name="user_set_to_staff">用户设置为员工</string>
+    <string name="password_prompt">输入员工密码：</string>
+    <string name="incorrect_password">您输入的密码不正确</string>
+    <string name="frontdesk">前台</string>
+    <string name="restaurant">餐厅</string>
+    <string name="frontdesk_or_restaurant">前台或餐厅？</string>
 
     <!-- Permintaan -->
-    <string name="permintaan_title">Requests</string>
-    <string name="permintaan">request</string>
-    <string name="new_permintaan">NEW</string>
-    <string name="inprogress_permintaan">IN PROGRESS</string>
-    <string name="indelivery_permintaan">IN DELIVERY</string>
-    <string name="completed_permintaan">COMPLETED</string>
-    <string name="deleted_permintaan">DELETED</string>
-    <string name="cancelled_permintaan">CANCELLED</string>
-    <string name="permintaan_progress_confirmation">Are you sure you want to progress this request?</string>
-    <string name="permintaan_regress_confirmation">Are you sure you want to regress this request?</string>
-    <string name="permintaan_cancel_confirmation">Are you sure you want to cancel this request?</string>
-    <string name="permintaan_status_is_now">Status is now</string>
+    <string name="permintaan_title">要求</string>
+    <string name="permintaan">请求</string>
+    <string name="new_permintaan">新</string>
+    <string name="inprogress_permintaan">进行中</string>
+    <string name="indelivery_permintaan">交货</string>
+    <string name="completed_permintaan">完成</string>
+    <string name="deleted_permintaan">已删除</string>
+    <string name="cancelled_permintaan">取消</string>
+    <string name="permintaan_progress_confirmation">您确定要继续此请求吗？</string>
+    <string name="permintaan_regress_confirmation">您确定要退回此请求吗？</string>
+    <string name="permintaan_cancel_confirmation">您确定要取消此要求吗？</string>
+    <string name="permintaan_status_is_now">状态现在</string>
     <string name="permintaan_order_sent">顺序发送</string>
     <string name="permintaan_order_received">顺序处理 </string>
     <string name="permintaan_order_completed"> 顺序完成</string>
 
     <!-- Chat -->
-    <string name="title_chat_list">CHAT</string>
-    <string name="title_chat_detail">CHAT</string>
-    <string name="chat_message_text">Type your message ...</string>
-    <string name="chat_send_button">Send</string>
-    <string name="chat_message_sent">Message sent</string>
-    <string name="chat_message_from_guest">Message from guest room</string>
-    <string name="chat_message_from_staff">Message from staff</string>
+    <string name="title_chat_list">交谈</string>
+    <string name="title_chat_detail">交谈</string>
+    <string name="chat_message_text">输入您的讯息 ...</string>
+    <string name="chat_send_button">发送</string>
+    <string name="chat_message_sent">消息已发送</string>
+    <string name="chat_message_from_guest">来自客房的消息</string>
+    <string name="chat_message_from_staff">工作人员的消息</string>
 
     <!-- Check in/out -->
-    <string name="guest_first_name">First Name</string>
-    <string name="guest_last_name">Last Name</string>
-    <string name="guest_email">Email</string>
-    <string name="guest_phone">Phone Number</string>
-    <string name="guest_date">Date</string>
-    <string name="guest_date_check_out">Date Check Out</string>
-    <string name="guest_room_number">Set Room Number</string>
-    <string name="guest_checkout">Check Out Guest</string>
-    <string name="guest_checkin">GUEST INFORMATION</string>
-    <string name="guest_checkout_name">Guest Name</string>
-    <string name="guest_checkout_message">Guest has been checked out</string>
-    <string name="guest_checkout_submit_button">Check Out</string>
-    <string name="guest_checkin_message">Guest has been checked in</string>
-    <string name="guest_checkin_submit_button">Check In</string>
+    <string name="guest_first_name">名字</string>
+    <string name="guest_last_name">姓</string>
+    <string name="guest_email">电子邮件</string>
+    <string name="guest_phone">电话号码</string>
+    <string name="guest_date">日期</string>
+    <string name="guest_date_check_out">日期退房</string>
+    <string name="guest_room_number">设置房间号</string>
+    <string name="guest_checkout">退房访客</string>
+    <string name="guest_checkin">顾客信息</string>
+    <string name="guest_checkout_name">客人姓名</string>
+    <string name="guest_checkout_message">访客已签出</string>
+    <string name="guest_checkout_submit_button">客人姓名</string>
+    <string name="guest_checkin_message">访客已签到</string>
+    <string name="guest_checkin_submit_button">报到</string>
 
     <!-- Nav drawer -->
-    <string name="nav_drawer_requests">REQUESTS</string>
-    <string name="nav_drawer_chat">CHAT</string>
-    <string name="nav_drawer_checkguestin">CHECK GUEST IN</string>
-    <string name="nav_drawer_checkguestout">CHECK GUEST OUT</string>
-    <string name="nav_drawer_create_permintaan">CREATE REQUEST</string>
-    <string name="nav_drawer_staff_hours">STAFF HOURS</string>
-    <string name="nav_drawer_logout">GUEST MODE</string>
+    <string name="nav_drawer_requests">要求</string>
+    <string name="nav_drawer_chat">交谈</string>
+    <string name="nav_drawer_checkguestin">请检查</string>
+    <string name="nav_drawer_checkguestout">请检查顾客</string>
+    <string name="nav_drawer_create_permintaan">创建请求</string>
+    <string name="nav_drawer_staff_hours">工作人员时间</string>
+    <string name="nav_drawer_logout">客户模式</string>
 
     <!-- Guest -->
     <string name="please_wait">请等待10-20分钟，一名工作人员在你的房间到达</string>
     <string name="existing_request">该类型的请求已经存在</string>
     <string name="order_button">订购</string>
 
-    <string name="transport_label">Transport</string>
-    <string name="transport_passengers">Passengers</string>
-    <string name="transport_departing_in">Departing in</string>
-    <string name="transport_minutes">minutes</string>
-    <string name="transport_destination">Destination</string>
-    <string name="transport_message">Message</string>
-    <string name="transport_result">Transport request sent</string>
-    <string name="transport_submit_button">Submit</string>
+    <string name="transport_label">运输</string>
+    <string name="transport_passengers">乘客</string>
+    <string name="transport_departing_in">离开</string>
+    <string name="transport_minutes">分钟</string>
+    <string name="transport_destination">目的地</string>
+    <string name="transport_message">信息</string>
+    <string name="transport_result">传输请求已发送</string>
+    <string name="transport_submit_button">提交</string>
     <string-array name="departure_increments_array">
         <item>10</item>
         <item>20</item>
@@ -113,27 +113,28 @@
     </string-array>
 
     <string name="housekeeping_message">你确定你想使这个订单?</string>
-    <string name="housekeeping_edittext">Input housekeeper details</string>
+    <string name="housekeeping_edittext">输入管家详细信息</string>
     <string name="housekeeping_result">家政服务请求发送</string>
 
     <string name="bellboy_message">你确定你需要一个搬运工?</string>
-    <string name="bellboy_edittext">Input bellboy details</string>
+    <string name="bellboy_edittext">输入详细信息</string>
     <string name="bellboy_result">行李员请求已发送</string>
-    <string name="report_to_frontdesk">Please report to front desk</string>
+    <string name="report_to_frontdesk">请向前台报告</string>
 
-    <string name="engineering_label">保养</string>
+    <string name="engineering_label">维修工作</string>
     <string name="engineering_message">你确定你想要求工程?</string>
     <string name="engineering_result">维护请求发送</string>
 
-    <string name="tellus_message">Tell us what you think</string>
-    <string name="tellus_edittext">Leave your feedback here</string>
-    <string name="tellus_result">Thank you for leaving feedback</string>
+    <string name="tellus_message">告诉我们你的想法</string>
+    <string name="tellus_edittext">在这里留下您的反馈！</string>
+    <string name="tellus_result">感谢您留下反馈</string>
 
-    <string name="survey_label">客户的反馈意见</string>
-    <string name="survey_submit_button">Submit</string>
+    <string name="survey_label">客房建议</string>
+    <string name="survey_submit_button">提交</string>
 
     <string name="massage_label">按摩</string>
     <string name="massage_message">你確定要預訂按摩？</string>
+    <string name="massage_disabled_message">按摩不能在下午10点至9点之间预订！</string>
     <string name="massage_result">按摩預約請求 </string>
 
     <string name="restaurant_label">餐厅</string>
@@ -144,24 +145,24 @@
     <string name="restaurant_multiply_sign">x</string>
     <string name="restaurant_equal_sign">=</string>
     <string name="restaurant_submit_button">确认订单</string>
-    <string name="restaurant_back_button">Back</string>
-    <string name="restaurant_confirm_input">Comments...</string>
+    <string name="restaurant_back_button">背部</string>
+    <string name="restaurant_confirm_input">注释...</string>
     <string name="restaurant_confirmation_label">餐厅确认</string>
     <string name="restaurant_confirmation_dialog_title">謝謝您的訂單。</string>
     <string name="restaurant_confirmation_dialog_desc">
         有关您的订单\'目前的最新进展， \n请点击我的要求按钮\n位于我们的主页
     </string>
 
-    <string name="checkout_request">CHECK OUT ORDER DETAILS</string>
-    <string name="permintaan_select">Request Type</string>
-    <string name="room_select">Room Number</string>
-    <string name="room_number">Room Number</string>
-    <string name="room_number_change">Change Room Number</string>
-    <string name="room_number_changed">Room number changed</string>
-    <string name="room_number_password">Input password</string>
-    <string name="room_number_result">Room number changed</string>
-    <string name="logout">STAFF ONLY</string>
-    <string name="logout_result">Logged out of guest</string>
+    <string name="checkout_request">查看订单详情</string>
+    <string name="permintaan_select">请求类型</string>
+    <string name="room_select">房间号</string>
+    <string name="room_number">房间号</string>
+    <string name="room_number_change">更改房间号</string>
+    <string name="room_number_changed">房间号码已更改</string>
+    <string name="room_number_password">输入密码</string>
+    <string name="room_number_result">房间号码已更改</string>
+    <string name="logout">只供职员使用</string>
+    <string name="logout_result">已注销guest</string>
 
     <string name="guest_welcome_title">欢迎!</string>
 
@@ -170,26 +171,26 @@
     <string name="on_hanger">在衣架</string>
     <string name="folded">折叠</string>
     <string name="laundry_price">洗衣价格</string>
-    <string name="pressing_price">压价</string>
+    <string name="pressing_price">熨烫</string>
     <string name="housekeeping_confirm">請確認訂單</string>
     <string name="housekeeping_label">家政</string>
     <string name="housekeeping_zero_order">請選擇一個有效的量</string>
-    <string name="logout_reset_tablet">Reset tablet</string>
+    <string name="logout_reset_tablet">重置平板电脑</string>
     <string name="logout_options">請選擇下列選項之一......</string>
-    <string name="logout_staff">Staff mode</string>
-    <string name="nav_drawer_about">關於我們</string>
-    <string name="nav_drawer_change_language">改變語言</string>
-    <string name="nav_drawer_home">主頁</string>
-    <string name="permintaan_assign_person">Please enter staff person\'s name</string>
-    <string name="promo_img_select">Promotional Image</string>
-    <string name="logout_change_room_number">Change room no.</string>
-    <string name="language_russian">Russian</string>
-    <string name="language_zh">Chinese</string>
+    <string name="logout_staff">员工模式</string>
+    <string name="nav_drawer_about">关于我们</string>
+    <string name="nav_drawer_change_language">CHANGE LANGUAGE / ИЗМЕНИТЬ ЯЗЫК</string>
+    <string name="nav_drawer_home">主页</string>
+    <string name="permintaan_assign_person">请输入员工姓名</string>
+    <string name="promo_img_select">促销图片</string>
+    <string name="logout_change_room_number">更改房间号</string>
+    <string name="language_russian">俄语</string>
+    <string name="language_zh">中文</string>
     <string name="bellboy_label">搬运工</string>
-    <string name="chat_label">Chat</string>
+    <string name="chat_label">聊天</string>
     <string name="checkout_label">酒店结账 </string>
     <string name="event_label">活动</string>
-    <string name="laundry_label">洗衣店</string>
+    <string name="laundry_label">洗衣服务</string>
     <string name="laundry_result">洗衣顺序发送</string>
     <string name="zero">0</string>
     <string name="survey_previously_submitted">很抱歉，但你只能提交反馈一次！</string>
@@ -198,8 +199,15 @@
     <string name="quantity">数量</string>
     <string name="add_more_items">+添加更多的商品</string>
     <string name="restaurant_confirmation_price_text"> 总税收</string>
-    <string name="total_with_tax">Total with TAX</string>
-    <string name="staff_mode">STAFF MODE</string>
-    <string name="restaurant_subtotal_text">TAX前的总计</string>
+    <string name="total_with_tax">总计与TAX</string>
+    <string name="staff_mode">工作人员模式</string>
+    <string name="restaurant_subtotal_text">税前的总计</string>
     <string name="request_success">请求发送！您要再次提出要求吗？</string>
+    <string name="bellboy_cancel">取消</string>
+    <string name="bellboy_confirm">订购</string>
+    <string name="guest_empty_room">这个房间里没有客人</string>
+    <string name="no_guest_in_room">很抱歉，您尚未签到！</string>
+    <string name="room_number_not_found">对不起，我找不到您的房间号码。 请通知工作人员。</string>
+    <string name="survey_thank_you">我们非常感谢您的意见，并将确保我们使用它，使您的下一次住宿与我们更好！</string>
+    <string name="spa">温泉</string>
 </resources>

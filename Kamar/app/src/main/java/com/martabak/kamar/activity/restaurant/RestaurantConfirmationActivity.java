@@ -20,6 +20,9 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
+import com.martabak.kamar.activity.staff.CreatePermintaanFragment;
+import com.martabak.kamar.activity.staff.StaffHomeActivity;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.managers.RestaurantOrderManager;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -40,6 +43,7 @@ import rx.Observer;
 public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
     private RestaurantOrder restaurantOrder;
+    private String creator;
 
     protected Options getOptions() {
         return new Options()
@@ -66,39 +70,48 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
             ).show();
             return;
         }
+
+        creator = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("userType", "none");
+
         //ic_restaurant submit
         sendRestaurantRequest(restaurantOrder);
 
-        String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("userType", "none");
-        //new dialog
+        if (creator.equals("GUEST")) {
+            //new dialog
+            final Dialog dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.dialog_restaurant_confirmation);
+            dialog.show();
 
+            dialog.setOnDismissListener(new Dialog.OnDismissListener() {
 
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_restaurant_confirmation);
-        dialog.show();
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    startActivity(new Intent(getBaseContext(), GuestHomeActivity.class));
+                    finish();
+                }
+            });
 
-        dialog.setOnDismissListener(new Dialog.OnDismissListener() {
+            new CountDownTimer(11000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
 
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                startActivity(new Intent(getBaseContext(), GuestHomeActivity.class));
-                finish();
-            }
-        });
+                }
 
-        new CountDownTimer(11000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
+                @Override
+                public void onFinish() {
+                    dialog.dismiss();
+                }
+            }.start();
 
-            }
-
-            @Override
-            public void onFinish() {
-                dialog.dismiss();
-            }
-        }.start();
+        }
+        else if (creator.equals("STAFF")) {
+            Intent intent = new Intent(getBaseContext(), StaffHomeActivity.class);
+            intent.putExtra("RestaurantResult", "Success");
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override
@@ -169,7 +182,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         //TODO: remove RestaurantOrder's comment (1st variable)
         restaurantOrder = new RestaurantOrder("",restaurantOrderItems, finalPriceInteger);
 
-        final Activity activity = this;
+//        final Activity activity = this;
 
         final RestaurantConfirmationArrayAdapter restaurantConfirmationArrayAdapter = new
                 RestaurantConfirmationArrayAdapter(this, restaurantTextItems, restaurantSubPriceItems,
@@ -228,10 +241,10 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
     /*Send ic_restaurant request*/
     public void sendRestaurantRequest(RestaurantOrder restaurantOrder) {
-        String owner = Permintaan.OWNER_RESTAURANT;
+        String owner = User.TYPE_STAFF_RESTAURANT;
         String type = Permintaan.TYPE_RESTAURANT;
-        String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("userType", "none");
+//        final String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
+//                .getString("userType", "none");
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", null);
         String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
@@ -253,15 +266,19 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
                     currentDate,
                     restaurantOrder)
             ).subscribe(new Observer<Permintaan>() {
-                @Override public void onCompleted() {
+
+                @Override
+                public void onCompleted() {
                     Log.d(RestaurantConfirmationActivity.class.getCanonicalName(), "createPermintaan() On completed");
                     //finish();
                 }
-                @Override public void onError(Throwable e) {
+                @Override
+                public void onError(Throwable e) {
                     Log.d(RestaurantConfirmationActivity.class.getCanonicalName(), "createPermintaan() On error");
                     e.printStackTrace();
                 }
-                @Override public void onNext(Permintaan permintaan) {
+                @Override
+                public void onNext(Permintaan permintaan) {
                     Log.d(RestaurantConfirmationActivity.class.getCanonicalName(), "createPermintaan() On next" + permintaan);
                     if (permintaan == null) {
                         Toast.makeText(

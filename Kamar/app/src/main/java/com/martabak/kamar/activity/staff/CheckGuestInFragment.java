@@ -96,8 +96,8 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         roomNumbers = new ArrayList<>();
         roomNumbers.add(0, getString(R.string.room_select));
         roomNumAdapter = new ArrayAdapter(getActivity().getBaseContext(),
-                R.layout.support_simple_spinner_dropdown_item, roomNumbers);
-        roomNumAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                R.layout.spinner_item, roomNumbers);
+//        roomNumAdapter.setDropDownViewResource(R.layout.spinner_item);
         getRoomNumbersWithoutGuests();
         spinnerRoomNumber.setAdapter(roomNumAdapter);
         spinnerRoomNumber.setSelection(0);
@@ -105,9 +105,9 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
 
         final List<String> promoImageNames = getPromoImages();
         ArrayAdapter promImgAdapter = new ArrayAdapter(getActivity().getBaseContext(),
-                R.layout.support_simple_spinner_dropdown_item, promoImageNames);
+                R.layout.spinner_item, promoImageNames);
         promoImageNames.add(0, getString(R.string.promo_img_select));
-        promImgAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        promImgAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         promImgAdapter.notifyDataSetChanged();
         spinnerPromoImg.setAdapter(promImgAdapter);
         spinnerPromoImg.setSelection(0);
@@ -216,9 +216,17 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                     }
                     @Override public void onNext(List<Event> result) {
                         Log.v(CheckGuestInFragment.class.getCanonicalName(), "getPromoImages() onNext");
-                        for (Event event : result) {
-                            Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + event.name);
-                            promoImageNames[0].add(event.name);
+                        if (result.get(0).name != null) { //if view is not at the front
+                            for (int i=0; i<result.size()-1; i++) { //skip last event
+                                Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + result.get(i).name);
+                                promoImageNames[0].add(result.get(i).name);
+                            }
+
+                        } else {
+                            for (int i=1; i<result.size(); i++) { //skip first event
+                                Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + result.get(i).name);
+                                promoImageNames[0].add(result.get(i).name);
+                            }
                         }
                         promoImages = result;
                         Log.v(CheckGuestInFragment.class.getCanonicalName(), "Setting promoImages to " + promoImages + " with size " + promoImages.size());
