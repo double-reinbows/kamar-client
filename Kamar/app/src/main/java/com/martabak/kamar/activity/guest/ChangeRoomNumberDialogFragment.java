@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Room;
+import com.martabak.kamar.domain.managers.RoomManager;
 import com.martabak.kamar.service.GuestServer;
 
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ public class ChangeRoomNumberDialogFragment extends DialogFragment {
      */
     private List<String> getRoomNumbers() {
         final List<String> roomStrings = new ArrayList<>();
-        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbers()
+        RoomManager.getInstance().getRooms(getActivity().getBaseContext())
                 .subscribe(new Observer<List<Room>>() {
                     @Override public void onCompleted() {}
                     @Override public void onError(Throwable e) { e.printStackTrace(); }

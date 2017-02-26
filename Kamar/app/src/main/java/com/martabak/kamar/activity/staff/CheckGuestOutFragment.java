@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Room;
+import com.martabak.kamar.domain.managers.RoomManager;
 import com.martabak.kamar.service.GuestServer;
 
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class CheckGuestOutFragment extends Fragment  {
         roomNumbers.set(0, getString(R.string.loading));
         spinner.setEnabled(false);
         rooms.notifyDataSetChanged();
-        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithGuests().subscribe(new Observer<Room>() {
+        RoomManager.getInstance().getRoomsWithGuests(getActivity().getBaseContext()).subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
                 roomNumbers.set(0, getString(R.string.room_select));
                 spinner.setEnabled(true);
