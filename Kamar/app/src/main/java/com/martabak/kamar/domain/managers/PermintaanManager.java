@@ -27,7 +27,7 @@ import rx.observables.GroupedObservable;
 /**
  * Manages permintaan related server calls to provide a higher level abstraction above the server.
  */
-public class PermintaanManager {
+public class PermintaanManager implements Manager {
 
     private static PermintaanManager instance;
 
@@ -36,9 +36,12 @@ public class PermintaanManager {
     public static PermintaanManager getInstance() {
         if (instance == null) {
             instance = new PermintaanManager();
+            Managers.register(instance);
         }
         return instance;
     }
+
+    public void clear() {}
 
     /**
      * Get the guest's ID from shared prefs.
@@ -88,7 +91,7 @@ public class PermintaanManager {
                 // Return its status
                 .map(new Func1<Permintaan, String>() {
                     @Override public String call(Permintaan permintaan) {
-                        Log.v("DICK", permintaan.state);
+                        Log.v(PermintaanManager.class.getCanonicalName(), permintaan.state);
                         return permintaan.state;
                     }
                 });

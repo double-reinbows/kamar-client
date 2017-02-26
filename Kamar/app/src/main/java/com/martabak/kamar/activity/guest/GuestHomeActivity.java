@@ -31,6 +31,7 @@ import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.activity.survey.SurveyActivity;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.User;
+import com.martabak.kamar.domain.managers.Managers;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.activity.staff.CheckGuestInFragment;
@@ -278,6 +279,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
      */
     private void checkGuestOut(Guest guest) {
         stopGuestServices();
+        Managers.clear();
 
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MINUTE, -1); //little hack here to ensure checkout time is in the past

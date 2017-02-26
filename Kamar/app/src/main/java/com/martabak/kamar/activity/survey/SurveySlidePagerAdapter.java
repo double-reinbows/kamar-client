@@ -1,6 +1,5 @@
 package com.martabak.kamar.activity.survey;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +23,7 @@ import com.martabak.kamar.domain.SurveyAnswers;
 import com.martabak.kamar.domain.SurveyQuestion;
 import com.martabak.kamar.domain.managers.SurveyManager;
 import com.martabak.kamar.service.SurveyServer;
+import com.martabak.kamar.util.SurveyAnswersSender;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +67,7 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
     }
 
     public static class ScreenSlidePageFragment extends Fragment implements RatingBar.OnRatingBarChangeListener {
-        public ScreenSlidePageFragment() {};
+        public ScreenSlidePageFragment() {}
         @BindView(R.id.survey_list) RecyclerView recyclerView;
         @BindView(R.id.survey_section_text) TextView sectionText;
         @BindView(R.id.survey_submit) Button submitButton;
@@ -105,64 +105,34 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
                             .getString("guestId", "none");
                     if (guestId.equals("none")) {
                         new AlertDialog.Builder(getContext())
-                                .setTitle("Oh No!")
+                                .setTitle(R.string.something_went_wrong)
                                 .setMessage(R.string.no_guest_in_room)
                                 .show();
                         return;
-                    } if (SurveyManager.getInstance().getPrevSubmission().equals(Boolean.TRUE)) {
+                    }
+                    if (SurveyManager.getInstance().getPrevSubmission()) {
                         new AlertDialog.Builder(getContext())
-                                .setTitle("Oh No!")
+                                .setTitle(R.string.something_went_wrong)
                                 .setMessage(R.string.survey_previously_submitted)
                                 .show();
                         return;
                     }
                     List<SurveyAnswer> list = new ArrayList<>();
-                    for (String section : sectionMappings.keySet()) {//double for loop to go thru all questions
+                    for (String section : sectionMappings.keySet()) {
                         for (SurveyQuestion q : sectionMappings.get(section)) {
                             SurveyAnswer answer = new SurveyAnswer(q._id, q.sectionEn, q.questionEn, idToRating.get(q._id));
                             list.add(answer);
                         }
                     }
-                    String guestID = getActivity().getSharedPreferences("userSettings", Context.MODE_PRIVATE).getString("guestId", "none");
-                    SurveyAnswers answers = new SurveyAnswers(guestID, list);
-                    SurveyServer.getInstance(ScreenSlidePageFragment.this.getContext()).createSurveyAnswers(answers)
-                            .subscribe(new Observer<Boolean>() {
-                                @Override
-                                public void onCompleted() {
-                                    SurveyManager.getInstance().setPrevSubmission(Boolean.TRUE);
-                                    //new dialog
-                                    AlertDialog dialog = new AlertDialog.Builder(getContext())
-                                            .setTitle(R.string.survey_thank_you_title)
-                                            .setMessage(R.string.survey_thank_you)
-                                            .show();
-
-                                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                        @Override
-                                        public void onDismiss(DialogInterface dialogInterface) {
-                                            startActivity(new Intent(getActivity().getBaseContext(), GuestHomeActivity.class));
-                                            getActivity().finish();
-                                        }
-                                    });
-                                }
-                                @Override
-                                public void onError(Throwable e) {
-                                    Log.d(SurveySlidePagerAdapter.class.getCanonicalName(), "getSurveyQuestions() On error");
-                                    e.printStackTrace();
-                                }
-                                @Override
-                                public void onNext(Boolean result) {
-                                    if (result) {
-//                                        Log.v("WWW", "answers created");
-                                    }
-                                }
-                            });
+                    SurveyAnswers answers = new SurveyAnswers(guestId, list);
+                    emailAnswers(answers);
+                    saveAnswers(answers);
                     }
                 });
             }
 
             return rootView;
         }
-
 
         @Override
         public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
@@ -172,6 +142,42 @@ class SurveySlidePagerAdapter extends FragmentStatePagerAdapter {
 
             idToRating.put(question._id, (int)v);
         }
+
+        private void emailAnswers(SurveyAnswers answers) {
+            SurveyAnswersSender.sendAnswers(ScreenSlidePageFragment.this.getContext(), answers);
+        }
+
+        private void saveAnswers(SurveyAnswers answers) {
+            SurveyServer.getInstance(ScreenSlidePageFragment.this.getContext()).createSurveyAnswers(answers)
+                    .subscribe(new Observer<Boolean>() {
+                        @Override
+                        public void onCompleted() {
+                            SurveyManager.getInstance().setSubmitted();
+                            AlertDialog dialog = new AlertDialog.Builder(getContext())
+                                    .setTitle(R.string.survey_thank_you_title)
+                                    .setMessage(R.string.survey_thank_you)
+                                    .show();
+
+                            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialogInterface) {
+                                    startActivity(new Intent(getActivity().getBaseContext(), GuestHomeActivity.class));
+                                    getActivity().finish();
+                                }
+                            });
+                        }
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d(SurveySlidePagerAdapter.class.getCanonicalName(), "getSurveyQuestions() On error");
+                            e.printStackTrace();
+                        }
+                        @Override
+                        public void onNext(Boolean result) {
+                            Log.d(SurveySlidePagerAdapter.class.getCanonicalName(), "Saved answers: " + result);
+                        }
+                    });
+        }
+
     }
 
 }

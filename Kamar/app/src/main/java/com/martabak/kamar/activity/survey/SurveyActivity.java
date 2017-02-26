@@ -117,28 +117,6 @@ public class SurveyActivity extends AbstractGuestBarsActivity {
         }
     }
 
-    // method used to set the current page
-    private View.OnClickListener OnClickListener(final int i)
-    {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (i > 0) {
-                    //next page
-                    if (viewPager.getCurrentItem() < viewPager.getAdapter().getCount() - 1) {
-                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                    }
-                }
-                else {
-                    //previous page
-                    if (viewPager.getCurrentItem() > 0) {
-                        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-                    }
-                }
-            }
-        };
-    }
-
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() == 0) {
