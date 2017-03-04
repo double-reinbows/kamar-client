@@ -175,6 +175,11 @@ public class Permintaan<T extends Content> extends Model {
      */
     public final String assignee;
 
+    /**
+     * The permintaan's Estimated Time of Arrival to the ordering guest's room
+     */
+    public final Integer eta;
+
     public Permintaan() {
         this.owner = null;
         this.creator = null;
@@ -186,6 +191,7 @@ public class Permintaan<T extends Content> extends Model {
         this.created = null;
         this.updated = null;
         this.assignee = null;
+        this.eta = null;
     }
     /**
      * for creating new permintaans
@@ -203,13 +209,15 @@ public class Permintaan<T extends Content> extends Model {
         this.updated = null;
         this.content = content;
         this.assignee = "none";
+        this.eta = 0;
     }
 
     /**
      * For updating permintaans (make sure you get the latest _rev which changes immediately after
      */
     public Permintaan(String _id, String _rev, String owner, String creator, String type, String roomNumber,
-                      String guestId, String state, Date created, Date updated, String assignee, T content) {
+                      String guestId, String state, Date created, Date updated, String assignee,
+                      Integer eta, T content) {
         super(_id, _rev);
         this.owner = owner;
         this.creator = creator;
@@ -220,6 +228,7 @@ public class Permintaan<T extends Content> extends Model {
         this.created = created;
         this.updated = updated;
         this.assignee = assignee;
+        this.eta = eta;
         this.content = content;
     }
 

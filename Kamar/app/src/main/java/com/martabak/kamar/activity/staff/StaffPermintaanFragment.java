@@ -97,6 +97,11 @@ public  class StaffPermintaanFragment extends Fragment {
 
         // setting list rooms
         expListView.setAdapter(listAdapter);
+        // expanding all expandable groups
+        for (int i=0; i<stateToPermintaanIds.keySet().size(); i++) {
+            expListView.expandGroup(i);
+        }
+
     }
 
     /**

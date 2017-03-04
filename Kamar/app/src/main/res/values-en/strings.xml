@@ -218,4 +218,5 @@
     <string name="guest_empty_room">No guest inside this room</string>
     <string name="no_guest_in_room">Sorry, but you\'re not checked in!</string>
     <string name="room_number_not_found">Sorry, I can\'t find your room number. Please notify a staff member.</string>
+    <string name="nav_edit_restaurant">EDIT MENU</string>
 </resources>

@@ -26,4 +26,5 @@
     <string name="order_button">ORDER</string>
     <string name="guest_about_text">About Text Goes Here</string>
     <string name="restaurant_subtotal_text">Total before TAX</string>
+    <string name="nav_edit_restaurant">EDIT MENU</string>
 </resources>

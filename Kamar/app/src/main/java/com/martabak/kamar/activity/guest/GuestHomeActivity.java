@@ -328,7 +328,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
          if (option.equals("MY REQUESTS")) {
              startActivity(new Intent(this, GuestPermintaanActivity.class));
          } else if (option.equals(getString(R.string.restaurant_label))) {
-             startActivity(new Intent(this, RestaurantActivity.class));
+             startActivityForResult(new Intent(this, RestaurantActivity.class), 0);
          } else if (option.equals(getString(R.string.massage_label))) {
              startActivity(new Intent(this, MassageActivity.class));
          } else if (option.equals(getString(R.string.housekeeping_label))) {
