@@ -11,7 +11,7 @@ import java.util.List;
  * Keeps the housekeeping variables in memory to be passed between HousekeepingActivity,
  * HousekeepingFragmen.
  */
-public class HousekeepingManager {
+public class HousekeepingManager implements Manager {
 
     private static HousekeepingManager instance;
 
@@ -26,8 +26,15 @@ public class HousekeepingManager {
     public static HousekeepingManager getInstance() {
         if (instance == null) {
             instance = new HousekeepingManager();
+            Managers.register(instance);
         }
         return instance;
+    }
+
+    public void clear() {
+        hkOptions = null;
+        hkOrder = null;
+        sections = null;
     }
 
     /**

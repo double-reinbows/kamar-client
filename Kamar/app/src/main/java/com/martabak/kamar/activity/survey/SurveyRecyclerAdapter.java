@@ -1,17 +1,11 @@
 package com.martabak.kamar.activity.survey;
 
-import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.SurveyQuestion;
@@ -21,9 +15,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- *
- */
 public class SurveyRecyclerAdapter
         extends RecyclerView.Adapter<SurveyRecyclerAdapter.ViewHolder> {
 

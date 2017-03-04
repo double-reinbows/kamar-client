@@ -70,7 +70,7 @@ public class AuthorizationInterceptor implements Interceptor {
                 return "";
         }
 
-        Log.d(AuthorizationInterceptor.class.getCanonicalName(), username + ":" + password);
+//        Log.d(AuthorizationInterceptor.class.getCanonicalName(), username + ":" + password);
         String base64encoded = new String(Base64.encode((username + ":" + password).getBytes(), Base64.DEFAULT));
         return "Basic " + base64encoded.substring(0, base64encoded.length()-1);
     }

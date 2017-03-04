@@ -26,6 +26,7 @@ import com.martabak.kamar.activity.massage.MassageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Room;
+import com.martabak.kamar.domain.managers.RoomManager;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.GuestServer;
 
@@ -244,7 +245,7 @@ public class CreatePermintaanFragment extends Fragment  {
         roomNumbers.set(0, getString(R.string.loading));
         guestSpinner.setEnabled(false);
         rooms.notifyDataSetChanged();
-        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithGuests().subscribe(new Observer<Room>() {
+        RoomManager.getInstance().getRoomsWithGuests(getActivity().getBaseContext()).subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
                 roomNumbers.set(0, getString(R.string.room_select));
                 guestSpinner.setEnabled(true);

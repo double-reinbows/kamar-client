@@ -67,7 +67,7 @@ public class HousekeepingOptionAdapter
         //set radio group and create its buttons
         holder.radioGroup.setOnCheckedChangeListener(l);
         if (holder.radioGroup.getChildCount() == 0) {//stops duplicate buttons
-            for (Integer i = 0; i < holder.item.max; i++) {
+            for (int i = 0; i < holder.item.max; i++) {
                 RadioButton rb = new RadioButton(context);
                 Integer j = i + 1;
                 rb.setText(j.toString());
@@ -78,8 +78,12 @@ public class HousekeepingOptionAdapter
                 rb.setPadding(leftPad, 0, rightPad, 0);
 
                 holder.radioGroup.addView(rb);
+                //made first item to be checked as default
+                if (i == 0) { rb.setChecked(true);}
             }
         }
+
+
         holder.submitButton.setOnClickListener(submitButtonListener);
 
         //set permintaan statuses
