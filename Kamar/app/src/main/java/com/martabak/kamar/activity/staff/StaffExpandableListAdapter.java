@@ -162,7 +162,11 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                             String assignee = textInput.getText().toString();
                             staffPermintaanFragment.disableUserInput();
                             getAndUpdatePermintaan(currPermintaan._id, 0, assignee, currPermintaan.eta);
-                            ((ViewGroup)assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+                            try {
+                                ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+                            } catch (NullPointerException e) {
+                                notifyDataSetInvalidated();
+                            }
 
                         }
                     });
@@ -176,7 +180,11 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 }
             });
         } else {
-            ((ViewGroup)assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+            try {
+                ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+            } catch (NullPointerException e) {
+                notifyDataSetInvalidated();
+            }
         }
 
         /**
