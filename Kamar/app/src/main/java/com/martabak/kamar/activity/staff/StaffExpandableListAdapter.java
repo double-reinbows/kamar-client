@@ -284,7 +284,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 public void onClick(View v) {
                     Log.v("progressPermintaan", String.valueOf(groupPosition)+" "+String.valueOf(childPosition));
                     // if restaurant type + progressing from NEW state...
-                    if (currPermintaan.type.equals(Permintaan.TYPE_RESTAURANT)) {
+                    if (currPermintaan.type.equals(Permintaan.TYPE_RESTAURANT) && currPermintaan.state.equals(Permintaan.STATE_NEW)) {
                         AlertDialog.Builder etabuilder = new AlertDialog.Builder(context);
                         etabuilder.setTitle("Masukkan waktu pesan ini akan sampai kamar");
 
@@ -311,7 +311,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         });
                         etabuilder.show();
                     } else {
-                        progressDialog(currPermintaan, null);
+                        progressDialog(currPermintaan, currPermintaan.eta);
                     }
                 }
 
