@@ -171,6 +171,7 @@ public class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         } else if(type.equals(TYPE_EDIT)) {
             RadioButton activeRadio = (RadioButton) convertView.findViewById(R.id.item_active);
             RadioButton inactiveRadio = (RadioButton) convertView.findViewById(R.id.item_inactive);
+            //default is set to active so set radiogroup to inactive if menu item is inactive
             if (currConsumable.active == false) {
                 inactiveRadio.setChecked(true);
                 activeRadio.setChecked(false);
@@ -229,7 +230,7 @@ public class RestaurantExpListAdapter extends BaseExpandableListAdapter {
                                         ((RadioButton)radioGroup.getChildAt(0)).setChecked(false);
                                         ((RadioButton)radioGroup.getChildAt(1)).setChecked(true);
                                     }*/
-                                    notifyDataSetInvalidated();
+                                    notifyDataSetChanged();
                                 }
                             })
                             .show();
