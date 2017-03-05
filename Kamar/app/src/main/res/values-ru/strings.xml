@@ -213,4 +213,5 @@
     <string name="spa">спа</string>
     <string name="estimate">Оценить</string>
     <string name="minutes">минут</string>
+    <string name="chat_header_message">Примечание: сотрудники говорят только на английском или индонезийском.</string>
 </resources>

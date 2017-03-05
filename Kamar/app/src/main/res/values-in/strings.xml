@@ -213,4 +213,5 @@
     <string name="nav_edit_restaurant">UBAH MENU</string>
     <string name="estimate">Memperkirakan</string>
     <string name="minutes">menit</string>
+    <string name="chat_header_message">Catatan: anggota staf hanya berbicara bahasa Inggris atau Bahasa Indonesia.</string>
 </resources>

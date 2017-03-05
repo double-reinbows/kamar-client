@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.service.ChatServer;
@@ -127,6 +128,7 @@ public class ChatDetailFragment extends Fragment {
             @Override public void onCompleted() {
                 Log.d(ChatDetailFragment.class.getCanonicalName(), "getGuestChat#onCompleted");
                 readChatMessages();
+                mChatMessages.add(0, new ChatMessage(mGuestId, User.TYPE_STAFF, getString(R.string.chat_header_message), new Date(), new Date()));
                 mRecyclerViewAdapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
@@ -147,7 +149,7 @@ public class ChatDetailFragment extends Fragment {
     private void readChatMessages() {
         for (ChatMessage message : mChatMessages) {
             if (message.read == null) { // If it's unread...and
-                if (message.fromGuest() ^ mSender.equals(ChatMessage.SENDER_GUEST)) { // from guest and read by staff or vice-versa
+                if (message.fromGuest() ^ mSender.equals(User.TYPE_GUEST)) { // from guest and read by staff or vice-versa
                     // then set the message to read.
                     Log.d(ChatDetailFragment.class.getCanonicalName(), "Setting chat message " + message._id + " to read");
                     ChatServer.getInstance(getActivity()).setChatMessageToRead(message)
@@ -169,7 +171,7 @@ public class ChatDetailFragment extends Fragment {
     public class MessageRecyclerViewAdapter
             extends RecyclerView.Adapter<MessageRecyclerViewAdapter.ViewHolder> {
 
-        private static final String DATE_PATTERN = "d MMM H.m";
+        private static final String DATE_PATTERN = "d MMM HH.mm";
         private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_PATTERN);
 
         private final List<ChatMessage> mValues;
@@ -189,7 +191,7 @@ public class ChatDetailFragment extends Fragment {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             ChatMessage msg = mValues.get(position);
             holder.mItem = msg;
-            holder.mFromView.setText(msg.from);
+            holder.mFromView.setText(msg.from.toUpperCase());
             holder.mSentTimeView.setText(DATE_FORMAT.format(msg.sent));
             holder.mMessageView.setText(msg.message);
 
