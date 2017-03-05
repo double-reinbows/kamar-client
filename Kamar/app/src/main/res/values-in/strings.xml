@@ -211,4 +211,7 @@
     <string name="survey_thank_you">Kami sangat menghargai komentar Anda dan akan memastikan kami menggunakannya untuk membuat Anda tinggal berikutnya dengan kami bahkan lebih baik!</string>
     <string name="spa">Spa</string>
     <string name="nav_edit_restaurant">UBAH MENU</string>
+    <string name="estimate">Memperkirakan</string>
+    <string name="minutes">menit</string>
+    <string name="chat_header_message">Catatan: anggota staf hanya berbicara bahasa Inggris atau Bahasa Indonesia.</string>
 </resources>

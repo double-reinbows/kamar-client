@@ -211,4 +211,7 @@
     <string name="room_number_not_found">К сожалению, я не могу найти свой номер комнаты. Пожалуйста, сообщите сотруднику.</string>
     <string name="survey_thank_you">Мы очень ценим ваши комментарии и будет гарантировать, что мы используем его, чтобы сделать следующий пребывание у нас еще лучше!</string>
     <string name="spa">спа</string>
+    <string name="estimate">Оценить</string>
+    <string name="minutes">минут</string>
+    <string name="chat_header_message">Примечание: сотрудники говорят только на английском или индонезийском.</string>
 </resources>
