@@ -162,12 +162,6 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                             String assignee = textInput.getText().toString();
                             staffPermintaanFragment.disableUserInput();
                             getAndUpdatePermintaan(currPermintaan._id, 0, assignee, currPermintaan.eta);
-//                            try {
-//                                ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
-//                            } catch (NullPointerException e) {
-//                                notifyDataSetInvalidated();
-//                            }
-
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
