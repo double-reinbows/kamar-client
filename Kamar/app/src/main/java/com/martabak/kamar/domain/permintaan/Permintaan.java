@@ -176,7 +176,7 @@ public class Permintaan<T extends Content> extends Model {
     public final String assignee;
 
     /**
-     * The permintaan's Estimated Time of Arrival to the ordering guest's room
+     * The permintaan's Estimated Time of Arrival to the ordering guest's room, in minutes.
      */
     public final Integer eta;
 

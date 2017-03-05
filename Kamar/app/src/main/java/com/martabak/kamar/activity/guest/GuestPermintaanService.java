@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import rx.functions.Action1;
@@ -76,10 +77,14 @@ public class GuestPermintaanService extends IntentService {
     }
 
     private void createNotification(int nId, Permintaan permintaan) {
+        String eta = "";
+        if (permintaan.eta != null) {
+            eta = String.format(Locale.getDefault(), ", %s %d %s", getString(R.string.estimate), permintaan.eta, getString(R.string.minutes));
+        }
         NotificationCompat.Builder mBuilder =new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_menu_manage)
                 .setContentTitle(permintaan.type + " " + getString(R.string.permintaan))
-                .setContentText(getString(R.string.permintaan_status_is_now) + " " + permintaan.state);
+                .setContentText(getString(R.string.permintaan_status_is_now) + " " + permintaan.state + eta);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
 
