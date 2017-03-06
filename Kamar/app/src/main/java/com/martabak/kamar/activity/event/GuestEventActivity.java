@@ -163,7 +163,7 @@ public class GuestEventActivity extends AbstractGuestBarsActivity {
                         Log.d(GuestEventActivity.class.getCanonicalName(), "getEvent On next");
                         if (result != null) {
                             imageUrls.add(result.getImageUrl());
-                            Log.d("Promo Image: ", result.name);
+                            Log.v("Promo Image: ", result.name);
 
                         }
                     }

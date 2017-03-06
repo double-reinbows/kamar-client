@@ -123,7 +123,7 @@ public class EventServer extends Server {
                         List<Event> toReturn = new ArrayList<>();
                         for (ViewResponse<Event>.ViewResult<Event> i : response.rows) {
                             toReturn.add(i.value);
-                            Log.v("DICK", i.value.name + i.value.type);
+                            Log.v("Event Response", i.value.name + i.value.type);
                         }
                         return Observable.from(toReturn);
                     }
