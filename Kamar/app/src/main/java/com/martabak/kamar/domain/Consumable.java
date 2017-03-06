@@ -125,6 +125,11 @@ public class Consumable extends Model {
      */
     public final Integer price;
 
+    /**
+     * Whether the Consumable is active or not
+     */
+    public final Boolean active;
+
     public Consumable() {
         this.nameEn = null;
         this.nameIn = null;
@@ -145,13 +150,14 @@ public class Consumable extends Model {
         this.order = null;
         this.price = null;
         this.attachmentName = null;
+        this.active = null;
     }
-
+/*
     public Consumable(String nameEn, String nameIn, String nameRu, String nameZh,
                       String descriptionEn, String descriptionIn, String descriptionZh, String descriptionRu,
                       String sectionEn, String sectionIn, String sectionRu, String sectionZh,
                       String subsectionEn, String subsectionIn, String subsectionRu, String subsectionZh,
-                      Integer order, Integer price, String attachmentName) {
+                      Integer order, Integer price, String attachmentName, Boolean active) {
         this.nameEn = nameEn;
         this.nameIn = nameIn;
         this.nameRu = nameRu;
@@ -171,6 +177,36 @@ public class Consumable extends Model {
         this.order = order;
         this.price = price;
         this.attachmentName = attachmentName;
+        this.active = active;
+    }
+*/
+    public Consumable(String _id, String _rev,
+                      String nameEn, String nameIn, String nameRu, String nameZh,
+                      String descriptionEn, String descriptionIn, String descriptionZh, String descriptionRu,
+                      String sectionEn, String sectionIn, String sectionRu, String sectionZh,
+                      String subsectionEn, String subsectionIn, String subsectionRu, String subsectionZh,
+                      Integer order, Integer price, String attachmentName, Boolean active) {
+        super(_id, _rev);
+        this.nameEn = nameEn;
+        this.nameIn = nameIn;
+        this.nameRu = nameRu;
+        this.nameZh = nameZh;
+        this.descriptionEn = descriptionEn;
+        this.descriptionIn = descriptionIn;
+        this.descriptionZh = descriptionZh;
+        this.descriptionRu = descriptionRu;
+        this.sectionEn = sectionEn;
+        this.sectionIn = sectionIn;
+        this.sectionRu = sectionRu;
+        this.sectionZh = sectionZh;
+        this.subsectionEn = subsectionEn;
+        this.subsectionIn = subsectionIn;
+        this.subsectionRu = subsectionRu;
+        this.subsectionZh = subsectionZh;
+        this.order = order;
+        this.price = price;
+        this.attachmentName = attachmentName;
+        this.active = active;
     }
 
     /**

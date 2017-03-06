@@ -161,9 +161,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         public void onClick(DialogInterface dialog, int which) {
                             String assignee = textInput.getText().toString();
                             staffPermintaanFragment.disableUserInput();
-                            getAndUpdatePermintaan(currPermintaan._id, 0, assignee);
-                            ((ViewGroup)assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
-
+                            getAndUpdatePermintaan(currPermintaan._id, 0, assignee, currPermintaan.eta);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -176,7 +174,11 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 }
             });
         } else {
-            ((ViewGroup)assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+            try {
+                ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
+            } catch (NullPointerException e) {
+                notifyDataSetInvalidated();
+            }
         }
 
         /**
@@ -206,7 +208,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
                     lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime()) / 1000;
                 } else {
-                    simpleUpdated = "tidak pernah diubah";
+                    simpleUpdated = "Tidak Pernah Diubah";
                     lastStateChange = 0;
                 }
                 String contentString = "";
@@ -251,10 +253,11 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         .setTitle("KAMAR NOMOR "+currPermintaan.roomNumber+ "- PESANAN "+currPermintaan.type)
                         .setMessage(Html.fromHtml("State: "+currPermintaan.state+"<br>"+
                                 //"Message: "+currPermintaan.content.message+"<br>"+
-                                "Pesan masuk jam "+simpleCreated+"<br>"+
-                                "Waktu terakhir kali pesan dirubah: "+simpleUpdated+"<br>"+
-                                "Waktu sejak terakhir kali pesan diruabah: "+lastStateChange/60+" minutes ago<br>"+
+                                "Pesan Diterima Jam "+simpleCreated+"<br>"+
+                                "Waktu Terakhir Kali Pesan Diubah: "+simpleUpdated+"<br>"+
+                                "Waktu Sejak Terakhir Kali Pesan Diubah: "+lastStateChange/60+" menit yang lalu<br>"+
                                 "Petugas: "+currPermintaan.assignee+
+                                "<br>ETA: "+currPermintaan.eta.toString()+
                                 "<br>Rincian: <b><br>"+contentString+"</b>"))
                         .setCancelable(true)
                         .setNeutralButton("TUTUP", new DialogInterface.OnClickListener() {
@@ -283,31 +286,36 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View v) {
                     Log.v("progressPermintaan", String.valueOf(groupPosition)+" "+String.valueOf(childPosition));
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
-                    builder.setCancelable(false);
-                    builder.setPositiveButton(context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //Check permintaan can be progressed
-                            if (currPermintaan.isProgressable()) {
-                                Log.v("id", currPermintaan._id);
-                                staffPermintaanFragment.disableUserInput();
-                                getAndUpdatePermintaan(currPermintaan._id, 1, null);
-                            } else {
-                                //TODO: Tell the user they can't progress the permintaan
-                            }
-                        }
-                    });
+                    // if restaurant type + progressing from NEW state...
+                    if (currPermintaan.type.equals(Permintaan.TYPE_RESTAURANT) && currPermintaan.state.equals(Permintaan.STATE_NEW)) {
+                        AlertDialog.Builder etabuilder = new AlertDialog.Builder(context);
+                        etabuilder.setTitle("Masukkan waktu pesan ini akan sampai kamar");
 
-                    builder.setNegativeButton(context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
+                        // Set up the input
+                        final EditText textInput = new EditText(context);
+                        textInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        etabuilder.setView(textInput);
+
+                        // Set up the buttons
+                        etabuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Integer eta = Integer.parseInt(textInput.getText().toString());
+                                staffPermintaanFragment.disableUserInput();
+                                //confirm progress dialog
+                                progressDialog(currPermintaan, eta);
+                            }
+                        });
+                        etabuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        etabuilder.show();
+                    } else {
+                        progressDialog(currPermintaan, currPermintaan.eta);
+                    }
                 }
 
             });
@@ -341,7 +349,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                             //Check permintaan can be regressed
                             if (currPermintaan.isRegressable()) {
                                 staffPermintaanFragment.disableUserInput();
-                                getAndUpdatePermintaan(currPermintaan._id, -1, null);
+                                getAndUpdatePermintaan(currPermintaan._id, -1, null, currPermintaan.eta);
                             } else {
                                 //TODO tell user they cannot regress
                             }
@@ -368,13 +376,46 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     /**
+     *
+     */
+    private void progressDialog(final Permintaan currPermintaan, final Integer eta) {
+        //confirm progress dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(context.getApplicationContext().getString(R.string.permintaan_progress_confirmation));
+        builder.setCancelable(false);
+        builder.setPositiveButton(context.getApplicationContext().getString(R.string.positive), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Check permintaan can be progressed
+                if (currPermintaan.isProgressable()) {
+                    Log.v("id", currPermintaan._id);
+                    staffPermintaanFragment.disableUserInput();
+                    getAndUpdatePermintaan(currPermintaan._id, 1, null, eta);
+                } else {
+                    //TODO: Tell the user they can't progress the permintaan
+                }
+            }
+        });
+
+        builder.setNegativeButton(context.getApplicationContext().getString(R.string.negative), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                staffPermintaanFragment.enableUserInput();
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    /**
      * Gets the permintaan from the server to obtain the latest _rev and then
      * updates the permintaan on the server before updating the view.
      * @param _id id of permintaan to be updated
      * @param increment 1 to progress, -1 to regress
      * @param assignee name of staff member to be assigned, null if progressing/regressing
      */
-    private void getAndUpdatePermintaan(final String _id, final int increment, String assignee) {
+    private void getAndUpdatePermintaan(final String _id, final int increment, String assignee, final Integer eta) {
         Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "Doing get permintaan of state");
 
         final Permintaan currPermintaan = idToPermintaan.get(_id);
@@ -390,7 +431,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "Completed getting _rev");
                 Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, rev, currPermintaan.owner, currPermintaan.creator, currPermintaan.type,
                         currPermintaan.roomNumber, currPermintaan.guestId, targetState,
-                        currPermintaan.created, new Date(), updatedAssignee, currPermintaan.content);
+                        currPermintaan.created, new Date(), updatedAssignee, eta, currPermintaan.content);
                 updatePermintaanAndView(updatedPermintaan, currPermintaan.state);
             }
 

@@ -25,8 +25,8 @@ public class EmailSender {
     private EmailSender(Context c) {
         CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                 c,
-                Constants.IDENTITY_POOL,
-                Constants.REGION
+                Constants.AWS_SES_IDENTITY_POOL,
+                Constants.AWS_SES_REGION
         );
         sesClient = new AmazonSimpleEmailServiceClient(credentialsProvider);
     }

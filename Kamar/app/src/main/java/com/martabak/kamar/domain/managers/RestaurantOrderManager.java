@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Keeps the ic_restaurant order in memory to be passed from RestaurantActivity to
+ * Keeps the restaurant order in memory to be passed from RestaurantActivity to
  * RestaurantConfirmationActivity.
  */
-public class RestaurantOrderManager {
+public class RestaurantOrderManager implements Manager {
 
     private static RestaurantOrderManager instance;
 
@@ -25,8 +25,15 @@ public class RestaurantOrderManager {
     public static RestaurantOrderManager getInstance() {
         if (instance == null) {
             instance = new RestaurantOrderManager();
+            Managers.register(instance);
         }
         return instance;
+    }
+
+    public void clear() {
+        order = null;
+        restaurantImgUrls = null;
+        consumables = null;
     }
 
     /**

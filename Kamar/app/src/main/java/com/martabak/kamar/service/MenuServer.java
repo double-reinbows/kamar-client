@@ -96,4 +96,22 @@ public class MenuServer extends Server {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    /**
+     * Update a permintaan.
+     *
+     * @param consumable The consumable model to be created.
+     * @return The consumable model that was added.
+     */
+    public Observable<Boolean> updateMenu(Consumable consumable) {
+        return service.updateMenu(consumable._id, consumable)
+                .map(new Func1<PutResponse, Boolean>() {
+                    @Override
+                    public Boolean call(PutResponse response) {
+                        return response.ok;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

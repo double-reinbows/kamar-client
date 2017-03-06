@@ -5,11 +5,7 @@ import com.martabak.kamar.domain.SurveyQuestion;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Keeps the housekeeping variables in memory to be passed between HousekeepingActivity,
- * HousekeepingFragmen.
- */
-public class SurveyManager {
+public class SurveyManager implements Manager {
 
     private static SurveyManager instance;
 
@@ -21,25 +17,28 @@ public class SurveyManager {
 
     private List<String> sections;
 
-    private Boolean prevSubmission = Boolean.FALSE;
-
+    private boolean prevSubmission = false;
 
     private SurveyManager() {}
 
     public static SurveyManager getInstance() {
         if (instance == null) {
             instance = new SurveyManager();
+            Managers.register(instance);
         }
         return instance;
     }
 
-    /**
-     * @return
-     */
+    @Override
+    public void clear() {
+        ratings = null;
+        sectionMappings = null;
+        sections = null;
+        prevSubmission = false;
+    }
+
     public HashMap<String, Integer> getRatings() { return ratings; }
-    /**
-     * @return
-     */
+
     public HashMap<String, List<SurveyQuestion>> getMappings() { return sectionMappings; }
 
     public Boolean getPrevSubmission() { return prevSubmission; }
@@ -54,6 +53,7 @@ public class SurveyManager {
     public void setRatings(HashMap<String, Integer> ratings) {
         this.ratings = ratings;
     }
+
     /**
      * Set the current ic_restaurant order.
      * @param mappings The current ic_restaurant order.
@@ -62,7 +62,7 @@ public class SurveyManager {
         this.sectionMappings = mappings;
     }
 
-    public void setPrevSubmission(Boolean prevSubmission) { this.prevSubmission = prevSubmission; }
+    public void setSubmitted() { this.prevSubmission = true; }
 
     public void setSections(List<String> sections) { this.sections = sections; }
 

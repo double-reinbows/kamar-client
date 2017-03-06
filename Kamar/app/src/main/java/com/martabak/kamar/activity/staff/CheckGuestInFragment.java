@@ -23,6 +23,7 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Event;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Room;
+import com.martabak.kamar.domain.managers.RoomManager;
 import com.martabak.kamar.service.EventServer;
 import com.martabak.kamar.service.GuestServer;
 
@@ -181,7 +182,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         roomNumbers.set(0, getString(R.string.loading));
         spinnerRoomNumber.setEnabled(false);
         roomNumAdapter.notifyDataSetChanged();
-        GuestServer.getInstance(getActivity().getBaseContext()).getRoomNumbersWithoutGuests()
+        RoomManager.getInstance().getRoomsWithoutGuests(getActivity().getBaseContext())
                 .subscribe(new Observer<Room>() {
             @Override public void onCompleted() {
                 roomNumbers.set(0, getString(R.string.room_select));

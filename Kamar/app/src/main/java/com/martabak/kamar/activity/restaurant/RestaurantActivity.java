@@ -9,11 +9,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
+import com.martabak.kamar.activity.guest.GuestHomeActivity;
+import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.domain.Consumable;
 import com.martabak.kamar.domain.managers.RestaurantOrderManager;
 import com.martabak.kamar.domain.permintaan.OrderItem;
@@ -87,12 +91,31 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                     setGlobals();
                     Consumable first = consumables.get(0);
                     if (first.nameEn != null) {
-                        for (int i = 0; i < consumables.size() - 1; i++) { //ignores the last Consumable (the view)
-                            setListsViews(i, tabLayout);
+                        //if we are editing the menu then load everything
+                        if (getCallingActivity().getClassName().equals(StaffHomeActivity.class.getName())) {
+                            for (int i = 0; i < consumables.size() - 1; i++) { //ignores the last Consumable (the view)
+                                setListsViews(i, tabLayout);
+                            }
+                        //if we are ordering then check the consumable is active
+                        } else {
+                            for (int i = 0; i < consumables.size() - 1; i++) { //ignores the last Consumable (the view)
+                                if (consumables.get(i).active)
+                                    setListsViews(i, tabLayout);
+                            }
                         }
                     } else if (first.nameEn == null) {
-                        for (int i = 1; i < consumables.size(); i++) { //ignores the first Consumable (the view)
-                            setListsViews(i, tabLayout);
+                        //if we are editing the menu then load everything
+                        if (getCallingActivity().getClassName().equals(StaffHomeActivity.class.getName())) {
+                            for (int i = 1; i < consumables.size(); i++) { //ignores the first Consumable (the view)
+                                setListsViews(i, tabLayout);
+                            }
+                        //if we are ordering then check the consumable is active
+                        } else {
+                            for (int i = 1; i < consumables.size(); i++) { //ignores the last Consumable (the view)
+                                if (consumables.get(i).active) {
+                                    setListsViews(i, tabLayout);
+                                }
+                            }
                         }
                     }
                     setupTabs(tabLayout);
@@ -240,23 +263,28 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
             }
         }
 
-
-        //set up ic_restaurant expandable list adapter
-        listAdapter = new RestaurantExpListAdapter(this, subsections, subsectionToIds,
-                idToConsumable, idToQuantity, idToNote, subtotalText);
+        if (getCallingActivity().getClassName().equals(GuestHomeActivity.class.getName())) {
+            //set up ic_restaurant expandable list adapter
+            listAdapter = new RestaurantExpListAdapter(this, subsections, subsectionToIds,
+                    idToConsumable, idToQuantity, idToNote, subtotalText, RestaurantExpListAdapter.TYPE_ORDER);
+        } else {
+            listAdapter = new RestaurantExpListAdapter(this, subsections, subsectionToIds,
+                    idToConsumable, idToQuantity, idToNote, subtotalText, RestaurantExpListAdapter.TYPE_EDIT);
+        }
 
         //set list adapter onto view
         view.setAdapter(listAdapter);
         //open the first expandable group if we are in the DRINKS tab
         if (consumables.get(0).isDrinks()) {
             view.expandGroup(0, true);
+            view.expandGroup(1, true);
         }
         view.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 
         //set listener for the button
-        final TextView restaurantButton = (TextView) findViewById(R.id.restaurant_arrow_text);
-        if (restaurantButton != null) {
-            restaurantButton.setOnClickListener(new View.OnClickListener() {
+        final TextView orderButton = (TextView) findViewById(R.id.restaurant_arrow_text);
+        if (orderButton != null) {
+            orderButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // only add the ones that are greater than 0

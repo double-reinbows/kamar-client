@@ -2,6 +2,7 @@ package com.martabak.kamar.domain.chat;
 
 import com.google.gson.annotations.SerializedName;
 import com.martabak.kamar.domain.Model;
+import com.martabak.kamar.domain.User;
 
 import java.util.Date;
 
@@ -9,11 +10,6 @@ import java.util.Date;
  * A single chat message.
  */
 public class ChatMessage extends Model {
-
-    /**
-     * The GUEST sender string.
-     */
-    public static final String SENDER_GUEST = "GUEST";
 
     @SerializedName("guest_id") public final String guestId;
 
@@ -52,10 +48,10 @@ public class ChatMessage extends Model {
     }
 
     /**
-     * @return Whether or not this chat message is from the guest?
+     * @return Whether or not this chat message is from the guest.
      */
     public boolean fromGuest() {
-        return from.equals("GUEST");
+        return from.equals(User.TYPE_GUEST);
     }
 
 }

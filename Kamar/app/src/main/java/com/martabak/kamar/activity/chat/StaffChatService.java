@@ -17,6 +17,7 @@ import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.domain.Room;
+import com.martabak.kamar.domain.managers.RoomManager;
 import com.martabak.kamar.service.ChatServer;
 import com.martabak.kamar.service.GuestServer;
 
@@ -50,7 +51,7 @@ public class StaffChatService extends IntentService {
             Log.d(StaffChatService.class.getCanonicalName(), "Checking for new chats to staff");
 
             // Get list of room numbers.
-            GuestServer.getInstance(this).getRoomNumbers().subscribe(new Action1<List<Room>>() {
+            RoomManager.getInstance().getRooms(this).subscribe(new Action1<List<Room>>() {
                 @Override
                 public void call(List<Room> roomsResult) {
                     Log.d(StaffChatService.class.getCanonicalName(), "Got rooms");

@@ -42,5 +42,4 @@ public interface PermintaanService {
     @PUT("permintaan/{id}")
     Observable<PutResponse> updatePermintaan(@Path("id") String id, @Body Permintaan permintaan);
 
-
 }

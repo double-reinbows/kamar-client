@@ -2,6 +2,7 @@ package com.martabak.kamar.service;
 
 import com.martabak.kamar.domain.Consumable;
 import com.martabak.kamar.service.response.AllResponse;
+import com.martabak.kamar.service.response.PutResponse;
 import com.martabak.kamar.service.response.ViewResponse;
 
 import retrofit2.http.Body;
@@ -22,5 +23,8 @@ public interface MenuService {
 
     @GET("menu/_all_docs?include_docs=true")
     Observable<AllResponse<Consumable>> getMenu();
+
+    @PUT("menu/{id}")
+    Observable<PutResponse> updateMenu(@Path("id") String id, @Body Consumable consumable);
 
 }
