@@ -57,6 +57,11 @@ public class GuestHomeActivity extends AppCompatActivity implements
         startActivity(new Intent(v.getContext(), GuestChatActivity.class));
     }
 
+    @OnClick(R.id.orders_icon)
+    public void onOrdersIconClick(View v) {
+        startActivity(new Intent(v.getContext(), GuestChatActivity.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
