@@ -4,7 +4,7 @@ import com.amazonaws.regions.Regions;
 
 public class Constants {
 
-    public static final boolean SEND_CRASH_REPORTS = true;
+    public static final boolean SEND_CRASH_REPORTS = false;
     public static final String TEAM_EMAIL = "rayssoftwarecompany@gmail.com";
     public static final String HOTEL_EMAIL = "rayssoftwarecompany@gmail.com";
     public static final Regions AWS_SES_REGION = Regions.US_EAST_1;

@@ -55,13 +55,16 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
     //Views
     private HashMap<String, ExpandableListView> expandableListViews;
 
+    private String callingActivity;
+
 
     /**
      *
      * @return
      */
     protected Options getOptions() {
-        if (getCallingActivity().getClassName().equals(GuestHomeActivity.class.getName())) {
+        callingActivity = getCallingActivity().getClassName();
+        if (callingActivity.equals(GuestHomeActivity.class.getName())) {
             return new Options()
                     .withBaseLayout(R.layout.activity_restaurant)
                     .withToolbarLabel(getString(R.string.restaurant_label))
@@ -272,7 +275,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
             }
         }
 
-        if (getCallingActivity().getClassName().equals(GuestHomeActivity.class.getName())) {
+        if (callingActivity.equals(GuestHomeActivity.class.getName())) {
             //set up ic_restaurant expandable list adapter
             listAdapter = new RestaurantExpListAdapter(this, subsections, subsectionToIds,
                     idToConsumable, idToQuantity, idToNote, subtotalText, RestaurantExpListAdapter.TYPE_ORDER);
