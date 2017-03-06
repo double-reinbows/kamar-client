@@ -61,12 +61,21 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
      * @return
      */
     protected Options getOptions() {
-        return new Options()
-                .withBaseLayout(R.layout.activity_restaurant)
-                .withToolbarLabel(getString(R.string.restaurant_label))
-                .showTabLayout(true)
-                .showLogoutIcon(false)
-                .enableChatIcon(true);
+        if (getCallingActivity().getClassName().equals(GuestHomeActivity.class.getName())) {
+            return new Options()
+                    .withBaseLayout(R.layout.activity_restaurant)
+                    .withToolbarLabel(getString(R.string.restaurant_label))
+                    .showTabLayout(true)
+                    .showLogoutIcon(false)
+                    .enableChatIcon(true);
+        } else {
+            return new Options()
+                    .withBaseLayout(R.layout.activity_restaurant)
+                    .withToolbarLabel(getString(R.string.restaurant_label))
+                    .showTabLayout(true)
+                    .showLogoutIcon(false)
+                    .enableChatIcon(false);
+        }
     }
 
     //bind views here

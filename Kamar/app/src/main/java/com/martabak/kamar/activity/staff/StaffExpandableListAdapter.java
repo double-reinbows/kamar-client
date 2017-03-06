@@ -177,7 +177,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
             try {
                 ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
             } catch (NullPointerException e) {
-                notifyDataSetInvalidated();
+                notifyDataSetChanged();
             }
         }
 
