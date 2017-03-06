@@ -169,8 +169,10 @@ public class RestaurantExpListAdapter extends BaseExpandableListAdapter {
          * Below code is for staff members disabling/enabling menu items
          */
         } else if(type.equals(TYPE_EDIT)) {
-            RadioButton activeRadio = (RadioButton) convertView.findViewById(R.id.item_active);
-            RadioButton inactiveRadio = (RadioButton) convertView.findViewById(R.id.item_inactive);
+
+            final RadioButton activeRadio = (RadioButton) convertView.findViewById(R.id.item_active);
+            final RadioButton inactiveRadio = (RadioButton) convertView.findViewById(R.id.item_inactive);
+            //default is set to active so set radiogroup to inactive if menu item is inactive
             if (currConsumable.active == false) {
                 inactiveRadio.setChecked(true);
                 activeRadio.setChecked(false);
@@ -182,7 +184,7 @@ public class RestaurantExpListAdapter extends BaseExpandableListAdapter {
                 public void onCheckedChanged(final RadioGroup radioGroup, final int checkedId) {
 
                     final Boolean newState;
-                    if (currConsumable.active == true) {
+                    if (currConsumable.active) {
                         newState = false;
                     } else {
                         newState = true;
@@ -218,18 +220,13 @@ public class RestaurantExpListAdapter extends BaseExpandableListAdapter {
                             .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    /*
-                                    View radioButton = radioGroup.findViewById(checkedId);
-                                    int index = radioGroup.indexOfChild(radioButton);
-                                    Log.v("MERP", String.valueOf(index));
-                                    if (index == 0) {
-                                        ((RadioButton)radioGroup.getChildAt(0)).setChecked(false);
-                                        ((RadioButton)radioGroup.getChildAt(1)).setChecked(true);
+                                    if (currConsumable.active) {
+                                        inactiveRadio.setChecked(false);
+                                        activeRadio.setChecked(true);
                                     } else {
-                                        ((RadioButton)radioGroup.getChildAt(0)).setChecked(false);
-                                        ((RadioButton)radioGroup.getChildAt(1)).setChecked(true);
-                                    }*/
-                                    notifyDataSetInvalidated();
+                                        inactiveRadio.setChecked(true);
+                                        activeRadio.setChecked(false);
+                                    }
                                 }
                             })
                             .show();
