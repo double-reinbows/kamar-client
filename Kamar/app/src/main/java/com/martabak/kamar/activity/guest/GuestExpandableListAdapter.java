@@ -62,18 +62,16 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-//        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.guest_permintaan_item, null);
-//        }
+        LayoutInflater infalInflater = (LayoutInflater) this.context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = infalInflater.inflate(R.layout.guest_permintaan_item, null);
 
         //Set up the "x" or permintaan cancel button
         ImageView cancelPermintaanButton = (ImageView) convertView.findViewById(R.id.permintaan_cancel_button);
 
+        /*
         //if chosen child is NEW, then provide a cancel button
         if (getChild(groupPosition, childPosition).state.equals("NEW")) {
-
             cancelPermintaanButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -150,8 +148,8 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
         } else { //remove the cancel ImageView from the View
             cancelPermintaanButton.setVisibility(View.GONE);
         }
-
-        // Set up the "i" or info button
+*/
+        // Set up the "i"/info button
         ImageView permintaanInfoButton = (ImageView) convertView.findViewById(R.id.permintaan_info_button);
 
         permintaanInfoButton.setOnClickListener(new View.OnClickListener() {
@@ -249,24 +247,20 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
 
-//        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.guest_permintaan_state, null);
-//        }
+        LayoutInflater infalInflater = (LayoutInflater) this.context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = infalInflater.inflate(R.layout.guest_permintaan_state, null);
 
         String headerTitle = (String) getGroup(groupPosition);
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.list_state);
         lblListHeader.setTypeface(null, Typeface.BOLD); //bolded text
         lblListHeader.setText(headerTitle);
         // Set different bg colour for each state
-        if (headerTitle.equals("NEW")) {
+        if (headerTitle.equals(Permintaan.STATE_NEW)) {
             lblListHeader.setBackgroundColor(0xFFac0d13);
-        } else if (headerTitle.equals("IN PROGRESS")) {
+        } else if (headerTitle.equals(Permintaan.STATE_INPROGRESS)) {
             lblListHeader.setBackgroundColor(0xFFaa373a);
-        } else if (headerTitle.equals("IN DELIVERY")) {
-            lblListHeader.setBackgroundColor(0xFFa66163);
-        } else if (headerTitle.equals("COMPLETED")) {
+        } else if (headerTitle.equals(Permintaan.STATE_COMPLETED)) {
             lblListHeader.setBackgroundColor(0xFFa09091);
         }
         lblListHeader.invalidate();
