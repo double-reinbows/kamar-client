@@ -9,20 +9,27 @@
         android:background="@color/colorNavBar"
         android:textSize="30sp"
         android:textColor="@color/guestTextColor"
-        android:text="@string/checkout_request"/>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal" android:layout_width="wrap_content"
-        android:layout_height="200dp">
-        <ImageView
-            android:layout_width="300dp"
-            android:layout_height="200dp"
-            android:id="@+id/request_content_image" />
-        <TextView
-            android:layout_width="500dp"
-            android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:id="@+id/request_content"/>
-    </LinearLayout>
-
+        android:text="@string/guest_permintaan_dialog_title"/>
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:scrollbars="vertical"
+            android:scrollbarAlwaysDrawVerticalTrack="true">
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/request_content_image" />
+            <TextView
+                android:layout_width="500dp"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:id="@+id/request_content"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

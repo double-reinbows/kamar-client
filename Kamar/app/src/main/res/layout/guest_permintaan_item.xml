@@ -13,20 +13,12 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:textSize="35dp"
-        android:textColor="@color/guestTextColor" />
-    <!--ImageView
-        android:id="@+id/permintaan_cancel_button"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_toStartOf="@+id/permintaan_info_button"
-        android:layout_centerVertical="true"
-        android:src="@drawable/permintaan_cancel_button"
-        android:focusable="false"/-->
+        android:textSize="28dp"
+        android:textColor="@color/black" />
     <ImageView
         android:id="@+id/permintaan_info_button"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/permintaan_info"

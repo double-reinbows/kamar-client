@@ -105,8 +105,15 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         //create expandable list
         listAdapter = new GuestExpandableListAdapter(this, states, statesToPermIds, idsToPermintaans);
 
+
         // setting list adapter
         expListView.setAdapter(listAdapter);
+
+
+        // expanding all expandable groups
+        for (int i=0; i<statesToPermIds.keySet().size(); i++) {
+            expListView.expandGroup(i);
+        }
     }
 
     /**
