@@ -123,19 +123,10 @@ public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivi
             chatIconView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(v.getContext(), RestaurantActivity.class));
-//                    startActivity(new Intent(v.getContext(), GuestChatActivity.class));
+                    startActivity(new Intent(v.getContext(), GuestChatActivity.class));
                 }
             });
         }
-/*
-        ImageView historyIconView = (ImageView)findViewById(R.id.history_icon);
-        historyIconView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), GuestChatActivity.class));
-            }
-        });*/
     }
 
     private void setupBottomBar(boolean showLogoutIcon) {

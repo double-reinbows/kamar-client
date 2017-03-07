@@ -12,7 +12,7 @@
     <string name="title_activity_survey">SurveyActivity</string>
     <string name="title_activity_restaurant">RestaurantActivity</string>
     <string name="welcome">добро пожаловать</string>
-    <string name="welcome_message">Приветственное сообщение</string>
+    <string name="welcome_message">Welcome to Swissbel Hotel Segara</string>
     <string name="upload">Загрузить</string>
     <string name="positive">да</string>
     <string name="negative">Нет</string>
@@ -66,7 +66,7 @@
     <string name="chat_message_from_staff">Сообщение от сотрудников</string>
 
     <!-- Check in/out -->
-    <string name="guest_first_name">Имя</string>
+    <string name="guest_first_name">имя</string>
     <string name="guest_last_name">Фамилия</string>
     <string name="guest_email">Эл. адрес</string>
     <string name="guest_phone">Номер телефона</string>

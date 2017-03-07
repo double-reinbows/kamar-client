@@ -34,6 +34,7 @@
                 android:id="@+id/guest_first_name"
                 android:hint="@string/guest_first_name"/>
         </TableRow>
+        <!--
         <TableRow
             android:padding="4dp">
             <EditText
@@ -46,7 +47,7 @@
                 android:inputType="textCapSentences"
                 android:id="@+id/guest_last_name"
                 android:hint="@string/guest_last_name"/>
-        </TableRow>
+        </TableRow> -->
         <TableRow
             android:padding="4dp">
             <EditText
@@ -85,7 +86,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/text_view_border"
                 android:id="@+id/guest_welcome_message"
-                android:hint="@string/welcome_message"/>
+                android:text="@string/welcome_message"/>
         </TableRow>
         <TableRow
             android:padding="4dp">

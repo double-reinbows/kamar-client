@@ -64,7 +64,7 @@
     <string name="chat_message_from_staff">Pesan dari staf</string>
 
     <!-- Check in/out -->
-    <string name="guest_first_name">Nama depan</string>
+    <string name="guest_first_name">Nama</string>
     <string name="guest_last_name">Nama keluarga</string>
     <string name="guest_email">Email</string>
     <string name="guest_phone">Nomor telepon</string>
@@ -182,7 +182,7 @@
     <string name="restaurant_confirmation_dialog_desc">MOHON TUNGGU 10-20 MENIT UNTUK PESANAN ANDA TIBA DI KAMAR ANDA</string>
     <string name="restaurant_confirmation_dialog_title">TERIMA KASIH ATAS PESANAN ANDA</string>
     <string name="restaurant_submit_button">Konfirmasi Pesan</string>
-    <string name="welcome_message">Selamat Pesan</string>
+    <string name="welcome_message">Welcome to Swissbel Hotel Segara</string>
     <string name="checkout_request">CHECK OUT PESANAN RINCIAN</string>
     <string name="language_russian">俄语</string>
     <string name="language_zh">中文</string>

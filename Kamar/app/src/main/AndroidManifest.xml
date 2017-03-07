@@ -80,11 +80,6 @@
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.chat.ChatListActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_chat_list"
-            android:screenOrientation="landscape" />
-        <activity
             android:name=".activity.chat.GuestChatActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_chat_list"

@@ -35,7 +35,6 @@ import rx.Observer;
 
 /**
  * A fragment representing a single Chat detail screen.
- * This fragment is either contained in a {@link ChatListActivity}.
  */
 public class ChatDetailFragment extends Fragment {
 

@@ -54,7 +54,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         // set room number text
-        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
+//        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
 
     }
 

@@ -51,7 +51,6 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
 
     //bind views here
     @BindView(R.id.guest_first_name) EditText editFirstName;
-    @BindView(R.id.guest_last_name) EditText editLastName;
     @BindView(R.id.guest_phone) EditText editPhoneNumber;
     @BindView(R.id.guest_spinner) Spinner spinnerRoomNumber;
     @BindView(R.id.guest_email) EditText editEmail;
@@ -63,7 +62,6 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
     @OnClick(R.id.check_guest_in_submit)
     void onClick() {
         String firstName = editFirstName.getText().toString();
-        String lastName = editLastName.getText().toString();
         String phoneNumber = editPhoneNumber.getText().toString();
         String email = editEmail.getText().toString();
         String roomNumber = roomNumbers.get((int)spinnerRoomNumber.getSelectedItemId()).toString();
@@ -72,7 +70,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         Integer selectedPromoId = (int)spinnerPromoImg.getSelectedItemId();
         Log.v(CheckGuestInFragment.class.getCanonicalName(), "Selected promo image with ID " + selectedPromoId.toString());
         String promoImgId = selectedPromoId != 0 ? promoImages.get(selectedPromoId - 1)._id : null;
-        sendCreateGuestRequest(firstName, lastName, phoneNumber, email, roomNumber, null, welcome, promoImgId);
+        sendCreateGuestRequest(firstName, "", phoneNumber, email, roomNumber, null, welcome, promoImgId);
     }
 
     public CheckGuestInFragment() {
@@ -90,8 +88,8 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         View view =  inflater.inflate(R.layout.fragment_check_guest_in, container, false);
         ButterKnife.bind(this, view);
         editFirstName.addTextChangedListener(this);
-        editLastName.addTextChangedListener(this);
-        editPhoneNumber.addTextChangedListener(this);
+        //editLastName.addTextChangedListener(this);
+        //editPhoneNumber.addTextChangedListener(this);
         promoImages = null;
 
         roomNumbers = new ArrayList<>();
@@ -152,16 +150,19 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
             invalid = true;
             editFirstName.setError(getString(R.string.required));
         }
+        /*
         if (editLastName.getText().toString().trim().equalsIgnoreCase("")) {
             Log.d(CheckGuestInFragment.class.getCanonicalName(), "Last name field empty");
             invalid = true;
             editLastName.setError(getString(R.string.required));
         }
+        */
+        /*
         if (editPhoneNumber.getText().toString().trim().equalsIgnoreCase("")) {
             Log.d(CheckGuestInFragment.class.getCanonicalName(), "Phone number field empty");
             invalid = true;
             editPhoneNumber.setError(getString(R.string.required));
-        }
+        }*/
         if ((int)spinnerRoomNumber.getSelectedItemId() <= 0) {
             Log.d(CheckGuestInFragment.class.getCanonicalName(), "Valid room number required");
             invalid = true;
