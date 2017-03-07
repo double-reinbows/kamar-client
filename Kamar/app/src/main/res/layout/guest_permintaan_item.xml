@@ -15,22 +15,14 @@
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
         android:textSize="35dp"
         android:textColor="@color/guestTextColor" />
-    <ImageView
+    <!--ImageView
         android:id="@+id/permintaan_cancel_button"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_toStartOf="@+id/permintaan_chat_button"
-        android:layout_centerVertical="true"
-        android:src="@drawable/permintaan_cancel_button"
-        android:focusable="false"/>
-    <ImageView
-        android:id="@+id/permintaan_chat_button"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_toStartOf="@+id/permintaan_info_button"
         android:layout_centerVertical="true"
-        android:src="@drawable/permintaan_chat"
-        android:focusable="false"/>
+        android:src="@drawable/permintaan_cancel_button"
+        android:focusable="false"/-->
     <ImageView
         android:id="@+id/permintaan_info_button"
         android:layout_width="80dp"

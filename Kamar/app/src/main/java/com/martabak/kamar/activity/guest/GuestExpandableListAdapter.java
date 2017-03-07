@@ -13,7 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.permintaan.Engineering;
+import com.martabak.kamar.domain.permintaan.Housekeeping;
+import com.martabak.kamar.domain.permintaan.LaundryOrder;
+import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
+import com.martabak.kamar.domain.permintaan.Massage;
+import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.domain.permintaan.RestaurantOrder;
+import com.martabak.kamar.domain.permintaan.Transport;
 import com.martabak.kamar.service.PermintaanServer;
 
 import java.text.ParseException;
@@ -152,30 +160,16 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
         // Set up the "i"/info button
         ImageView permintaanInfoButton = (ImageView) convertView.findViewById(R.id.permintaan_info_button);
 
+
         permintaanInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Permintaan currPermintaan = getChild(groupPosition, childPosition); //idToPermintaan.get(currPermintaans.get(childPosition));
-
-                /*
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-
-                WindowManager manager = (WindowManager) context.getSystemService(Activity.WINDOW_SERVICE);
-                manager.getDefaultDisplay().getMetrics(displayMetrics);
-                int width, height;
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
-                    width = displayMetrics.widthPixels;
-                    height = displayMetrics.heightPixels;
-                } else {
-                    Point point = new Point();
-                    manager.getDefaultDisplay().getSize(point);
-                    width = point.x;
-                    height = point.y;
-                }
-                */
+                Permintaan currPermintaan = getChild(groupPosition, childPosition);
 
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View view = layoutInflater.inflate(R.layout.dialog_request_info, null);
+                TextView requestInfoDetails = (TextView)view.findViewById(R.id.request_content);
+                ImageView img = (ImageView)view.findViewById(R.id.request_content_image);
                 final AlertDialog dialog= new AlertDialog.Builder(context).create();
 
                 //build the AlertDialog's content
@@ -204,13 +198,57 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                     Log.v("ERROR", "created date parse error");
                 }
 
-                TextView requestInfoDetails = (TextView)
-                        view.findViewById(R.id.request_content);
+                String contentString = "";
+                if (currPermintaan.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
+                    img.setImageResource(R.drawable.ic_restaurant);
+                    RestaurantOrder restoOrder = (RestaurantOrder) currPermintaan.content;
+                    for (OrderItem o : restoOrder.items) {
+                        contentString += "<br>" + o.quantity + " " + o.name + " Rp. " + o.price+"<br>"+
+                                "<span style=\"font-weight:normal;\">Note: "+o.note+"</span>";
+                    }
+                    contentString += "<br><br>Total: Rp. " + restoOrder.totalPrice;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_TRANSPORT)) {
+                    img.setImageResource(R.drawable.ic_transport);
+                    Transport transportOrder = (Transport) currPermintaan.content;
+                    contentString += "<br>Departing in: " + transportOrder.departingIn +
+                            "<br>Destination: " + transportOrder.destination +
+                            "<br>Number of passengers: " + transportOrder.passengers;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_HOUSEKEEPING)) {
+                    img.setImageResource(R.drawable.ic_housekeeping);
+                    Housekeeping hkOrder = (Housekeeping) currPermintaan.content;
+                    contentString += "<br>Order: " + hkOrder.option.nameEn +
+                            "<br>Quantity: " + hkOrder.quantity;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_LAUNDRY)) {
+                    img.setImageResource(R.drawable.ic_laundry);
+                    LaundryOrder laundryOrder = (LaundryOrder) currPermintaan.content;
+                    for (LaundryOrderItem l : laundryOrder.items) {
+                        String laundryString = "Tidak";
+                        String pressingString = "Tidak<br>";
+                        if (l.laundry) { laundryString = "Iya"; }
+                        if (l.pressing) { pressingString = "Iya<br>"; }
+                        contentString += "<br>"+l.quantity+" "+l.option.nameEn+": "+"<br>"+l.price+"<br>"
+                                +"Cuci: "+laundryString+
+                                "<br>Seterika: "+pressingString;
+                    }
+                    contentString += "<i>"+laundryOrder.message;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_ENGINEERING)) {
+                    img.setImageResource(R.drawable.ic_engineering);
+                    Engineering engOrder = (Engineering) currPermintaan.content;
+                    contentString += "<br>Order: "+engOrder.option.nameEn;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_MASSAGE)) {
+                    img.setImageResource(R.drawable.ic_massage);
+                    Massage massageOrder = (Massage)currPermintaan.content;
+                    contentString += "<br>Order: "+massageOrder.option.nameEn;
+                }
+
+
+
                 requestInfoDetails.setText("Status: "+currPermintaan.state+"\n"+
                         "Message: "+currPermintaan.content.message+"\n"+
                         "Order lodged at: "+createdString+"\n"+
                         "Last Status change at "+updatedString+"\n"+
-                        "Time since latest Status change: "+lastStateChange/60+" minutes ago" + "\n");
+                        "Time since latest Status change: "+lastStateChange/60+" minutes ago" + "\n"+
+                        contentString);
                 dialog.setView(view);
                 dialog.show();
             }

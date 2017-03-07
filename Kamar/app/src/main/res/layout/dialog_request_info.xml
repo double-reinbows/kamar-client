@@ -17,7 +17,6 @@
         <ImageView
             android:layout_width="300dp"
             android:layout_height="200dp"
-            android:src="@drawable/ic_checkout"
             android:id="@+id/request_content_image" />
         <TextView
             android:layout_width="500dp"
