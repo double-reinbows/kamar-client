@@ -175,7 +175,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
             try {
                 ((ViewGroup) assignPermintaanButton.getParent()).removeView(assignPermintaanButton);
             } catch (NullPointerException e) {
-                notifyDataSetInvalidated();
+                notifyDataSetChanged();
             }
         }
 
@@ -200,17 +200,19 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 //build the AlertDialog's content
-                String simpleUpdated;
+                String datePattern = "EEE MMM dd hh:mm a";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+                String updatedString;
                 long lastStateChange;
                 if (currPermintaan.updated != null) {
-                    simpleUpdated = new SimpleDateFormat("hh:mm a").format(currPermintaan.updated);
-                    lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime()) / 1000;
+                    updatedString = dateFormat.format(currPermintaan.updated);
+                    lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime())/1000;
                 } else {
-                    simpleUpdated = "Tidak Pernah Diubah";
+                    updatedString = "Tidak Pernah Diubah";
                     lastStateChange = 0;
                 }
                 String contentString = "";
-                String simpleCreated = new SimpleDateFormat("hh:mm a").format(currPermintaan.created);
+                String createdString = dateFormat.format(currPermintaan.created);
                 if (currPermintaan.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
                     RestaurantOrder restoOrder = (RestaurantOrder) currPermintaan.content;
                     for (OrderItem o : restoOrder.items) {
@@ -239,8 +241,8 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         .setTitle("KAMAR NOMOR "+currPermintaan.roomNumber+ "- PESANAN "+currPermintaan.type)
                         .setMessage(Html.fromHtml("State: "+currPermintaan.state+"<br>"+
                                 //"Message: "+currPermintaan.content.message+"<br>"+
-                                "Pesan Diterima Jam "+simpleCreated+"<br>"+
-                                "Waktu Terakhir Kali Pesan Diubah: "+simpleUpdated+"<br>"+
+                                "Pesan Diterima Jam "+createdString+"<br>"+
+                                "Waktu Terakhir Kali Pesan Diubah: "+updatedString+"<br>"+
                                 "Waktu Sejak Terakhir Kali Pesan Diubah: "+lastStateChange/60+" menit yang lalu<br>"+
                                 "Petugas: "+currPermintaan.assignee+
                                 "<br>ETA: "+currPermintaan.eta.toString()+

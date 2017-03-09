@@ -27,11 +27,11 @@
                 android:id="@+id/logo"/>
 
             <ImageView
-                android:src="@drawable/ic_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_chat"
                 android:id="@+id/chat_icon" />
 
             <ImageView

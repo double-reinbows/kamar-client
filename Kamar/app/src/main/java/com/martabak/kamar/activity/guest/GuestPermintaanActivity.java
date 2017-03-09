@@ -54,7 +54,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                 .getString("roomNumber", "none");
         // set room number text
-        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
+//        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
 
     }
 
@@ -62,10 +62,9 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         GuestExpandableListAdapter listAdapter;
         ExpandableListView expListView;
         List<String> states = Arrays.asList(
-                getString(R.string.new_permintaan),
-                getString(R.string.inprogress_permintaan),
-                getString(R.string.indelivery_permintaan),
-                getString(R.string.completed_permintaan)
+                Permintaan.STATE_NEW,
+                Permintaan.STATE_INPROGRESS,
+                Permintaan.STATE_COMPLETED
         );
         //mapping of states to a list of permintaan IDs
         HashMap<String, List<String>> statesToPermIds = new HashMap<>();
@@ -78,7 +77,6 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         // Set up headers (states)
         List<String> new_permintaan = new ArrayList<>();
         List<String> inprogress_permintaan = new ArrayList<>();
-        List<String> indelivery_permintaan = new ArrayList<>();
         List<String> completed_permintaan = new ArrayList<>();
 
         // Set up child data
@@ -91,9 +89,6 @@ public class GuestPermintaanActivity extends AppCompatActivity {
                 case Permintaan.STATE_INPROGRESS:
                     inprogress_permintaan.add(permintaan._id);
                     break;
-                case Permintaan.STATE_INDELIVERY:
-                    indelivery_permintaan.add(permintaan._id);
-                    break;
                 case Permintaan.STATE_COMPLETED:
                     completed_permintaan.add(permintaan._id);
                     break;
@@ -105,14 +100,20 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         //set the state text and accompanying permintaan IDs
         statesToPermIds.put(states.get(0), new_permintaan);
         statesToPermIds.put(states.get(1), inprogress_permintaan);
-        statesToPermIds.put(states.get(2), indelivery_permintaan);
-        statesToPermIds.put(states.get(3), completed_permintaan);
+        statesToPermIds.put(states.get(2), completed_permintaan);
 
         //create expandable list
         listAdapter = new GuestExpandableListAdapter(this, states, statesToPermIds, idsToPermintaans);
 
+
         // setting list adapter
         expListView.setAdapter(listAdapter);
+
+
+        // expanding all expandable groups
+        for (int i=0; i<statesToPermIds.keySet().size(); i++) {
+            expListView.expandGroup(i);
+        }
     }
 
     /**
@@ -124,14 +125,11 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         Log.d(GuestPermintaanActivity.class.getCanonicalName(), "Doing get permintaans of state for guestId " + guestId);
         PermintaanServer.getInstance(this)
                 .getPermintaansForGuest(guestId)
-                        //Permintaan.STATE_NEW,
-                        //Permintaan.STATE_INPROGRESS)
-                        //Permintaan.STATE_INDELIVERY,
-                        //Permintaan.STATE_COMPLETED)
                 .filter(new Func1<Permintaan, Boolean>() {
                     @Override public Boolean call(Permintaan permintaan) {
                         return permintaan.state.equals(Permintaan.STATE_NEW) ||
-                                permintaan.state.equals(Permintaan.STATE_INPROGRESS);
+                                permintaan.state.equals(Permintaan.STATE_INPROGRESS) ||
+                                permintaan.state.equals(Permintaan.STATE_COMPLETED);
                     }
                 })
                 .subscribe(new Observer<Permintaan>() {
