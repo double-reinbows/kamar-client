@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.guest;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -78,6 +79,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
 
 
         permintaanInfoButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 Permintaan currPermintaan = getChild(groupPosition, childPosition);
@@ -89,30 +91,20 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                 final AlertDialog dialog= new AlertDialog.Builder(context).create();
 
                 //build the AlertDialog's content
-                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd hh:mm a");
-                Date parsed;
-                String updatedString = null;
+                String datePattern = "EEE MMM dd hh:mm a";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+
                 long lastStateChange;
+                String updatedString;
                 if (currPermintaan.updated != null) {
-                    try {
-                        parsed = dateFormat.parse(currPermintaan.updated.toString());
-                        updatedString = parsed.toString();
-                    } catch (ParseException pe) {
-                        Log.v("ERROR", "updated date parse error");
-                    }
+                    updatedString = dateFormat.format(currPermintaan.updated);
                     lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime())/1000;
                 } else {
                     updatedString = "never";
                     lastStateChange = 0;
                 }
-//                String simpleCreated = new SimpleDateFormat("EEE MMM dd hh:mm a").format(currPermintaan.created);
-                String createdString = currPermintaan.created.toString();
-                try {
-                    parsed = dateFormat.parse(currPermintaan.created.toString());
-                    createdString = parsed.toString();
-                } catch (ParseException pe) {
-                    Log.v("ERROR", "created date parse error");
-                }
+
+                String createdString = dateFormat.format(currPermintaan.created);
 
                 String contentString = "\n";
                 if (currPermintaan.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
@@ -164,8 +156,8 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                 requestInfoDetails.setText("Status: "+currPermintaan.state+"\n"+
                         "Message: "+currPermintaan.content.message+"\n"+
                         "Order lodged at: "+createdString+"\n"+
-                        "Last Status change at "+updatedString+"\n"+
-                        "Time since latest Status change: "+lastStateChange/60+" minutes ago" + "\n"+
+                        "Last status change at "+updatedString+"\n"+
+                        "Time since last Status change: "+lastStateChange/60+" minutes ago" + "\n"+
                         contentString);
                 dialog.setView(view);
                 dialog.show();
