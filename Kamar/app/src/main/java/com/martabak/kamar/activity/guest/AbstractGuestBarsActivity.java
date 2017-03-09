@@ -124,7 +124,7 @@ public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivi
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(v.getContext(), GuestChatActivity.class));
-                    }
+                }
             });
         }
     }
