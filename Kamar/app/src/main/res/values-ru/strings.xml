@@ -168,6 +168,7 @@
     <string name="guest_welcome_title">Добро пожаловать!</string>
 
     <!-- Laundry special instructions -->
+    <string name="laundry_message">ВЫ УВЕРЕНЫ, ЧТО ХОТИТЕ СДЕЛАТЬ ЗАКАЗ ПРАЧЕЧНОЙ?</string>
     <string name="no_ironing">Не гладить</string>
     <string name="on_hanger">На вешалке</string>
     <string name="folded">согнутый</string>

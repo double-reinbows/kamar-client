@@ -167,6 +167,7 @@
     <string name="guest_welcome_title">欢迎!</string>
 
     <!-- Laundry special instructions -->
+    <string name="laundry_message">您确定要制作洗衣用品吗？</string>
     <string name="no_ironing">不能熨</string>
     <string name="on_hanger">在衣架</string>
     <string name="folded">折叠</string>

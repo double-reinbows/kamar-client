@@ -10,12 +10,10 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.options.HousekeepingOption;
-import com.martabak.kamar.domain.options.LaundryOption;
 import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.domain.permintaan.Bellboy;
 import com.martabak.kamar.domain.permintaan.Checkout;
 import com.martabak.kamar.domain.permintaan.LaundryOrder;
-import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
 import com.martabak.kamar.domain.permintaan.Massage;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.domain.permintaan.Content;
@@ -89,29 +87,6 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content.addProperty("total_price", restaurantOrder.totalPrice);
                 break;
             case Permintaan.TYPE_LAUNDRY:
-                LaundryOrder laundryOrder = (LaundryOrder)src.content;
-                content.addProperty("total_price", laundryOrder.totalPrice);
-                JsonArray laundryItems = new JsonArray();
-                for (LaundryOrderItem i : laundryOrder.items) {
-                    JsonObject orderItem = new JsonObject();
-                    orderItem.addProperty("quantity", i.quantity);
-                    orderItem.addProperty("price", i.price);
-                    orderItem.addProperty("laundry", i.laundry);
-                    orderItem.addProperty("pressing", i.pressing);
-                    orderItem.addProperty("_id", i.option._id);
-                    orderItem.addProperty("_rev", i.option._rev);
-                    orderItem.addProperty("name_en", i.option.nameEn);
-                    orderItem.addProperty("name_in", i.option.nameIn);
-                    orderItem.addProperty("name_zh", i.option.nameZh);
-                    orderItem.addProperty("name_ru", i.option.nameRu);
-                    orderItem.addProperty("laundry_price", i.option.laundryPrice);
-                    orderItem.addProperty("pressing_price", i.option.pressingPrice);
-                    orderItem.addProperty("extras", i.extras);
-                    orderItem.addProperty("notes", i.notes);
-                    laundryItems.add(orderItem);
-                }
-                content.add("items", laundryItems);
-                content.addProperty("total_price", laundryOrder.totalPrice);
                 break;
             case Permintaan.TYPE_BELLBOY:
                 break;
@@ -268,30 +243,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content = new RestaurantOrder(message, restaurantItems, totalRestaurantPrice);
                 break;
             case Permintaan.TYPE_LAUNDRY:
-
-                List<LaundryOrderItem> laundryItems = new ArrayList<>();
-                for (int i = 0; i < c.getAsJsonArray("items").size(); i++) {
-                    JsonObject item = (JsonObject)c.getAsJsonArray("items").get(i);
-                    Boolean laundry = item.getAsJsonPrimitive("laundry").getAsBoolean();
-                    Boolean pressing = item.getAsJsonPrimitive("pressing").getAsBoolean();
-                    Integer quantity = item.getAsJsonPrimitive("quantity").getAsInt();
-                    Integer price = item.getAsJsonPrimitive("price").getAsInt();
-                    String idLaundry = item.getAsJsonPrimitive("_id").getAsString();
-                    String revLaundry = item.getAsJsonPrimitive("_rev").getAsString();
-                    String nameEnLaundry = item.getAsJsonPrimitive("name_en").getAsString();
-                    String nameInLaundry = item.getAsJsonPrimitive("name_in").getAsString();
-                    String nameZhLaundry = item.getAsJsonPrimitive("name_zh").getAsString();
-                    String nameRuLaundry = item.getAsJsonPrimitive("name_ru").getAsString();
-                    Integer priceLaundry = item.getAsJsonPrimitive("laundry_price").getAsInt();
-                    Integer pricePressing = item.getAsJsonPrimitive("pressing_price").getAsInt();
-                    String laundryExtras = item.getAsJsonPrimitive("extras").getAsString();
-                    String notes = item.getAsJsonPrimitive("notes").getAsString();
-                    LaundryOption optionLaundry = new LaundryOption(idLaundry, revLaundry, nameEnLaundry,
-                            nameInLaundry, nameZhLaundry, nameRuLaundry, priceLaundry, pricePressing, null, null);
-                    laundryItems.add(new LaundryOrderItem(quantity, price, laundry, pressing, optionLaundry, laundryExtras, notes));
-                }
-                Integer totalLaundryPrice = c.getAsJsonPrimitive("total_price").getAsInt();
-                content = new LaundryOrder(message, laundryItems, totalLaundryPrice);
+                content = new LaundryOrder(message);
                 break;
             default:
                 throw new JsonParseException("Unknown Permintaan content type.");

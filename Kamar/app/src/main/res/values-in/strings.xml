@@ -163,6 +163,7 @@
     <string name="guest_welcome_title">Selamat Datang!</string>
 
     <!-- Laundry special instructions -->
+    <string name="laundry_message">APAKAH ANDA YAKIN ANDA INGIN MEMBUAT PESANAN LAUNDRY?</string>
     <string name="no_ironing">Jangan diseterika</string>
     <string name="on_hanger">Digantung</string>
     <string name="folded">Berlipat</string>

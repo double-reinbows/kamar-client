@@ -24,7 +24,6 @@ import com.martabak.kamar.activity.engineering.EngineeringActivity;
 import com.martabak.kamar.activity.event.GuestEventActivity;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
 import com.martabak.kamar.activity.housekeeping.HousekeepingActivity;
-import com.martabak.kamar.activity.laundry.LaundryActivity;
 import com.martabak.kamar.activity.massage.MassageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.activity.staff.StaffHomeActivity;
@@ -134,6 +133,13 @@ public class GuestHomeActivity extends AppCompatActivity implements
                 Toast.makeText(
                         this,
                         getString(R.string.housekeeping_result),
+                        Toast.LENGTH_LONG
+                ).show();
+
+            } else if (guestSelectedOption.equals(Permintaan.TYPE_LAUNDRY)) {
+                Toast.makeText(
+                        this,
+                        getString(R.string.laundry_result),
                         Toast.LENGTH_LONG
                 ).show();
 
@@ -352,7 +358,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
          } else if (option.equals(getString(R.string.event_label))) {
              startActivity(new Intent(this, GuestEventActivity.class));
          } else if (option.equals(getString(R.string.laundry_label))) {
-             startActivity(new Intent(this, LaundryActivity.class));
+             new LaundryDialogFragment().show(getFragmentManager(), "laundry");
          }
 
      }

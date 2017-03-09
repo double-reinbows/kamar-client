@@ -15,13 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.engineering.EngineeringActivity;
 import com.martabak.kamar.activity.guest.BellboyDialogFragment;
+import com.martabak.kamar.activity.guest.LaundryDialogFragment;
 import com.martabak.kamar.activity.housekeeping.HousekeepingActivity;
-import com.martabak.kamar.activity.laundry.LaundryActivity;
 import com.martabak.kamar.activity.massage.MassageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.domain.Guest;
@@ -32,8 +31,6 @@ import com.martabak.kamar.service.GuestServer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import rx.Observer;
@@ -174,7 +171,7 @@ public class CreatePermintaanFragment extends Fragment  {
                 launchActivity(HousekeepingActivity.class, context);
                 break;
             case Permintaan.TYPE_LAUNDRY:
-                launchActivity(LaundryActivity.class, context);
+                launchLaundryDialog();
                 break;
             case Permintaan.TYPE_MASSAGE:
                 launchActivity(MassageActivity.class, context);
@@ -187,6 +184,10 @@ public class CreatePermintaanFragment extends Fragment  {
 
     private void launchPorterDialog() {
         new BellboyDialogFragment().show(getFragmentManager(), "bellboy");
+    }
+
+    private void launchLaundryDialog() {
+        new LaundryDialogFragment().show(getFragmentManager(), "laundry");
     }
 
     private void launchActivity(Class activity, Context context) {

@@ -7,7 +7,6 @@ import com.martabak.kamar.domain.Staff;
 import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.options.HousekeepingOption;
 import com.martabak.kamar.domain.options.MassageOption;
-import com.martabak.kamar.domain.options.LaundryOption;
 import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.ViewResponse;
 
@@ -151,21 +150,5 @@ public class StaffServer extends Server {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    /**
-     * @return All the laundry options that are available.
-     */
-    public Observable<List<LaundryOption>> getLaundryOptions() {
-        return service.getLaundryOptions()
-                .flatMap(new Func1<AllResponse<LaundryOption>, Observable<List<LaundryOption>>>() {
-                    @Override public Observable<List<LaundryOption>> call(AllResponse<LaundryOption> response) {
-                        List<LaundryOption> toReturn = new ArrayList<>(response.total_rows);
-                        for (AllResponse<LaundryOption>.AllResult<LaundryOption> i : response.rows) {
-                            toReturn.add(i.doc);
-                        }
-                        return Observable.just(toReturn);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
+
 }

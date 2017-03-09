@@ -4,7 +4,6 @@ package com.martabak.kamar.service;
 import com.martabak.kamar.domain.Staff;
 import com.martabak.kamar.domain.options.EngineeringOption;
 import com.martabak.kamar.domain.options.HousekeepingOption;
-import com.martabak.kamar.domain.options.LaundryOption;
 import com.martabak.kamar.domain.options.MassageOption;
 import com.martabak.kamar.service.response.AllResponse;
 import com.martabak.kamar.service.response.ViewResponse;
@@ -33,6 +32,4 @@ public interface StaffService {
     @GET("housekeeping_option/_all_docs?include_docs=true")
     Observable<AllResponse<HousekeepingOption>> getHousekeepingOptions();
 
-    @GET("laundry_option/_all_docs?include_docs=true")
-    Observable<AllResponse<LaundryOption>> getLaundryOptions();
 }

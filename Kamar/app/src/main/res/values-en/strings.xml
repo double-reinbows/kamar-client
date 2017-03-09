@@ -185,6 +185,7 @@
     <string name="terms_and_conditions_message">Accept This!</string>
 
     <!-- Laundry special instructions -->
+    <string name="laundry_message">ARE YOU SURE YOU WANT TO MAKE A LAUNDRY ORDER?</string>
     <string name="no_ironing">No Ironing</string>
     <string name="on_hanger">On Hanger</string>
     <string name="folded">Folded</string>

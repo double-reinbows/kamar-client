@@ -32,8 +32,6 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
-import com.martabak.kamar.domain.permintaan.LaundryOrder;
-import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
 import com.martabak.kamar.domain.permintaan.Massage;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -229,18 +227,6 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     Housekeeping hkOrder = (Housekeeping) currPermintaan.content;
                     contentString += "<br>Order: " + hkOrder.option.nameEn +
                             "<br>Quantity: " + hkOrder.quantity;
-                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_LAUNDRY)) {
-                    LaundryOrder laundryOrder = (LaundryOrder) currPermintaan.content;
-                    for (LaundryOrderItem l : laundryOrder.items) {
-                        String laundryString = "Tidak";
-                        String pressingString = "Tidak<br>";
-                        if (l.laundry) { laundryString = "Iya"; }
-                        if (l.pressing) { pressingString = "Iya<br>"; }
-                        contentString += "<br>"+l.quantity+" "+l.option.nameEn+": "+"<br>"+l.price+"<br>"
-                        +"Cuci: "+laundryString+
-                        "<br>Seterika: "+pressingString;
-                    }
-                    contentString += "<i>"+laundryOrder.message;
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_ENGINEERING)) {
                     Engineering engOrder = (Engineering) currPermintaan.content;
                     contentString += "<br>Order: "+engOrder.option.nameEn;
