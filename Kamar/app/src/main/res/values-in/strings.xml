@@ -171,7 +171,7 @@
     <string name="housekeeping_confirm">Pastikan pesan ini</string>
     <string name="housekeeping_label">PEMBENAHAN</string>
     <string name="housekeeping_zero_order">Silakan pilih jumlah valid</string>
-    <string name="logout">DILARANG MASUK SELAIN PETUGAS</string>
+    <string name="logout">DILARANG MASUK SELAIN PEGAWAI</string>
     <string name="nav_drawer_about">TENTANG KAMI</string>
     <string name="nav_drawer_change_language">GANTI BAHASA</string>
     <string name="nav_drawer_home">RUMAH</string>
