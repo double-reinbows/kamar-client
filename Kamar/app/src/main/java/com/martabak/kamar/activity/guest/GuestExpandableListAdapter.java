@@ -17,7 +17,6 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.LaundryOrder;
-import com.martabak.kamar.domain.permintaan.LaundryOrderItem;
 import com.martabak.kamar.domain.permintaan.Massage;
 import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -128,19 +127,6 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                     Housekeeping hkOrder = (Housekeeping) currPermintaan.content;
                     contentString += "\nOrder: " + hkOrder.option.nameEn +
                             "\nQuantity: " + hkOrder.quantity;
-                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_LAUNDRY)) {
-                    img.setImageResource(R.drawable.ic_laundry);
-                    LaundryOrder laundryOrder = (LaundryOrder) currPermintaan.content;
-                    for (LaundryOrderItem l : laundryOrder.items) {
-                        String laundryString = "Tidak";
-                        String pressingString = "Tidak\n";
-                        if (l.laundry) { laundryString = "Iya"; }
-                        if (l.pressing) { pressingString = "Iya\n"; }
-                        contentString += l.quantity+" "+l.option.nameEn+": "+"\n"+l.price+"\n"
-                                +"Cuci: "+laundryString+
-                                "\nSeterika: "+pressingString;
-                    }
-                    contentString += "<i>"+laundryOrder.message;
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_ENGINEERING)) {
                     img.setImageResource(R.drawable.ic_engineering);
                     Engineering engOrder = (Engineering) currPermintaan.content;
