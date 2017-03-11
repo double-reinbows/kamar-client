@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -343,4 +344,17 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         ft.commit();
     }
 
+    /**
+     * Disables the entire screen from user input
+     */
+    public void disableUserInput() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    /**
+     * Enables the entire screen for user input
+     */
+    public void enableUserInput() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
 }

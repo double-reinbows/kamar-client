@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.restaurant;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.annotations.SerializedName;
 import com.martabak.kamar.R;
@@ -169,67 +171,58 @@ public class RestaurantExpListAdapter extends BaseExpandableListAdapter {
          * Below code is for staff members disabling/enabling menu items
          */
         } else if(type.equals(TYPE_EDIT)) {
-
             final RadioButton activeRadio = (RadioButton) convertView.findViewById(R.id.item_active);
             final RadioButton inactiveRadio = (RadioButton) convertView.findViewById(R.id.item_inactive);
+            RadioGroup restaurantRadioGroup = (RadioGroup) convertView.findViewById(R.id.item_active_radiogroup);
+
             //default is set to active so set radiogroup to inactive if menu item is inactive
             if (currConsumable.active == false) {
                 inactiveRadio.setChecked(true);
                 activeRadio.setChecked(false);
             }
 
-            RadioGroup restaurantRadioGroup = (RadioGroup) convertView.findViewById(R.id.item_active_radiogroup);
             restaurantRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(final RadioGroup radioGroup, final int checkedId) {
-
+                    ((RestaurantActivity)context).disableUserInput();
+                    //decide new state
                     final Boolean newState;
                     if (currConsumable.active) {
                         newState = false;
                     } else {
                         newState = true;
                     }
-                    new AlertDialog.Builder(context)
-                            .setTitle("Melumpuh opsi makanan")
-                            .setMessage("Yakin mau melumpuhkan opsi makanan ini?")
-                            .setPositiveButton("Iya", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Consumable updatedConsumable = new Consumable(currConsumable._id, currConsumable._rev,
-                                            currConsumable.nameEn, currConsumable.nameIn, currConsumable.nameRu,
-                                            currConsumable.nameZh, currConsumable.descriptionEn, currConsumable.descriptionIn, currConsumable.descriptionZh,
-                                            currConsumable.descriptionRu, currConsumable.sectionEn, currConsumable.sectionIn, currConsumable.sectionRu,
-                                            currConsumable.sectionZh, currConsumable.subsectionEn, currConsumable.subsectionIn, currConsumable.subsectionRu,
-                                            currConsumable.subsectionZh, currConsumable.order, currConsumable.price, currConsumable.attachmentName, newState);
-                                    MenuServer.getInstance(context).updateMenu(updatedConsumable).subscribe(new Observer<Boolean>() {
-                                        @Override
-                                        public void onCompleted() {
-                                            Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "updateConsumable() On completed");
-                                        }
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "updateConsumable() On error");
-                                        }
-                                        @Override
-                                        public void onNext(Boolean aBoolean) {
-                                            Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "updateConsumable() result " + aBoolean);
-                                        }
-                                    });
-                                }
-                            })
-                            .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    if (currConsumable.active) {
-                                        inactiveRadio.setChecked(false);
-                                        activeRadio.setChecked(true);
-                                    } else {
-                                        inactiveRadio.setChecked(true);
-                                        activeRadio.setChecked(false);
-                                    }
-                                }
-                            })
-                            .show();
+                    //update consumable's state on the server...
+                    final Consumable updatedConsumable = new Consumable(currConsumable._id, currConsumable._rev,
+                            currConsumable.nameEn, currConsumable.nameIn, currConsumable.nameRu,
+                            currConsumable.nameZh, currConsumable.descriptionEn, currConsumable.descriptionIn, currConsumable.descriptionZh,
+                            currConsumable.descriptionRu, currConsumable.sectionEn, currConsumable.sectionIn, currConsumable.sectionRu,
+                            currConsumable.sectionZh, currConsumable.subsectionEn, currConsumable.subsectionIn, currConsumable.subsectionRu,
+                            currConsumable.subsectionZh, currConsumable.order, currConsumable.price, currConsumable.attachmentName, newState);
+                    MenuServer.getInstance(context).updateMenu(updatedConsumable).subscribe(new Observer<Boolean>() {
+                        @Override
+                        public void onCompleted() {
+                            Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "updateConsumable() On completed");
+//                            idToConsumable.put(currConsumable._id, updatedConsumable);
+                            activeRadio.setEnabled(false);
+                            inactiveRadio.setEnabled(false);
+                            ((RestaurantActivity)context).enableUserInput();
+                            Toast.makeText(
+                                    context,
+                                    R.string.edit_menu_result,
+                                    Toast.LENGTH_SHORT
+                            ).show();
+//                            notifyDataSetChanged();
+                        }
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "updateConsumable() On error");
+                        }
+                        @Override
+                        public void onNext(Boolean aBoolean) {
+                            Log.d(RestaurantExpListAdapter.class.getCanonicalName(), "updateConsumable() result " + aBoolean);
+                        }
+                    });
                 }
             });
         }

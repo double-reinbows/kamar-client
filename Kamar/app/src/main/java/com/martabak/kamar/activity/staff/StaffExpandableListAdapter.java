@@ -446,10 +446,13 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     @Override
                     public void onCompleted() {
                         Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On completed");
-                        //Add child to the next state
-                        stateToPermIds.get(permintaan.state).add(permintaan._id);
-                        //Remove the child from the current state
-                        stateToPermIds.get(prevState).remove(permintaan._id);
+                        //if prevState != currentState
+                        if (!permintaan.state.equals(prevState)) {
+                            //Remove the child from the current state
+                            stateToPermIds.get(prevState).remove(permintaan._id);
+                            //Add child to the next state
+                            stateToPermIds.get(permintaan.state).add(permintaan._id);
+                        }
                         //update Permintaan dictionary
                         idToPermintaan.put(permintaan._id, permintaan);
                         notifyDataSetChanged();
