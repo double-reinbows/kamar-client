@@ -167,7 +167,6 @@
     <string name="guest_welcome_title">欢迎!</string>
 
     <!-- Laundry special instructions -->
-    <string name="laundry_message">您确定要制作洗衣用品吗？</string>
     <string name="no_ironing">不能熨</string>
     <string name="on_hanger">在衣架</string>
     <string name="folded">折叠</string>
@@ -214,4 +213,5 @@
     <string name="estimate">估计</string>
     <string name="minutes">分钟</string>
     <string name="chat_header_message">注：工作人员只说英语或印尼语。</string>
+    <string name="laundry_message">请在您的衣柜里填写洗衣表格</string>
 </resources>

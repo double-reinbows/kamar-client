@@ -32,4 +32,5 @@
     <string name="chat_header_message">Note: staff members only speak English or Bahasa Indonesia.</string>
     <string name="guest_permintaan_dialog_title">ORDER DETAILS</string>
     <string name="edit_menu_result">Menu item succesfully edited!</string>
+    <string name="laundry_message">Please fill out the laundry form inside your wardrobe then tap "ORDER"</string>
 </resources>
