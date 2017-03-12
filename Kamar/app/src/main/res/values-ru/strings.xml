@@ -215,4 +215,5 @@
     <string name="minutes">минут</string>
     <string name="chat_header_message">Примечание: сотрудники говорят только на английском или индонезийском.</string>
     <string name="laundry_message">Пожалуйста, заполните форму одежды в приказ</string>
+    <string name="terms_and_conditions_message"> ИСПОЛЬЗОВАНИЕ ТАБЛЕТКИ: Я соглашаюсь использовать планшет только осторожно, только в помещении Swissbel-hotel Segara. \n\nУБРАТЬ И УЩЕРБ: в случае, если я приведу к потере или повреждению планшета, я согласен заплатить по крайней мере Rp. 5 000 000 швейцарской Segara.</string>
 </resources>
