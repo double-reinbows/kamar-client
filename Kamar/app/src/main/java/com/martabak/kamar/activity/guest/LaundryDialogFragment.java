@@ -48,9 +48,11 @@ public class LaundryDialogFragment extends DialogFragment {
         PermintaanManager.getInstance().getBellboyStatus(getActivity()).subscribe(new Observer<String>() {
             @Override
             public void onCompleted() {
+                Log.d(LaundryDialogFragment.class.getCanonicalName(), "getBellboyStatus complete");
             }
             @Override
             public void onError(Throwable e) {
+                Log.e(LaundryDialogFragment.class.getCanonicalName(), "Error getting bellboy status", e);
             }
             @Override
             public void onNext(String s) {
@@ -120,8 +122,7 @@ public class LaundryDialogFragment extends DialogFragment {
                 }
                 @Override
                 public void onError(Throwable e) {
-                    Log.d(LaundryDialogFragment.class.getCanonicalName(), "On error");
-                    e.printStackTrace();
+                    Log.e(LaundryDialogFragment.class.getCanonicalName(), "On error", e);
                     success = false;
                     permintaanDialogListener.onDialogPositiveClick(LaundryDialogFragment.this, success);
                 }
@@ -135,8 +136,7 @@ public class LaundryDialogFragment extends DialogFragment {
                     }
                 }
             });
-        }
-        else {
+        } else {
             permintaanDialogListener.onDialogPositiveClick(LaundryDialogFragment.this, success);
         }
     }

@@ -134,7 +134,7 @@
 
     <string name="massage_label">Массаж</string>
     <string name="massage_message">Вы уверены, что хотите заказать этот массаж ?</string>
-    <string name="massage_disabled_message">Массажи не может быть забронирован между часами 10PM и 9AM!</string>
+    <string name="massage_disabled_message">Массаж не может быть забронирован между часами</string>
     <string name="massage_result">бронирование Массаж просил</string>
 
     <string name="restaurant_label">Ресторан</string>

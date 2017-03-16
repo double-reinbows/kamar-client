@@ -133,7 +133,7 @@
 
     <string name="massage_label">Pijat</string>
     <string name="massage_message">Apakah Anda yakin ingin memesan pijat ini?</string>
-    <string name="massage_disabled_message">Pijat tidak dapat dipesan antara jam 22:00 dan 09:00!</string>
+    <string name="massage_disabled_message">Pijat tidak dapat dipesan antara jam</string>
     <string name="massage_result">Pesanan pijat dikirimkan</string>
 
     <string name="restaurant_label">Makanan</string>
