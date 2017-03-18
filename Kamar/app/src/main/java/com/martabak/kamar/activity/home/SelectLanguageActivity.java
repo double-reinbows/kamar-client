@@ -1,5 +1,6 @@
 package com.martabak.kamar.activity.home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -133,7 +134,8 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 //if there is a guest in the room then show promo + welcome msg
                 if (!(getSharedPreferences("userSettings", MODE_PRIVATE).
                         getString("guestId", "none")).equals("none")) {
-                    PromoWelcomeDialog();
+                    //PromoWelcomeDialog();
+                    showTermsAndConditionsDialog();
                 } else { //skip welcome + promo dialog
                     startActivity(new Intent(SelectLanguageActivity.this, GuestHomeActivity.class));
                     finish();
@@ -168,6 +170,22 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 editor.commit();
             }
         });
+    }
+
+    private void showTermsAndConditionsDialog() {
+
+        //terms and conditions dialog
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SelectLanguageActivity.this)
+                .setTitle(R.string.terms_and_conditions)
+                .setMessage(R.string.terms_and_conditions_message)
+                .setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton(android.R.string.yes,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                PromoWelcomeDialog();
+                            }
+                        }).setNegativeButton(android.R.string.no, null);
+        alertDialogBuilder.show();
     }
 
     private void PromoWelcomeDialog() {
