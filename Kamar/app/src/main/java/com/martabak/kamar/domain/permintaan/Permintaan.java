@@ -100,6 +100,11 @@ public class Permintaan<T extends Content> extends Model {
     private static final Set<String> REGRESSABLE_STATES = new HashSet<>(Arrays.asList(STATE_INPROGRESS, STATE_INDELIVERY));
 
     /**
+     * The set of states where displaying an ETA makes sense.
+     */
+    private static final Set<String> SHOW_ETA_STATES = new HashSet<>(Arrays.asList(STATE_INPROGRESS, STATE_INDELIVERY));
+
+    /**
      * The owner of the request. One of:
      * <ul>
      * <li>RESTAURANT</li>
@@ -244,6 +249,14 @@ public class Permintaan<T extends Content> extends Model {
      */
     public boolean isRegressable() {
         return REGRESSABLE_STATES.contains(state);
+    }
+
+    /**
+     * @return Whether or not this permintaan is in a state where the ETA makes sense and an ETA
+     * exists.
+     */
+    public boolean shouldShowEta() {
+        return SHOW_ETA_STATES.contains(state) && eta != null && eta != 0;
     }
 
     @Override

@@ -78,7 +78,7 @@ public class GuestPermintaanService extends IntentService {
 
     private void createNotification(int nId, Permintaan permintaan) {
         String eta = "";
-        if (permintaan.eta != null && permintaan.eta != 0) {
+        if (permintaan.shouldShowEta()) {
             eta = String.format(Locale.getDefault(), ", %s %d %s", getString(R.string.estimate), permintaan.eta, getString(R.string.minutes));
         }
         NotificationCompat.Builder mBuilder =new NotificationCompat.Builder(this)
@@ -109,4 +109,5 @@ public class GuestPermintaanService extends IntentService {
         // nId allows you to update the notification later on.
         mNotificationManager.notify("permintaan", nId, mBuilder.build());
     }
+
 }
