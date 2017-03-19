@@ -171,6 +171,7 @@ public class PermintaanManager implements Manager {
         return getMostRecentStatusOf(c, Permintaan.TYPE_BELLBOY);
     }
 
+
     /**
      * @return The state of the most recent housekeeping permintaan.
      */
