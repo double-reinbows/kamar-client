@@ -1,6 +1,5 @@
 package com.martabak.kamar.activity.massage;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
-import com.martabak.kamar.domain.Staff;
 import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.MassageOption;
@@ -28,7 +26,6 @@ import com.martabak.kamar.service.Server;
 import com.martabak.kamar.service.StaffServer;
 import com.martabak.kamar.util.Constants;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,7 +36,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * This activity generates the list of massage options and allows the guest to request one.

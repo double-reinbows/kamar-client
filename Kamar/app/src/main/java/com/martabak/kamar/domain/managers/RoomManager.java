@@ -57,7 +57,7 @@ public class RoomManager implements Manager {
     public Observable<Room> getRoomsWithGuests(Context c) {
         if (roomsWithGuests == null) {
             roomsWithGuests = new ArrayList<>();
-            Observable<Room> roomsObs = GuestServer.getInstance(c).getRoomNumbersWithoutGuests();
+            Observable<Room> roomsObs = GuestServer.getInstance(c).getRoomNumbersWithGuests();
             roomsObs.subscribe(new Observer<Room>() {
                 @Override public void onCompleted() {
                     Log.d(RoomManager.class.getCanonicalName(), "Fetched rooms with guests");

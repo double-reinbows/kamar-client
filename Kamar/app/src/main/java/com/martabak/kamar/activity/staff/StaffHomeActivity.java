@@ -243,10 +243,8 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffPermintaanService.class.getCanonicalName() + " as " + userSubType);
         startService(new Intent(this, StaffPermintaanService.class)
                 .putExtra("subUserType", userSubType));
-        if (userSubType.equals(User.TYPE_STAFF_FRONTDESK)) {
-            Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffChatService.class.getCanonicalName());
-            startService(new Intent(this, StaffChatService.class));
-        }
+        Log.v(StaffHomeActivity.class.getCanonicalName(), "Starting " + StaffChatService.class.getCanonicalName() + " as " + userSubType);
+        startService(new Intent(this, StaffChatService.class));
     }
 
 
