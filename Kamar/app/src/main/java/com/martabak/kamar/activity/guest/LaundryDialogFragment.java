@@ -45,12 +45,14 @@ public class LaundryDialogFragment extends DialogFragment {
 
         final AlertDialog dialog= new AlertDialog.Builder(getActivity()).create();
 
-        PermintaanManager.getInstance().getBellboyStatus(getActivity()).subscribe(new Observer<String>() {
+        PermintaanManager.getInstance().getLaundryStatus(getActivity()).subscribe(new Observer<String>() {
             @Override
             public void onCompleted() {
+                Log.d(LaundryDialogFragment.class.getCanonicalName(), "getLaundryStatus complete");
             }
             @Override
             public void onError(Throwable e) {
+                Log.e(LaundryDialogFragment.class.getCanonicalName(), "Error getting laundry status", e);
             }
             @Override
             public void onNext(String s) {
@@ -61,6 +63,7 @@ public class LaundryDialogFragment extends DialogFragment {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.v("LaundryStatus", status);
                 if (status == null || status.equals(Permintaan.STATE_COMPLETED)) {
                     sendLaundryRequest("");
                 } else {
@@ -87,7 +90,7 @@ public class LaundryDialogFragment extends DialogFragment {
     }
 
     /**
-     * Send bellboy request to the server.
+     * Send laundry request to the server.
      */
     public void sendLaundryRequest(String laundryMessage) {
         LaundryOrder laundryOrder = new LaundryOrder(laundryMessage);
@@ -120,8 +123,7 @@ public class LaundryDialogFragment extends DialogFragment {
                 }
                 @Override
                 public void onError(Throwable e) {
-                    Log.d(LaundryDialogFragment.class.getCanonicalName(), "On error");
-                    e.printStackTrace();
+                    Log.e(LaundryDialogFragment.class.getCanonicalName(), "On error", e);
                     success = false;
                     permintaanDialogListener.onDialogPositiveClick(LaundryDialogFragment.this, success);
                 }
@@ -135,8 +137,7 @@ public class LaundryDialogFragment extends DialogFragment {
                     }
                 }
             });
-        }
-        else {
+        } else {
             permintaanDialogListener.onDialogPositiveClick(LaundryDialogFragment.this, success);
         }
     }

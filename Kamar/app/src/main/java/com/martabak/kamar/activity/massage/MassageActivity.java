@@ -1,6 +1,5 @@
 package com.martabak.kamar.activity.massage;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
-import com.martabak.kamar.domain.Staff;
 import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.managers.PermintaanManager;
 import com.martabak.kamar.domain.options.MassageOption;
@@ -26,18 +24,18 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 import com.martabak.kamar.service.Server;
 import com.martabak.kamar.service.StaffServer;
+import com.martabak.kamar.util.Constants;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * This activity generates the list of massage options and allows the guest to request one.
@@ -70,12 +68,14 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
         ButterKnife.bind(this);
         loadOptions();
 
-        if (checkMassageTimes())
-        {
-
+        if (invalidMassageTime()) {
+            String message = String.format(Locale.getDefault(), "%s %02d00 - %02d00",
+                    getString(R.string.massage_disabled_message),
+                    Constants.MASSAGE_CLOSING_TIME,
+                    Constants.MASSAGE_OPENING_TIME);
             new AlertDialog.Builder(this)
                     .setTitle(R.string.massage_label)
-                    .setMessage(R.string.massage_disabled_message)
+                    .setMessage(message)
                     .setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton(android.R.string.yes, null).show();
         }
 
@@ -128,24 +128,20 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
         return false;
     }
 
-    private boolean checkMassageTimes() {
-        //the begin time and end time are set here
-        //the begin time is today's date + time:9AM
-        //the end time is today's date + time:10pm
-        beginDate.set(Calendar.MINUTE,0);
-        beginDate.set(Calendar.HOUR_OF_DAY,9);
-        beginDate.set(Calendar.SECOND,0);
+    /**
+     * The begin and end time are set here.
+     * @return Whether or not it is currently a valid massage time.
+     */
+    private boolean invalidMassageTime() {
+        beginDate.set(Calendar.HOUR_OF_DAY, Constants.MASSAGE_OPENING_TIME);
+        beginDate.set(Calendar.MINUTE, 0);
+        beginDate.set(Calendar.SECOND, 0);
 
-        endDate.set(Calendar.MINUTE,0);
-        endDate.set(Calendar.HOUR_OF_DAY,22);
-        endDate.set(Calendar.SECOND,0);
+        endDate.set(Calendar.HOUR_OF_DAY, Constants.MASSAGE_CLOSING_TIME);
+        endDate.set(Calendar.MINUTE, 0);
+        endDate.set(Calendar.SECOND, 0);
 
-
-        if ((currentDate.before(beginDate)) || (currentDate.after(endDate)))
-        {
-            return true;
-        }
-        return false;
+        return currentDate.before(beginDate) || currentDate.after(endDate);
     }
 
     /**
@@ -291,9 +287,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                     holder.completedImageView.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.circle_green));
                     break;
             }
-            if (requestInProgress()) {
-                holder.buttonView.setEnabled(false);
-            } else if (checkMassageTimes()) {
+            if (requestInProgress() || invalidMassageTime()) {
                 holder.buttonView.setEnabled(false);
             } else {
                 holder.buttonView.setEnabled(true);

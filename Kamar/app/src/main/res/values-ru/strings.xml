@@ -134,7 +134,7 @@
 
     <string name="massage_label">Массаж</string>
     <string name="massage_message">Вы уверены, что хотите заказать этот массаж ?</string>
-    <string name="massage_disabled_message">Массажи не может быть забронирован между часами 10PM и 9AM!</string>
+    <string name="massage_disabled_message">Массаж не может быть забронирован между часами</string>
     <string name="massage_result">бронирование Массаж просил</string>
 
     <string name="restaurant_label">Ресторан</string>
@@ -215,5 +215,6 @@
     <string name="minutes">минут</string>
     <string name="chat_header_message">Примечание: сотрудники говорят только на английском или индонезийском.</string>
     <string name="laundry_message">Пожалуйста, заполните форму одежды в приказ</string>
+    <string name="terms_and_conditions">условия и положения</string>
     <string name="terms_and_conditions_message"> ИСПОЛЬЗОВАНИЕ ТАБЛЕТКИ: Я соглашаюсь использовать планшет только осторожно, только в помещении Swissbel-hotel Segara. \n\nУБРАТЬ И УЩЕРБ: в случае, если я приведу к потере или повреждению планшета, я согласен заплатить по крайней мере Rp. 5 000 000 швейцарской Segara.</string>
 </resources>
