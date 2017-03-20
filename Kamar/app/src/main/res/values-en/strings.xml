@@ -182,7 +182,7 @@
 
     <!--Terms and conditions-->
     <string name="terms_and_conditions">Terms and Conditions</string>
-    <string name="terms_and_conditions_message">USE OF TABLET: I agree to only use the tablet in a careful, proper manner and only on Swissbel-hotel Segara premises.  \n\nDAMAGE AND LOSS: in the event I cause the tablet to be lost or damaged beyond repair, I agree to pay at least Rp. 5 000 000 to Swissbel Segara.</string>
+    <string name="terms_and_conditions_message">To use the following application, you must agree to the following:\n\nUSE OF TABLET: I agree to only use the tablet in a careful, proper manner and only on Swissbel-hotel Segara premises.  \n\nDAMAGE AND LOSS: in the event I cause the tablet to be lost or damaged beyond repair, I agree to pay at least Rp. 5 000 000 to Swissbel Segara.</string>
 
     <!-- Laundry special instructions -->
     <string name="laundry_message">Please fill out the laundry form inside your wardrobe then tap "ORDER"</string>
@@ -223,4 +223,6 @@
     <string name="estimate">Estimate</string>
     <string name="minutes">mins</string>
     <string name="chat_header_message">Note: staff members only speak English or Bahasa Indonesia.</string>
+    <string name="agree">Agree</string>
+    <string name="disagree">Disagree</string>
 </resources>

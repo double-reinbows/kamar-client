@@ -216,4 +216,6 @@
     <string name="laundry_message">请在您的衣柜里填写洗衣表格</string>
     <string name="terms_and_conditions">条款和条件</string>
     <string name="terms_and_conditions_message">平板电脑的使用：我同意仅以谨慎，正确的方式使用平板电脑，并且只能使用Swissbel酒店的Segara场所。 \n\n损失和损失：如果我导致平板电脑丢失或损坏，无法修复，我同意至少支付Rp。 5 000 000给Swissbel Segara。</string>
+    <string name="agree">同意</string>
+    <string name="disagree">不同意</string>
 </resources>

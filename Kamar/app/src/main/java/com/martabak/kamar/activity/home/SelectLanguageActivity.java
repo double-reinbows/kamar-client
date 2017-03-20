@@ -178,13 +178,13 @@ public class SelectLanguageActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SelectLanguageActivity.this)
                 .setTitle(R.string.terms_and_conditions)
                 .setMessage(R.string.terms_and_conditions_message)
-                .setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton(android.R.string.yes,
+                .setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton(R.string.agree,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 PromoWelcomeDialog();
                             }
-                        }).setNegativeButton(android.R.string.no, null);
+                        }).setNegativeButton(R.string.disagree, null);
         alertDialogBuilder.show();
     }
 
