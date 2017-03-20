@@ -41,6 +41,7 @@ public class RestaurantExpListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, String> idToNote;
     private TextView subtotalText;
     private String type;
+    private HashMap<String, Boolean> expGroupOpen;
 
     public static final String TYPE_ORDER = "ORDER";
     public static final String TYPE_EDIT = "EDIT";
@@ -50,7 +51,8 @@ public class RestaurantExpListAdapter extends BaseExpandableListAdapter {
                                     HashMap<String, Consumable> idToConsumable,
                                     HashMap<String, Integer> idToQuantity,
                                     HashMap<String, String> idToNote,
-                                    TextView subtotalText, String type) {
+                                    TextView subtotalText, String type,
+                                    HashMap<String, Boolean> expGroupOpen) {
         this.context = context;
         this.subsections = subsections;
         this.subsectionToIds = subsectionToIds;
@@ -59,6 +61,7 @@ public class RestaurantExpListAdapter extends BaseExpandableListAdapter {
         this.subtotalText = subtotalText;
         this.idToNote = idToNote;
         this.type = type;
+        this.expGroupOpen = expGroupOpen;
     }
 
     @Override
@@ -263,7 +266,8 @@ public class RestaurantExpListAdapter extends BaseExpandableListAdapter {
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.restaurant_subsection);
         lblListHeader.setText(headerTitle);
-
+//        Log.v("HERP", headerTitle + isExpanded);
+        expGroupOpen.put(headerTitle, isExpanded);
         return convertView;
     }
 

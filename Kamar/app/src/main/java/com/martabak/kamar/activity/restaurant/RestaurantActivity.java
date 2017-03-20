@@ -1,7 +1,6 @@
 package com.martabak.kamar.activity.restaurant;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
@@ -10,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ExpandableListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +23,6 @@ import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.service.MenuServer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +51,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
 
     //Views
     private HashMap<String, ExpandableListView> expandableListViews;
+    private HashMap<String, HashMap<String, Boolean>> sectionToExpGroupOpen;
 
     private String callingActivity;
 
@@ -131,6 +128,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                             }
                         }
                     }
+
                     setupTabs(tabLayout);
                     RestaurantOrderManager.getInstance().saveConsumables(consumables);
                 }
@@ -186,6 +184,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         arrowText.setText("\u2192");
         subtotalText.setText("Rp. " + idToQuantity.get("subtotal").toString());
         idToNote = new HashMap<>();
+        sectionToExpGroupOpen = new HashMap<>();
     }
 
     /**
@@ -195,12 +194,14 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
      */
     private void setListsViews(Integer i, TabLayout tabLayout) {
         Consumable c = consumables.get(i);
-//        Log.v("HELLO", c.nameEn + " " + c.sectionEn);
         idToConsumable.put(c._id, c);
         idToQuantity.put(c._id, 0);
         idToNote.put(c._id, "");
         if (!sections.contains(c.getSection())) {//new tab/section
             sections.add(c.getSection()); //add to sections List
+            HashMap newSecOpen = new HashMap<>();
+            newSecOpen.put(c.getSubsection(), false);
+            sectionToExpGroupOpen.put(c.getSection(), newSecOpen);
             //create new List of Consumables for the new section
             List<Consumable> temp = new ArrayList<>();
             temp.add(c);
@@ -212,6 +213,10 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
             List<Consumable> temp = sectionToConsumables.get(c.getSection());
             temp.add(c);
             sectionToConsumables.put(c.getSection(), temp);
+            HashMap expGroupBools = sectionToExpGroupOpen.get(c.getSection());
+            if (!expGroupBools.containsKey(c.getSubsection())) {//expGroupBool doesn't exist
+                expGroupBools.put(c.getSubsection(), false);
+            }
 
         }
     }
@@ -236,7 +241,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String tabString = tab.getText().toString();
-                createExpandableList(sectionToConsumables.get(tabString), expandableListViews.get(tabString));
+                createExpandableList(tabString);
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -250,11 +255,12 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
 
     /**
      * Creates an exp list then sets the ic_restaurant exp list onto it
-     *
-     * @param consumables
-     * @param view
+     * @param tabString
      */
-    protected void createExpandableList(List<Consumable> consumables, ExpandableListView view) {
+    protected void createExpandableList(String tabString) {
+        List<Consumable> consumables = sectionToConsumables.get(tabString);
+        ExpandableListView view = expandableListViews.get(tabString);
+        HashMap<String, Boolean> expGroupOpen = sectionToExpGroupOpen.get(tabString);
         List<String> subsections; //list of subsections
         //a dictionary of lists of consumable IDs with subsections as keys
         HashMap<String, List<String>> subsectionToIds;
@@ -279,20 +285,25 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         if (callingActivity.equals(GuestHomeActivity.class.getName())) {
             //set up ic_restaurant expandable list adapter
             listAdapter = new RestaurantExpListAdapter(this, subsections, subsectionToIds,
-                    idToConsumable, idToQuantity, idToNote, subtotalText, RestaurantExpListAdapter.TYPE_ORDER);
+                    idToConsumable, idToQuantity, idToNote, subtotalText, RestaurantExpListAdapter.TYPE_ORDER,
+                    expGroupOpen);
         } else {
             listAdapter = new RestaurantExpListAdapter(this, subsections, subsectionToIds,
-                    idToConsumable, idToQuantity, idToNote, subtotalText, RestaurantExpListAdapter.TYPE_EDIT);
+                    idToConsumable, idToQuantity, idToNote, subtotalText, RestaurantExpListAdapter.TYPE_EDIT,
+                    expGroupOpen);
         }
 
-        //set list adapter onto view
+
         view.setAdapter(listAdapter);
-        //open the first expandable group if we are in the DRINKS tab
-        if (consumables.get(0).isDrinks()) {
-            view.expandGroup(0, true);
-            view.expandGroup(1, true);
-        }
         view.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+
+        //open previously open expGroups
+        for (int i=0; i<subsections.size(); i++) {
+            String key = listAdapter.getGroup(i).toString();
+            if (expGroupOpen.get(key)) {
+                view.expandGroup(i, true);
+            }
+        }
 
         //set listener for the button
         final TextView orderButton = (TextView) findViewById(R.id.restaurant_arrow_text);
