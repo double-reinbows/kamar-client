@@ -63,7 +63,6 @@ public class LaundryDialogFragment extends DialogFragment {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("LaundryStatus", status);
                 if (status == null || status.equals(Permintaan.STATE_COMPLETED)) {
                     sendLaundryRequest("");
                 } else {
