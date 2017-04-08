@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.staff;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -13,6 +14,7 @@ import android.util.Log;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
+import com.martabak.kamar.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,8 +35,6 @@ import rx.functions.Func1;
  */
 public class StaffPermintaanService extends IntentService {
 
-    private static final int POLL_EVERY_SECONDS_AMOUNT = 20;
-
     private static final Class RESULT_ACTIVITY = StaffHomeActivity.class;
 
     /**
@@ -53,12 +53,11 @@ public class StaffPermintaanService extends IntentService {
             Log.d(StaffPermintaanService.class.getCanonicalName(), "Checking for new permintaans for owner " + owner);
             // Get all permintaans in the NEW state
             PermintaanServer.getInstance(this).getPermintaansOfState(Permintaan.STATE_NEW)
-                    // Filter for only permintaans that have not been seen by this service and not been updated
+                    // Filter for only permintaans that are relevant to this owner and have not been updated
                     .filter(new Func1<Permintaan, Boolean>() {
                         @Override public Boolean call(Permintaan permintaan) {
-                            boolean seen = permintaanIds.contains(permintaan._id);
                             permintaanIds.add(permintaan._id);
-                            return !seen && permintaan.updated == null && permintaan.owner.equalsIgnoreCase(owner);
+                            return permintaan.updated == null && permintaan.owner.equalsIgnoreCase(owner);
                         }
                     }).subscribe(new Action1<Permintaan>() {
                         @Override public void call(Permintaan permintaan) {
@@ -70,8 +69,8 @@ public class StaffPermintaanService extends IntentService {
                     });
 
             try {
-                Log.d(StaffPermintaanService.class.getCanonicalName(), "Going to sleep for " + POLL_EVERY_SECONDS_AMOUNT + " seconds");
-                Thread.sleep(POLL_EVERY_SECONDS_AMOUNT * 1000);
+                Log.d(StaffPermintaanService.class.getCanonicalName(), "Going to sleep for " + Constants.STAFF_PERMINTAAN_REFRESH_TIME_IN_SECONDS + " seconds");
+                Thread.sleep(Constants.STAFF_PERMINTAAN_REFRESH_TIME_IN_SECONDS * 1000);
             } catch (InterruptedException e) {
             }
         }
@@ -80,6 +79,8 @@ public class StaffPermintaanService extends IntentService {
     private void createNotification(int nId, Permintaan permintaan) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_menu_manage)
+                .setOnlyAlertOnce(false)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setContentTitle(getString(R.string.new_permintaan) + " " + getString(R.string.permintaan).toUpperCase())
                 .setContentText(permintaan.type + ": " + getString(R.string.room_number) + " " + permintaan.roomNumber);
         // Creates an explicit intent for an Activity in your app

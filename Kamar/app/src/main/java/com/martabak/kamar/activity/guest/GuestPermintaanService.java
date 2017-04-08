@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.guest;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -13,6 +14,7 @@ import android.util.Log;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
+import com.martabak.kamar.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,8 +33,6 @@ import rx.functions.Func1;
  * </p>
  */
 public class GuestPermintaanService extends IntentService {
-
-    private static final int POLL_EVERY_SECONDS_AMOUNT = 20;
 
     private static final Class RESULT_ACTIVITY = GuestHomeActivity.class;
 
@@ -69,8 +69,8 @@ public class GuestPermintaanService extends IntentService {
                     });
 
             try {
-                Log.d(GuestPermintaanService.class.getCanonicalName(), "Going to sleep for " + POLL_EVERY_SECONDS_AMOUNT + " seconds");
-                Thread.sleep(POLL_EVERY_SECONDS_AMOUNT * 1000);
+                Log.d(GuestPermintaanService.class.getCanonicalName(), "Going to sleep for " + Constants.GUEST_PERMINTAAN_REFRESH_TIME_IN_SECONDS + " seconds");
+                Thread.sleep(Constants.GUEST_PERMINTAAN_REFRESH_TIME_IN_SECONDS * 1000);
             } catch (InterruptedException e) {
             }
         }
@@ -83,6 +83,7 @@ public class GuestPermintaanService extends IntentService {
         }
         NotificationCompat.Builder mBuilder =new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_menu_manage)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setContentTitle(permintaan.type + " " + getString(R.string.permintaan))
                 .setContentText(getString(R.string.permintaan_status_is_now) + " " + permintaan.state + eta);
         // Creates an explicit intent for an Activity in your app

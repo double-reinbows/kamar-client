@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.chat;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -20,6 +21,7 @@ import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.domain.managers.RoomManager;
 import com.martabak.kamar.service.ChatServer;
 import com.martabak.kamar.service.GuestServer;
+import com.martabak.kamar.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +35,6 @@ import rx.functions.Func1;
  * A chat service that routinely checks for new incoming chat messages for staff.
  */
 public class StaffChatService extends IntentService {
-
-    private static final int POLL_EVERY_SECONDS_AMOUNT = 20;
 
     private static final Class RESULT_ACTIVITY = StaffHomeActivity.class;
 
@@ -98,8 +98,8 @@ public class StaffChatService extends IntentService {
             });
 
             try {
-                Log.d(StaffChatService.class.getCanonicalName(), "Going to sleep for " + POLL_EVERY_SECONDS_AMOUNT + " seconds");
-                Thread.sleep(POLL_EVERY_SECONDS_AMOUNT * 1000);
+                Log.d(StaffChatService.class.getCanonicalName(), "Going to sleep for " + Constants.STAFF_CHAT_REFRESH_TIME_IN_SECONDS + " seconds");
+                Thread.sleep(Constants.STAFF_CHAT_REFRESH_TIME_IN_SECONDS * 1000);
             } catch (InterruptedException e) {
             }
         }
@@ -124,6 +124,8 @@ public class StaffChatService extends IntentService {
     private void createNotification(int nId, ChatMessage message, String roomNumber) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_menu_share)
+                .setOnlyAlertOnce(false)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setContentTitle(getString(R.string.chat_message_from_guest) + " " + roomNumber)
                 .setContentText(message.message);
         // Creates an explicit intent for an Activity in your app

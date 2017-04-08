@@ -1,6 +1,7 @@
 package com.martabak.kamar.activity.chat;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -17,6 +18,7 @@ import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.ChatServer;
+import com.martabak.kamar.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +34,6 @@ import rx.functions.Func1;
  * </p>
  */
 public class GuestChatService extends IntentService {
-
-    private static final int POLL_EVERY_SECONDS_AMOUNT = 20;
 
     private static final Class RESULT_ACTIVITY = GuestChatActivity.class;
 
@@ -72,8 +72,8 @@ public class GuestChatService extends IntentService {
                     });
 
             try {
-                Log.d(GuestChatService.class.getCanonicalName(), "Going to sleep for " + POLL_EVERY_SECONDS_AMOUNT + " seconds");
-                Thread.sleep(POLL_EVERY_SECONDS_AMOUNT * 1000);
+                Log.d(GuestChatService.class.getCanonicalName(), "Going to sleep for " + Constants.GUEST_CHAT_REFRESH_TIME_IN_SECONDS + " seconds");
+                Thread.sleep(Constants.GUEST_CHAT_REFRESH_TIME_IN_SECONDS * 1000);
             } catch (InterruptedException e) {
             }
         }
@@ -90,6 +90,7 @@ public class GuestChatService extends IntentService {
         }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_menu_share)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setContentTitle(getString(R.string.chat_message_from_staff) + " " + from)
                 .setContentText(message.message);
 
