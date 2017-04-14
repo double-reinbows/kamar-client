@@ -231,7 +231,9 @@ public class GuestHomeActivity extends AppCompatActivity implements
                         public void onClick(DialogInterface dialog, int which) {
                             Log.v("App Action", "Resetting tablet");
                             stopGuestServices();
-                            checkGuestOutByRoomNumber(roomNumber);
+//                            checkGuestOutByRoomNumber(roomNumber);
+                            Intent intent = new Intent(GuestHomeActivity.this, SelectLanguageActivity.class);
+                            startActivity(intent);
                         }
                     })
                     .create().show();
