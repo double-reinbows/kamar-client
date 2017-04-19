@@ -1,7 +1,6 @@
 package com.martabak.kamar.activity.staff;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
@@ -48,6 +47,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
     private List<Event> promoImages;
     private List<String> roomNumbers;
     private ArrayAdapter roomNumAdapter;
+    private ArrayAdapter promoImgAdapter;
 
     //bind views here
     @BindView(R.id.guest_first_name) EditText editFirstName;
@@ -103,12 +103,12 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
         spinnerRoomNumber.setOnItemSelectedListener(this);
 
         final List<String> promoImageNames = getPromoImages();
-        ArrayAdapter promImgAdapter = new ArrayAdapter(getActivity().getBaseContext(),
+        promoImgAdapter = new ArrayAdapter(getActivity().getBaseContext(),
                 R.layout.spinner_item, promoImageNames);
         promoImageNames.add(0, getString(R.string.promo_img_select));
 //        promImgAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        promImgAdapter.notifyDataSetChanged();
-        spinnerPromoImg.setAdapter(promImgAdapter);
+
+        spinnerPromoImg.setAdapter(promoImgAdapter);
         spinnerPromoImg.setSelection(0);
         spinnerPromoImg.setOnItemSelectedListener(this);
 
@@ -206,32 +206,37 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
      * @return A list of image names stored in the event database.
      */
     private List<String> getPromoImages() {
-        final List<String>[] promoImageNames = new List[]{new ArrayList<Event>()};
+        final List<String>[] promoImageNames = new List[]{new ArrayList<>()};
         EventServer.getInstance(getActivity().getBaseContext()).getAllEvents()
                 .subscribe(new Observer<List<Event>>() {
 
                     @Override public void onCompleted() {
+                        Log.d(CheckGuestInFragment.class.getCanonicalName(),  "getPromoImages() onCompleted");
+                        promoImgAdapter.notifyDataSetChanged();
                     }
                     @Override public void onError(Throwable e) {
-                        Log.v(CheckGuestInFragment.class.getCanonicalName(),  "getPromoImages() onError");
+                        Log.d(CheckGuestInFragment.class.getCanonicalName(),  "getPromoImages() onError");
                         e.printStackTrace();
                     }
                     @Override public void onNext(List<Event> result) {
-                        Log.v(CheckGuestInFragment.class.getCanonicalName(), "getPromoImages() onNext");
+                        Log.d(CheckGuestInFragment.class.getCanonicalName(), "getPromoImages() onNext");
+
                         if (result.get(0).name != null) { //if view is not at the front
                             for (int i=0; i<result.size()-1; i++) { //skip last event
-                                Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + result.get(i).name);
+                                Log.d(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + result.get(i).name);
                                 promoImageNames[0].add(result.get(i).name);
                             }
+                            promoImages = result;
 
                         } else {
                             for (int i=1; i<result.size(); i++) { //skip first event
-                                Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + result.get(i).name);
+                                Log.d(CheckGuestInFragment.class.getCanonicalName(), "Found promo image event with name " + result.get(i).name);
                                 promoImageNames[0].add(result.get(i).name);
                             }
+                            result.remove(0); //remove design doc at the start of the List
+                            promoImages = result;
                         }
-                        promoImages = result;
-                        Log.v(CheckGuestInFragment.class.getCanonicalName(), "Setting promoImages to " + promoImages + " with size " + promoImages.size());
+                        Log.d(CheckGuestInFragment.class.getCanonicalName(), "Setting promoImages to " + promoImages + " with size " + promoImages.size());
                     }
                 });
         return promoImageNames[0];
@@ -278,7 +283,7 @@ public class CheckGuestInFragment extends Fragment implements TextWatcher, Adapt
                 ).show();
             }
             @Override public void onNext(Guest guest) {
-                Log.v(CheckGuestInFragment.class.getCanonicalName(), "createGuest() " + guest.toString());
+                Log.d(CheckGuestInFragment.class.getCanonicalName(), "createGuest() " + guest.toString());
                 if (guest != null) {
                     Toast.makeText(
                             getActivity(),
