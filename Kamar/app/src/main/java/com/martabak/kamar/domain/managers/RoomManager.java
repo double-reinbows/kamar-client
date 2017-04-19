@@ -75,7 +75,7 @@ public class RoomManager implements Manager {
     }
 
     public Observable<Room> getRoomsWithoutGuests(Context c) {
-        if (roomsWithoutGuests == null) {
+//        if (roomsWithoutGuests == null) {
             roomsWithoutGuests = new ArrayList<>();
             Observable<Room> roomsObs = GuestServer.getInstance(c).getRoomNumbersWithoutGuests();
             roomsObs.subscribe(new Observer<Room>() {
@@ -90,8 +90,8 @@ public class RoomManager implements Manager {
                 }
             });
             return roomsObs;
-        }
-        return Observable.from(roomsWithoutGuests);
+//        }
+//        return Observable.from(roomsWithoutGuests);
     }
 
 }

@@ -82,8 +82,8 @@
     <!-- Nav drawer -->
     <string name="nav_drawer_requests">PERMINTAAN</string>
     <string name="nav_drawer_chat">OBROLAN</string>
-    <string name="nav_drawer_checkguestin">LIHAT TAMU DI</string>
-    <string name="nav_drawer_checkguestout">LIHAT TAMU OUT</string>
+    <string name="nav_drawer_checkguestin">CHECK IN</string>
+    <string name="nav_drawer_checkguestout">CHECK OUT</string>
     <string name="nav_drawer_create_permintaan">BUAT REQUEST</string>
     <string name="nav_drawer_staff_hours">JAM STAFF</string>
     <string name="nav_drawer_logout">TAMU MODE</string>
@@ -207,7 +207,7 @@
     <string name="restaurant_subtotal_text">Total sebelum PAJAK</string>
     <string name="request_success">Permintaan terkirim! Apakah Anda ingin membuat permintaan lain?</string>
     <string name="guest_empty_room">Tidak ada tamu di dalam ruangan ini</string>
-    <string name="no_guest_in_room">Maaf, tapi Anda tidak diperiksa!</string>
+    <string name="no_guest_in_room">Maaf, tapi Anda belum di check in!</string>
     <string name="room_number_not_found">Maaf, saya tidak dapat menemukan nomor kamar Anda. Harap memberitahu anggota staf.</string>
     <string name="survey_thank_you">Kami sangat menghargai komentar Anda dan akan memastikan kami menggunakannya untuk membuat Anda tinggal berikutnya dengan kami bahkan lebih baik!</string>
     <string name="spa">Spa</string>
