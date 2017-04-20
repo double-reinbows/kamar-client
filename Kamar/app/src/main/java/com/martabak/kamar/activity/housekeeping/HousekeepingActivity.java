@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -63,6 +64,7 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         hkOptions = HousekeepingManager.getInstance().getOptions();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if (hkOptions == null) {
             housekeepingSections = new ArrayList<>();

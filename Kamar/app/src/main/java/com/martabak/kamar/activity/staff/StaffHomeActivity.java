@@ -64,6 +64,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(new NavigationViewListener());
         }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         /*
         ImageView staffImageView = (ImageView) findViewById(R.id.staff_image);
         if (staffImageView != null) {

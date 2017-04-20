@@ -88,6 +88,7 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
         super.onCreate(savedInstanceState);
         permintaanFragment(); //permintaan status lights
         ButterKnife.bind(this);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         consumables = RestaurantOrderManager.getInstance().getConsumables();
 

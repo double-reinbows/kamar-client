@@ -3,6 +3,7 @@ package com.martabak.kamar.activity.chat;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
@@ -24,6 +25,7 @@ public class GuestChatActivity extends AbstractGuestBarsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Bundle arguments = new Bundle();
         arguments.putString(ChatDetailFragment.GUEST_ID, getGuestId());
