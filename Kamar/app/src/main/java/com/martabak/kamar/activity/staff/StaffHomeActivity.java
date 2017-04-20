@@ -45,10 +45,13 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
     }
 
     // on click bindings for the guest home activity
-    @OnClick(R.id.chat_icon)
-    public void onChatIConClick() {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.staff_container, StaffChatFragment.newInstance()).commit();
+    @OnClick(R.id.refresh_icon)
+    public void onRefreshIconClick() {
+//        getFragmentManager().beginTransaction()
+//                .replace(R.id.staff_container, StaffChatFragment.newInstance()).commit();
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 
     @Override

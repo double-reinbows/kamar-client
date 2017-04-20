@@ -21,14 +21,14 @@ public abstract class AbstractStaffBarsActivity extends AbstractCustomFontActivi
 
     public class Options {
         private int baseLayout;
-        private boolean enableChatIcon;
+        private boolean enableRefreshIcon;
 
         public Options withBaseLayout(int baseLayout) {
             this.baseLayout = baseLayout;
             return this;
         }
         public Options enableChatIcon(boolean enableChatIcon) {
-            this.enableChatIcon = enableChatIcon;
+            this.enableRefreshIcon = enableChatIcon;
             return this;
         }
     }
@@ -37,10 +37,10 @@ public abstract class AbstractStaffBarsActivity extends AbstractCustomFontActivi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getOptions().baseLayout);
-        setupToolbar(getOptions().enableChatIcon);
+        setupToolbar(getOptions().enableRefreshIcon);
     }
 
-    private void setupToolbar(boolean enableChatIcon) {
+    private void setupToolbar(boolean enableRefreshIcon) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -53,9 +53,9 @@ public abstract class AbstractStaffBarsActivity extends AbstractCustomFontActivi
 
         });
 
-        if (enableChatIcon) {
-            ImageView chatIconView = (ImageView) findViewById(R.id.chat_icon);
-            chatIconView.setOnClickListener(new View.OnClickListener() {
+        if (enableRefreshIcon) {
+            ImageView refreshIconView = (ImageView) findViewById(R.id.refresh_icon);
+            refreshIconView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     getFragmentManager().beginTransaction()
