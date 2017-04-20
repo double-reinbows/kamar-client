@@ -24,6 +24,7 @@ import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.guest.PermintaanDialogListener;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
+import com.martabak.kamar.activity.home.SplashScreenActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
 import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -205,8 +206,10 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
                     break;
                 case R.id.nav_logout:
                     stopStaffServices();
-                    Log.v(StaffHomeActivity.class.toString(), "Loading select language activity");
-                    startActivity(new Intent(StaffHomeActivity.this, SelectLanguageActivity.class));
+                    Log.v(StaffHomeActivity.class.toString(), "Loading splash screen activity");
+                    finishAffinity();
+                    startActivity(new Intent(StaffHomeActivity.this, SplashScreenActivity.class));
+                    stopStaffServices();
                     finish();
                     break;
             }

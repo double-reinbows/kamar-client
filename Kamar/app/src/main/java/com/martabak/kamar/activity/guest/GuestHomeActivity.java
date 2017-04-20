@@ -23,6 +23,7 @@ import com.martabak.kamar.activity.chat.GuestChatService;
 import com.martabak.kamar.activity.engineering.EngineeringActivity;
 import com.martabak.kamar.activity.event.GuestEventActivity;
 import com.martabak.kamar.activity.home.SelectLanguageActivity;
+import com.martabak.kamar.activity.home.SplashScreenActivity;
 import com.martabak.kamar.activity.housekeeping.HousekeepingActivity;
 import com.martabak.kamar.activity.massage.MassageActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
@@ -232,8 +233,10 @@ public class GuestHomeActivity extends AppCompatActivity implements
                             Log.v("App Action", "Resetting tablet");
                             stopGuestServices();
 //                            checkGuestOutByRoomNumber(roomNumber);
-                            Intent intent = new Intent(GuestHomeActivity.this, SelectLanguageActivity.class);
+                            Intent intent = new Intent(GuestHomeActivity.this, SplashScreenActivity.class);
                             startActivity(intent);
+                            stopGuestServices();
+                            finish();
                         }
                     })
                     .create().show();

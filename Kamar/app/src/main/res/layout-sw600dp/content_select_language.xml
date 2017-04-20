@@ -23,14 +23,14 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 
-    <ImageView
+    <!--ImageView
         android:src="@drawable/logo_coloured"
         android:layout_width="500dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="40dp"
-        android:id="@+id/logo"/>
+        android:id="@+id/logo"/-->
 
     <ImageButton
         android:layout_width="175dp"
