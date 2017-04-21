@@ -294,16 +294,19 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                     expGroupOpen);
         }
 
-
         view.setAdapter(listAdapter);
         view.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 
-        //open previously open expGroups
-        for (int i=0; i<subsections.size(); i++) {
-            String key = listAdapter.getGroup(i).toString();
-            if (expGroupOpen.get(key)) {
-                view.expandGroup(i, true);
+        if (subsections.size() > 1) {
+            //open previously open expGroups
+            for (int i = 0; i < subsections.size(); i++) {
+                String key = listAdapter.getGroup(i).toString();
+                if (expGroupOpen.get(key)) {
+                    view.expandGroup(i, true);
+                }
             }
+        } else {
+            view.expandGroup(0, true);
         }
 
         //set listener for the button
