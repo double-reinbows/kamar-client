@@ -217,7 +217,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                     RestaurantOrder restoOrder = (RestaurantOrder) currPermintaan.content;
                     for (OrderItem o : restoOrder.items) {
                         contentString += "<br>" + o.quantity + " " + o.name + " Rp. " + o.price+"<br>"+
-                        "<span style=\"font-weight:normal;\">Note: "+o.note+"</span>";
+                        "<span style=\"font-weight:normal;\">Note: "+o.note +"</span>";
                     }
                     contentString += "<br><br>Total: Rp. " + restoOrder.totalPrice;
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_TRANSPORT)) {
@@ -245,7 +245,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                                 "Waktu Terakhir Kali Pesan Diubah: "+updatedString+"<br>"+
                                 "Waktu Sejak Terakhir Kali Pesan Diubah: "+lastStateChange/60+" menit yang lalu<br>"+
                                 "Petugas: "+currPermintaan.assignee+
-                                "<br>ETA: "+currPermintaan.eta.toString()+
+                                "<br>ETA: "+currPermintaan.eta.toString()+" menit"+
                                 "<br>Rincian: <b><br>"+contentString+"</b>"))
                         .setCancelable(true)
                         .setNeutralButton("TUTUP", new DialogInterface.OnClickListener() {

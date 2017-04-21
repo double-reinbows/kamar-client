@@ -1,7 +1,5 @@
 package com.martabak.kamar.domain.permintaan;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * A single item from a {@link RestaurantOrder}.
  */

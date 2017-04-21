@@ -26,9 +26,7 @@ import butterknife.OnItemClick;
 public class GuestHomeFragment extends Fragment {
 
     private String option;
-    private TextView roomNumberTextView;
-    private String welcomeMessage;
-    private Guest guest;
+//    private Guest guest;
 
     private GuestHomeIconListener guestHomeIconListener;
 
@@ -43,6 +41,7 @@ public class GuestHomeFragment extends Fragment {
     // binding the views here
     @BindView(R.id.guestgridview) GridView gridView;
     @BindView(R.id.room_number) TextView roomTextView;
+    @BindView(R.id.bottombar_guest_message) TextView bottombarGuestText;
 
     // tapping on each individual item in the grid
     @OnItemClick(R.id.guestgridview)
@@ -65,13 +64,17 @@ public class GuestHomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_guest_home, container, false);
 
         ButterKnife.bind(this, view);
-        guest = new Guest();
+//        guest = new Guest();
 
         final String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", "none");
         roomTextView.setText(roomNumber);
         guestHomeAdapter = new GuestHomeAdapter(this.getActivity());
         gridView.setAdapter(guestHomeAdapter);
+
+        String guestName = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
+                .getString("guestName", "none");
+        bottombarGuestText.setText(getActivity().getString(R.string.hi)+" "+guestName);
 
         // update the text of the navigation menu items if language changed.
         NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);

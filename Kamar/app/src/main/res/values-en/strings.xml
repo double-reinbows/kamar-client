@@ -225,4 +225,5 @@
     <string name="chat_header_message">Note: staff members only speak English or Bahasa Indonesia.</string>
     <string name="agree">Agree</string>
     <string name="disagree">Disagree</string>
+    <string name="hi">Hi</string>
 </resources>

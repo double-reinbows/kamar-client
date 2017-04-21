@@ -160,6 +160,8 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 } else {
                     //set guestId in Shared Preferences
                     editor.putString("guestId", result._id);
+                    //set guestName in Shared Preferences
+                    editor.putString("guestName", result.firstName);
                     welcomeMessage = result.welcomeMessage;
                     promoImgId = result.promoImgId;
                     Log.v(SelectLanguageActivity.class

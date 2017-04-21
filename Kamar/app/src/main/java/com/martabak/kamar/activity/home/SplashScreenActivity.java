@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.martabak.kamar.R;
@@ -15,6 +16,7 @@ public class SplashScreenActivity extends AbstractCustomFontActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_splash_screen);
 
         RelativeLayout layout = (RelativeLayout)findViewById(R.id.splash_screen_layout);

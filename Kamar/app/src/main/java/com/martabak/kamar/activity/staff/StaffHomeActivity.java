@@ -1,7 +1,6 @@
 package com.martabak.kamar.activity.staff;
 
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -10,24 +9,19 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.martabak.kamar.R;
 import com.martabak.kamar.activity.chat.StaffChatFragment;
 import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.guest.PermintaanDialogListener;
-import com.martabak.kamar.activity.home.SelectLanguageActivity;
 import com.martabak.kamar.activity.home.SplashScreenActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
-import com.martabak.kamar.domain.User;
-import com.martabak.kamar.domain.permintaan.Permintaan;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +29,8 @@ import butterknife.OnClick;
 
 public class StaffHomeActivity extends AbstractStaffBarsActivity
         implements PermintaanDialogListener {
+
+    String staffType;
 
     @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -47,8 +43,6 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
     // on click bindings for the guest home activity
     @OnClick(R.id.refresh_icon)
     public void onRefreshIconClick() {
-//        getFragmentManager().beginTransaction()
-//                .replace(R.id.staff_container, StaffChatFragment.newInstance()).commit();
         Intent intent = getIntent();
         finish();
         startActivity(intent);
@@ -57,7 +51,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String staffType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("userSubType", "none");
+        staffType = getSharedPreferences("userSettings", MODE_PRIVATE).getString("userSubType", "none");
         startStaffServices(staffType);
         setContentView(R.layout.activity_staff_home);
         ButterKnife.bind(this);
@@ -130,6 +124,19 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
                     .commit();
             navigationView.getMenu().getItem(0).setChecked(true);
         }
+
+        hideNavMenu(navigationView);
+    }
+
+    private void hideNavMenu(NavigationView navigationView) {
+        Menu navMenu = navigationView.getMenu();
+        if (!staffType.equals("frontdesk")) {
+            navMenu.findItem(R.id.nav_check_guest_in).setVisible(false);
+            navMenu.findItem(R.id.nav_check_guest_out).setVisible(false);
+        }
+        if (!staffType.equals("restaurant")) {
+            navMenu.findItem(R.id.nav_edit_restaurant).setVisible(false);
+        }
     }
 
     @Override
@@ -160,6 +167,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
     }
+
 
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override
@@ -264,6 +272,5 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         Log.v(StaffHomeActivity.class.getCanonicalName(), "Stopping " + StaffChatService.class.getCanonicalName());
         stopService(new Intent(this, StaffChatService.class));
     }
-
 
 }

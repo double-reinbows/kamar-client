@@ -43,9 +43,9 @@ SelectLanguageFragment extends Fragment {
         final ImageButton indonesianButton = (ImageButton) view.findViewById(R.id.language_bahasa);
         final ImageButton russianButton = (ImageButton) view.findViewById(R.id.language_russian);
         final ImageButton zhButton = (ImageButton) view.findViewById(R.id.language_zh);
-        ImageView logo = (ImageView)view.findViewById(R.id.logo);
+//        ImageView logo = (ImageView)view.findViewById(R.id.logo);
 
-        logo.setVisibility(View.GONE);
+//        logo.setVisibility(View.GONE);
 
         if (englishButton != null) {
             englishButton.setOnClickListener(new View.OnClickListener() {

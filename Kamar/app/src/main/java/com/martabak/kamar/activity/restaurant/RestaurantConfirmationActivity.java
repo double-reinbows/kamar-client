@@ -1,6 +1,5 @@
 package com.martabak.kamar.activity.restaurant;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +18,6 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.activity.guest.AbstractGuestBarsActivity;
 import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.activity.guest.SimpleDividerItemDecoration;
-import com.martabak.kamar.activity.staff.CreatePermintaanFragment;
 import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.managers.RestaurantOrderManager;
@@ -155,16 +152,7 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
         //sub price
         Integer subFinalPriceInteger = tempRestaurantOrder.totalPrice * multiplyFactor;
 
-        //final price
-
-        float taxPercentage = 10;
-        float svcChargePercentage = 11;
-
-        float tax = subFinalPriceInteger.floatValue() * (taxPercentage/100);
-        float svcCharge = (tax + subFinalPriceInteger.floatValue()) * (svcChargePercentage/100);
-        float finalPriceFloat = subFinalPriceInteger.floatValue() + tax + svcCharge;
-
-        Integer finalPriceInteger = (int)finalPriceFloat;
+        Integer finalPriceInteger = subFinalPriceInteger * 121 / 100; //add 21% service + tax charge
         DecimalFormat df = new DecimalFormat("#,###,###");
         finalPriceTextView.setText("Rp. "+df.format(finalPriceInteger).replaceAll(",", " "));
 
@@ -181,8 +169,6 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
 
         //TODO: remove RestaurantOrder's comment (1st variable)
         restaurantOrder = new RestaurantOrder("",restaurantOrderItems, finalPriceInteger);
-
-//        final Activity activity = this;
 
         final RestaurantConfirmationArrayAdapter restaurantConfirmationArrayAdapter = new
                 RestaurantConfirmationArrayAdapter(this, restaurantTextItems, restaurantSubPriceItems,
