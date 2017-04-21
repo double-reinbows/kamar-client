@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.permintaan.Bellboy;
 import com.martabak.kamar.domain.permintaan.Engineering;
 import com.martabak.kamar.domain.permintaan.Housekeeping;
 import com.martabak.kamar.domain.permintaan.LaundryOrder;
@@ -102,7 +103,6 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                     updatedString = "never";
                     lastStateChange = 0;
                 }
-
                 String createdString = dateFormat.format(currPermintaan.created);
 
                 String contentString = "\n";
@@ -135,12 +135,13 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                     img.setImageResource(R.drawable.ic_massage);
                     Massage massageOrder = (Massage)currPermintaan.content;
                     contentString += "\nOrder: "+massageOrder.option.nameEn;
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_LAUNDRY)) {
+                    img.setImageResource(R.drawable.ic_laundry);
+                } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_BELLBOY)) {
+                    img.setImageResource(R.drawable.ic_bellboy);
                 }
 
-
-
                 requestInfoDetails.setText("Status: "+currPermintaan.state+"\n"+
-                        "Message: "+currPermintaan.content.message+"\n"+
                         "Order lodged at: "+createdString+"\n"+
                         "Last status change at "+updatedString+"\n"+
                         "Time since last Status change: "+lastStateChange/60+" minutes ago" + "\n"+
