@@ -36,36 +36,32 @@ public class KamarApp extends Application {
 
     @Override
     public void onCreate() {
-        try {
-            super.onCreate();
-            AppInitialization();
-            singleton = this;
 
-            CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                    .setDefaultFontPath("fonts/Montserrat-Regular.ttf")
-                    .setFontAttrId(R.attr.fontPath)
-                    .build()
-            );
+        super.onCreate();
+        AppInitialization();
+        singleton = this;
 
-            Picasso.Builder builder = new Picasso.Builder(this);
-            builder.downloader(new OkHttpDownloader(this, Integer.MAX_VALUE));
-            Picasso built = builder.build();
-            built.setIndicatorsEnabled(true);
-            built.setLoggingEnabled(true);
-            Picasso.setSingletonInstance(built);
-            throw new IllegalStateException("IllegalStateException detected!!");
-//            throw new ConnectException("ConnectException detected!!");
-        } catch(IllegalStateException e) {
-            Log.e(KamarApp.class.getCanonicalName(), "IllegalStateException caught!");
-            e.printStackTrace();
-//        } catch(IOException e) {
-//            e.printStackTrace();
-        }
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Montserrat-Regular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
+
+        Picasso.Builder builder = new Picasso.Builder(this);
+        builder.downloader(new OkHttpDownloader(this, Integer.MAX_VALUE));
+        Picasso built = builder.build();
+        built.setIndicatorsEnabled(true);
+        built.setLoggingEnabled(true);
+        Picasso.setSingletonInstance(built);
+
     }
 
     private void AppInitialization() {
+
         Thread.setDefaultUncaughtExceptionHandler(
                 new EmailExceptionHandler(Thread.getDefaultUncaughtExceptionHandler()));
+
+
     }
 
     class EmailExceptionHandler implements Thread.UncaughtExceptionHandler {
@@ -78,12 +74,16 @@ public class KamarApp extends Application {
 
         @Override
         public void uncaughtException(Thread thread, Throwable e) {
+
             e.printStackTrace();
             Log.e(EmailExceptionHandler.class.getCanonicalName(), "Handling uncaught exception");
             if (Constants.SEND_CRASH_REPORTS) {
                 CrashReportSender.sendCrashReport(getApplicationContext(), e);
             }
-            defaultUEH.uncaughtException(thread, e);
+
+            //defaultUEH.uncaughtException(thread, e);
+
+
         }
     }
 }
