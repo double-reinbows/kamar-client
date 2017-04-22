@@ -75,6 +75,7 @@ public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivi
     // binding the views here
     @BindView(R.id.room_number) TextView roomTextView;
     @BindView(R.id.toolbar_title) TextView toolbarText;
+    @BindView(R.id.bottombar_guest_message) TextView bottomBarGuestText;
 
 
     @Override
@@ -132,7 +133,11 @@ public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivi
             }
         } else {
             bottomBarLinearLayout.removeView(logoutView);
+            bottomBarLinearLayout.findViewById(R.id.bottombar_guest_message).setVisibility(View.GONE);
+            bottomBarLinearLayout.findViewById(R.id.bottombar_beta).setVisibility(View.GONE);
         }
+
+
     }
 
     private void setupTabLayout(boolean useTabLayout) {
