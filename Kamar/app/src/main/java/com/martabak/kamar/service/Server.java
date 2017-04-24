@@ -79,8 +79,8 @@ public abstract class Server {
 //        return "http://34.208.159.122:5984/"; // Amazon
 //        return "http://192.168.1.105:5984/"; // martabak
 //        return "http://192.168.1.6:5984/"; // Yianni
-//        return "http://192.168.1.5:5984/"; //Adarsh
-        return "http://192.168.10.252:5984/"; //pi@segara
+        return "http://192.168.1.5:5984/"; //Adarsh
+//        return "http://192.168.10.252:5984/"; //pi@segara
 //        return "http://pi.rayssoftware.io:5984"; //pi@segara from remote
     }
 
