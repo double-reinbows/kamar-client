@@ -52,10 +52,10 @@ public class GuestPermintaanActivity extends AbstractGuestBarsActivity{
         GuestExpandableListAdapter listAdapter;
         ExpandableListView expListView;
         List<String> states = Arrays.asList(
-                Permintaan.STATE_CANCELLED,
                 Permintaan.STATE_NEW,
                 Permintaan.STATE_INPROGRESS,
-                Permintaan.STATE_COMPLETED
+                Permintaan.STATE_COMPLETED,
+                Permintaan.STATE_CANCELLED
         );
         //mapping of states to a list of permintaan IDs
         HashMap<String, List<String>> statesToPermIds = new HashMap<>();
@@ -93,10 +93,11 @@ public class GuestPermintaanActivity extends AbstractGuestBarsActivity{
         }
 
         //set the state text and accompanying permintaan IDs
-        statesToPermIds.put(states.get(0), cancel_permintaan);
-        statesToPermIds.put(states.get(1), new_permintaan);
-        statesToPermIds.put(states.get(2), inprogress_permintaan);
-        statesToPermIds.put(states.get(3), completed_permintaan);
+
+        statesToPermIds.put(states.get(0), new_permintaan);
+        statesToPermIds.put(states.get(1), inprogress_permintaan);
+        statesToPermIds.put(states.get(2), completed_permintaan);
+        statesToPermIds.put(states.get(3), cancel_permintaan);
 
         //create expandable list
         listAdapter = new GuestExpandableListAdapter(this, states, statesToPermIds, idsToPermintaans);

@@ -5,8 +5,8 @@
     android:orientation="horizontal">
     <ImageView
         android:id="@+id/order_item_image"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:layout_alignParentLeft="true"
@@ -34,9 +34,17 @@
             android:textSize="12sp"
             android:textAllCaps="true"
             android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"/>
-
+        
         <TextView
             android:id="@+id/permintaan_order_updated_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textAllCaps="true"
+            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"/>
+
+        <TextView
+            android:id="@+id/permintaan_order_description_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
@@ -46,11 +54,19 @@
     </LinearLayout>
     <ImageView
         android:id="@+id/permintaan_cancel_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_clear"
+        android:focusable="false"/>
+    <ImageView
+        android:id="@+id/permintaan_redo_button"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_redo"
         android:focusable="false"/>
 
 </RelativeLayout>
