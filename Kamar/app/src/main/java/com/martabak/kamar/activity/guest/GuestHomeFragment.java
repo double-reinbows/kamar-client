@@ -26,7 +26,6 @@ import butterknife.OnItemClick;
 public class GuestHomeFragment extends Fragment {
 
     private String option;
-//    private Guest guest;
 
     private GuestHomeIconListener guestHomeIconListener;
 
@@ -64,7 +63,6 @@ public class GuestHomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_guest_home, container, false);
 
         ButterKnife.bind(this, view);
-//        guest = new Guest();
 
         final String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", "none");
