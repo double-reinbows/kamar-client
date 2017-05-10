@@ -1,8 +1,15 @@
 package com.martabak.kamar.activity.staff;
 
+import android.Manifest;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.SystemClock;
+import android.support.v4.app.ActivityCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,15 +27,28 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.Room;
 import com.martabak.kamar.domain.managers.RoomManager;
+import com.martabak.kamar.domain.permintaan.Engineering;
+import com.martabak.kamar.domain.permintaan.Housekeeping;
+import com.martabak.kamar.domain.permintaan.Massage;
+import com.martabak.kamar.domain.permintaan.OrderItem;
 import com.martabak.kamar.domain.permintaan.Permintaan;
+import com.martabak.kamar.domain.permintaan.RestaurantOrder;
+import com.martabak.kamar.domain.permintaan.Transport;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.PermintaanServer;
+import com.martabak.kamar.util.EmailSender;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
+import au.com.bytecode.opencsv.CSVWriter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,12 +59,9 @@ import rx.Observer;
  */
 public class PermintaanReportFragment extends Fragment  {
 
-    private String roomNumber;
-    private List<String> roomNumbers;
-    private Guest guest;
-    private ArrayAdapter rooms;
     private static Integer millisecondsInADay = 24 * 60 * 60 * 1000;
     private long selectedDate;
+    Calendar c;
 
     public PermintaanReportFragment() {
     }
@@ -54,27 +71,31 @@ public class PermintaanReportFragment extends Fragment  {
     }
 
     // bind views here
-//    @BindView(R.id.guest_info) TextView guestInfoText;
-//    @BindView(R.id.guest_spinner_checkout) Spinner spinner;
-//    @BindView(R.id.check_guest_out_submit) Button submitButton;
-    @BindView(R.id.permintaan_report_calendar) CalendarView simpleCalendarView;
+    @BindView(R.id.permintaan_report_calendar) CalendarView calendarView;
     @BindView(R.id.permintaan_report_submit) Button submitButton;
 
     // on click listener
     @OnClick(R.id.permintaan_report_submit)
     void onSubmit() {
-        Log.v("DICK", "CHEESE");
-//        CalendarView simpleCalendarView = (CalendarView) findViewById(R.id.permintaan_report_calendar); // get the reference of CalendarView
-//        long selectedDate = simpleCalendarView.getDate(); // get selected date in milliseconds
         PermintaanServer.getInstance(getActivity())
                 .getPermintaansOfTime(new Date(selectedDate), new Date(selectedDate+millisecondsInADay))
                 .subscribe(new Observer<List<Permintaan>>() {
                     List<Permintaan> permintaans = new ArrayList<>();
                     @Override
                     public void onCompleted() {
+/*
                         for (Permintaan p: permintaans) {
-                            Log.v("DICK", p.created.toString());
+                            Log.v("HERP", p.created.toString()+" - "+p.roomNumber+" "+p.content.getType());
+                            if (p.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
+                                RestaurantOrder restoOrder = (RestaurantOrder) p.content;
+                                for (OrderItem o : restoOrder.items) {
+                                    Log.v("HERP", o.quantity + " " + o.name + " Rp. " + o.price);
+                                }
+                            }
+
                         }
+*/
+                        buildCSV(permintaans);
                     }
 
                     @Override
@@ -86,9 +107,6 @@ public class PermintaanReportFragment extends Fragment  {
                         permintaans = result;
                     }
                 });
-//        if (guest != null) {
-//            checkGuestOut(guest);
-//        }
     }
 
 
@@ -97,153 +115,109 @@ public class PermintaanReportFragment extends Fragment  {
         final View parentView =  inflater.inflate(R.layout.fragment_perminaan_report, container, false);
         ButterKnife.bind(this,parentView);
 
-//        roomNumbers = new ArrayList<>();
-//        roomNumbers.add(0, getString(R.string.room_select));
-//        rooms = new ArrayAdapter(getActivity().getBaseContext(),
-//                R.layout.spinner_item, roomNumbers);
-
-
-        CalendarView calendarView = (CalendarView) parentView.findViewById(R.id.permintaan_report_calendar); // get the reference of CalendarView
-        calendarView.setFirstDayOfWeek(2); // set Monday as the first day of the week
-
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(System.currentTimeMillis());
+        c = Calendar.getInstance(TimeZone.getDefault());
+        c.setTime(new Date());
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
-        Log.v("CUNT", (String.valueOf(System.currentTimeMillis())));
-        Log.v("CUNT", (String.valueOf(c.getTimeInMillis())));
-        long startOfDay = System.currentTimeMillis() - (System.currentTimeMillis() - c.getTimeInMillis()); //start of day
-        Date date = new Date();
-        Log.v("CUNT", (String.valueOf(startOfDay)));
-        long prevDay = System.currentTimeMillis() - millisecondsInADay;
-//        simpleCalendarView.setDate(startDay);
-        selectedDate = startOfDay - millisecondsInADay;
-        calendarView.setMaxDate(prevDay);
-
-//        selectedDate = simpleCalendarView.getDate(); // get selected date in milliseconds
+        selectedDate = c.getTimeInMillis() - millisecondsInADay;
+        calendarView.setDate(selectedDate);
+        calendarView.setMaxDate(selectedDate);
+        calendarView.setFirstDayOfWeek(2); // set Monday as the first day of the week
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month, dayOfMonth);
-                Log.v("BOOM", String.valueOf(calendar.getTimeInMillis()));
-                selectedDate = (calendar.getTimeInMillis()); //start of selected day
-
-//                formatedDate = sdf.format(selectedDateInMillis);
-//                dateDialog.setTitle(formatedDate);
-//                dateInMillis = selectedDateInMillis;
+                c.set(year, month, dayOfMonth);
+                Date date = new Date();
+                c.set(Calendar.HOUR_OF_DAY, 0);
+                c.set(Calendar.MINUTE, 0);
+                c.set(Calendar.SECOND, 0);
+                c.set(Calendar.MILLISECOND, 0);
+                selectedDate = c.getTimeInMillis();
             }
         });
-//        rooms.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-//        getRoomNumbersWithGuests();
-//        spinner.setAdapter(rooms);
-//        spinner.setSelection(0);
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (position > 0) {
-//                    roomNumber = roomNumbers.get(position);
-//                    Log.v(PermintaanReportFragment.class.getCanonicalName(), "Room number selected is " + roomNumber);
-//                    getGuestInRoomNumber(roomNumber);
-//                    submitButton.setEnabled(true);
-//                } else {
-//                    submitButton.setEnabled(false);
-//                }
-//            }
-//            @Override public void onNothingSelected(AdapterView<?> parent) {
-//                submitButton.setEnabled(false);
-//            }
-//        });
-
         return parentView;
     }
 
-    /**
-     * Gets a list of room numbers with guests checked in.
-     */
-//    private void getRoomNumbersWithGuests() {
-//        roomNumbers.set(0, getString(R.string.loading));
-//        spinner.setEnabled(false);
-//        rooms.notifyDataSetChanged();
-//        RoomManager.getInstance().getRoomsWithGuests(getActivity().getBaseContext()).subscribe(new Observer<Room>() {
-//            @Override public void onCompleted() {
-//                roomNumbers.set(0, getString(R.string.room_select));
-//                spinner.setEnabled(true);
-//                rooms.notifyDataSetChanged();
-//            }
-//            @Override public void onError(Throwable e) {
-//                Log.v(PermintaanReportFragment.class.getCanonicalName(), "getRoomNumbersWithoutGuests() Error");
-//                e.printStackTrace();
-//            }
-//            @Override public void onNext(Room room) {
-//                if (room != null) {
-//                    roomNumbers.add(room.number);
-//                    Log.v(CheckGuestInFragment.class.getCanonicalName(), "Found room: " + room.number);
-//                }
-//            }
-//        });
-//    }
+    private void buildCSV(List<Permintaan> permintaans) {
 
-    /**
-     * Get the guest currently checked in to the room number.
-     * @param roomNumber The room number.
-     * @return The guest.
-     */
-//    private void getGuestInRoomNumber(String roomNumber) {
-//        GuestServer.getInstance(getActivity().getBaseContext()).getGuestInRoom(
-//                roomNumber).subscribe(new Observer<Guest>() {
-//            @Override public void onCompleted() {
-//                if (guest != null) {
-//                    guestInfoText.setText(guest.firstName + " " + guest.lastName);
-//                }
-//                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On completed");
-//            }
-//            @Override public void onError(Throwable e) {
-//                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On error");
-//                e.printStackTrace();
-//            }
-//            @Override public void onNext(Guest result) {
-//                guest = result;
-//                Log.d(CheckGuestInFragment.class.getCanonicalName(), "On next guest " + result);
-//            }
-//        });
-//    }
-//
-//    /**
-//     * Check the guest out.
-//     */
-//    private void checkGuestOut(Guest guest) {
-//        Calendar c = Calendar.getInstance();
-//        c.add(Calendar.MINUTE, -1); // little hack here
-//        Date currentDate = c.getTime();
-//        Guest updateGuest;
-//
-//        updateGuest = new Guest(guest._id, guest._rev, guest.firstName, guest.lastName,
-//                guest.phone, guest.email, guest.checkIn, currentDate, guest.roomNumber,
-//                guest.welcomeMessage, guest.promoImgId);
-//        GuestServer.getInstance(getActivity().getBaseContext()).updateGuest(updateGuest)
-//                .subscribe(new Observer<Boolean>() {
-//                    @Override public void onCompleted() {
-//                        rooms.notifyDataSetChanged();
-//                        Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On completed");
-//                    }
-//                    @Override public void onError(Throwable e) {
-//                        Log.d(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On error");
-//                        e.printStackTrace();
-//                        Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
-//                    }
-//                    @Override public void onNext(Boolean result) {
-//                        Log.v(CheckGuestInFragment.class.getCanonicalName(), "updateGuest() On next " + result);
-//                        if (result) {
-//                            Toast.makeText(getActivity(), getString(R.string.guest_checkout_message), Toast.LENGTH_LONG).show();
-//                            startActivity(new Intent(getActivity(), StaffHomeActivity.class));
-//                        } else {
-//                            Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                });
-//    }
+        //Check and/or request storage permissions
+        final int REQUEST_EXTERNAL_STORAGE = 1;
+        String[] PERMISSIONS_STORAGE = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        int permission = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    getActivity(),
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
 
+        String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        Date date = permintaans.get(0).created;
+        String fileName = "PermintaanData-"+date.toString()+".csv";
+        String filePath = baseDir + File.separator + fileName;
+        File f = new File(filePath );
+        CSVWriter writer = null;
+        // File exist
+
+        if(f.exists() && !f.isDirectory()){
+            FileWriter mFileWriter = null;
+            try {
+                mFileWriter = new FileWriter(filePath , true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            writer = new CSVWriter(mFileWriter);
+        }
+        else {
+            try {
+                writer = new CSVWriter(new FileWriter(filePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String[] data = new String[]{"created", "room number", "type", "assignee"};
+        writer.writeNext(data);
+        for (Permintaan p : permintaans) {
+            data = new String[]{p.created.toString(), p.roomNumber.toString(), p.content.getType(), p.assignee};
+            writer.writeNext(data);
+            if (p.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
+                RestaurantOrder restoOrder = (RestaurantOrder) p.content;
+                for (OrderItem o : restoOrder.items) {
+                    data = new String[]{o.quantity.toString(), o.name, "Rp. "+o.price.toString()};
+                    writer.writeNext(data);
+                }
+                data = new String[]{"Total Price", "Rp. " +restoOrder.totalPrice.toString()};
+                writer.writeNext(data);
+            } else if (p.content.getType().equals(Permintaan.TYPE_HOUSEKEEPING)) {
+                Housekeeping hkOrder = (Housekeeping) p.content;
+                data = new String[]{hkOrder.quantity.toString(), hkOrder.option.nameEn};
+                writer.writeNext(data);
+            } else if (p.content.getType().equals(Permintaan.TYPE_ENGINEERING)) {
+                Engineering engOrder = (Engineering) p.content;
+                data = new String[]{engOrder.option.nameEn};
+                writer.writeNext(data);
+            } else if (p.content.getType().equals(Permintaan.TYPE_MASSAGE)) {
+                Massage massageOrder = (Massage)p.content;
+                data = new String[]{massageOrder.option.nameEn};
+                writer.writeNext(data);
+            }
+        }
+
+        try {
+            writer.close();
+            date = new Date();
+            EmailSender.getInstance(getActivity().getBaseContext()).sendEmail(
+                    "PermintaanReport"+date.toString(), f.toString(), "dynamicfrogman@gmail.com");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
