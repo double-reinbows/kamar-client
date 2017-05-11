@@ -66,7 +66,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     @OnClick(R.id.language_russian)
     public void onRussianClick() {
-        LocaleUtils.setLocale(this, "ru", "ru");
+        LocaleUtils.setLocale(this, "ru", "RU");
         Toast.makeText(
                 SelectLanguageActivity.this,
                 getString(R.string.language_set_to),
@@ -78,7 +78,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     @OnClick(R.id.language_zh)
     public void onChineseClick() {
-        LocaleUtils.setLocale(this, "zh", "cn");
+        LocaleUtils.setLocale(this, "zh", "CN");
         Toast.makeText(
                 SelectLanguageActivity.this,
                 getString(R.string.language_set_to),

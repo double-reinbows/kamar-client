@@ -154,7 +154,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         String state = j.getAsJsonPrimitive("state").getAsString();
         String assignee = j.getAsJsonPrimitive("assignee").getAsString();
         Integer eta = j.getAsJsonPrimitive("eta").getAsInt();
-        String countryCode = "gb";
+        String countryCode = "GB";
         try {
             countryCode = j.getAsJsonPrimitive("country_code").getAsString();
         } catch (ClassCastException | NullPointerException e) {

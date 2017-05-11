@@ -38,6 +38,7 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.domain.permintaan.Transport;
 import com.martabak.kamar.service.PermintaanServer;
+import com.martabak.kamar.util.LocaleUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +53,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<String>> stateToPermIds;
     private HashMap<String, Permintaan> idToPermintaan;
     // bind views here
+    @BindView(R.id.language_permintaan_item) TextView languagePermintaanItem;
     @BindView(R.id.assign_permintaan_button) ImageView assignPermintaanButton;
     @BindView(R.id.info_permintaan_button) ImageView infoPermintaanButton;
     @BindView(R.id.progress_permintaan_button) Button progressPermintaanButton;
@@ -117,6 +119,9 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         }
         childText += "\nRoom no. "+currPermintaan.roomNumber+" | "+simpleCreated;
         txtListChild.setText(childText);
+
+        //Set language country flag
+        languagePermintaanItem.setText(LocaleUtils.localeToEmoji(currPermintaan.countryCode));
 
         //Set up grey filter
         ColorMatrix matrix = new ColorMatrix();
