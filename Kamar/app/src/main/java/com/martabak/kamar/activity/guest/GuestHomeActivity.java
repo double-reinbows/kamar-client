@@ -36,7 +36,7 @@ import com.martabak.kamar.domain.managers.Managers;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.activity.staff.CheckGuestInFragment;
-import com.martabak.kamar.domain.LocaleChanger;
+import com.martabak.kamar.util.LocaleUtils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -203,8 +203,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
     public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, final String staffSubType, String reason) {
         dialog.dismiss();
         if (success) {
-            LocaleChanger localeChanger = new LocaleChanger();
-            localeChanger.setLocale(this, "en");
+            LocaleUtils.setLocale(this, "en", "GB");
             final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
                     .getString("roomNumber", "none");
             new AlertDialog.Builder(this)

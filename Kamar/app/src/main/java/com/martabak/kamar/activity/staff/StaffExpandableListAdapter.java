@@ -419,7 +419,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "Completed getting _rev");
                 Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, rev, currPermintaan.owner, currPermintaan.creator, currPermintaan.type,
                         currPermintaan.roomNumber, currPermintaan.guestId, targetState,
-                        currPermintaan.created, new Date(), updatedAssignee, eta, currPermintaan.content);
+                        currPermintaan.created, new Date(), updatedAssignee, eta, currPermintaan.countryCode, currPermintaan.content);
                 updatePermintaanAndView(updatedPermintaan, currPermintaan.state);
             }
 
@@ -435,9 +435,6 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         });
     }
 
-    /**
-     *
-     */
     private void updatePermintaanAndView(final Permintaan permintaan, final String prevState) {
         Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "completed getpermintaan, now updating");
 
