@@ -14,7 +14,7 @@
         <RelativeLayout
             android:id="@+id/banner_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="450dp">
             <android.support.v4.view.ViewPager
                 android:id="@+id/bannerPager"
                 android:layout_width="match_parent"
