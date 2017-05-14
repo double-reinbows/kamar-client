@@ -308,7 +308,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                 Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "Completed getting _rev");
                 Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, rev, currPermintaan.owner, currPermintaan.creator, currPermintaan.type,
                         currPermintaan.roomNumber, currPermintaan.guestId, newPermintaanState,
-                        currPermintaan.created, new Date(), currPermintaan.assignee, currPermintaan.eta, currPermintaan.content);
+                        currPermintaan.created, new Date(), currPermintaan.assignee, currPermintaan.eta, currPermintaan.countryCode, currPermintaan.content);
                 updatePermintaan(updatedPermintaan, currPermintaan.state, newPermintaanState);
             }
 
