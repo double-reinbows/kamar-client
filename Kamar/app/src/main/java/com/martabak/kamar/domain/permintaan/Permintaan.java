@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 
@@ -185,6 +186,12 @@ public class Permintaan<T extends Content> extends Model {
      */
     public final Integer eta;
 
+    /**
+     * The permintaan creator's selected language country code (when this permintaan was created).
+     */
+    @SerializedName("country_code")
+    public final String countryCode;
+
     public Permintaan() {
         this.owner = null;
         this.creator = null;
@@ -197,6 +204,7 @@ public class Permintaan<T extends Content> extends Model {
         this.updated = null;
         this.assignee = null;
         this.eta = null;
+        this.countryCode = null;
     }
     /**
      * for creating new permintaans
@@ -215,6 +223,7 @@ public class Permintaan<T extends Content> extends Model {
         this.content = content;
         this.assignee = "none";
         this.eta = 0;
+        this.countryCode = Locale.getDefault().getCountry();
     }
 
     /**
@@ -222,7 +231,7 @@ public class Permintaan<T extends Content> extends Model {
      */
     public Permintaan(String _id, String _rev, String owner, String creator, String type, String roomNumber,
                       String guestId, String state, Date created, Date updated, String assignee,
-                      Integer eta, T content) {
+                      Integer eta, String countryCode, T content) {
         super(_id, _rev);
         this.owner = owner;
         this.creator = creator;
@@ -234,6 +243,7 @@ public class Permintaan<T extends Content> extends Model {
         this.updated = updated;
         this.assignee = assignee;
         this.eta = eta;
+        this.countryCode = countryCode;
         this.content = content;
     }
 

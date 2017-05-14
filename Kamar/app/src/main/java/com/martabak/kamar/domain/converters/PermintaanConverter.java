@@ -58,6 +58,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         j.addProperty("created", dateFormat.format(src.created));
         j.addProperty("assignee", src.assignee);
         j.addProperty("eta", src.eta);
+        j.addProperty("country_code", src.countryCode);
         if (src.updated != null) {
             j.addProperty("updated", dateFormat.format(src.updated));
         }
@@ -153,6 +154,11 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         String state = j.getAsJsonPrimitive("state").getAsString();
         String assignee = j.getAsJsonPrimitive("assignee").getAsString();
         Integer eta = j.getAsJsonPrimitive("eta").getAsInt();
+        String countryCode = "GB";
+        try {
+            countryCode = j.getAsJsonPrimitive("country_code").getAsString();
+        } catch (ClassCastException | NullPointerException e) {
+        }
         Date created;
         try {
             created = dateFormat.parse(j.getAsJsonPrimitive("created").getAsString());
@@ -162,9 +168,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
         Date updated = null; // Empty updated time is acceptable.
         try {
             updated = dateFormat.parse(j.getAsJsonPrimitive("updated").getAsString());
-        } catch (ParseException e) {
-        } catch (ClassCastException e) {
-        } catch (NullPointerException e) {
+        } catch (ParseException | ClassCastException | NullPointerException e) {
         }
         JsonObject c = j.getAsJsonObject("content");
         String message = c.getAsJsonPrimitive("message").getAsString();
@@ -249,6 +253,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 throw new JsonParseException("Unknown Permintaan content type.");
         }
 
-        return new Permintaan(_id, _rev, owner, creator, ptype, roomNumber, guestId, state, created, updated, assignee, eta, content);
+        return new Permintaan(_id, _rev, owner, creator, ptype, roomNumber, guestId, state, created,
+                updated, assignee, eta, countryCode, content);
     }
 }
