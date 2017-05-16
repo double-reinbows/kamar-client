@@ -213,8 +213,15 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
 //                            .commit();
 //                    break;
                 case R.id.nav_edit_restaurant:
-                    Log.v(RestaurantActivity.class.toString(), "Loading edit restaurant fragment");
+                    Log.v(StaffHomeActivity.class.toString(), "Loading edit restaurant fragment");
                     startActivityForResult(new Intent(StaffHomeActivity.this, RestaurantActivity.class), 1);
+                    break;
+                case R.id.nav_permintaan_report:
+                    Log.v(StaffHomeActivity.class.toString(), "Creating permintaan report");
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.staff_container, PermintaanReportFragment.newInstance())
+                            .addToBackStack(null)
+                            .commit();
                     break;
                 case R.id.nav_logout:
                     stopStaffServices();

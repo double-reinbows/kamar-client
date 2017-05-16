@@ -24,6 +24,9 @@
             android:id="@+id/nav_edit_restaurant"
             android:title="@string/nav_edit_restaurant" />
         <item
+            android:id="@+id/nav_permintaan_report"
+            android:title="CREATE REPORT" />
+        <item
             android:id="@+id/nav_logout"
             android:title="@string/nav_drawer_logout" />
     </group>
