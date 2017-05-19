@@ -142,10 +142,10 @@
     <string name="survey_label">COMMENTS</string>
     <string name="survey_submit_button">Submit</string>
 
-    <string name="massage_label">MASSAGE</string>
-    <string name="massage_message">Are you sure you want to book this massage?</string>
-    <string name="massage_disabled_message">Massages cannot be booked between the hours</string>
-    <string name="massage_result">Massage request sent</string>
+    <string name="massage_label">SPA</string>
+    <string name="massage_message">Are you sure you want to book this?</string>
+    <string name="massage_disabled_message">Spa requests cannot be booked between the hours</string>
+    <string name="massage_result">Spa request sent</string>
 
     <string name="restaurant_label">RESTAURANT</string>
     <string name="restaurant_success"> Successfully placed your order!</string>
