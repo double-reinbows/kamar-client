@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import au.com.bytecode.opencsv.CSVWriter;
@@ -183,10 +184,10 @@ public class PermintaanReportFragment extends Fragment  {
                 e.printStackTrace();
             }
         }
-        String[] data = new String[]{"created", "room number", "type", "assignee"};
+        String[] data = new String[]{"created", "room number", "type", "assignee", "language"};
         writer.writeNext(data);
         for (Permintaan p : permintaans) {
-            data = new String[]{p.created.toString(), p.roomNumber.toString(), p.content.getType(), p.assignee};
+            data = new String[]{p.created.toString(), p.roomNumber.toString(), p.content.getType(), p.assignee, p.countryCode};
             writer.writeNext(data);
             if (p.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
                 RestaurantOrder restoOrder = (RestaurantOrder) p.content;
