@@ -35,7 +35,7 @@ public class Permintaan<T extends Content> extends Model {
     /**
      * The MASSAGE type string.
      */
-    public static final String TYPE_MASSAGE = "MASSAGE";
+    public static final String TYPE_MASSAGE = "SPA";
     /**
      * The LAUNDRY type string.
      */
@@ -48,19 +48,6 @@ public class Permintaan<T extends Content> extends Model {
      * The TRANSPORT type string.
      */
     public static final String TYPE_TRANSPORT = "TRANSPORT";
-    /**
-     * The EVENT type string.
-     */
-    public static final String TYPE_EVENT = "EVENTS";
-
-    /**
-     * The SURVEY type string.
-     */
-    public static final String TYPE_SURVEY = "COMMENTS";
-    /**
-     * The CHAT type string.
-     */
-    public static final String TYPE_CHAT = "CHAT";
 
     /**
      * The success int
@@ -132,6 +119,7 @@ public class Permintaan<T extends Content> extends Model {
      * <li>HOUSEKEEPING</li>
      * <li>MAINTENANCE</li>
      * <li>TRANSPORT</li>
+     * <li>SPA</li>
      * </ul>
      */
     public final String type;
