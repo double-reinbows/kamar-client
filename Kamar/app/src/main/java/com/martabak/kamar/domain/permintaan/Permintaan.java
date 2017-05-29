@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import com.martabak.kamar.domain.Model;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -262,6 +263,16 @@ public class Permintaan<T extends Content> extends Model {
      */
     public boolean shouldShowEta() {
         return SHOW_ETA_STATES.contains(state) && eta != null && eta != 0;
+    }
+
+    /**
+     * @return Whether or not this permintaan was created before the given amount of days added to
+     * the current time.
+     */
+    public boolean isOlderThan(int amountToAddInDays) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, amountToAddInDays);
+        return created.before(c.getTime());
     }
 
     @Override

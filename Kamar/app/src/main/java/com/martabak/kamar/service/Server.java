@@ -76,9 +76,9 @@ public abstract class Server {
      * @return The server's base URL.
      */
     public static String getBaseUrl() {
-          return "http://34.208.159.122:5984/"; // Amazon
+//          return "http://34.208.159.122:5984/"; // Amazon
 //        return "http://192.168.1.105:5984/"; // martabak
-//        return "http://192.168.1.6:5984/"; // Yianni
+        return "http://192.168.1.6:5984/"; // Yianni
 //        return "http://192.168.1.5:5984/"; //Adarsh
   //      return "http://110.44.171.30:5984"; //pi@segara from remote
     }
