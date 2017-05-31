@@ -20,4 +20,6 @@ public class Constants {
     public static final int STAFF_CHAT_REFRESH_TIME_IN_SECONDS = 30;
     public static final int GUEST_CHAT_REFRESH_TIME_IN_SECONDS = 60;
 
+    public static final int PERMINTAAN_VIEW_WINDOW_FOR_STAFF_IN_DAYS = -3;
+
 }

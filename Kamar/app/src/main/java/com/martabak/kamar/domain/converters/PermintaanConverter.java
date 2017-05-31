@@ -118,6 +118,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content.addProperty("name_ru", engineering.option.nameRu);
                 break;
             case Permintaan.TYPE_MASSAGE:
+            case "MASSAGE": // Backwards compatibility with previous type string
                 Massage massage = (Massage)src.content;
                 content.addProperty("_id", massage.option._id);
                 content.addProperty("_rev", massage.option._rev);
@@ -210,6 +211,7 @@ public class PermintaanConverter implements JsonSerializer<Permintaan>, JsonDese
                 content = new Housekeeping(message, quantityHousekeeping, optionHousekeeping);
                 break;
             case Permintaan.TYPE_MASSAGE:
+            case "MASSAGE": // Backwards compatibility with previous type string
                 String idMassage = c.getAsJsonPrimitive("_id").getAsString();
                 String revMassage = c.getAsJsonPrimitive("_rev").getAsString();
                 String nameEnMassage = c.getAsJsonPrimitive("name_en").getAsString();
