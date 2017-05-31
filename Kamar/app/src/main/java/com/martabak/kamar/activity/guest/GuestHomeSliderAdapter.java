@@ -18,7 +18,7 @@ public class GuestHomeSliderAdapter extends PagerAdapter {
 
     private  final Integer[] images = {
             R.drawable.banner,
-            R.drawable.sugarangels
+            R.drawable.splash_screen
     };
 
 
