@@ -22,6 +22,7 @@ import com.martabak.kamar.activity.chat.StaffChatService;
 import com.martabak.kamar.activity.guest.PermintaanDialogListener;
 import com.martabak.kamar.activity.home.SplashScreenActivity;
 import com.martabak.kamar.activity.restaurant.RestaurantActivity;
+import com.martabak.kamar.domain.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +35,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
 
     @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.toolbar) Toolbar toolbar;
+
     protected AbstractStaffBarsActivity.Options getOptions() {
         return new AbstractStaffBarsActivity.Options()
                 .withBaseLayout(R.layout.activity_staff_home)
@@ -130,11 +132,11 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
 
     private void hideNavMenu(NavigationView navigationView) {
         Menu navMenu = navigationView.getMenu();
-        if (!staffType.equals("frontdesk")) {
+        if (!staffType.equalsIgnoreCase(User.TYPE_STAFF_FRONTDESK)) {
             navMenu.findItem(R.id.nav_check_guest_in).setVisible(false);
             navMenu.findItem(R.id.nav_check_guest_out).setVisible(false);
         }
-        if (!staffType.equals("restaurant")) {
+        if (!staffType.equalsIgnoreCase(User.TYPE_STAFF_RESTAURANT)) {
             navMenu.findItem(R.id.nav_edit_restaurant).setVisible(false);
         }
     }
@@ -151,7 +153,6 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
     @Override
     public void onBackPressed() {}
 
-
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, Boolean success) {
         dialog.dismiss();
@@ -167,7 +168,6 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
     }
-
 
     class NavigationViewListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override

@@ -23,7 +23,7 @@ public class Staff extends Model {
     public static final String RESP_ENGINEERING = "ENGINEERING";
 
     /**
-     * The Engineering Responsibility string.
+     * The Housekeeping Responsibility string.
      */
     public static final String RESP_HOUSEKEEPING = "HOUSEKEEPING";
 

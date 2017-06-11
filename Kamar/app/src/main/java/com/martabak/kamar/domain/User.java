@@ -26,9 +26,14 @@ public class User {
     public static final String TYPE_STAFF_FRONTDESK = "FRONTDESK";
 
     /**
-     * The SPA STAFF user sub-type.
+     * The HOUSEKEEPING STAFF user sub-type.
      */
-    public static final String TYPE_STAFF_SPA = "SPA";
+    public static final String TYPE_STAFF_HOUSEKEEPING = "HOUSEKEEPING";
+
+    /**
+     * The ADMIN STAFF user sub-type.
+     */
+    public static final String TYPE_STAFF_ADMIN = "ADMIN";
 
     /**
      * The GUEST user password.
@@ -46,8 +51,13 @@ public class User {
     public static final String PASSWORD_RESTAURANT = "restaurant123";
 
     /**
-     * The SPA staff user password.
+     * The HOUSEKEEPING staff user password.
      */
-    public static final String PASSWORD_SPA = "spa123";
+    public static final String PASSWORD_HOUSEKEEPING = "housekeeping123";
+
+    /**
+     * The ADMIN staff user password.
+     */
+    public static final String PASSWORD_ADMIN = "admin123";
 
 }

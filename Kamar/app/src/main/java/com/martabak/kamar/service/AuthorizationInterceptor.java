@@ -59,8 +59,11 @@ public class AuthorizationInterceptor implements Interceptor {
                     case User.TYPE_STAFF_RESTAURANT:
                         password = User.PASSWORD_RESTAURANT;
                         break;
-                    case User.TYPE_STAFF_SPA:
-                        password = User.PASSWORD_SPA;
+                    case User.TYPE_STAFF_HOUSEKEEPING:
+                        password = User.PASSWORD_HOUSEKEEPING;
+                        break;
+                    case User.TYPE_STAFF_ADMIN:
+                        password = User.PASSWORD_ADMIN;
                         break;
                     default:
                         return "";

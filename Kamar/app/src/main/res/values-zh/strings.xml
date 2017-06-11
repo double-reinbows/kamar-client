@@ -220,4 +220,6 @@
     <string name="agree">同意</string>
     <string name="disagree">不同意</string>
     <string name="hi">嗨</string>
+    <string name="housekeeping">家政</string>
+    <string name="admin">管理</string>
 </resources>

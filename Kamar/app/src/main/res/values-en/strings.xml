@@ -227,4 +227,6 @@
     <string name="agree">Agree</string>
     <string name="disagree">Disagree</string>
     <string name="hi">Hi</string>
+    <string name="housekeeping">housekeeping</string>
+    <string name="admin">admin</string>
 </resources>

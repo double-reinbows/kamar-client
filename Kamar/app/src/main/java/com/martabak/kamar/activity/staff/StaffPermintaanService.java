@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
 import com.martabak.kamar.util.Constants;
@@ -54,15 +55,15 @@ public class StaffPermintaanService extends IntentService {
             // Get all permintaans in the NEW state
             PermintaanServer.getInstance(this).getPermintaansOfState(Permintaan.STATE_NEW)
                     // Filter for only permintaans that are:
-                    // * relevant to this owner
+                    // * relevant to this owner, unless they're an admin
                     // * have not been updated
                     // * no more than 3 days old
                     .filter(new Func1<Permintaan, Boolean>() {
                         @Override public Boolean call(Permintaan permintaan) {
                             permintaanIds.add(permintaan._id);
                             return permintaan.updated == null &&
-                                    permintaan.owner.equalsIgnoreCase(owner) &&
-                                    !permintaan.isOlderThan(Constants.PERMINTAAN_VIEW_WINDOW_FOR_STAFF_IN_DAYS);
+                                    !permintaan.isOlderThan(Constants.PERMINTAAN_VIEW_WINDOW_FOR_STAFF_IN_DAYS) &&
+                                    (owner.equals(User.TYPE_STAFF_ADMIN) || permintaan.owner.equalsIgnoreCase(owner));
                         }
                     }).subscribe(new Action1<Permintaan>() {
                         @Override public void call(Permintaan permintaan) {

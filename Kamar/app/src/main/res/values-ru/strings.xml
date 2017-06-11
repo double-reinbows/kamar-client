@@ -221,4 +221,6 @@
     <string name="agree">Согласен</string>
     <string name="disagree">Не соглашаться</string>
     <string name="hi">Гавайи</string>
+    <string name="housekeeping">домоводство</string>
+    <string name="admin">админ</string>
 </resources>

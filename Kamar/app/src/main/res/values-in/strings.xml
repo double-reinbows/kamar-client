@@ -221,4 +221,6 @@
     <string name="agree">Setuju</string>
     <string name="disagree">Tidak Setuju</string>
     <string name="hi">Halo</string>
+    <string name="housekeeping">housekeeping</string>
+    <string name="admin">admin</string>
 </resources>

@@ -85,8 +85,10 @@ public class GuestChatService extends IntentService {
             from = getString(R.string.restaurant);
         } else if (message.from.equals(User.TYPE_STAFF_FRONTDESK)) {
             from = getString(R.string.frontdesk);
-        } else if (message.from.equals(User.TYPE_STAFF_SPA)) {
-            from = getString(R.string.spa);
+        } else if (message.from.equals(User.TYPE_STAFF_HOUSEKEEPING)) {
+            from = getString(R.string.housekeeping);
+        } else {
+            from = getString(R.string.admin);
         }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_menu_share)
