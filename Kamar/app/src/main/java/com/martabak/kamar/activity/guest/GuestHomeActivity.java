@@ -200,47 +200,11 @@ public class GuestHomeActivity extends AppCompatActivity implements
      * @param success The outcome of the server request.
      */
     @Override
-    public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, final String staffSubType, String reason) {
+    public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String staffSubType, String reason) {
         dialog.dismiss();
         if (success) {
             LocaleUtils.setLocale(this, "en", "GB");
-            final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                    .getString("roomNumber", "none");
-            new AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.logout_options))
-                    .setCancelable(true)
-                    .setNegativeButton(getString(R.string.logout_change_room_number), new DialogInterface.OnClickListener() {
-                        @Override public void onClick(DialogInterface dialog, int which) {
-                            DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
-                            changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
-                        }
-                    })
-                    .setNeutralButton(getString(R.string.logout_staff), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            stopGuestServices();
-                            getSharedPreferences("userSettings", MODE_PRIVATE)
-                                .edit()
-                                .putString("userType", User.TYPE_STAFF)
-                                .putString("userSubType", staffSubType)
-                                .commit();
-                            startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
-                            finish();
-                        }
-                    })
-                    .setPositiveButton(getString(R.string.logout_reset_tablet), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.v("App Action", "Resetting tablet");
-                            stopGuestServices();
-//                            checkGuestOutByRoomNumber(roomNumber);
-                            Intent intent = new Intent(GuestHomeActivity.this, SplashScreenActivity.class);
-                            startActivity(intent);
-                            stopGuestServices();
-                            finish();
-                        }
-                    })
-                    .create().show();
+            showLogoutDialog(staffSubType);
         } else {
             Toast.makeText(
                     GuestHomeActivity.this,
@@ -248,6 +212,48 @@ public class GuestHomeActivity extends AppCompatActivity implements
                     Toast.LENGTH_SHORT
             ).show();
         }
+    }
+
+    private void showLogoutDialog(final String staffSubType) {
+        AlertDialog.Builder logoutDialog = new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.logout_options))
+                .setCancelable(true)
+                .setNeutralButton(getString(R.string.logout_staff), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        stopGuestServices();
+                        getSharedPreferences("userSettings", MODE_PRIVATE)
+                                .edit()
+                                .putString("userType", User.TYPE_STAFF)
+                                .putString("userSubType", staffSubType)
+                                .commit();
+                        startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
+                        finish();
+                    }
+                })
+                .setPositiveButton(getString(R.string.logout_reset_tablet), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.v("App Action", "Resetting tablet");
+                        stopGuestServices();
+//                            checkGuestOutByRoomNumber(roomNumber);
+                        Intent intent = new Intent(GuestHomeActivity.this, SplashScreenActivity.class);
+                        startActivity(intent);
+                        stopGuestServices();
+                        finish();
+                    }
+                });
+
+        if (staffSubType.equalsIgnoreCase(User.TYPE_STAFF_ADMIN)) {
+            logoutDialog.setNegativeButton(getString(R.string.logout_change_room_number), new DialogInterface.OnClickListener() {
+                @Override public void onClick(DialogInterface dialog, int which) {
+                    DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
+                    changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
+                }
+            });
+        }
+
+        logoutDialog.create().show();
     }
 
     /**
