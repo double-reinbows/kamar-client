@@ -9,6 +9,7 @@
     <color name="roomNumberBackground">#be142d</color>
     <color name="guestHomeBackgroundColor">#FFFFFF</color>
     <color name="guestHomeTextColor">#808184</color>
+    <color name="guestHomeTextColorLighter">#9b808184</color>
 
     <color name="guestTextColor">#FFFFFF</color>
     <color name="dialogConfirmationBackground">#b9ac0d13</color>
