@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,76 +124,87 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
         final View view = (View)buttonView.getParent().getParent();
         int itemPosition = recyclerView.getChildLayoutPosition(view);
         final EngineeringOption item = engOptions.get(itemPosition);
+        final EditText inputOther = new EditText(this); // Provide a text input when they select the "OTHER" engineering option
         Log.d(EngineeringActivity.class.getCanonicalName(), "Selected " + item.getName() + " with ID " + item._id);
         Log.d(EngineeringActivity.class.getCanonicalName(), "Statuses map is " + Arrays.toString(statuses.entrySet().toArray()));
 
-        new AlertDialog.Builder(this)
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this)
                 .setTitle(item.getName())
                 .setMessage(R.string.engineering_message)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String owner = User.TYPE_STAFF_FRONTDESK;
-                        final String creator = EngineeringActivity.this.getSharedPreferences("userSettings", EngineeringActivity.this.MODE_PRIVATE)
-                                .getString("userType", "none");
-                        String type = Permintaan.TYPE_ENGINEERING;
-                        String roomNumber = EngineeringActivity.this.getSharedPreferences("userSettings", EngineeringActivity.this.MODE_PRIVATE)
-                                .getString("roomNumber", "none");
-                        String guestId = EngineeringActivity.this.getSharedPreferences("userSettings", EngineeringActivity.this.MODE_PRIVATE)
-                                .getString("guestId", "none");
-
-                        if (guestId.equals("none")) {
-                            Toast.makeText(
-                                    EngineeringActivity.this.getApplicationContext(),
-                                    R.string.no_guest_in_room,
-                                    Toast.LENGTH_SHORT
-                            ).show();
-                            return;
-                        }
-                        String state = Permintaan.STATE_NEW;
-                        Date currentDate = Calendar.getInstance().getTime();
-                        PermintaanServer.getInstance(EngineeringActivity.this).createPermintaan(
-                                new Permintaan(owner, creator, type, roomNumber, guestId, state, currentDate,
-                                        new Engineering("", item))
-                        ).subscribe(new Observer<Permintaan>() {
-                            boolean success;
-                            @Override public void onCompleted() {
-                                Log.d(EngineeringActivity.class.getCanonicalName(), "On completed");
-                                if (success) {
-                                    EngineeringActivity.this.statuses.put(item._id, Permintaan.STATE_NEW);
-                                    recyclerViewAdapter.notifyDataSetChanged();
-                                    if (creator.equals("GUEST")) {
-                                        Toast.makeText(
-                                                EngineeringActivity.this.getApplicationContext(),
-                                                R.string.engineering_result,
-                                                Toast.LENGTH_SHORT
-                                        ).show();
-                                    }
-                                    else if (creator.equals("STAFF")) {
-                                        setResult(Permintaan.SUCCESS);
-                                        finish();
-                                    }
-
-                                } else {
-                                    Toast.makeText(
-                                            EngineeringActivity.this.getApplicationContext(),
-                                            R.string.something_went_wrong,
-                                            Toast.LENGTH_SHORT
-                                    ).show();
-                                }
-                            }
-                            @Override public void onError(Throwable e) {
-                                Log.d(EngineeringActivity.class.getCanonicalName(), "On error");
-                                e.printStackTrace();
-                                success = false;
-                            }
-                            @Override public void onNext(Permintaan permintaan) {
-                                Log.d(EngineeringActivity.class.getCanonicalName(), "On next");
-                                success = permintaan != null;
-                            }
-                        });
+                        createEngineeringPermintaan(inputOther.getText().toString(), item);
                     }})
-                .setNegativeButton(android.R.string.no, null).show();
+                .setNegativeButton(android.R.string.no, null);
+        if (item.getName().equalsIgnoreCase("OTHER")) {
+            Log.d(EngineeringActivity.class.getCanonicalName(), "Adding text input because OTHER engineering option was selected");
+            alertDialog
+                    .setMessage(R.string.engineering_other_message)
+                    .setView(inputOther);
+        }
+
+        alertDialog.show();
+    }
+
+    private void createEngineeringPermintaan(String message, final EngineeringOption item) {
+        String owner = User.TYPE_STAFF_FRONTDESK;
+        final String creator = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("userType", "none");
+        String type = Permintaan.TYPE_ENGINEERING;
+        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("roomNumber", "none");
+        String guestId = getSharedPreferences("userSettings", MODE_PRIVATE)
+                .getString("guestId", "none");
+        if (guestId.equals("none")) {
+            Toast.makeText(
+                    EngineeringActivity.this.getApplicationContext(),
+                    R.string.no_guest_in_room,
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
+        }
+        String state = Permintaan.STATE_NEW;
+        Date currentDate = Calendar.getInstance().getTime();
+        PermintaanServer.getInstance(EngineeringActivity.this).createPermintaan(
+                new Permintaan(owner, creator, type, roomNumber, guestId, state, currentDate,
+                        new Engineering(message, item))
+        ).subscribe(new Observer<Permintaan>() {
+            boolean success;
+            @Override public void onCompleted() {
+                Log.d(EngineeringActivity.class.getCanonicalName(), "On completed");
+                if (success) {
+                    EngineeringActivity.this.statuses.put(item._id, Permintaan.STATE_NEW);
+                    recyclerViewAdapter.notifyDataSetChanged();
+                    if (creator.equals("GUEST")) {
+                        Toast.makeText(
+                                EngineeringActivity.this.getApplicationContext(),
+                                R.string.engineering_result,
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                    else if (creator.equals("STAFF")) {
+                        setResult(Permintaan.SUCCESS);
+                        finish();
+                    }
+                } else {
+                    Toast.makeText(
+                            EngineeringActivity.this.getApplicationContext(),
+                            R.string.something_went_wrong,
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
+            }
+            @Override public void onError(Throwable e) {
+                Log.d(EngineeringActivity.class.getCanonicalName(), "On error");
+                e.printStackTrace();
+                success = false;
+            }
+            @Override public void onNext(Permintaan permintaan) {
+                Log.d(EngineeringActivity.class.getCanonicalName(), "On next");
+                success = permintaan != null;
+            }
+        });
     }
 
     public class EngineeringRecyclerViewAdapter

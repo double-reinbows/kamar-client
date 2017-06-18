@@ -222,4 +222,5 @@
     <string name="hi">嗨</string>
     <string name="housekeeping">家政</string>
     <string name="admin">管理</string>
+    <string name="engineering_other_message">请提供有关此请求的详细信息。</string>
 </resources>

@@ -33,7 +33,7 @@ public class User {
     /**
      * The ADMIN STAFF user sub-type.
      */
-    public static final String TYPE_STAFF_ADMIN = "ADMIN";
+    public static final String TYPE_STAFF_ADMIN = "TABLETADMIN";
 
     /**
      * The GUEST user password.
@@ -58,6 +58,6 @@ public class User {
     /**
      * The ADMIN staff user password.
      */
-    public static final String PASSWORD_ADMIN = "admin123";
+    public static final String PASSWORD_ADMIN = "tabletadmin123";
 
 }

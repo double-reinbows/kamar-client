@@ -223,4 +223,5 @@
     <string name="hi">Гавайи</string>
     <string name="housekeeping">домоводство</string>
     <string name="admin">админ</string>
+    <string name="engineering_other_message">Просьба сообщить подробности об этом запросе.</string>
 </resources>

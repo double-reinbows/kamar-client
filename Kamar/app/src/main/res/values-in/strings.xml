@@ -223,4 +223,5 @@
     <string name="hi">Halo</string>
     <string name="housekeeping">housekeeping</string>
     <string name="admin">admin</string>
+    <string name="engineering_other_message">Berikan detail tentang permintaan ini.</string>
 </resources>
