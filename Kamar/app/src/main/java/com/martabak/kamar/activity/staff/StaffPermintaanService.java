@@ -68,9 +68,7 @@ public class StaffPermintaanService extends IntentService {
                     }).subscribe(new Action1<Permintaan>() {
                         @Override public void call(Permintaan permintaan) {
                             Log.d(StaffPermintaanService.class.getCanonicalName(), "New permintaan has been found");
-                            List<String> permintaanIdsList = new ArrayList<String>(permintaanIds);
-                            Collections.sort(permintaanIdsList);
-                            createNotification(permintaanIdsList.indexOf(permintaan._id), permintaan);
+                            createNotification(permintaan.hashCode(), permintaan);
                         }
                     });
 

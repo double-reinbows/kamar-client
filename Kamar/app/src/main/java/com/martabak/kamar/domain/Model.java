@@ -23,4 +23,9 @@ public abstract class Model {
         this.dirty = true;
     }
 
+    @Override
+    public int hashCode() {
+        return _id != null ? _id.hashCode() : super.hashCode();
+    }
+
 }

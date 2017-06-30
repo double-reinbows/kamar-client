@@ -57,7 +57,7 @@ public class GuestChatService extends IntentService {
                         @Override public Observable<ChatMessage> call(GuestChat guestChat) {
                             List<ChatMessage> unreadMessages = new ArrayList();
                             for (ChatMessage m : guestChat.messages) {
-                                if (!m.from.equals("GUEST") && m.read == null) {
+                                if (!m.from.equalsIgnoreCase(User.TYPE_GUEST) && m.read == null) {
                                     // Return only if an unread message from RESTAURANT or FRONTDESK exists.
                                     unreadMessages.add(m);
                                 }
@@ -67,7 +67,7 @@ public class GuestChatService extends IntentService {
                     }).subscribe(new Action1<ChatMessage>() {
                         @Override public void call(ChatMessage unreadMessage) {
                             Log.d(GuestChatService.class.getCanonicalName(), "On call");
-                            createNotification(0, unreadMessage); // FIXME use proper int ID here
+                            createNotification(unreadMessage.hashCode(), unreadMessage);
                         }
                     });
 
@@ -80,7 +80,7 @@ public class GuestChatService extends IntentService {
     }
 
     private void createNotification(int nId, ChatMessage message) {
-        String from = "STAFF";
+        String from;
         if (message.from.equals(User.TYPE_STAFF_RESTAURANT)) {
             from = getString(R.string.restaurant);
         } else if (message.from.equals(User.TYPE_STAFF_FRONTDESK)) {
