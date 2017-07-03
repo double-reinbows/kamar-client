@@ -29,14 +29,10 @@ import rx.Observer;
  */
 public class StaffChatFragment extends Fragment {
 
-    /**
-     * @return A new instance of fragment StaffChatFragment.
-     */
     public static StaffChatFragment newInstance() {
         return new StaffChatFragment();
     }
 
-    //bind views here
     @BindView(R.id.chat_list) RecyclerView recyclerView;
 
     @Override
@@ -44,31 +40,17 @@ public class StaffChatFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.activity_chat_list, container, false);
         ButterKnife.bind(this,rootView);
         final List<Guest> guests = new ArrayList<Guest>();
-        final ChatRecyclerViewAdapter recyclerViewAdapter = new ChatRecyclerViewAdapter(guests);
-        recyclerView.setAdapter(recyclerViewAdapter);
-        // get the guest/room number
-        // get the position in guests list
-        // call the onclick method on the room number to display the chat
+        final ChatRecyclerViewAdapter adapter = new ChatRecyclerViewAdapter(guests, tryGetPreselectedGuestId());
+        recyclerView.setAdapter(adapter);
+        populateChats(guests, adapter);
+        return rootView;
+    }
 
-
+    private void populateChats(final List<Guest> guests, final ChatRecyclerViewAdapter adapter) {
         GuestServer.getInstance(this.getActivity()).getGuestsCheckedIn().subscribe(new Observer<Guest>() {
             @Override public void onCompleted() {
                 Log.v(StaffChatFragment.class.getCanonicalName(), "onCompleted");
-                recyclerViewAdapter.notifyDataSetChanged();
-                //room number chat is not empty hence the appropriate room  number
-                String roomNumberChatNotification = "";
-                try{
-                    roomNumberChatNotification = getArguments().getString("roomNumberChatNotification");
-                } catch (NullPointerException e) {}
-                if (!roomNumberChatNotification.equals("")) {
-                    for (Guest guest : guests) {
-                        Log.d(StaffChatFragment.class.getName(), guest.roomNumber.toString());
-                        if (guest.roomNumber.equals(roomNumberChatNotification)) {
-                            //recyclerView.findViewHolderForAdapterPosition(guest.roomNumber);
-                        }
-                    }
-
-                }
+                adapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
                 Log.d(StaffChatFragment.class.getCanonicalName(), "onError", e);
@@ -79,23 +61,34 @@ public class StaffChatFragment extends Fragment {
                 guests.add(guest);
             }
         });
+    }
 
-
-
-
-
-        return rootView;
+    /**
+     * If we've come here via a notification then let's get the guest ID argument from the bundle
+     * to pre-select that chat.
+     */
+    private String tryGetPreselectedGuestId() {
+        try {
+            String selectedChatGuestId = getArguments().getString("SelectedChatGuestId");
+            Log.d(StaffChatFragment.class.getCanonicalName(), "Selecting chat with guest ID " + selectedChatGuestId);
+            return selectedChatGuestId;
+        } catch (NullPointerException e) {
+            Log.d(StaffChatFragment.class.getCanonicalName(), "No pre-selected chat found");
+            return "";
+        }
     }
 
     public class ChatRecyclerViewAdapter
             extends RecyclerView.Adapter<ChatRecyclerViewAdapter.ViewHolder> {
 
         protected int selectedPos = -1;
+        private final String preselectedGuestId;
 
         private final List<Guest> mValues;
 
-        public ChatRecyclerViewAdapter(List<Guest> items) {
+        public ChatRecyclerViewAdapter(List<Guest> items, String preselectedGuestId) {
             mValues = items;
+            this.preselectedGuestId = preselectedGuestId;
         }
 
         @Override
@@ -111,6 +104,10 @@ public class StaffChatFragment extends Fragment {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText("ROOM " + mValues.get(position).roomNumber);
             holder.mContentView.setText(mValues.get(position).firstName + " " + mValues.get(position).lastName);
+            if (mValues.get(position)._id.equals(preselectedGuestId)) {
+                Log.d(StaffChatFragment.class.getCanonicalName(), "Selected position " + position + " for guest ID " + preselectedGuestId);
+                holder.loadChatFragmentView();
+            }
         }
 
         @Override
@@ -118,7 +115,17 @@ public class StaffChatFragment extends Fragment {
             return mValues.size();
         }
 
+        private int getPositionOfGuestInList(String guestId) {
+            for (int i = 0; i < mValues.size(); i++) {
+                if (mValues.get(i)._id.equals(guestId)) {
+                    Log.d(StaffChatFragment.class.getCanonicalName(), "Selected pos is " + i);
+                    return i;
+                } else {
 
+                }
+            }
+            return -1;
+        }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
@@ -135,19 +142,25 @@ public class StaffChatFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         notifyItemChanged(selectedPos);
-                        ChatRecyclerViewAdapter.this.selectedPos = getLayoutPosition();
+                        loadChatFragmentView();
                         notifyItemChanged(selectedPos);
-
-                        Bundle arguments = new Bundle();
-                        arguments.putString(ChatDetailFragment.GUEST_ID, mItem._id);
-                        arguments.putString(ChatDetailFragment.SENDER, getSender());
-                        ChatDetailFragment fragment = new ChatDetailFragment();
-                        fragment.setArguments(arguments);
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.chat_detail_container, fragment)
-                                .commit();
                     }
                 });
+            }
+
+            public void loadChatFragmentView() {
+//                notifyItemChanged(selectedPos);
+                ChatRecyclerViewAdapter.this.selectedPos = getLayoutPosition();
+//                notifyItemChanged(selectedPos);
+
+                Bundle arguments = new Bundle();
+                arguments.putString(ChatDetailFragment.GUEST_ID, mItem._id);
+                arguments.putString(ChatDetailFragment.SENDER, getSender());
+                ChatDetailFragment fragment = new ChatDetailFragment();
+                fragment.setArguments(arguments);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.chat_detail_container, fragment)
+                        .commit();
             }
 
             @Override

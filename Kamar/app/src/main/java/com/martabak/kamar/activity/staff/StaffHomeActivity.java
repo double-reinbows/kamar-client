@@ -88,8 +88,6 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
-
         String fragType = getIntent().getStringExtra("FragType");
         String restaurantResult = getIntent().getStringExtra("RestaurantResult");
 
@@ -98,8 +96,9 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
             switch (fragType) {
                 case "StaffChatFragment":
                     Bundle staffChatBundle = new Bundle();
-                    String roomNumberChat = getIntent().getStringExtra("RoomNumber");
-                    staffChatBundle.putString("roomNumberChatNotification", roomNumberChat);
+                    String selectedChatGuestId = getIntent().getStringExtra("GuestId");
+                    staffChatBundle.putString("SelectedChatGuestId", selectedChatGuestId);
+                    Log.d(StaffHomeActivity.class.getCanonicalName(), "Loading chat for guest ID " + selectedChatGuestId);
                     StaffChatFragment staffChatFragment = StaffChatFragment.newInstance();
                     staffChatFragment.setArguments(staffChatBundle);
                     getFragmentManager().beginTransaction()
@@ -107,9 +106,8 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
                             .commit();
 
             }
-        }
-        else if (restaurantResult != null) {
-            switch(restaurantResult) {
+        } else if (restaurantResult != null) {
+            switch (restaurantResult) {
                 case "Success":
                     makeSnackBar();
             }
@@ -118,8 +116,7 @@ public class StaffHomeActivity extends AbstractStaffBarsActivity
                     .addToBackStack(null)
                     .commit();
             navigationView.getMenu().getItem(0).setChecked(true);
-        }
-        else {
+        } else {
             getFragmentManager().beginTransaction()
                     .add(R.id.staff_container, StaffPermintaanFragment.newInstance())
                     .addToBackStack(null)
