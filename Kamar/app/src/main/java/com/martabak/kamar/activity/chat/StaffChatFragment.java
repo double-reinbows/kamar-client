@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.User;
-import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.service.GuestServer;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class StaffChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_chat_list, container, false);
         ButterKnife.bind(this,rootView);
-        final List<Guest> guests = new ArrayList<Guest>();
+        final List<Guest> guests = new ArrayList<>();
         final ChatRecyclerViewAdapter adapter = new ChatRecyclerViewAdapter(guests, tryGetPreselectedGuestId());
         recyclerView.setAdapter(adapter);
         populateChats(guests, adapter);
@@ -82,8 +81,7 @@ public class StaffChatFragment extends Fragment {
             extends RecyclerView.Adapter<ChatRecyclerViewAdapter.ViewHolder> {
 
         protected int selectedPos = -1;
-        private final String preselectedGuestId;
-
+        private String preselectedGuestId;
         private final List<Guest> mValues;
 
         public ChatRecyclerViewAdapter(List<Guest> items, String preselectedGuestId) {
@@ -107,6 +105,8 @@ public class StaffChatFragment extends Fragment {
             if (mValues.get(position)._id.equals(preselectedGuestId)) {
                 Log.d(StaffChatFragment.class.getCanonicalName(), "Selected position " + position + " for guest ID " + preselectedGuestId);
                 holder.loadChatFragmentView();
+                holder.itemView.setSelected(true);
+                preselectedGuestId = null;
             }
         }
 
@@ -115,21 +115,8 @@ public class StaffChatFragment extends Fragment {
             return mValues.size();
         }
 
-        private int getPositionOfGuestInList(String guestId) {
-            for (int i = 0; i < mValues.size(); i++) {
-                if (mValues.get(i)._id.equals(guestId)) {
-                    Log.d(StaffChatFragment.class.getCanonicalName(), "Selected pos is " + i);
-                    return i;
-                } else {
-
-                }
-            }
-            return -1;
-        }
-
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
-            //bind views here
             @BindView(R.id.id) TextView mIdView;
             @BindView(R.id.content) TextView mContentView;
             public Guest mItem;
@@ -149,9 +136,7 @@ public class StaffChatFragment extends Fragment {
             }
 
             public void loadChatFragmentView() {
-//                notifyItemChanged(selectedPos);
                 ChatRecyclerViewAdapter.this.selectedPos = getLayoutPosition();
-//                notifyItemChanged(selectedPos);
 
                 Bundle arguments = new Bundle();
                 arguments.putString(ChatDetailFragment.GUEST_ID, mItem._id);

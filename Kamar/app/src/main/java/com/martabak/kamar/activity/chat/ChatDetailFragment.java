@@ -127,7 +127,9 @@ public class ChatDetailFragment extends Fragment {
             @Override public void onCompleted() {
                 Log.d(ChatDetailFragment.class.getCanonicalName(), "getGuestChat#onCompleted");
                 readChatMessages();
-                mChatMessages.add(0, new ChatMessage(mGuestId, User.TYPE_STAFF, getString(R.string.chat_header_message), new Date(), new Date()));
+                if (isAdded()) { // sometimes breaks with Fragment detaches from Activity, don't do it if it has
+                    mChatMessages.add(0, new ChatMessage(mGuestId, User.TYPE_STAFF, getString(R.string.chat_header_message), new Date(), new Date()));
+                }
                 mRecyclerViewAdapter.notifyDataSetChanged();
             }
             @Override public void onError(Throwable e) {
