@@ -19,8 +19,15 @@
 
         <service android:name=".activity.chat.GuestChatService" />
         <service android:name=".activity.guest.GuestPermintaanService" />
+        <service android:name=".activity.guest.HandleCheckGuestOutService"/>
         <service android:name=".activity.chat.StaffChatService" />
         <service android:name=".activity.staff.StaffPermintaanService" />
+
+        <receiver android:name=".activity.guest.GuestCheckOutBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".activity.YiannisTestActivity"

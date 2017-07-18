@@ -112,6 +112,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
             Log.v(GuestHomeActivity.class.getCanonicalName(), "Starting " + GuestChatService.class.getCanonicalName() + " as " + guestId);
             startService(new Intent(this, GuestChatService.class)
                     .putExtra("guestId", guestId));
+            startService(new Intent(this, HandleCheckGuestOutService.class));
         }
     }
 

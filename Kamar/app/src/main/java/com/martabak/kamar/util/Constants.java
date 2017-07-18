@@ -19,7 +19,10 @@ public class Constants {
     public static final int GUEST_PERMINTAAN_REFRESH_TIME_IN_SECONDS = 60;
     public static final int STAFF_CHAT_REFRESH_TIME_IN_SECONDS = 30;
     public static final int GUEST_CHAT_REFRESH_TIME_IN_SECONDS = 60;
+    public static final int GUEST_CHECKOUT_REFRESH_TIME_IN_SECONDS = 60;
 
+    // Defines a custom Intent action
+    public static final String BROADCAST_GUEST_CHECKOUT_ACTION = "broadcast";
     public static final int PERMINTAAN_VIEW_WINDOW_FOR_STAFF_IN_DAYS = -3;
 
 }

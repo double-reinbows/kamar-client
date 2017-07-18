@@ -2,10 +2,12 @@ package com.martabak.kamar.activity.guest;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.martabak.kamar.R;
+import com.martabak.kamar.activity.home.SplashScreenActivity;
 import com.martabak.kamar.activity.staff.CheckGuestInFragment;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.permintaan.Permintaan;
@@ -27,15 +29,15 @@ import rx.functions.Func1;
  * Created by adarsh on 15-Jul-17.
  */
 
-public class GuestCheckOutService extends IntentService {
+public class HandleCheckGuestOutService extends IntentService {
 
     private static final Class PARENT_ACTIVITY = GuestHomeActivity.class;
 
     /**
      * Construct a guest permintaan service.
      */
-    public GuestCheckOutService() {
-        super("GuestCheckOutService");
+    public HandleCheckGuestOutService() {
+        super("HandleCheckGuestOutService");
     }
 
     @Override
@@ -55,7 +57,7 @@ public class GuestCheckOutService extends IntentService {
                 public void onCompleted() {
                     if (guest == null) {
                         //need to go to splash screen activity
-
+                        handleCheckGuestOut();
                     }
 
                 }
@@ -72,12 +74,19 @@ public class GuestCheckOutService extends IntentService {
                     Log.d(CheckGuestInFragment.class.getCanonicalName(), "On next guest " + result);
                 }
             });
-            /*
             try {
                 Log.d(GuestPermintaanService.class.getCanonicalName(), "Going to sleep for " + Constants.GUEST_PERMINTAAN_REFRESH_TIME_IN_SECONDS + " seconds");
                 Thread.sleep(Constants.GUEST_CHECKOUT_REFRESH_TIME_IN_SECONDS * 1000);
             } catch (InterruptedException e) {
-            }*/
+            }
         }
+    }
+
+    private void handleCheckGuestOut()
+    {
+        Intent localIntent =
+                new Intent(Constants.BROADCAST_GUEST_CHECKOUT_ACTION);
+        // Broadcasts the Intent to receivers in this app.
+        LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
     }
 }
