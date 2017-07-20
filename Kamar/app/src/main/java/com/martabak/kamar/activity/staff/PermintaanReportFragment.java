@@ -84,7 +84,7 @@ public class PermintaanReportFragment extends Fragment  {
                     List<Permintaan> permintaans = new ArrayList<>();
                     @Override
                     public void onCompleted() {
-/*
+
                         for (Permintaan p: permintaans) {
                             Log.v("HERP", p.created.toString()+" - "+p.roomNumber+" "+p.content.getType());
                             if (p.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
@@ -95,7 +95,7 @@ public class PermintaanReportFragment extends Fragment  {
                             }
 
                         }
-*/
+
                         buildCSV(permintaans);
                     }
 
@@ -161,64 +161,65 @@ public class PermintaanReportFragment extends Fragment  {
         }
 
         String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-        Date date = permintaans.get(0).created;
-        String fileName = "PermintaanData-"+date.toString()+".csv";
-        String filePath = baseDir + File.separator + fileName;
-        File f = new File(filePath );
-        CSVWriter writer = null;
-        // File exist
+        if (permintaans.size() != 0) {
+            Date date = permintaans.get(0).created;
+            String fileName = "PermintaanData-" + date.toString() + ".csv";
+            String filePath = baseDir + File.separator + fileName;
+            File f = new File(filePath);
+            CSVWriter writer = null;
+            // File exist
 
-        if(f.exists() && !f.isDirectory()){
-            FileWriter mFileWriter = null;
-            try {
-                mFileWriter = new FileWriter(filePath , true);
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (f.exists() && !f.isDirectory()) {
+                FileWriter mFileWriter = null;
+                try {
+                    mFileWriter = new FileWriter(filePath, true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                writer = new CSVWriter(mFileWriter);
+            } else {
+                try {
+                    writer = new CSVWriter(new FileWriter(filePath));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            writer = new CSVWriter(mFileWriter);
-        }
-        else {
-            try {
-                writer = new CSVWriter(new FileWriter(filePath));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        String[] data = new String[]{"created", "room number", "type", "assignee", "language"};
-        writer.writeNext(data);
-        for (Permintaan p : permintaans) {
-            data = new String[]{p.created.toString(), p.roomNumber.toString(), p.content.getType(), p.assignee, p.countryCode};
+            String[] data = new String[]{"created", "room number", "type", "assignee", "language"};
             writer.writeNext(data);
-            if (p.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
-                RestaurantOrder restoOrder = (RestaurantOrder) p.content;
-                for (OrderItem o : restoOrder.items) {
-                    data = new String[]{o.quantity.toString(), o.name, "Rp. "+o.price.toString()};
+            for (Permintaan p : permintaans) {
+                data = new String[]{p.created.toString(), p.roomNumber.toString(), p.content.getType(), p.assignee, p.countryCode};
+                writer.writeNext(data);
+                if (p.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
+                    RestaurantOrder restoOrder = (RestaurantOrder) p.content;
+                    for (OrderItem o : restoOrder.items) {
+                        data = new String[]{o.quantity.toString(), o.name, "Rp. " + o.price.toString()};
+                        writer.writeNext(data);
+                    }
+                    data = new String[]{"Total Price", "Rp. " + restoOrder.totalPrice.toString()};
+                    writer.writeNext(data);
+                } else if (p.content.getType().equals(Permintaan.TYPE_HOUSEKEEPING)) {
+                    Housekeeping hkOrder = (Housekeeping) p.content;
+                    data = new String[]{hkOrder.quantity.toString(), hkOrder.option.nameEn};
+                    writer.writeNext(data);
+                } else if (p.content.getType().equals(Permintaan.TYPE_ENGINEERING)) {
+                    Engineering engOrder = (Engineering) p.content;
+                    data = new String[]{engOrder.option.nameEn};
+                    writer.writeNext(data);
+                } else if (p.content.getType().equals(Permintaan.TYPE_MASSAGE)) {
+                    Massage massageOrder = (Massage) p.content;
+                    data = new String[]{massageOrder.option.nameEn};
                     writer.writeNext(data);
                 }
-                data = new String[]{"Total Price", "Rp. " +restoOrder.totalPrice.toString()};
-                writer.writeNext(data);
-            } else if (p.content.getType().equals(Permintaan.TYPE_HOUSEKEEPING)) {
-                Housekeeping hkOrder = (Housekeeping) p.content;
-                data = new String[]{hkOrder.quantity.toString(), hkOrder.option.nameEn};
-                writer.writeNext(data);
-            } else if (p.content.getType().equals(Permintaan.TYPE_ENGINEERING)) {
-                Engineering engOrder = (Engineering) p.content;
-                data = new String[]{engOrder.option.nameEn};
-                writer.writeNext(data);
-            } else if (p.content.getType().equals(Permintaan.TYPE_MASSAGE)) {
-                Massage massageOrder = (Massage)p.content;
-                data = new String[]{massageOrder.option.nameEn};
-                writer.writeNext(data);
             }
-        }
 
-        try {
-            writer.close();
-            date = new Date();
-            EmailSender.getInstance(getActivity().getBaseContext()).sendEmail(
-                    "PermintaanReport"+date.toString(), f.toString(), "dynamicfrogman@gmail.com");
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                writer.close();
+                date = new Date();
+                EmailSender.getInstance(getActivity().getBaseContext()).sendEmail(
+                        "PermintaanReport" + date.toString(), f.toString(), "dynamicfrogman@gmail.com");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
