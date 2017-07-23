@@ -70,6 +70,7 @@ public class CheckGuestOutService extends IntentService {
         broadcastCheckGuestOutIntent.setAction(Constants.BROADCAST_GUEST_CHECKOUT_ACTION);
         // Broadcasts the Intent to receivers in this app.
         sendBroadcast(broadcastCheckGuestOutIntent);
+//        this.stopService(broadcastCheckGuestOutIntent);
     }
 
 }

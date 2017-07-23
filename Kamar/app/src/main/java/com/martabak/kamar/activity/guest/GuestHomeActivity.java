@@ -1,8 +1,11 @@
 package com.martabak.kamar.activity.guest;
 
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -36,6 +39,7 @@ import com.martabak.kamar.domain.managers.Managers;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.activity.staff.CheckGuestInFragment;
+import com.martabak.kamar.util.Constants;
 import com.martabak.kamar.util.LocaleUtils;
 
 import java.util.Calendar;
@@ -51,6 +55,9 @@ public class GuestHomeActivity extends AppCompatActivity implements
         GuestHomeFragment.GuestHomeIconListener {
 
     private String guestSelectedOption;
+
+    private IntentFilter intentFilter;
+    private BroadcastReceiver guestCheckOutBroadcastReceiver;
 
     // on click bindings for the guest home activity
     @OnClick(R.id.chat_icon)
@@ -92,6 +99,22 @@ public class GuestHomeActivity extends AppCompatActivity implements
 
         // Start any guest services.
         startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
+
+        //guest checkout broadcast receiver
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.BROADCAST_GUEST_CHECKOUT_ACTION);
+
+        guestCheckOutBroadcastReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                endActivity();
+
+            }
+        };
+        registerReceiver(guestCheckOutBroadcastReceiver, intentFilter);
+
+
     }
 
     @Override
@@ -99,6 +122,28 @@ public class GuestHomeActivity extends AppCompatActivity implements
         stopGuestServices();
         super.onPause();
     }
+
+
+
+    /*When guests checked out return to the splash screen*/
+    public void endActivity() {
+        Intent i = new Intent(this, SplashScreenActivity.class);
+        this.startActivity(i);
+        Log.d(GuestHomeActivity.this.toString(), "updateGuest");
+        getSharedPreferences("userSettings", MODE_PRIVATE).edit().
+                putString("guestId", "none").commit();
+        Toast.makeText(
+                this,
+                this.getString(R.string.logout_result),
+                Toast.LENGTH_LONG
+        ).show();
+        if (guestCheckOutBroadcastReceiver != null) {
+            unregisterReceiver(guestCheckOutBroadcastReceiver);
+            guestCheckOutBroadcastReceiver = null;
+        }
+        finish();
+    }
+
 
     /**
      * Start any relevant guest services.

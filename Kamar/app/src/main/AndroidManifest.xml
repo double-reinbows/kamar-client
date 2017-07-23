@@ -132,12 +132,6 @@
             android:label="@string/engineering_label"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
-
-        <receiver android:name="com.martabak.kamar.activity.guest.GuestCheckOutBroadcastReceiver">
-            <intent-filter>
-                <action android:name="com.martabak.kamar.util.Constants.BROADCAST_GUEST_CHECKOUT_ACTION" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>
