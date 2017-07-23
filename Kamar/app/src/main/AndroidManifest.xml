@@ -19,8 +19,11 @@
 
         <service android:name=".activity.chat.GuestChatService" />
         <service android:name=".activity.guest.GuestPermintaanService" />
+        <service android:name=".activity.guest.CheckGuestOutService"/>
         <service android:name=".activity.chat.StaffChatService" />
         <service android:name=".activity.staff.StaffPermintaanService" />
+
+
 
         <activity
             android:name=".activity.YiannisTestActivity"

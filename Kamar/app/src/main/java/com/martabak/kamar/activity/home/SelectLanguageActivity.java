@@ -146,6 +146,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 Log.v(SelectLanguageActivity.class.getCanonicalName(), "Room Number : " + roomNumber);
                 if (result == null) {
                     editor.putString("guestId", "none");
+                    editor.putString("guestName", "none");
                 } else {
                     //set guestId in Shared Preferences
                     editor.putString("guestId", result._id);
