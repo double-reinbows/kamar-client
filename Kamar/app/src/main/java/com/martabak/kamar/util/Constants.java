@@ -22,7 +22,7 @@ public class Constants {
     public static final int GUEST_CHECKOUT_REFRESH_TIME_IN_SECONDS = 60;
 
     // Defines a custom Intent action
-    public static final String BROADCAST_GUEST_CHECKOUT_ACTION = "broadcast";
+    public static final String BROADCAST_GUEST_CHECKOUT_ACTION = "com.martabak.kamar.util.Constants.BROADCAST_GUEST_CHECKOUT_ACTION";
     public static final int PERMINTAAN_VIEW_WINDOW_FOR_STAFF_IN_DAYS = -3;
 
 }

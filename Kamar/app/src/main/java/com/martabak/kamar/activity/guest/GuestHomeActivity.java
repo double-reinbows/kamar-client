@@ -112,7 +112,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
             Log.v(GuestHomeActivity.class.getCanonicalName(), "Starting " + GuestChatService.class.getCanonicalName() + " as " + guestId);
             startService(new Intent(this, GuestChatService.class)
                     .putExtra("guestId", guestId));
-            startService(new Intent(this, HandleCheckGuestOutService.class));
+            startService(new Intent(this, CheckGuestOutService.class));
         }
     }
 
@@ -124,6 +124,9 @@ public class GuestHomeActivity extends AppCompatActivity implements
         stopService(new Intent(this, GuestPermintaanService.class));
         Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + GuestChatService.class.getCanonicalName());
         stopService(new Intent(this, GuestChatService.class));
+        Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + CheckGuestOutService.class.getCanonicalName());
+        stopService(new Intent(this, CheckGuestOutService.class));
+
     }
 
     /**

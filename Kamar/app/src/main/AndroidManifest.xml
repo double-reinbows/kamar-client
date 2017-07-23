@@ -19,15 +19,11 @@
 
         <service android:name=".activity.chat.GuestChatService" />
         <service android:name=".activity.guest.GuestPermintaanService" />
-        <service android:name=".activity.guest.HandleCheckGuestOutService"/>
+        <service android:name=".activity.guest.CheckGuestOutService"/>
         <service android:name=".activity.chat.StaffChatService" />
         <service android:name=".activity.staff.StaffPermintaanService" />
 
-        <receiver android:name=".activity.guest.GuestCheckOutBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-            </intent-filter>
-        </receiver>
+
 
         <activity
             android:name=".activity.YiannisTestActivity"
@@ -136,6 +132,12 @@
             android:label="@string/engineering_label"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+        <receiver android:name="com.martabak.kamar.activity.guest.GuestCheckOutBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.martabak.kamar.util.Constants.BROADCAST_GUEST_CHECKOUT_ACTION" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
