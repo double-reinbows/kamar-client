@@ -41,6 +41,7 @@
 
     <!-- Permintaan -->
     <string name="permintaan_title">要求</string>
+    <string name="permintaan_status_title">请求状态</string>
     <string name="permintaan">请求</string>
     <string name="new_permintaan">新</string>
     <string name="inprogress_permintaan">进行中</string>

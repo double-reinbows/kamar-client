@@ -42,6 +42,7 @@
 
     <!-- Permintaan -->
     <string name="permintaan_title">Requests</string>
+    <string name="permintaan_status_title">Status Of Requests</string>
     <string name="permintaan">request</string>
     <string name="new_permintaan">NEW</string>
     <string name="inprogress_permintaan">IN PROGRESS</string>

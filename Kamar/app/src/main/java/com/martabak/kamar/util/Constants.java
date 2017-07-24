@@ -19,7 +19,7 @@ public class Constants {
     public static final int GUEST_PERMINTAAN_REFRESH_TIME_IN_SECONDS = 60;
     public static final int STAFF_CHAT_REFRESH_TIME_IN_SECONDS = 30;
     public static final int GUEST_CHAT_REFRESH_TIME_IN_SECONDS = 60;
-    public static final int GUEST_CHECKOUT_REFRESH_TIME_IN_SECONDS = 60;
+    public static final int GUEST_CHECKOUT_REFRESH_TIME_IN_SECONDS = 180;
 
     // Defines a custom Intent action
     public static final String BROADCAST_GUEST_CHECKOUT_ACTION = "com.martabak.kamar.util.Constants.BROADCAST_GUEST_CHECKOUT_ACTION";

@@ -40,6 +40,7 @@
 
     <!-- Permintaan -->
     <string name="permintaan">permintaan</string>
+    <string name="permintaan_status_title">Status Permintaan</string>
     <string name="new_permintaan">BARU</string>
     <string name="inprogress_permintaan">SEDANG DIPROSES</string>
     <string name="indelivery_permintaan">SEDANG DIKIRIM</string>

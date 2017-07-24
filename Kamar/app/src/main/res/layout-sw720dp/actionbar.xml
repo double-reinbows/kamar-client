@@ -31,7 +31,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:layout_marginLeft="10dp"
                 android:id="@+id/chat_icon" />
+
+            <ImageView
+                android:src="@drawable/ic_orders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:id="@+id/orders_icon"/>
 
         </android.support.v7.widget.Toolbar>
 

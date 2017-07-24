@@ -54,7 +54,8 @@ public class EngineeringActivity extends AbstractGuestBarsActivity implements Vi
                 .withToolbarLabel(getString(R.string.engineering_label))
                 .showTabLayout(false)
                 .showLogoutIcon(false)
-                .enableChatIcon(true);
+                .enableChatIcon(true)
+                .enableordersIcon(true);
     }
 
     @Override

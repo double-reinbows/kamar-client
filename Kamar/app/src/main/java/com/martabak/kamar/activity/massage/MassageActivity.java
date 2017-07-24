@@ -59,7 +59,9 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                 .withToolbarLabel(getString(R.string.massage_label))
                 .showTabLayout(false)
                 .showLogoutIcon(false)
-                .enableChatIcon(true);
+                .enableChatIcon(true)
+                .enableordersIcon(true);
+
     }
 
     @Override

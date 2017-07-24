@@ -70,7 +70,7 @@
         <activity
             android:name=".activity.guest.GuestPermintaanActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/permintaan_title"
+            android:label="@string/permintaan_status_title"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar">
             <!--intent-filter>

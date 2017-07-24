@@ -34,7 +34,8 @@ public class GuestEventActivity extends AbstractGuestBarsActivity {
                 .withToolbarLabel(getString(R.string.event_label))
                 .showTabLayout(true)
                 .showLogoutIcon(false)
-                .enableChatIcon(true);
+                .enableChatIcon(true)
+                .enableordersIcon(true);
     }
 
     //binding views here

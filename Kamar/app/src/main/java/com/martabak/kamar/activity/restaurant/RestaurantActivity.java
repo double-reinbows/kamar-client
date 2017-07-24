@@ -75,7 +75,8 @@ public class RestaurantActivity extends AbstractGuestBarsActivity {
                     .withToolbarLabel(getString(R.string.restaurant_label))
                     .showTabLayout(true)
                     .showLogoutIcon(false)
-                    .enableChatIcon(false);
+                    .enableChatIcon(false)
+                    .enableordersIcon(true);
         }
     }
 

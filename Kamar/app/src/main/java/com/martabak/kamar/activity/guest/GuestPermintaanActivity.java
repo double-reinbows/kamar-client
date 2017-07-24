@@ -42,10 +42,11 @@ public class GuestPermintaanActivity extends AbstractGuestBarsActivity{
     protected Options getOptions() {
         return new Options()
                 .withBaseLayout(R.layout.activity_guest_permintaan)
-                .withToolbarLabel(getString(R.string.permintaan))
+                .withToolbarLabel(getString(R.string.permintaan_status_title))
                 .showTabLayout(false)
                 .showLogoutIcon(false)
-                .enableChatIcon(false);
+                .enableChatIcon(false)
+                .enableordersIcon(false);
     }
 
     protected void createExpandableList(List<Permintaan> permintaans) {

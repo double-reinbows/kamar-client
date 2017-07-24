@@ -41,6 +41,7 @@
 
     <!-- Permintaan -->
     <string name="permintaan_title">Запросы</string>
+    <string name="permintaan_status_title">Статус запросов</string>
     <string name="permintaan">запрос</string>
     <string name="new_permintaan">новый</string>
     <string name="inprogress_permintaan">В ХОДЕ ВЫПОЛНЕНИЯ</string>

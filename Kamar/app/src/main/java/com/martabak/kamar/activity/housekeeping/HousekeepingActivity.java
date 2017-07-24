@@ -56,7 +56,8 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                 .withToolbarLabel(getString(R.string.housekeeping_label))
                 .showTabLayout(true)
                 .showLogoutIcon(false)
-                .enableChatIcon(true);
+                .enableChatIcon(true)
+                .enableordersIcon(true);
     }
 
     @Override
