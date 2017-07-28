@@ -214,9 +214,9 @@ public class PermintaanReportFragment extends Fragment  {
 
             try {
                 writer.close();
-                date = new Date();
-                EmailSender.getInstance(getActivity().getBaseContext()).sendEmail(
-                        "PermintaanReport" + date.toString(), f.toString(), "dynamicfrogman@gmail.com");
+//                date = new Date();
+//                EmailSender.getInstance(getActivity().getBaseContext()).sendEmail(
+//                        "PermintaanReport" + date.toString(), f.toString(), "dynamicfrogman@gmail.com");
             } catch (IOException e) {
                 e.printStackTrace();
             }
