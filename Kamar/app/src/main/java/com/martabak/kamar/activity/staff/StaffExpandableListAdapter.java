@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Exchanger;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -163,8 +164,13 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String assignee = textInput.getText().toString();
-                            staffPermintaanFragment.disableUserInput();
-                            getAndUpdatePermintaan(currPermintaan._id, 0, assignee, currPermintaan.eta);
+                            if (!assignee.equals("")) {
+                                staffPermintaanFragment.disableUserInput();
+                                getAndUpdatePermintaan(currPermintaan._id, 0, assignee, currPermintaan.eta);
+                            } else {
+                                Toast.makeText(context, "Tolong periksa anda sudah menugaskan seseorang",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -293,10 +299,14 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         etabuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Integer eta = Integer.parseInt(textInput.getText().toString());
-                                staffPermintaanFragment.disableUserInput();
-                                //confirm progress dialog
-                                progressDialog(currPermintaan, eta);
+                                //Check a number has been inputted.
+                                try {
+                                    Integer eta = Integer.parseInt(textInput.getText().toString());
+                                    progressDialog(currPermintaan, eta);
+                                } catch (Exception e) {
+                                    Toast.makeText(context, "Tolong periksa Anda sudah memasukkan angka",
+                                            Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
                         etabuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
