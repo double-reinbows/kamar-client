@@ -61,7 +61,7 @@ public class StaffPermintaanService extends IntentService {
                     .filter(new Func1<Permintaan, Boolean>() {
                         @Override public Boolean call(Permintaan permintaan) {
                             permintaanIds.add(permintaan._id);
-                            return permintaan.updated == null &&
+                            return //permintaan.updated == null &&
                                     !permintaan.isOlderThan(Constants.PERMINTAAN_VIEW_WINDOW_FOR_STAFF_IN_DAYS) &&
                                     (owner.equals(User.TYPE_STAFF_ADMIN) || permintaan.owner.equalsIgnoreCase(owner));
                         }

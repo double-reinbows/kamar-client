@@ -257,6 +257,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                                 "Waktu Sejak Terakhir Kali Pesan Diubah: "+lastStateChange/60+" menit yang lalu<br>"+
                                 "Petugas: "+currPermintaan.assignee+
                                 "<br>ETA: "+currPermintaan.eta.toString()+" menit"+
+                                "<br>Catatan: "+currPermintaan.content.message+
                                 "<br>Rincian: <b><br>"+contentString+"</b>"))
                         .setCancelable(true)
                         .setNeutralButton("TUTUP", new DialogInterface.OnClickListener() {
