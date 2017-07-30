@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Exchanger;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,6 +39,7 @@ import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.domain.permintaan.Transport;
 import com.martabak.kamar.service.PermintaanServer;
+import com.martabak.kamar.util.LocaleUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +54,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<String>> stateToPermIds;
     private HashMap<String, Permintaan> idToPermintaan;
     // bind views here
+    @BindView(R.id.language_permintaan_item) TextView languagePermintaanItem;
     @BindView(R.id.assign_permintaan_button) ImageView assignPermintaanButton;
     @BindView(R.id.info_permintaan_button) ImageView infoPermintaanButton;
     @BindView(R.id.progress_permintaan_button) Button progressPermintaanButton;
@@ -118,6 +121,9 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         childText += "\nRoom no. "+currPermintaan.roomNumber+" | "+simpleCreated;
         txtListChild.setText(childText);
 
+        //Set language country flag
+        languagePermintaanItem.setText(LocaleUtils.localeToEmoji(currPermintaan.countryCode));
+
         //Set up grey filter
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);  //0 means grayscale
@@ -158,8 +164,13 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String assignee = textInput.getText().toString();
-                            staffPermintaanFragment.disableUserInput();
-                            getAndUpdatePermintaan(currPermintaan._id, 0, assignee, currPermintaan.eta);
+                            if (!assignee.equals("")) {
+                                staffPermintaanFragment.disableUserInput();
+                                getAndUpdatePermintaan(currPermintaan._id, 0, assignee, currPermintaan.eta);
+                            } else {
+                                Toast.makeText(context, "Tolong periksa anda sudah menugaskan seseorang",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -246,6 +257,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                                 "Waktu Sejak Terakhir Kali Pesan Diubah: "+lastStateChange/60+" menit yang lalu<br>"+
                                 "Petugas: "+currPermintaan.assignee+
                                 "<br>ETA: "+currPermintaan.eta.toString()+" menit"+
+                                "<br>Catatan: "+currPermintaan.content.message+
                                 "<br>Rincian: <b><br>"+contentString+"</b>"))
                         .setCancelable(true)
                         .setNeutralButton("TUTUP", new DialogInterface.OnClickListener() {
@@ -288,10 +300,14 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                         etabuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Integer eta = Integer.parseInt(textInput.getText().toString());
-                                staffPermintaanFragment.disableUserInput();
-                                //confirm progress dialog
-                                progressDialog(currPermintaan, eta);
+                                //Check a number has been inputted.
+                                try {
+                                    Integer eta = Integer.parseInt(textInput.getText().toString());
+                                    progressDialog(currPermintaan, eta);
+                                } catch (Exception e) {
+                                    Toast.makeText(context, "Tolong periksa Anda sudah memasukkan angka",
+                                            Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
                         etabuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -419,7 +435,7 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
                 Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "Completed getting _rev");
                 Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, rev, currPermintaan.owner, currPermintaan.creator, currPermintaan.type,
                         currPermintaan.roomNumber, currPermintaan.guestId, targetState,
-                        currPermintaan.created, new Date(), updatedAssignee, eta, currPermintaan.content);
+                        currPermintaan.created, new Date(), updatedAssignee, eta, currPermintaan.countryCode, currPermintaan.content);
                 updatePermintaanAndView(updatedPermintaan, currPermintaan.state);
             }
 
@@ -435,9 +451,6 @@ class StaffExpandableListAdapter extends BaseExpandableListAdapter {
         });
     }
 
-    /**
-     *
-     */
     private void updatePermintaanAndView(final Permintaan permintaan, final String prevState) {
         Log.d(StaffExpandableListAdapter.class.getCanonicalName(), "completed getpermintaan, now updating");
 

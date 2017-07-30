@@ -42,6 +42,7 @@
 
     <!-- Permintaan -->
     <string name="permintaan_title">Requests</string>
+    <string name="permintaan_status_title">Status Of Requests</string>
     <string name="permintaan">request</string>
     <string name="new_permintaan">NEW</string>
     <string name="inprogress_permintaan">IN PROGRESS</string>
@@ -49,6 +50,7 @@
     <string name="completed_permintaan">COMPLETED</string>
     <string name="deleted_permintaan">DELETED</string>
     <string name="cancelled_permintaan">CANCELLED</string>
+    <string name="permintaan_resend_confirmation">Are you sure you want to resend this request?</string>
     <string name="permintaan_progress_confirmation">Are you sure you want to progress this request?</string>
     <string name="permintaan_regress_confirmation">Are you sure you want to regress this request?</string>
     <string name="permintaan_cancel_confirmation">Are you sure you want to cancel this request?</string>
@@ -141,10 +143,10 @@
     <string name="survey_label">COMMENTS</string>
     <string name="survey_submit_button">Submit</string>
 
-    <string name="massage_label">MASSAGE</string>
-    <string name="massage_message">Are you sure you want to book this massage?</string>
-    <string name="massage_disabled_message">Massages cannot be booked between the hours</string>
-    <string name="massage_result">Massage request sent</string>
+    <string name="massage_label">SPA</string>
+    <string name="massage_message">Are you sure you want to book this?</string>
+    <string name="massage_disabled_message">Spa requests cannot be booked between the hours</string>
+    <string name="massage_result">Spa request sent</string>
 
     <string name="restaurant_label">RESTAURANT</string>
     <string name="restaurant_success"> Successfully placed your order!</string>
@@ -226,4 +228,7 @@
     <string name="agree">Agree</string>
     <string name="disagree">Disagree</string>
     <string name="hi">Hi</string>
+    <string name="housekeeping">housekeeping</string>
+    <string name="admin">admin</string>
+    <string name="engineering_other_message">Please provide details about this request.</string>
 </resources>

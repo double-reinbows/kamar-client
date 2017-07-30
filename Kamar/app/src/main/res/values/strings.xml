@@ -37,4 +37,7 @@
     <string name="agree">Agree</string>
     <string name="disagree">Disagree</string>
     <string name="hi">Hi</string>
+    <string name="housekeeping">housekeeping</string>
+    <string name="admin">admin</string>
+    <string name="engineering_other_message">Please provide details about this request.</string>
 </resources>

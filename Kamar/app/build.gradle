@@ -58,4 +58,6 @@ dependencies {
     compile 'com.amazonaws:aws-android-sdk-ses:2.2.+'
     compile 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.2.+'
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
+    compile 'me.relex:circleindicator:1.2.2@aar'
+    compile files('libs/opencsv-2.4.jar')
 }

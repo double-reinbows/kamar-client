@@ -11,13 +11,30 @@
         android:weightSum="2"
         android:id="@+id/guestlinearlayout">
 
+        <RelativeLayout
+            android:id="@+id/banner_layout"
+            android:layout_width="match_parent"
+            android:layout_height="260dp">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/bannerPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true" />
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/circleIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+
+        <!--
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1.05"
             android:src="@drawable/banner"
             android:scaleType="fitXY"
-            android:id="@+id/banner_image"/>
+            android:id="@+id/banner_image"/> -->
 
         <GridView
             android:id="@+id/guestgridview"

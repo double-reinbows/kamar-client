@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +18,14 @@ import android.widget.TextView;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.Guest;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * Created by adarsh on 10/08/16.
@@ -36,11 +43,15 @@ public class GuestHomeFragment extends Fragment {
         return new GuestHomeFragment();
     }
     GuestHomeAdapter guestHomeAdapter;
+    GuestHomeSliderAdapter guestHomeSliderAdapter;
+    static int currentPage = 0;
 
     // binding the views here
     @BindView(R.id.guestgridview) GridView gridView;
     @BindView(R.id.room_number) TextView roomTextView;
     @BindView(R.id.bottombar_guest_message) TextView bottombarGuestText;
+    @BindView(R.id.bannerPager) ViewPager bannerPager;
+    @BindView(R.id.circleIndicator) CircleIndicator circleIndicator;
 
     // tapping on each individual item in the grid
     @OnItemClick(R.id.guestgridview)
@@ -61,12 +72,38 @@ public class GuestHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guest_home, container, false);
-
         ButterKnife.bind(this, view);
+
 
         final String roomNumber = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                 .getString("roomNumber", "none");
         roomTextView.setText(roomNumber);
+
+        guestHomeSliderAdapter = new GuestHomeSliderAdapter(getActivity().getBaseContext());
+        bannerPager.setAdapter(guestHomeSliderAdapter);
+        circleIndicator.setViewPager(bannerPager);
+
+        //auto start viewpager
+        final Handler handler = new Handler();
+        final Runnable update = new Runnable() {
+            @Override
+            public void run() {
+                if (currentPage == guestHomeSliderAdapter.getCount())
+                {
+                    currentPage = 0;
+                }
+                bannerPager.setCurrentItem(currentPage++, true);
+            }
+        };
+        Timer swipeTimer = new Timer();
+        swipeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(update);
+            }
+        }, 2500, 2500);
+
+
         guestHomeAdapter = new GuestHomeAdapter(this.getActivity());
         gridView.setAdapter(guestHomeAdapter);
 
@@ -154,6 +191,7 @@ public class GuestHomeFragment extends Fragment {
 /*                }
             });
         }*/
+
         return view;
     }
 

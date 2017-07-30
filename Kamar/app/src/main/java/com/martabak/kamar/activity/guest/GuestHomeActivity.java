@@ -1,8 +1,11 @@
 package com.martabak.kamar.activity.guest;
 
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -36,7 +39,8 @@ import com.martabak.kamar.domain.managers.Managers;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.activity.staff.CheckGuestInFragment;
-import com.martabak.kamar.domain.LocaleChanger;
+import com.martabak.kamar.util.Constants;
+import com.martabak.kamar.util.LocaleUtils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -51,6 +55,9 @@ public class GuestHomeActivity extends AppCompatActivity implements
         GuestHomeFragment.GuestHomeIconListener {
 
     private String guestSelectedOption;
+
+    private IntentFilter intentFilter;
+    private BroadcastReceiver guestCheckOutBroadcastReceiver;
 
     // on click bindings for the guest home activity
     @OnClick(R.id.chat_icon)
@@ -92,6 +99,22 @@ public class GuestHomeActivity extends AppCompatActivity implements
 
         // Start any guest services.
         startGuestServices(getSharedPreferences("userSettings", MODE_PRIVATE).getString("guestId", "none"));
+
+        //guest checkout broadcast receiver
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.BROADCAST_GUEST_CHECKOUT_ACTION);
+
+        guestCheckOutBroadcastReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                endActivity();
+
+            }
+        };
+        registerReceiver(guestCheckOutBroadcastReceiver, intentFilter);
+
+
     }
 
     @Override
@@ -99,6 +122,28 @@ public class GuestHomeActivity extends AppCompatActivity implements
         stopGuestServices();
         super.onPause();
     }
+
+
+
+    /*When guests checked out return to the splash screen*/
+    public void endActivity() {
+        Intent i = new Intent(this, SplashScreenActivity.class);
+        this.startActivity(i);
+        Log.d(GuestHomeActivity.this.toString(), "updateGuest");
+        getSharedPreferences("userSettings", MODE_PRIVATE).edit().
+                putString("guestId", "none").commit();
+        Toast.makeText(
+                this,
+                this.getString(R.string.logout_result),
+                Toast.LENGTH_LONG
+        ).show();
+        if (guestCheckOutBroadcastReceiver != null) {
+            unregisterReceiver(guestCheckOutBroadcastReceiver);
+            guestCheckOutBroadcastReceiver = null;
+        }
+        finish();
+    }
+
 
     /**
      * Start any relevant guest services.
@@ -112,6 +157,7 @@ public class GuestHomeActivity extends AppCompatActivity implements
             Log.v(GuestHomeActivity.class.getCanonicalName(), "Starting " + GuestChatService.class.getCanonicalName() + " as " + guestId);
             startService(new Intent(this, GuestChatService.class)
                     .putExtra("guestId", guestId));
+            startService(new Intent(this, CheckGuestOutService.class));
         }
     }
 
@@ -123,6 +169,9 @@ public class GuestHomeActivity extends AppCompatActivity implements
         stopService(new Intent(this, GuestPermintaanService.class));
         Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + GuestChatService.class.getCanonicalName());
         stopService(new Intent(this, GuestChatService.class));
+        Log.v(GuestHomeActivity.class.getCanonicalName(), "Stopping " + CheckGuestOutService.class.getCanonicalName());
+        stopService(new Intent(this, CheckGuestOutService.class));
+
     }
 
     /**
@@ -200,48 +249,11 @@ public class GuestHomeActivity extends AppCompatActivity implements
      * @param success The outcome of the server request.
      */
     @Override
-    public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, final String staffSubType, String reason) {
+    public void onLogoutDialogPositiveClick(DialogFragment dialog, Boolean success, String staffSubType, String reason) {
         dialog.dismiss();
         if (success) {
-            LocaleChanger localeChanger = new LocaleChanger();
-            localeChanger.setLocale(this, "en");
-            final String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                    .getString("roomNumber", "none");
-            new AlertDialog.Builder(this)
-                    .setMessage(getString(R.string.logout_options))
-                    .setCancelable(true)
-                    .setNegativeButton(getString(R.string.logout_change_room_number), new DialogInterface.OnClickListener() {
-                        @Override public void onClick(DialogInterface dialog, int which) {
-                            DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
-                            changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
-                        }
-                    })
-                    .setNeutralButton(getString(R.string.logout_staff), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int which) {
-                            stopGuestServices();
-                            getSharedPreferences("userSettings", MODE_PRIVATE)
-                                .edit()
-                                .putString("userType", User.TYPE_STAFF)
-                                .putString("userSubType", staffSubType)
-                                .commit();
-                            startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
-                            finish();
-                        }
-                    })
-                    .setPositiveButton(getString(R.string.logout_reset_tablet), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.v("App Action", "Resetting tablet");
-                            stopGuestServices();
-//                            checkGuestOutByRoomNumber(roomNumber);
-                            Intent intent = new Intent(GuestHomeActivity.this, SplashScreenActivity.class);
-                            startActivity(intent);
-                            stopGuestServices();
-                            finish();
-                        }
-                    })
-                    .create().show();
+            LocaleUtils.setLocale(this, "en", "GB");
+            showLogoutDialog(staffSubType);
         } else {
             Toast.makeText(
                     GuestHomeActivity.this,
@@ -249,6 +261,48 @@ public class GuestHomeActivity extends AppCompatActivity implements
                     Toast.LENGTH_SHORT
             ).show();
         }
+    }
+
+    private void showLogoutDialog(final String staffSubType) {
+        AlertDialog.Builder logoutDialog = new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.logout_options))
+                .setCancelable(true)
+                .setNeutralButton(getString(R.string.logout_staff), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        stopGuestServices();
+                        getSharedPreferences("userSettings", MODE_PRIVATE)
+                                .edit()
+                                .putString("userType", User.TYPE_STAFF)
+                                .putString("userSubType", staffSubType)
+                                .commit();
+                        startActivity(new Intent(GuestHomeActivity.this, StaffHomeActivity.class));
+                        finish();
+                    }
+                })
+                .setPositiveButton(getString(R.string.logout_reset_tablet), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.v("App Action", "Resetting tablet");
+                        stopGuestServices();
+//                            checkGuestOutByRoomNumber(roomNumber);
+                        Intent intent = new Intent(GuestHomeActivity.this, SplashScreenActivity.class);
+                        startActivity(intent);
+                        stopGuestServices();
+                        finish();
+                    }
+                });
+
+        if (staffSubType.equalsIgnoreCase(User.TYPE_STAFF_ADMIN)) {
+            logoutDialog.setNegativeButton(getString(R.string.logout_change_room_number), new DialogInterface.OnClickListener() {
+                @Override public void onClick(DialogInterface dialog, int which) {
+                    DialogFragment changeRoomNumberFragment = new ChangeRoomNumberDialogFragment();
+                    changeRoomNumberFragment.show(getFragmentManager(), "changeRoomNumber");
+                }
+            });
+        }
+
+        logoutDialog.create().show();
     }
 
     /**

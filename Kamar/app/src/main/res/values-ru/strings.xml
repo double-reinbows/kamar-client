@@ -41,6 +41,7 @@
 
     <!-- Permintaan -->
     <string name="permintaan_title">Запросы</string>
+    <string name="permintaan_status_title">Статус запросов</string>
     <string name="permintaan">запрос</string>
     <string name="new_permintaan">новый</string>
     <string name="inprogress_permintaan">В ХОДЕ ВЫПОЛНЕНИЯ</string>
@@ -48,6 +49,7 @@
     <string name="completed_permintaan">ЗАВЕРШЕНА</string>
     <string name="deleted_permintaan">УДАЛИТЬ</string>
     <string name="cancelled_permintaan">ОТМЕНЕН</string>
+    <string name="permintaan_resend_confirmation">Вы действительно хотите отправить этот запрос повторно?</string>
     <string name="permintaan_progress_confirmation">Вы уверены, что хотите прогрессировать этот запрос?</string>
     <string name="permintaan_regress_confirmation">Вы уверены, что хотите регрессируют этот запрос?</string>
     <string name="permintaan_cancel_confirmation">Вы уверены, что хотите отменить этот запрос?</string>
@@ -220,4 +222,7 @@
     <string name="agree">Согласен</string>
     <string name="disagree">Не соглашаться</string>
     <string name="hi">Гавайи</string>
+    <string name="housekeeping">домоводство</string>
+    <string name="admin">админ</string>
+    <string name="engineering_other_message">Просьба сообщить подробности об этом запросе.</string>
 </resources>

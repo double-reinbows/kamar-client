@@ -62,9 +62,7 @@ public class GuestPermintaanService extends IntentService {
                     }).subscribe(new Action1<Permintaan>() {
                         @Override public void call(Permintaan permintaan) {
                             Log.d(GuestPermintaanService.class.getCanonicalName(), "Guest permintaan has been updated with new status");
-                            List<String> permIds = new ArrayList<String>(permintaans.keySet());
-                            Collections.sort(permIds);
-                            createNotification(permIds.indexOf(permintaan._id), permintaan);
+                            createNotification(permintaan.hashCode(), permintaan);
                         }
                     });
 

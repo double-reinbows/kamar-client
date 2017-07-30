@@ -59,7 +59,9 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                 .withToolbarLabel(getString(R.string.massage_label))
                 .showTabLayout(false)
                 .showLogoutIcon(false)
-                .enableChatIcon(true);
+                .enableChatIcon(true)
+                .enableordersIcon(true);
+
     }
 
     @Override
@@ -162,7 +164,7 @@ public class MassageActivity extends AbstractGuestBarsActivity implements View.O
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String owner = User.TYPE_STAFF;
+                        String owner = User.TYPE_STAFF_FRONTDESK;
                         String type = Permintaan.TYPE_MASSAGE;
                         final String creator = MassageActivity.this.getSharedPreferences("userSettings", MassageActivity.this.MODE_PRIVATE)
                                 .getString("userType", "none");

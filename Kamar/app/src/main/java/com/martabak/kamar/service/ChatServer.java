@@ -9,6 +9,8 @@ import com.martabak.kamar.service.response.PutResponse;
 import com.martabak.kamar.service.response.ViewResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -79,6 +81,12 @@ public class ChatServer extends Server {
                         for (ViewResponse<ChatMessage>.ViewResult<ChatMessage> i : response.rows) {
                             messages.add(i.value);
                         }
+                        Collections.sort(messages, new Comparator<ChatMessage>() {
+                            @Override
+                            public int compare(ChatMessage m1, ChatMessage m2) {
+                                return m1.sent.compareTo(m2.sent);
+                            }
+                        });
                         return Observable.just(new GuestChat(messages));
                     }
                 })

@@ -55,7 +55,8 @@ public class SurveyActivity extends AbstractGuestBarsActivity {
                 .withToolbarLabel(getString(R.string.survey_label))
                 .showTabLayout(false)
                 .showLogoutIcon(false)
-                .enableChatIcon(true);
+                .enableChatIcon(true)
+                .enableordersIcon(true);
     }
 
 

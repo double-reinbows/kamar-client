@@ -48,7 +48,8 @@ public class RestaurantConfirmationActivity extends AbstractGuestBarsActivity {
                 .withToolbarLabel(getString(R.string.restaurant_confirmation_label))
                 .showTabLayout(false)
                 .showLogoutIcon(false)
-                .enableChatIcon(true);
+                .enableChatIcon(true)
+                .enableordersIcon(true);
     }
 
     // bind views here

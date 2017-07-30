@@ -40,12 +40,14 @@
 
     <!-- Permintaan -->
     <string name="permintaan">permintaan</string>
+    <string name="permintaan_status_title">Status Permintaan</string>
     <string name="new_permintaan">BARU</string>
     <string name="inprogress_permintaan">SEDANG DIPROSES</string>
     <string name="indelivery_permintaan">SEDANG DIKIRIM</string>
     <string name="completed_permintaan">BERES</string>
     <string name="deleted_permintaan">DIHAPUS</string>
     <string name="cancelled_permintaan">DIBATALKAN</string>
+    <string name="permintaan_resend_confirmation">Yakin ingin mengirim ulang permintaan ini?</string>
     <string name="permintaan_progress_confirmation">Apakah anda tentu ingin majukan pesan ini?</string>
     <string name="permintaan_regress_confirmation">Apakah anda tentu ingin mundurkan pesan ini?</string>
     <string name="permintaan_cancel_confirmation">Apakah anda tentu ingin batal pesan ini?</string>
@@ -163,14 +165,14 @@
     <string name="guest_welcome_title">Selamat Datang!</string>
 
     <!-- Laundry special instructions -->
-    <string name="laundry_message">Silakan mengisi formulir di lemari pakaian anda lalu ketuk "PESAN"</string>
+    <string name="laundry_message">Silakan mengisi formulir di lemari pakaian anda lalu klik \"PESAN\"</string>
     <string name="no_ironing">Jangan diseterika</string>
     <string name="on_hanger">Digantung</string>
     <string name="folded">Berlipat</string>
     <string name="laundry_price">Harga laundry</string>
     <string name="pressing_price">Harga mendesak</string>
     <string name="housekeeping_confirm">Pastikan pesan ini</string>
-    <string name="housekeeping_label">PEMBENAHAN</string>
+    <string name="housekeeping_label">HOUSEKEEPING</string>
     <string name="housekeeping_zero_order">Silakan pilih jumlah valid</string>
     <string name="logout">DILARANG MASUK SELAIN PEGAWAI</string>
     <string name="nav_drawer_about">TENTANG KAMI</string>
@@ -191,7 +193,7 @@
     <string name="chat_label">Obrolan</string>
     <string name="checkout_label">Periksa</string>
     <string name="event_label">Perihal</string>
-    <string name="laundry_label">Cucian</string>
+    <string name="laundry_label">PENATU</string>
     <string name="laundry_result">Pesan laundry dikirim!</string>
     <string name="zero">0</string>
     <string name="survey_previously_submitted">Maaf, tapi Anda hanya dapat mengirimkan komentar sekali!</string>
@@ -220,4 +222,7 @@
     <string name="agree">Setuju</string>
     <string name="disagree">Tidak Setuju</string>
     <string name="hi">Halo</string>
+    <string name="housekeeping">housekeeping</string>
+    <string name="admin">admin</string>
+    <string name="engineering_other_message">Berikan detail tentang permintaan ini.</string>
 </resources>

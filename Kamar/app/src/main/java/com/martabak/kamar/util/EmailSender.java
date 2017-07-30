@@ -61,8 +61,13 @@ public class EmailSender {
     private class EmailSendTask extends AsyncTask<SendEmailRequest, Void, SendEmailResult> {
 
         protected SendEmailResult doInBackground(SendEmailRequest... requests) {
-            SendEmailResult result = sesClient.sendEmail(requests[0]);
-            Log.d(EmailSendTask.class.getCanonicalName(), "Sent message with ID: " + result.getMessageId());
+            SendEmailResult result = null;
+            try {
+                result = sesClient.sendEmail(requests[0]);
+                Log.d(EmailSendTask.class.getCanonicalName(), "Sent message with ID: " + result.getMessageId());
+            } catch (Exception e) {
+                Log.e(EmailSendTask.class.getCanonicalName(), "Failed sending email", e);
+            }
             return result;
         }
 

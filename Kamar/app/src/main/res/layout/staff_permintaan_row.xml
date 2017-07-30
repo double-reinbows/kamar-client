@@ -24,6 +24,14 @@
         android:layout_centerVertical="true"
         android:src="@drawable/permintaan_cancel_button"
         android:focusable="false"/-->
+    <TextView
+        android:id="@+id/language_permintaan_item"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toStartOf="@+id/assign_permintaan_button"
+        android:gravity="center"
+        android:textSize="45sp"
+        android:focusable="false"/>
     <ImageView
         android:id="@+id/assign_permintaan_button"
         android:layout_width="50dp"

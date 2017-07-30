@@ -49,6 +49,7 @@ public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivi
         private boolean showTabLayout;
         private boolean showLogoutIcon;
         private boolean enableChatIcon;
+        private boolean enableOrdersIcon;
 
         public Options withBaseLayout(int baseLayout) {
             this.baseLayout = baseLayout;
@@ -70,6 +71,10 @@ public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivi
             this.enableChatIcon = enableChatIcon;
             return this;
         }
+        public Options enableordersIcon(boolean enableOrdersIcon) {
+            this.enableOrdersIcon = enableOrdersIcon;
+            return this;
+        }
     }
 
     // binding the views here
@@ -83,12 +88,12 @@ public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivi
         super.onCreate(savedInstanceState);
         setContentView(getOptions().baseLayout);
         ButterKnife.bind(this);
-        setupToolbar(getOptions().toolbarLabel, getOptions().enableChatIcon);
+        setupToolbar(getOptions().toolbarLabel, getOptions().enableChatIcon, getOptions().enableOrdersIcon);
         setupBottomBar(getOptions().showLogoutIcon);
         setupTabLayout(getOptions().showTabLayout);
     }
 
-    private void setupToolbar(String label, boolean enableChatIcon) {
+    private void setupToolbar(String label, boolean enableChatIcon, boolean enableOrdersIcon) {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -109,6 +114,16 @@ public abstract class AbstractGuestBarsActivity extends AbstractCustomFontActivi
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(v.getContext(), GuestChatActivity.class));
+                }
+            });
+        }
+
+        if (enableOrdersIcon) {
+            ImageView ordersIconView = (ImageView) findViewById(R.id.orders_icon);
+            ordersIconView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(v.getContext(), GuestPermintaanActivity.class));
                 }
             });
         }

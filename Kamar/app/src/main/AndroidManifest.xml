@@ -19,8 +19,11 @@
 
         <service android:name=".activity.chat.GuestChatService" />
         <service android:name=".activity.guest.GuestPermintaanService" />
+        <service android:name=".activity.guest.CheckGuestOutService"/>
         <service android:name=".activity.chat.StaffChatService" />
         <service android:name=".activity.staff.StaffPermintaanService" />
+
+
 
         <activity
             android:name=".activity.YiannisTestActivity"
@@ -54,6 +57,10 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar">
+            <!--intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter-->
         </activity>
         <activity
             android:name=".activity.staff.StaffHomeActivity"
@@ -63,7 +70,7 @@
         <activity
             android:name=".activity.guest.GuestPermintaanActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/permintaan_title"
+            android:label="@string/permintaan_status_title"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar">
             <!--intent-filter>

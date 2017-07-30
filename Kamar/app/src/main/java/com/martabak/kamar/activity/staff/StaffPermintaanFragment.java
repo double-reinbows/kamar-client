@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.martabak.kamar.R;
 import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.PermintaanServer;
+import com.martabak.kamar.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +28,6 @@ import rx.Observer;
  * This fragment responsible for the staff permintaans view.
  */
 public  class StaffPermintaanFragment extends Fragment {
-
-    public final static int PERMINTAAN_WINDOW = -3; //in days, MUST be -ve
 
     public StaffPermintaanFragment() {
     }
@@ -113,7 +112,7 @@ public  class StaffPermintaanFragment extends Fragment {
         Log.d(StaffPermintaanFragment.class.getCanonicalName(), "Doing get permintaans of state");
 
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, PERMINTAAN_WINDOW); //current day -3 days
+        c.add(Calendar.DATE, Constants.PERMINTAAN_VIEW_WINDOW_FOR_STAFF_IN_DAYS); //current day -3 days
         PermintaanServer.getInstance(getActivity())
                 .getPermintaansOfTime(new Date(c.getTimeInMillis()), new Date())
                 .subscribe(new Observer<List<Permintaan>>() {

@@ -15,6 +15,7 @@ import com.martabak.kamar.R;
 import com.martabak.kamar.activity.YiannisTestActivity;
 import com.martabak.kamar.activity.staff.StaffHomeActivity;
 import com.martabak.kamar.domain.Guest;
+import com.martabak.kamar.domain.User;
 import com.martabak.kamar.domain.chat.ChatMessage;
 import com.martabak.kamar.domain.chat.GuestChat;
 import com.martabak.kamar.domain.Room;
@@ -80,7 +81,7 @@ public class StaffChatService extends IntentService {
                                 @Override public Observable<ChatMessage> call(GuestChat guestChat) {
                                     List<ChatMessage> unreadMessages = new ArrayList();
                                     for (ChatMessage m : guestChat.messages) {
-                                        if (m.from.equals("GUEST") && m.read == null) {
+                                        if (m.from.equalsIgnoreCase(User.TYPE_GUEST) && m.read == null) {
                                             // Return only if an unread message from GUEST exists.
                                             unreadMessages.add(m);
                                         }
@@ -91,7 +92,7 @@ public class StaffChatService extends IntentService {
                             .subscribe(new Action1<ChatMessage>() {
                                 @Override public void call(ChatMessage unreadMessage) {
                                     Log.d(GuestChatService.class.getCanonicalName(), "New chat message to staff from " + unreadMessage.guestId);
-                                    createNotification(0, unreadMessage); // FIXME use proper int ID here
+                                    createNotification(unreadMessage.hashCode(), unreadMessage);
                                 }
                             });
                 }
@@ -131,8 +132,8 @@ public class StaffChatService extends IntentService {
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, RESULT_ACTIVITY);
         //go to staff chat fragment
-        resultIntent.putExtra("FragType","StaffChatFragment");
-        resultIntent.putExtra("RoomNumber",roomNumber);
+        resultIntent.putExtra("FragType", "StaffChatFragment");
+        resultIntent.putExtra("GuestId", message.guestId);
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
         // This ensures that navigating backward from the Activity leads out of

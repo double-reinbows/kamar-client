@@ -41,6 +41,7 @@
 
     <!-- Permintaan -->
     <string name="permintaan_title">要求</string>
+    <string name="permintaan_status_title">请求状态</string>
     <string name="permintaan">请求</string>
     <string name="new_permintaan">新</string>
     <string name="inprogress_permintaan">进行中</string>
@@ -48,6 +49,7 @@
     <string name="completed_permintaan">完成</string>
     <string name="deleted_permintaan">已删除</string>
     <string name="cancelled_permintaan">取消</string>
+    <string name="permintaan_resend_confirmation">您确定要重新发送此请求吗？</string>
     <string name="permintaan_progress_confirmation">您确定要继续此请求吗？</string>
     <string name="permintaan_regress_confirmation">您确定要退回此请求吗？</string>
     <string name="permintaan_cancel_confirmation">您确定要取消此要求吗？</string>
@@ -219,4 +221,7 @@
     <string name="agree">同意</string>
     <string name="disagree">不同意</string>
     <string name="hi">嗨</string>
+    <string name="housekeeping">家政</string>
+    <string name="admin">管理</string>
+    <string name="engineering_other_message">请提供有关此请求的详细信息。</string>
 </resources>

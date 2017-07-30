@@ -45,7 +45,7 @@ public class AuthorizationInterceptor implements Interceptor {
         String username;
         String password;
 
-        switch (prefs.getString("userType", User.TYPE_GUEST)) {
+        switch (prefs.getString("userType", User.TYPE_GUEST).toUpperCase()) {
             case User.TYPE_GUEST:
                 username = "guest";
                 password = prefs.getString("userPassword", User.PASSWORD_GUEST);
@@ -59,8 +59,11 @@ public class AuthorizationInterceptor implements Interceptor {
                     case User.TYPE_STAFF_RESTAURANT:
                         password = User.PASSWORD_RESTAURANT;
                         break;
-                    case User.TYPE_STAFF_SPA:
-                        password = User.PASSWORD_SPA;
+                    case User.TYPE_STAFF_HOUSEKEEPING:
+                        password = User.PASSWORD_HOUSEKEEPING;
+                        break;
+                    case User.TYPE_STAFF_ADMIN:
+                        password = User.PASSWORD_ADMIN;
                         break;
                     default:
                         return "";
@@ -70,7 +73,7 @@ public class AuthorizationInterceptor implements Interceptor {
                 return "";
         }
 
-//        Log.d(AuthorizationInterceptor.class.getCanonicalName(), username + ":" + password);
+        Log.d(AuthorizationInterceptor.class.getCanonicalName(), username + ":" + password);
         String base64encoded = new String(Base64.encode((username + ":" + password).getBytes(), Base64.DEFAULT));
         return "Basic " + base64encoded.substring(0, base64encoded.length()-1);
     }

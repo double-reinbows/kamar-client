@@ -25,6 +25,8 @@ import com.martabak.kamar.domain.permintaan.RestaurantOrder;
 import com.martabak.kamar.domain.permintaan.Transport;
 import com.martabak.kamar.service.PermintaanServer;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -71,12 +73,92 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        LayoutInflater infalInflater = (LayoutInflater) this.context
+        LayoutInflater inflater = (LayoutInflater) this.context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = infalInflater.inflate(R.layout.guest_permintaan_item, null);
+        convertView = inflater.inflate(R.layout.guest_permintaan_item, null);
         // Set up the "i"/info button
-        ImageView permintaanInfoButton = (ImageView) convertView.findViewById(R.id.permintaan_info_button);
+        //ImageView permintaanInfoButton = (ImageView) convertView.findViewById(R.id.permintaan_info_button);
+        ImageView permintaanCancelButton = (ImageView) convertView.findViewById(R.id.permintaan_cancel_button);
+        ImageView permintaanRedoButton = (ImageView) convertView.findViewById(R.id.permintaan_redo_button);
+        ImageView orderItemImg = (ImageView)convertView.findViewById(R.id.order_item_image);
+        Permintaan currPermintaan = getChild(groupPosition, childPosition);
+        TextView orderSent = (TextView) convertView.findViewById(R.id.permintaan_order_sent_text);
+        TextView orderUpdated = (TextView) convertView.findViewById(R.id.permintaan_order_updated_text);
+        TextView orderDescription = (TextView) convertView.findViewById(R.id.permintaan_order_description_text);
 
+        String datePattern = "EEE MMM dd hh:mm a";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+
+        String createdString = "Order lodged at: "  + dateFormat.format(currPermintaan.created);
+        orderSent.setText(createdString);
+
+        String contentString = "";
+        String updatedString;
+        long lastStateChange;
+
+        if (currPermintaan.state.equals(Permintaan.STATE_CANCELLED))
+        {
+            permintaanCancelButton.setVisibility(View.INVISIBLE);
+
+        }
+        else if (!currPermintaan.state.equals(Permintaan.STATE_COMPLETED))
+        {
+            permintaanRedoButton.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            permintaanCancelButton.setVisibility(View.INVISIBLE);
+            permintaanRedoButton.setVisibility(View.INVISIBLE);
+        }
+
+        if (currPermintaan.updated != null) {
+            updatedString = dateFormat.format(currPermintaan.updated);
+            lastStateChange = (new Date().getTime() - currPermintaan.updated.getTime())/1000;
+        } else {
+            updatedString = "never";
+            lastStateChange = 0;
+        }
+        updatedString = "Time since last Status change: "+lastStateChange/60+" minutes ago";
+        orderUpdated.setText(updatedString);
+
+
+        if (currPermintaan.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
+            orderItemImg.setImageResource(R.drawable.ic_restaurant);
+            RestaurantOrder restoOrder = (RestaurantOrder) currPermintaan.content;
+            for (OrderItem o : restoOrder.items) {
+                contentString += o.quantity + " " + o.name + " Rp. " + o.price+" ";
+                if (o.note != "") {
+                    contentString += "Note: " + o.note + " ";
+                }
+            }
+            contentString += "\nTotal: Rp. " + restoOrder.totalPrice;
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_TRANSPORT)) {
+            orderItemImg.setImageResource(R.drawable.ic_transport);
+            /*Transport transportOrder = (Transport) currPermintaan.content;
+            contentString += "\nDeparting in: " + transportOrder.departingIn +
+                    "\nDestination: " + transportOrder.destination +
+                    "\nNumber of passengers: " + transportOrder.passengers;*/
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_HOUSEKEEPING)) {
+            orderItemImg.setImageResource(R.drawable.ic_housekeeping);
+            Housekeeping hkOrder = (Housekeeping) currPermintaan.content;
+            contentString += "Order: " + hkOrder.option.nameEn +
+                    " Quantity: " + hkOrder.quantity;
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_ENGINEERING)) {
+            orderItemImg.setImageResource(R.drawable.ic_engineering);
+            Engineering engOrder = (Engineering) currPermintaan.content;
+            contentString += "Order: "+engOrder.option.nameEn;
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_MASSAGE)) {
+            orderItemImg.setImageResource(R.drawable.ic_massage);
+            Massage massageOrder = (Massage)currPermintaan.content;
+            contentString += "Order: "+massageOrder.option.nameEn;
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_LAUNDRY)) {
+            orderItemImg.setImageResource(R.drawable.ic_laundry);
+        } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_BELLBOY)) {
+            orderItemImg.setImageResource(R.drawable.ic_bellboy);
+        }
+
+        orderDescription.setText(contentString);
+        /*
 
         permintaanInfoButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
@@ -87,7 +169,8 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                 LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final View view = layoutInflater.inflate(R.layout.dialog_request_info, null);
                 TextView requestInfoDetails = (TextView)view.findViewById(R.id.request_content);
-                ImageView img = (ImageView)view.findViewById(R.id.request_content_image);
+                ImageView orderItemImg = (ImageView)view.findViewById(R.id.order_item_image);
+                //ImageView img = (ImageView)view.findViewById(R.id.request_content_image);
                 final AlertDialog dialog= new AlertDialog.Builder(context).create();
 
                 //build the AlertDialog's content
@@ -107,7 +190,7 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
 
                 String contentString = "\n";
                 if (currPermintaan.content.getType().equals(Permintaan.TYPE_RESTAURANT)) {
-                    img.setImageResource(R.drawable.ic_restaurant);
+                    orderItemImg.setImageResource(R.drawable.ic_restaurant);
                     RestaurantOrder restoOrder = (RestaurantOrder) currPermintaan.content;
                     for (OrderItem o : restoOrder.items) {
                         contentString += o.quantity + " " + o.name + " Rp. " + o.price+"\n";
@@ -117,28 +200,28 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                     }
                     contentString += "\n\nTotal: Rp. " + restoOrder.totalPrice;
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_TRANSPORT)) {
-                    img.setImageResource(R.drawable.ic_transport);
+                    orderItemImg.setImageResource(R.drawable.ic_transport);
                     Transport transportOrder = (Transport) currPermintaan.content;
                     contentString += "\nDeparting in: " + transportOrder.departingIn +
                             "\nDestination: " + transportOrder.destination +
                             "\nNumber of passengers: " + transportOrder.passengers;
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_HOUSEKEEPING)) {
-                    img.setImageResource(R.drawable.ic_housekeeping);
+                    orderItemImg.setImageResource(R.drawable.ic_housekeeping);
                     Housekeeping hkOrder = (Housekeeping) currPermintaan.content;
                     contentString += "\nOrder: " + hkOrder.option.nameEn +
                             "\nQuantity: " + hkOrder.quantity;
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_ENGINEERING)) {
-                    img.setImageResource(R.drawable.ic_engineering);
+                    orderItemImg.setImageResource(R.drawable.ic_engineering);
                     Engineering engOrder = (Engineering) currPermintaan.content;
                     contentString += "\nOrder: "+engOrder.option.nameEn;
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_MASSAGE)) {
-                    img.setImageResource(R.drawable.ic_massage);
+                    orderItemImg.setImageResource(R.drawable.ic_massage);
                     Massage massageOrder = (Massage)currPermintaan.content;
                     contentString += "\nOrder: "+massageOrder.option.nameEn;
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_LAUNDRY)) {
-                    img.setImageResource(R.drawable.ic_laundry);
+                    orderItemImg.setImageResource(R.drawable.ic_laundry);
                 } else if (currPermintaan.content.getType().equals(Permintaan.TYPE_BELLBOY)) {
-                    img.setImageResource(R.drawable.ic_bellboy);
+                    orderItemImg.setImageResource(R.drawable.ic_bellboy);
                 }
 
                 requestInfoDetails.setText("Status: "+currPermintaan.state+"\n"+
@@ -150,11 +233,133 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
                 dialog.show();
             }
         });
+        */
+
+        permintaanRedoButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder dialog= new AlertDialog.Builder(context);
+                dialog.setMessage(context.getString(R.string.permintaan_resend_confirmation))
+                        .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Permintaan currPermintaan = getChild(groupPosition, childPosition);
+                                getLatestPermintaan(currPermintaan._id, Permintaan.STATE_NEW);
+
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                dialog.show();
+            }
+
+
+        });
+
+        permintaanCancelButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder dialog= new AlertDialog.Builder(context);
+                dialog.setMessage(context.getString(R.string.permintaan_cancel_confirmation))
+                        .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Permintaan currPermintaan = getChild(groupPosition, childPosition);
+                                if (currPermintaan.isCancelable()) {
+                                    getLatestPermintaan(currPermintaan._id, Permintaan.STATE_CANCELLED);
+                                }
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                dialog.show();
+            }
+
+
+        });
 
         final String childText =  getChild(groupPosition, childPosition).type;
         TextView txtListChild = (TextView) convertView.findViewById(R.id.permintaan_list_item);
         txtListChild.setText(childText);
         return convertView;
+    }
+
+    private void getLatestPermintaan(final String _id, final String newPermintaanState) {
+        Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "Doing get permintaan of state");
+
+        final Permintaan currPermintaan = idToPermintaan.get(_id);
+
+
+        //disableButtons();
+        PermintaanServer.getInstance(context).getPermintaan(currPermintaan._id).subscribe(new Observer<Permintaan>() {
+            String rev;
+            @Override
+            public void onCompleted() {
+                Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "Completed getting _rev");
+                Permintaan updatedPermintaan = new Permintaan(currPermintaan._id, rev, currPermintaan.owner, currPermintaan.creator, currPermintaan.type,
+                        currPermintaan.roomNumber, currPermintaan.guestId, newPermintaanState,
+                        currPermintaan.created, new Date(), currPermintaan.assignee, currPermintaan.eta, currPermintaan.countryCode, currPermintaan.content);
+                updatePermintaan(updatedPermintaan, currPermintaan.state, newPermintaanState);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Permintaan permintaan) {
+                rev = permintaan._rev;
+            }
+        });
+    }
+
+    /**
+     * Update Permintaan
+     */
+    private void updatePermintaan(final Permintaan permintaan, final String prevPermintaanState, final String newPermintaanState) {
+
+
+        PermintaanServer.getInstance(context).updatePermintaan(permintaan)
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On completed");
+
+                        //update Permintaan dictionary
+                        idToPermintaan.remove(permintaan._id);
+                        idToPermintaan.put(permintaan._id, permintaan);
+                        //update state lists
+                        List<String> stateUpdatePermintaans = stateToPermIds.get(newPermintaanState);
+                        stateUpdatePermintaans.add(permintaan._id);
+                        stateToPermIds.put(newPermintaanState, stateUpdatePermintaans);
+
+                        List<String> stateRemovePermintaans = stateToPermIds.get(prevPermintaanState);
+                        stateRemovePermintaans.remove(permintaan._id);
+                        stateToPermIds.put(prevPermintaanState, stateRemovePermintaans);
+                        notifyDataSetChanged();
+
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() On error");
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onNext(Boolean result) {
+                        Log.d(GuestExpandableListAdapter.class.getCanonicalName(), "updatePermintaan() staff permintaan update " + result);
+                    }
+                });
     }
 
     @Override
@@ -192,11 +397,13 @@ class GuestExpandableListAdapter extends BaseExpandableListAdapter {
         lblListHeader.setText(headerTitle);
         // Set different bg colour for each state
         if (headerTitle.equals(Permintaan.STATE_NEW)) {
-            lblListHeader.setBackgroundColor(0xFFac0d13);
+            lblListHeader.setBackgroundColor(0xFFff8000);
         } else if (headerTitle.equals(Permintaan.STATE_INPROGRESS)) {
-            lblListHeader.setBackgroundColor(0xFFaa373a);
+            lblListHeader.setBackgroundColor(0xFF808080);
         } else if (headerTitle.equals(Permintaan.STATE_COMPLETED)) {
-            lblListHeader.setBackgroundColor(0xFFa09091);
+            lblListHeader.setBackgroundColor(0xFF004200);
+        } else if (headerTitle.equals(Permintaan.STATE_CANCELLED)) {
+            lblListHeader.setBackgroundColor(0xFFff0000);
         }
         lblListHeader.invalidate();
 

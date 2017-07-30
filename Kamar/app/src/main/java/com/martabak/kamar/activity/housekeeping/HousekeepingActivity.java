@@ -56,7 +56,8 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                 .withToolbarLabel(getString(R.string.housekeeping_label))
                 .showTabLayout(true)
                 .showLogoutIcon(false)
-                .enableChatIcon(true);
+                .enableChatIcon(true)
+                .enableordersIcon(true);
     }
 
     @Override
@@ -231,7 +232,7 @@ public class HousekeepingActivity extends AbstractGuestBarsActivity {
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                String owner = User.TYPE_STAFF_FRONTDESK;
+                                String owner = User.TYPE_STAFF_HOUSEKEEPING;
                                 String type = Permintaan.TYPE_HOUSEKEEPING;
                                 String guestId = getActivity().getSharedPreferences("userSettings", getActivity().MODE_PRIVATE)
                                         .getString("guestId", "none");

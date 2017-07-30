@@ -3,24 +3,70 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
-
-    <TextView
-        android:id="@+id/permintaan_list_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
+    <ImageView
+        android:id="@+id/order_item_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:textSize="28dp"
-        android:textColor="@color/black" />
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/order_item_image">
+        <TextView
+            android:id="@+id/permintaan_list_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"/>
+
+        <TextView
+            android:id="@+id/permintaan_order_sent_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textAllCaps="true"
+            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"/>
+        
+        <TextView
+            android:id="@+id/permintaan_order_updated_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textAllCaps="true"
+            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"/>
+
+        <TextView
+            android:id="@+id/permintaan_order_description_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textAllCaps="true"
+            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"/>
+
+    </LinearLayout>
     <ImageView
-        android:id="@+id/permintaan_info_button"
+        android:id="@+id/permintaan_cancel_button"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/permintaan_info"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_clear"
         android:focusable="false"/>
+    <ImageView
+        android:id="@+id/permintaan_redo_button"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_redo"
+        android:focusable="false"/>
+
 </RelativeLayout>

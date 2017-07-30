@@ -3,7 +3,6 @@ package com.martabak.kamar.activity.home;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,16 +18,11 @@ import com.martabak.kamar.activity.guest.GuestHomeActivity;
 import com.martabak.kamar.domain.Event;
 import com.martabak.kamar.domain.Guest;
 import com.martabak.kamar.domain.User;
-import com.martabak.kamar.domain.permintaan.Permintaan;
 import com.martabak.kamar.service.EventServer;
 import com.martabak.kamar.service.GuestServer;
 import com.martabak.kamar.service.Server;
-import com.martabak.kamar.domain.LocaleChanger;
+import com.martabak.kamar.util.LocaleUtils;
 
-import java.util.Locale;
-
-import butterknife.BindString;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
@@ -45,12 +39,10 @@ public class SelectLanguageActivity extends AppCompatActivity {
     private String promoImgId;
     private String roomNumber;
 
-    LocaleChanger localeChanger = new LocaleChanger();
     // the listener bindings for the language buttons
     @OnClick(R.id.language_english)
     public void onEnglishClick() {
-        localeChanger.setLocale(this, "en");
-        Log.v("LOCALE",Locale.getDefault().getLanguage());
+        LocaleUtils.setLocale(this, "en", "GB");
         Toast.makeText(
                 SelectLanguageActivity.this,
                 getString(R.string.language_set_to),
@@ -62,8 +54,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     @OnClick(R.id.language_bahasa)
     public void onBahasaClick() {
-        localeChanger.setLocale(this, "in");
-        Log.v("LOCALE",Locale.getDefault().getLanguage());
+        LocaleUtils.setLocale(this, "in", "ID");
         Toast.makeText(
                 SelectLanguageActivity.this,
                 getString(R.string.language_set_to),
@@ -75,8 +66,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     @OnClick(R.id.language_russian)
     public void onRussianClick() {
-        localeChanger.setLocale(this, "ru");
-        Log.v("LOCALE",Locale.getDefault().getLanguage());
+        LocaleUtils.setLocale(this, "ru", "RU");
         Toast.makeText(
                 SelectLanguageActivity.this,
                 getString(R.string.language_set_to),
@@ -88,8 +78,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
 
     @OnClick(R.id.language_zh)
     public void onChineseClick() {
-        localeChanger.setLocale(this, "zh");
-        Log.v("LOCALE",Locale.getDefault().getLanguage());
+        LocaleUtils.setLocale(this, "zh", "CN");
         Toast.makeText(
                 SelectLanguageActivity.this,
                 getString(R.string.language_set_to),
@@ -157,6 +146,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
                 Log.v(SelectLanguageActivity.class.getCanonicalName(), "Room Number : " + roomNumber);
                 if (result == null) {
                     editor.putString("guestId", "none");
+                    editor.putString("guestName", "none");
                 } else {
                     //set guestId in Shared Preferences
                     editor.putString("guestId", result._id);

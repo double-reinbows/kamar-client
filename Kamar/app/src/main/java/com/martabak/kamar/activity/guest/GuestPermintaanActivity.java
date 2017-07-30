@@ -1,12 +1,15 @@
 package com.martabak.kamar.activity.guest;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -27,35 +30,23 @@ import rx.functions.Func1;
 /**
  * This fragment creates the permintaan activity from the guest homescreen.
  */
-public class GuestPermintaanActivity extends AppCompatActivity {
+public class GuestPermintaanActivity extends AbstractGuestBarsActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guest_permintaan);
         doGetPermintaansOfStateAndCreateExpList();
+    }
 
-        // Get the ActionBar here to configure the way it behaves.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-
-        });
-
-        TextView roomNumberTextView = (TextView)findViewById(R.id.room_number);
-        String roomNumber = getSharedPreferences("userSettings", MODE_PRIVATE)
-                .getString("roomNumber", "none");
-        // set room number text
-//        roomNumberTextView.setText(getString(R.string.room_number) + ": " + roomNumber);
-
+    protected Options getOptions() {
+        return new Options()
+                .withBaseLayout(R.layout.activity_guest_permintaan)
+                .withToolbarLabel(getString(R.string.permintaan_status_title))
+                .showTabLayout(false)
+                .showLogoutIcon(false)
+                .enableChatIcon(false)
+                .enableordersIcon(false);
     }
 
     protected void createExpandableList(List<Permintaan> permintaans) {
@@ -64,7 +55,8 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         List<String> states = Arrays.asList(
                 Permintaan.STATE_NEW,
                 Permintaan.STATE_INPROGRESS,
-                Permintaan.STATE_COMPLETED
+                Permintaan.STATE_COMPLETED,
+                Permintaan.STATE_CANCELLED
         );
         //mapping of states to a list of permintaan IDs
         HashMap<String, List<String>> statesToPermIds = new HashMap<>();
@@ -75,6 +67,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         // Set up headers (states)
+        List<String> cancel_permintaan = new ArrayList<>();
         List<String> new_permintaan = new ArrayList<>();
         List<String> inprogress_permintaan = new ArrayList<>();
         List<String> completed_permintaan = new ArrayList<>();
@@ -83,6 +76,9 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         for (Permintaan permintaan : permintaans) {
             idsToPermintaans.put(permintaan._id, permintaan);
             switch (permintaan.state) {
+                case Permintaan.STATE_CANCELLED:
+                    cancel_permintaan.add(permintaan._id);
+                    break;
                 case Permintaan.STATE_NEW:
                     new_permintaan.add(permintaan._id);
                     break;
@@ -98,23 +94,26 @@ public class GuestPermintaanActivity extends AppCompatActivity {
         }
 
         //set the state text and accompanying permintaan IDs
+
         statesToPermIds.put(states.get(0), new_permintaan);
         statesToPermIds.put(states.get(1), inprogress_permintaan);
         statesToPermIds.put(states.get(2), completed_permintaan);
+        statesToPermIds.put(states.get(3), cancel_permintaan);
 
         //create expandable list
         listAdapter = new GuestExpandableListAdapter(this, states, statesToPermIds, idsToPermintaans);
 
-
         // setting list adapter
         expListView.setAdapter(listAdapter);
-
 
         // expanding all expandable groups
         for (int i=0; i<statesToPermIds.keySet().size(); i++) {
             expListView.expandGroup(i);
         }
+
+
     }
+
 
     /**
      * Pulls the permintaans on the server based on specified states and, if successful,
@@ -127,7 +126,7 @@ public class GuestPermintaanActivity extends AppCompatActivity {
                 .getPermintaansForGuest(guestId)
                 .filter(new Func1<Permintaan, Boolean>() {
                     @Override public Boolean call(Permintaan permintaan) {
-                        return permintaan.state.equals(Permintaan.STATE_NEW) ||
+                        return permintaan.state.equals(Permintaan.STATE_CANCELLED) || permintaan.state.equals(Permintaan.STATE_NEW) ||
                                 permintaan.state.equals(Permintaan.STATE_INPROGRESS) ||
                                 permintaan.state.equals(Permintaan.STATE_COMPLETED);
                     }
@@ -148,4 +147,6 @@ public class GuestPermintaanActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
